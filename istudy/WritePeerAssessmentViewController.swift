@@ -56,7 +56,7 @@ class WritePeerAssessmentViewController: UIViewController {
                     dispatch_async(dispatch_get_main_queue(), {
                         ProgressHUD.dismiss()
                         self.items = json["items"].arrayObject! as NSArray
-                                           // print(self.items)
+                        
                     })
                 }
             }

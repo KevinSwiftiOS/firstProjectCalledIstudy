@@ -99,7 +99,6 @@ class DetailPeerAssementViewController: UIViewController,UICollectionViewDataSou
         let authtoken = userDefault.valueForKey("authtoken") as! String
         //写请求时间等等
         let urlString = "http://dodo.hznu.edu.cn/api/hupinginfo?testid=" + "\(self.id)" + "&authtoken=" + authtoken
-        print(urlString)
         let request = NSMutableURLRequest(URL: NSURL(string: urlString)!, cachePolicy:NSURLRequestCachePolicy.UseProtocolCachePolicy, timeoutInterval: 5)
        request.HTTPMethod = "GET"
         Alamofire.request(request).responseJSON { (response) in
