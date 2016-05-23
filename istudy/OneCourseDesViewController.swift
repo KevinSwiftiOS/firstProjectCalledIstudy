@@ -139,13 +139,14 @@ class OneCourseDesViewController:UIViewController,UICollectionViewDelegateFlowLa
         let vc = UIStoryboard(name: "MyCourse", bundle: nil).instantiateViewControllerWithIdentifier("DetailInfoVC") as! DetailInfoViewController
         vc.id = self.items[indexPath.row].valueForKey("id") as! NSInteger
         vc.title = "详细信息"
-        self.navigationController?.pushViewController(vc, animated: true)
+              self.navigationController?.pushViewController(vc, animated: true)
     }
     func pushNewVC(sender:UIButton){
             let oneCourseSB = UIStoryboard(name: "OneCourse", bundle: nil)
         switch sender.tag {
         case 0: let VC = oneCourseSB.instantiateViewControllerWithIdentifier("StudyMaterialVC")  as! StudyMaterialViewController
          VC.title = "学习资料"
+        VC.courseId = self.id
             self.navigationController?.pushViewController(VC, animated: true)
         case 1:let VC = oneCourseSB.instantiateViewControllerWithIdentifier("MyHomeWorkVC") as! MyHomeWorkViewController
          VC.title = "我的作业"

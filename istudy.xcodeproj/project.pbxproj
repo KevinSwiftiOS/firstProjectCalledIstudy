@@ -173,6 +173,7 @@
 		38DF995A1C8C69EC00BBE15E /* SixSameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38DF99591C8C69EC00BBE15E /* SixSameViewController.swift */; };
 		38DF995C1C8C6A6000BBE15E /* ChangeSexViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38DF995B1C8C6A6000BBE15E /* ChangeSexViewController.swift */; };
 		38DF995E1C8C6A9100BBE15E /* AdressViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38DF995D1C8C6A9100BBE15E /* AdressViewController.swift */; };
+		38DFCF141CF350ED0037992F /* StudyResourcePreviewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38DFCF131CF350ED0037992F /* StudyResourcePreviewViewController.swift */; };
 		38E1C61A1CA2D8B700F0FA91 /* ContactPersonTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38E1C6191CA2D8B700F0FA91 /* ContactPersonTableViewCell.swift */; };
 		38E1C61C1CA2DA1800F0FA91 /* ContactPersonViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38E1C61B1CA2DA1800F0FA91 /* ContactPersonViewController.swift */; };
 		38F351061CC719C1001BFD3A /* ComplexButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38F351051CC719C1001BFD3A /* ComplexButton.swift */; };
@@ -636,6 +637,7 @@
 		38DF99591C8C69EC00BBE15E /* SixSameViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SixSameViewController.swift; sourceTree = "<group>"; };
 		38DF995B1C8C6A6000BBE15E /* ChangeSexViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChangeSexViewController.swift; sourceTree = "<group>"; };
 		38DF995D1C8C6A9100BBE15E /* AdressViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AdressViewController.swift; sourceTree = "<group>"; };
+		38DFCF131CF350ED0037992F /* StudyResourcePreviewViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StudyResourcePreviewViewController.swift; sourceTree = "<group>"; };
 		38E1C6191CA2D8B700F0FA91 /* ContactPersonTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactPersonTableViewCell.swift; sourceTree = "<group>"; };
 		38E1C61B1CA2DA1800F0FA91 /* ContactPersonViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactPersonViewController.swift; sourceTree = "<group>"; };
 		38F351051CC719C1001BFD3A /* ComplexButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComplexButton.swift; sourceTree = "<group>"; };
@@ -1072,6 +1074,7 @@
 			isa = PBXGroup;
 			children = (
 				388741671C8AFD25008B665A /* StudyMaterialViewController.swift */,
+				38DFCF131CF350ED0037992F /* StudyResourcePreviewViewController.swift */,
 			);
 			name = StudyMaterials;
 			sourceTree = "<group>";
@@ -2276,6 +2279,7 @@
 				38BD7C1E1CA6D303001F44B2 /* MJRefreshAutoNormalFooter.m in Sources */,
 				38CCBF711C93B8A2002BEA6B /* PersonalInformation.swift in Sources */,
 				38BD7C1D1CA6D303001F44B2 /* MJRefreshAutoGifFooter.m in Sources */,
+				38DFCF141CF350ED0037992F /* StudyResourcePreviewViewController.swift in Sources */,
 				38F4E8F81C92632A004AF629 /* ImageCropperView.m in Sources */,
 				380D8BB01CA0338B00430E71 /* MASViewAttribute.m in Sources */,
 				38CCBF701C93B8A2002BEA6B /* PersonalInformation+CoreDataProperties.swift in Sources */,
