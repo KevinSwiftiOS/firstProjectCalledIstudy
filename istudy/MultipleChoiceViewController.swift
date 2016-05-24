@@ -10,11 +10,12 @@ import UIKit
 import Alamofire
 import SwiftyJSON
 class MultipleChoiceViewController: UIViewController,UIWebViewDelegate,UITableViewDelegate,UITableViewDataSource,UIGestureRecognizerDelegate{
-    //阅卷 保存 重置的按钮
     //阅卷 重置 保存的按钮
     @IBOutlet weak var resetBtn:UIButton?
     @IBOutlet weak var saveBtn:UIButton?
     @IBOutlet weak var goOVerBtn:UIButton?
+    //阅卷的框
+    var resultTextView = JVFloatLabeledTextView()
  //有没有超过规定的期限
     var isOver = false
     //记录date和阅卷是否开启 和阅卷的时候答案是否可见等等
@@ -47,8 +48,7 @@ class MultipleChoiceViewController: UIViewController,UIWebViewDelegate,UITableVi
     //每道题目选择的答案
     //阅卷的几个数组 保存阅卷的信息 还有阅卷的显示UIView
   
-    var displayMarkingTextArray = NSMutableArray()
-    @IBOutlet weak var displayMarkingTextView:UITextView?
+    var displayMarkingArray = NSMutableArray()
     override func viewDidLoad() {
         
         super.viewDidLoad()
@@ -98,7 +98,7 @@ class MultipleChoiceViewController: UIViewController,UIWebViewDelegate,UITableVi
         //加载从后台返回的我答得答案 若有多个的话 择优&&&符号
         for i in 0 ..< self.items.count{
             
-            self.displayMarkingTextArray.addObject("")
+            self.displayMarkingArray.addObject(0)
             if(self.items[i].valueForKey("answer") as? String != nil){
                 self.totalAnswers.addObject(self.items[i].valueForKey("answer")!)
             }else{
@@ -214,23 +214,8 @@ class MultipleChoiceViewController: UIViewController,UIWebViewDelegate,UITableVi
             tempString = ""
             self.initView()
           
-          
         }
-        if(self.displayMarkingTextArray[index] as! String != ""){
-            self.displayMarkingTextView?.text = self.displayMarkingTextArray[index] as! String
-            if(self.totalAnswers[index] as! String != self.items[index].valueForKey("strandanswer") as! String){
-                self.displayMarkingTextView?.textColor = UIColor.redColor()
-            }else{
-                self.displayMarkingTextView?.textColor = UIColor.greenColor()
-            }
-           
-        }else{
-            self.displayMarkingTextView?.text = ""
-            
-        }
-        
-        
-    }
+}
     //重置的动作
     @IBAction func reset(sender:UIButton){
         let resetAlertView = UIAlertController(title: nil, message: "确定要重置吗", preferredStyle: UIAlertControllerStyle.Alert)
@@ -239,8 +224,11 @@ class MultipleChoiceViewController: UIViewController,UIWebViewDelegate,UITableVi
         self.totalAnswers.replaceObjectAtIndex(self.index, withObject: "")
             self.tableView?.reloadData()
         
-        self.displayMarkingTextArray.replaceObjectAtIndex(self.index, withObject: "")
-        self.displayMarkingTextView?.text = self.displayMarkingTextArray[self.index] as! String
+        self.displayMarkingArray.replaceObjectAtIndex(self.index, withObject: 0)
+            self.tableView?.tableFooterView = UIView()
+            self.saveBtn?.enabled = true
+            self.goOVerBtn?.enabled = true
+       
          self.postAnswer()
             }
      
@@ -251,61 +239,84 @@ class MultipleChoiceViewController: UIViewController,UIWebViewDelegate,UITableVi
     }
     //阅卷的动作
     @IBAction func goOver(sender:UIButton){
-        if(self.enableClientJudge == false) {
-            ProgressHUD.showError("未开启阅卷功能")
-        }
-        else{
-            self.Over(self.index)
-        }
+        //确实保存了
+        self.isSave = true
+
+    self.postAnswer()
+    self.Over()
     }
-      
-    func Over(index:NSInteger) {
+      func Over() {
         //没有超过指定的日期且没有开启阅卷功能
         if(!self.isOver && !self.enableClientJudge){
             ProgressHUD.showError("没有开启阅卷功能")
         }
          //没有超过指定的日期且开启阅卷功能 或者已经超过日期了
         if(!self.isOver && self.enableClientJudge || (self.isOver)){
-             isSave = true
-            self.postAnswer()
-                   let standAnswer = self.items[index].valueForKey("strandanswer") as! String
-            //可以见到标准答案 超过日期了但是可以看见标准答案的
-            var standAns = ""
-            if((self.keyVisible && !self.isOver) || (self.isOver && self.viewOneWithAnswerKey)){
-             standAns = "参考答案" + standAnswer.stringByReplacingOccurrencesOfString("&&&", withString: ",") + "\n"
-            }else{
-                 standAns = "未开放参考答案"
-            }
-            //只要字符串拿到 随后两个匹配一下即可
-            var knowLedge = ""
-            if(self.items[index].valueForKey("knowledge") as? String != nil){
-                knowLedge = "知识点" + (self.items[index].valueForKey("knowledge") as! String) + "\n"
-            }else{
-                knowLedge = "知识点" + "\n"
-            }
-            var result = "结果:"
-            var score = "得分:"
-            if(self.totalAnswers[index] as! String == self.items[index].valueForKey("strandanswer") as! String){
-                result += "正确" + "\n"
-                score += "\(self.items[index].valueForKey("totalscore") as! NSNumber)" + "\n"
-                self.displayMarkingTextView?.text = knowLedge + result + score + standAns
-                self.displayMarkingTextView?.textColor = UIColor.greenColor()
-                
-            }else{
-                result += "错误" + "\n"
-                score += "0" + "\n"
-                self.displayMarkingTextView?.text = knowLedge + result + score + standAns
-                self.displayMarkingTextView?.textColor = UIColor.redColor()
-                
-            }
-            self.displayMarkingTextArray.replaceObjectAtIndex(index, withObject: knowLedge + result + score + standAns)
-    self.tableView?.reloadData()
+            //进行阅卷
+            let userDefault = NSUserDefaults.standardUserDefaults()
+            let authtoken = userDefault.valueForKey("authtoken") as! String
+            let paramDic = ["authtoken":authtoken,
+                            "testid":"\(self.testid)",
+                            "questionid":"\(self.items[index].valueForKey("id") as! NSNumber)"
+            ]
+            Alamofire.request(.GET, "http://dodo.hznu.edu.cn/api/judgequestion", parameters: paramDic, encoding: ParameterEncoding.URL, headers: nil).responseJSON(completionHandler: { (response) in
+                switch response.result{
+                case .Success(let Value):
+                    let json = JSON(Value)
+                    if(json["info"]["Success"].bool != true){
+                        ProgressHUD.showError("阅卷失败")
+                        print(json["ErrorMessage"].string)
+                    }
+                    else{
+                        let judgeItems = json["info"]["JudgeResultItemSet"].arrayObject! as NSArray
+                        var totalString = "答案:"
+                        if(judgeItems[0].valueForKey("Right") as! Bool == true){
+                            totalString += "正确" + "\n"
+                            
+                        }else{
+                            totalString += "错误" + "\n"
+                        }
+                        totalString += "知识点:"  + (self.items[self.index].valueForKey("knowledge") as! String) + "\n"
+                        
+                        totalString += "得分:" + "\(judgeItems[0].valueForKey("GotScore") as! NSNumber)"
+                            + "/" + "\(judgeItems[0].valueForKey("FullScore") as! NSNumber)" + "\n"
+                        
+                        if((self.keyVisible && !self.isOver) || (self.isOver && self.viewOneWithAnswerKey)){                            totalString += "答案:" + (judgeItems[0].valueForKey("Key") as! String)
+                        }
+                        else{
+                            totalString += "标准答案未开放" + "\n"
+                            
+                        }
+                        if(judgeItems[0].valueForKey("Message") as? String != nil && judgeItems[0].valueForKey("Message") as! String != "") {
+                            totalString += "信息:" + (judgeItems[0].valueForKey("Message") as! String)
+                        }
+                        self.resultTextView = JVFloatLabeledTextView(frame: CGRectMake(0, 0, SCREEN_WIDTH, 200))
+                        //设置字体
+                        let totalAttriString = NSMutableAttributedString(string: totalString)
+                        let range = NSMakeRange(3, 2)
+                        if(judgeItems[0].valueForKey("Right") as! Bool == true){
+                            totalAttriString.addAttribute(NSForegroundColorAttributeName, value: UIColor.greenColor(), range: range)
+                        }else{
+                            totalAttriString.addAttribute(NSForegroundColorAttributeName, value: UIColor.redColor(), range: range)
+                        }
+                        self.resultTextView.attributedText = totalAttriString
+                        self.goOVerBtn?.enabled = false
+                        self.saveBtn?.enabled = false
+                        self.tableView?.tableFooterView = self.resultTextView
+                        self.displayMarkingArray.replaceObjectAtIndex(self.index, withObject: 1)
+                    }
+                case .Failure(_):
+                    ProgressHUD.showError("阅卷失败")
+                }
+            })
         }
-    }
+    
+}
     //保存的动作
     @IBAction func save(sender:UIButton){
-        isSave = true
-  self.postAnswer()
+        //确实保存了
+        self.isSave = true
+     self.postAnswer()
 
     }
     //向服务器传送答案
@@ -345,23 +356,7 @@ class MultipleChoiceViewController: UIViewController,UIWebViewDelegate,UITableVi
     }
     //初始化界面
     func initView() {
-        //比较日期 若是已经过了期限 就把阅卷的结果拿出来
-        //进行比较
-        let currentDate = NSDate()
-        let result:NSComparisonResult = currentDate.compare(endDate)
-        if result == .OrderedAscending{
-            
-        }else{
-            self.resetBtn?.enabled = false
-            self.goOVerBtn?.enabled = false
-            self.saveBtn?.enabled = false
-            self.isOver = true
-            //每道题目进行阅卷
-          self.Over(self.index)
-            }
-        
-
-        //加载当前是什么题型和当前是第几题
+    //加载当前是什么题型和当前是第几题
         self.kindOfQuesLabel?.text = self.totalitems[kindOfQusIndex].valueForKey("title") as! String + "(" + "\(self.items[index].valueForKey("totalscore") as! NSNumber)" + "分/题)"
         self.currentQus?.text = "\(index + 1)" + "/" + "\(self.items.count)"
         //有没有选择按钮也要进行加载
@@ -370,8 +365,6 @@ class MultipleChoiceViewController: UIViewController,UIWebViewDelegate,UITableVi
         self.qusDesWebView = UIWebView(frame: CGRectMake(0,0,SCREEN_WIDTH,1))
         self.qusDesWebView.loadHTMLString(self.items[index].valueForKey("content") as! String, baseURL: nil)
         self.qusDesWebView.delegate = self
-        self.tableView?.tableHeaderView = self.qusDesWebView
-        self.tableView?.tableFooterView = UIView()
         self.cellHeights.removeAllObjects()
         for i in 0 ..< 8{
             let key = "option" + tempArray[i]
@@ -379,8 +372,7 @@ class MultipleChoiceViewController: UIViewController,UIWebViewDelegate,UITableVi
                 cellHeights.addObject(30)
             }
         }
-        self.tableView?.reloadData()
-    }
+        }
 
     //因为是多选 所以要进行匹配
     func tap(sender:NSNotification){
@@ -408,7 +400,7 @@ class MultipleChoiceViewController: UIViewController,UIWebViewDelegate,UITableVi
             tempString.append(oneSubAnswerForMutiChoice[adv])
 
         }
-                self.totalAnswers[index] = tempString
+      self.totalAnswers[index] = tempString
        self.tableView?.reloadData()
     }
     func webViewDidStartLoad(webView: UIWebView) {
@@ -425,8 +417,32 @@ class MultipleChoiceViewController: UIViewController,UIWebViewDelegate,UITableVi
         webView.addGestureRecognizer(tap)
         scrollView.contentSize = CGSizeMake(CGFloat(width!), 0)
         scrollView.showsVerticalScrollIndicator = false
-            self.tableView?.tableHeaderView = webView
-}
+        self.tableView?.tableHeaderView = self.qusDesWebView
+        //比较日期 若是已经过了期限 就把阅卷的结果拿出来
+        //进行比较
+        let currentDate = NSDate()
+        self.tableView?.tableFooterView = UIView()
+        self.tableView?.userInteractionEnabled = true
+        self.goOVerBtn?.enabled = true
+        self.saveBtn?.enabled = true
+        self.resetBtn?.enabled = true
+        let result:NSComparisonResult = currentDate.compare(endDate)
+        if result == .OrderedAscending{
+            self.isOver = false
+            if(self.displayMarkingArray[index] as! NSObject != 0){
+                self.Over()
+            }
+        }else{
+            self.isOver = true
+            //每道题目进行阅卷
+            self.Over()
+            self.goOVerBtn?.enabled = false
+            self.resetBtn?.enabled = false
+            self.saveBtn?.enabled = false
+        }
+        self.tableView?.reloadData()
+    }
+
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         return 1
     }
@@ -463,7 +479,7 @@ class MultipleChoiceViewController: UIViewController,UIWebViewDelegate,UITableVi
             cell.btn?.setTitleColor(UIColor.blueColor(), forState: .Normal)
             cell.view?.userInteractionEnabled = true
             cell.canTap = true
-            if(self.displayMarkingTextArray[index] as! String != ""){
+            if(self.displayMarkingArray[index] as! NSObject != 0){
                 cell.canTap = false
             }
             //多选题 如果包含这个字符就变色

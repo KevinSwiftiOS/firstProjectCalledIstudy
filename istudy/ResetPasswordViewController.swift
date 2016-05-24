@@ -7,11 +7,13 @@
 //
 
 import UIKit
-
+import Alamofire
+import SwiftyJSON
 class ResetPasswordViewController: UIViewController {
     @IBOutlet weak var topLayout: NSLayoutConstraint!
     @IBOutlet weak var newPassWord:UITextField?
     @IBOutlet weak var configPassWord:UITextField?
+    var token = String()
     override func viewDidLoad() {
         super.viewDidLoad()
         //键盘出现时的挡住问题
@@ -26,12 +28,31 @@ class ResetPasswordViewController: UIViewController {
     }
     @IBAction func sureToResetPassword(sender:UIButton){
         //确认两者输入的密码
+        if(self.configPassWord?.text == self.newPassWord?.text){
         //确认新的密码和确认的密码有没有相同 随后在服务器上进行修改 即可 如果不一样 弹出一个警告框即可
-        let  userDefault = NSUserDefaults.standardUserDefaults()
-        userDefault.setValue(self.newPassWord?.text, forKey: "passWord")
-        let sb = UIStoryboard(name: "Main", bundle: nil)
-        let mainVC = sb.instantiateViewControllerWithIdentifier("tabBarVC") as! UITabBarController
-        self.presentViewController(mainVC, animated: true, completion: nil)
+        let dic:[String:AnyObject] = ["token":token,
+                                      "newpassword":(self.configPassWord?.text)!]
+        Alamofire.request(.GET, "http://dodo.hznu.edu.cn/api/resetpassowrd", parameters: dic, encoding: ParameterEncoding.URL, headers: nil).responseJSON(completionHandler: { (response) in
+            switch response.result{
+            case .Success(let Value):
+                let json = JSON(Value)
+                if(json["retcode"].number == 0){
+                    ProgressHUD.showSuccess("重置成功")
+                    let userDefault = NSUserDefaults.standardUserDefaults()
+                    userDefault.setValue(json["info"]["username"].string, forKey: "userName")
+                    userDefault.setValue(self.configPassWord?.text, forKey: "passWord")
+                    let sb = UIStoryboard(name: "Main", bundle: nil)
+                    let mainVC = sb.instantiateViewControllerWithIdentifier("tabBarVC") as! UITabBarController
+                    self.presentViewController(mainVC, animated: true, completion: nil)
+                    
+                }
+            case .Failure(_):
+                ProgressHUD.showError("重置失败")
+            }
+        })
+               }else{
+            ProgressHUD.showError("密码不相同")
+        }
     }
     @IBAction func keyBoardHide(sender: UIControl) {
         self.newPassWord!.resignFirstResponder()

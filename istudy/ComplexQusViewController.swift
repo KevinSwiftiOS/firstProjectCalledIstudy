@@ -787,9 +787,11 @@ class ComplexQusViewController: UIViewController,UITableViewDelegate,UITableView
         self.presentViewController(resetAlertView, animated: true, completion: nil)
     }
     @IBAction func goOver(sender:UIButton){
+           print(self.items[index].valueForKey("id"))
          if(!self.isOver && self.enableClientJudge){
         self.save()
         }
+     
         self.Over()
         
     }

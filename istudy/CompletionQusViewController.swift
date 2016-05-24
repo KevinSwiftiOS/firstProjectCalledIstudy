@@ -19,6 +19,8 @@ class CompletionQusViewController: UIViewController,UITextFieldDelegate,UIWebVie
     @IBOutlet weak var resetBtn:UIButton?
     @IBOutlet weak var saveBtn:UIButton?
     @IBOutlet weak var goOVerBtn:UIButton?
+    //阅卷的结果
+    var resultTextView = JVFloatLabeledTextView()
     //记录tableViewheader的高度在键盘出现的时候会用到
     var tableHeaderWebViewHeight:CGFloat = 0.0
     //记录date和阅卷是否开启 和阅卷的时候答案是否可见等等
@@ -38,10 +40,8 @@ class CompletionQusViewController: UIViewController,UITextFieldDelegate,UIWebVie
     var totalitems = NSArray()
     var cellHeights = NSMutableArray()
    var oneSubFillBlankSelfAnswerArray = NSMutableArray()
-    //阅卷的内容
-    var displayMarkingView:UIView?
     @IBOutlet weak var tableView:UITableView?
-    var disPlayMarkingArray = NSMutableArray()
+    var displayMarkingArray = NSMutableArray()
     var totalAnswerArray = NSMutableArray()
     var queDes = UIWebView()
     //记录题目的高度
@@ -52,6 +52,7 @@ class CompletionQusViewController: UIViewController,UITextFieldDelegate,UIWebVie
     @IBOutlet weak var topView:UIView?
     var standAnswers = NSMutableArray()
     var beforeEditString = ""
+    var isSave = Bool()
     //为了避免出现 点击view的时候 键盘不消失
     //自己的回答
     var oneQusAnswers = NSMutableArray()
@@ -101,7 +102,7 @@ class CompletionQusViewController: UIViewController,UITextFieldDelegate,UIWebVie
         self.queDes.delegate = self
         self.automaticallyAdjustsScrollViewInsets = false
         //这个页面增加手势
-         rightSwap = UISwipeGestureRecognizer(target: self, action: #selector(CompletionQusViewController.addNewQus(_:)))
+        rightSwap = UISwipeGestureRecognizer(target: self, action: #selector(CompletionQusViewController.addNewQus(_:)))
         rightSwap.direction = .Right
         self.view.addGestureRecognizer(rightSwap)
          leftSwap = UISwipeGestureRecognizer(target: self, action: #selector(CompletionQusViewController.addNewQus(_:)))
@@ -113,7 +114,7 @@ class CompletionQusViewController: UIViewController,UITextFieldDelegate,UIWebVie
         XKeyBoard.registerKeyBoardShow(self)
         self.totalAnswerArray.removeAllObjects()
         for i in 0 ..< self.items.count{
-            self.disPlayMarkingArray.addObject("")
+            self.displayMarkingArray.addObject(0)
             if(self.items[i].valueForKey("answer") as? String != nil && self.items[i].valueForKey("answer") as! String != "") {
                 self.totalAnswerArray.addObject(self.items[i].valueForKey("answer") as! String)
             }else{
@@ -121,11 +122,8 @@ class CompletionQusViewController: UIViewController,UITextFieldDelegate,UIWebVie
                 
             }
         }
-        self.displayMarkingView?.hidden = true
         //题目增加手势 使点击题目的时候键盘消失
-     
-
-        self.initView()
+     self.initView()
        
     }
     //移除所有通知
@@ -174,12 +172,10 @@ class CompletionQusViewController: UIViewController,UITextFieldDelegate,UIWebVie
         
     }
 
-    //当键盘出现的时候
-    @IBAction func resign(sender: UIControl) {
-    
-    }
-    
     @IBAction func save(sender:UIButton){
+        self.Save()
+      }
+    func Save() {
         var answerString = ""
         for i in 0 ..< self.oneSubFillBlankSelfAnswerArray.count - 1{
             
@@ -187,9 +183,9 @@ class CompletionQusViewController: UIViewController,UITextFieldDelegate,UIWebVie
         }
         answerString += self.oneSubFillBlankSelfAnswerArray[self.oneSubFillBlankSelfAnswerArray.count - 1] as! String
         self.totalAnswerArray.replaceObjectAtIndex(index, withObject: answerString)
+        self.postAnswer()
 
-         self.postAnswer()
-}
+    }
     //向服务器传送答案
     func postAnswer() {
         
@@ -230,21 +226,22 @@ class CompletionQusViewController: UIViewController,UITextFieldDelegate,UIWebVie
           let cancelAction = UIAlertAction(title: "取消", style: UIAlertActionStyle.Destructive, handler: nil)
         let resetAction = UIAlertAction(title: "确定", style: UIAlertActionStyle.Default) { (UIAlertAction) in
             
-        
         self.totalAnswerArray.replaceObjectAtIndex(self.index, withObject: "")
-        self.initView()
-        
-        self.displayMarkingView?.hidden = true
-        self.disPlayMarkingArray.replaceObjectAtIndex(self.index, withObject: "")
+       
+       
+    self.displayMarkingArray.replaceObjectAtIndex(self.index, withObject: 0)
+            self.tableView?.tableFooterView = UIView()
+            self.goOVerBtn?.enabled = true
+            self.saveBtn?.enabled = true
             self.tableView?.reloadData()
-        self.postAnswer()
+         self.postAnswer()
         }
         resetAlertView.addAction(resetAction)
         resetAlertView.addAction(cancelAction)
         
         self.presentViewController(resetAlertView, animated: true, completion: nil)
     }
-    func Over(index:NSInteger) {
+    func Over() {
        
         //没有超过指定日期且没有开放阅卷功能的
         if(!self.isOver && !self.enableClientJudge){
@@ -252,95 +249,77 @@ class CompletionQusViewController: UIViewController,UITextFieldDelegate,UIWebVie
         }
         //如果没有超过指定日期且可以阅卷或者已经超过日期的
         if(!self.isOver && self.enableClientJudge || (self.isOver)){
-
-        self.displayMarkingView = UIView(frame: CGRectMake(0,0,SCREEN_WIDTH,100))
-        let trueOrFalseArray = NSMutableArray()
-        trueOrFalseArray.removeAllObjects()
-        let tempCompareStringArray = NSMutableArray()
-        
-        for i in 0 ..< self.standAnswers.count{
-            tempCompareStringArray.removeAllObjects()
-            trueOrFalseArray.addObject("0")
-            var myAnswer = (self.oneSubFillBlankSelfAnswerArray[i] as! String)
-            //myAnswer要把空格拿掉
-            myAnswer = myAnswer.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceCharacterSet())
-            var standAnswer = self.standAnswers[i] as! String
-            standAnswer = standAnswer.stringByReplacingOccurrencesOfString("|||", withString: "☺︎")
-            //比较字符串
-            var tempString = ""
-            for temp in 0 ..< standAnswer.characters.count{
-                let index = standAnswer.startIndex.advancedBy(temp)
-                if(standAnswer[index] == "☺︎"){
-                    
-                    tempCompareStringArray.addObject(tempString)
-                    tempString = ""
-                }else{
-                    tempString.append(standAnswer[index])
+            let userDefault = NSUserDefaults.standardUserDefaults()
+            let authtoken = userDefault.valueForKey("authtoken") as! String
+            let paramDic = ["authtoken":authtoken,
+                            "testid":"\(self.testid)",
+                            "questionid":"\(self.items[index].valueForKey("id") as! NSNumber)"
+                ]
+        Alamofire.request(.GET, "http://dodo.hznu.edu.cn/api/judgequestion", parameters: paramDic, encoding: ParameterEncoding.URL, headers: nil).responseJSON(completionHandler: { (response) in
+                switch response.result{
+                case .Success(let Value):
+                    let json = JSON(Value)
+                    if(json["info"]["Success"].bool != true){
+                        ProgressHUD.showError("阅卷失败")
+                        print(json["ErrorMessage"].string)
+                    }
+                    else{
+                        let judgeItems = json["info"]["JudgeResultItemSet"].arrayObject! as NSArray
+                        var totalString = "答案:"
+                //设置红绿字的范围
+                let rangeArray = NSMutableArray()
+                for i in 0 ..< judgeItems.count{
+                let range = NSMakeRange(3 + i * 3,2)
+                rangeArray.addObject(range)
+                        if(judgeItems[i].valueForKey("Right") as! Bool == true){
+                            totalString += "正确" + " "
+                            
+                        }else{
+                            totalString += "错误" + " "
+                        }
                 }
-            }
-            tempCompareStringArray.addObject(tempString)
-            for tempIndex in 0 ..< tempCompareStringArray.count{
-                if myAnswer == (tempCompareStringArray[tempIndex] as! String){
-                    trueOrFalseArray.replaceObjectAtIndex(i, withObject: "1")
+                //加载知识点
+                totalString += "\n" + "知识点:" + (self.items[self.index].valueForKey("knowledge") as! String) + "\n"
+                //再加得分
+                        totalString += "得分:"
+                        for i in 0 ..< judgeItems.count{
+                            totalString += "\(judgeItems[i].valueForKey("GotScore") as! NSNumber)" + "/" + "\(judgeItems[i].valueForKey("FullScore") as! NSNumber)" + " "
+                        }
+                        //随后再加载标准答案
+                        totalString += "\n" + "答案:"
+                        for i in 0 ..< judgeItems.count{
+                            totalString += (judgeItems[i].valueForKey("Key") as! String) + "\n"
+                        }
+              let totalAttriString = NSMutableAttributedString(string: totalString)
+                    //设置颜色
+                        for i in 0 ..< rangeArray.count{
+                            let range = rangeArray[i] as! NSRange
+                            if(judgeItems[0].valueForKey("Right") as! Bool == true){
+                                totalAttriString.addAttribute(NSForegroundColorAttributeName, value: UIColor.greenColor(), range: range)
+                            }else{
+                                totalAttriString.addAttribute(NSForegroundColorAttributeName, value: UIColor.redColor(), range: range)
+                            }
+   
+                        }
+                self.resultTextView = JVFloatLabeledTextView(frame: CGRectMake(0, 0, SCREEN_WIDTH, 200))
+                        self.resultTextView.attributedText = totalAttriString
+                        self.tableView?.tableFooterView = self.resultTextView
+                        self.displayMarkingArray.replaceObjectAtIndex(self.index, withObject: 1)
+                        self.goOVerBtn?.enabled = false
+                        self.saveBtn?.enabled = false
+                    self.tableView?.reloadData()
+                    }
+                case .Failure(_):
+                ProgressHUD.showError("阅卷失败")
                 }
-                
-            }
-        }
-        for view in (self.displayMarkingView?.subviews)!{
-            view.removeFromSuperview()
-        }
-        let knowledge = "知识点: " + (self.items[index].valueForKey("knowledge") as! String) + "\n"
-        let knowLedgeLabel = UILabel(frame: CGRectMake(0,0,SCREEN_WIDTH,21))
-        knowLedgeLabel.text = knowledge
-        var totalStandAnswerString = "参考答案:" + "\n"
-        let standAnswerTextView = UITextView(frame: CGRectMake(0, 21 * 3, SCREEN_WIDTH, 35))
-        for i in 0 ..< self.standAnswers.count{
-            totalStandAnswerString += self.standAnswers[i] as! String + "\n"
-        }
-            //没有超过日期并且可以查看标准答案的 或者超过日期了 但是可以查看标准答案的
-            if((self.keyVisible && !self.isOver) || (self.isOver && self.viewOneWithAnswerKey)){
-        standAnswerTextView.text = totalStandAnswerString
-            }else{
-                standAnswerTextView.text = ""
-            }
-        var count = 0
-        var totalString = ""
-        for i in 0 ..< trueOrFalseArray.count{
-            let trueOrFalseLabel = UILabel(frame: CGRectMake(CGFloat((i+1) * 42) + 5,21,42,21))
-            if(trueOrFalseArray[i] as! String == "1"){
-                count += 1
-                totalString += "1"
-                trueOrFalseLabel.text = "正确"
-                trueOrFalseLabel.textColor = UIColor.greenColor()
-            }else{
-                totalString += "0"
-                trueOrFalseLabel.text = "错误"
-                trueOrFalseLabel.textColor = UIColor.redColor()
-            }
-            self.displayMarkingView?.addSubview(trueOrFalseLabel)
-        }
-        let resultLabel = UILabel(frame: CGRectMake(0,21,42,21))
-        resultLabel.text = "结果:"
-        self.disPlayMarkingArray.replaceObjectAtIndex(index, withObject: totalString)
-        
-        let scoreLabel = UILabel(frame: CGRectMake(0,21 * 2,SCREEN_WIDTH,21))
-        let score = CGFloat(count) / CGFloat(trueOrFalseArray.count) * CGFloat((self.items[index].valueForKey("totalscore") as! NSNumber))
-        scoreLabel.text = "得分" + "\(score)"
-        self.displayMarkingView?.hidden = false
-        
-        self.displayMarkingView?.addSubview(knowLedgeLabel)
-        self.displayMarkingView?.addSubview(resultLabel)
-        self.displayMarkingView?.addSubview(scoreLabel)
-        self.displayMarkingView?.addSubview(standAnswerTextView)
-        self.tableView?.tableFooterView = self.displayMarkingView
-        self.tableView?.reloadData()
-        }
+                })
+      }
     }
 
     //阅卷与重做的功能
     @IBAction func goOver(sender:UIButton){
       
-        self.Over(self.index)
+      
         if(!isOver && self.enableClientJudge){
         //组装答案后进行post
         var answerString = ""
@@ -351,6 +330,7 @@ class CompletionQusViewController: UIViewController,UITextFieldDelegate,UIWebVie
         answerString += self.oneSubFillBlankSelfAnswerArray[self.oneSubFillBlankSelfAnswerArray.count - 1] as! String
         self.totalAnswerArray.replaceObjectAtIndex(index, withObject: answerString)
     self.postAnswer()
+            self.Over()
         }
         
         
@@ -398,52 +378,7 @@ class CompletionQusViewController: UIViewController,UITextFieldDelegate,UIWebVie
                        self.initView()
             self.currentQus?.text = "\(self.index + 1)" + "/" + "\(self.items.count)"
             self.currentQus?.text = "\(index + 1)" + "/" + "\(self.items.count)"
-            if(self.disPlayMarkingArray[index] as! String != ""){
-                displayMarkingView = UIView(frame: CGRectMake(0,0,SCREEN_WIDTH,SCREEN_HEIGHT))
-                for view in (self.displayMarkingView?.subviews)!{
-                    view.removeFromSuperview()
-                }
-                let knowledge = "知识点: " + (self.items[index].valueForKey("knowledge") as! String) + "\n"
-                let knowLedgeLabel = UILabel(frame: CGRectMake(0,0,SCREEN_WIDTH,21))
-                knowLedgeLabel.text = knowledge
-                var totalStandAnswerString = "参考答案:" + "\n"
-                let standAnswerTextView = UITextView(frame: CGRectMake(0, 21 * 3, SCREEN_WIDTH, 35))
-                for i in 0 ..< self.standAnswers.count{
-                    totalStandAnswerString += self.standAnswers[i] as! String + "\n"
-                }
-                standAnswerTextView.text = totalStandAnswerString
-                var count = 0
-                let string = self.disPlayMarkingArray[index] as! String
-                for i in 0 ..< string.characters.count{
-                    let trueOrFalseLabel = UILabel(frame: CGRectMake(CGFloat((i + 1) * 42) + 5,21,42,21))
-                    let tempIndex = string.startIndex.advancedBy(i)
-                    if(string[tempIndex] == "1"){
-                        count += 1
-                        trueOrFalseLabel.text = "正确"
-                        trueOrFalseLabel.textColor = UIColor.greenColor()
-                    }else{
-                        trueOrFalseLabel.text = "错误"
-                        trueOrFalseLabel.textColor = UIColor.redColor()
-                    }
-                    self.displayMarkingView?.addSubview(trueOrFalseLabel)
-                }
-                
-                let resultLabel = UILabel(frame: CGRectMake(0,21,42,21))
-                resultLabel.text = "结果:"
-                self.displayMarkingView?.hidden = false
-                let scoreLabel = UILabel(frame: CGRectMake(0,21 * 2,SCREEN_WIDTH,21))
-                let score = CGFloat(count) / CGFloat(self.standAnswers.count) * CGFloat((self.items[index].valueForKey("totalscore") as! NSNumber))
-                scoreLabel.text = "得分" + "\(score)"
-                self.displayMarkingView?.addSubview(knowLedgeLabel)
-                self.displayMarkingView?.addSubview(resultLabel)
-                self.displayMarkingView?.addSubview(scoreLabel)
-                self.displayMarkingView?.addSubview(standAnswerTextView)
-               
-                self.tableView?.tableFooterView = self.displayMarkingView
-            }else{
-                
-              self.tableView?.tableFooterView = nil
-            }
+            
         }
     }
     //初始化界面
@@ -455,7 +390,6 @@ class CompletionQusViewController: UIViewController,UITextFieldDelegate,UIWebVie
         self.queDes.loadHTMLString(self.items[index].valueForKey("content") as! String,
                                    baseURL: nil)
         self.queDes.delegate = self
-        self.tableView?.tableHeaderView = self.queDes
         //总共有几个答案 分割字符串
         self.standAnswers.removeAllObjects()
         self.cellHeights.removeAllObjects()
@@ -479,24 +413,6 @@ class CompletionQusViewController: UIViewController,UITextFieldDelegate,UIWebVie
         self.cellHeights.addObject(30)
         self.standAnswers.addObject(tempString)
         self.oneSubFillBlankSelfAnswerArray.addObject("")
-        self.tableView?.reloadData()
-        //比较日期 若是已经过了期限 就把阅卷的结果拿出来
-        //进行比较
-        let currentDate = NSDate()
-        let result:NSComparisonResult = currentDate.compare(endDate)
-        if result == .OrderedAscending{
-            
-        }else{
-          
-             self.isOver = true
-            //每道题目进行阅卷
-            self.Over(index)
-            self.resetBtn?.enabled = false
-            self.goOVerBtn?.enabled = false
-            self.saveBtn?.enabled = false
-          
-        }
-
     }
     
  //键盘的两个通知
@@ -542,8 +458,7 @@ class CompletionQusViewController: UIViewController,UITextFieldDelegate,UIWebVie
     }
     func webViewDidFinishLoad(webView: UIWebView) {
         let height = NSInteger(webView.stringByEvaluatingJavaScriptFromString("document.body.offsetHeight")!)
-        
-               var NewFrame = webView.frame
+        var NewFrame = webView.frame
               NewFrame.size.height = CGFloat(height!) + 5
         webView.frame = NewFrame
         let scrollView = webView.subviews[0] as! UIScrollView
@@ -551,13 +466,35 @@ class CompletionQusViewController: UIViewController,UITextFieldDelegate,UIWebVie
        let width = NSInteger(webView.stringByEvaluatingJavaScriptFromString("document.body.scrollWidth")!)
        
         scrollView.contentSize = CGSizeMake(CGFloat(width!), 0)
-       
-        self.tableView?.tableHeaderView = webView
-        webView.addGestureRecognizer(tap)
-        if(self.disPlayMarkingArray[index] as! String == ""){
-            self.tableView?.tableFooterView = UIView()
+       self.saveBtn?.enabled = true
+        self.goOVerBtn?.enabled = true
+        self.resetBtn?.enabled = true
+        self.tableView?.tableHeaderView = self.queDes
+        self.tableView?.tableFooterView = UIView()
+        //比较日期 若是已经过了期限 就把阅卷的结果拿出来
+        //进行比较
+        let currentDate = NSDate()
+        let result:NSComparisonResult = currentDate.compare(endDate)
+        if result == .OrderedAscending{
+            
+            if(self.displayMarkingArray[index] as! NSObject != 0){
+            self.isOver = false
+                self.Over()
+            
+            }
+            
+        }else{
+            
+            self.isOver = true
+            //每道题目进行阅卷
+            self.Over()
+            self.resetBtn?.enabled = false
+            self.goOVerBtn?.enabled = false
+            self.saveBtn?.enabled = false
+            
         }
-        webView.stopLoading()
+        webView.addGestureRecognizer(tap)
+      self.tableView?.reloadData()
     
     }
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
@@ -611,7 +548,7 @@ class CompletionQusViewController: UIViewController,UITextFieldDelegate,UIWebVie
             cell.selfAnswer = (oneSubFillBlankSelfAnswerArray[indexPath.row] as? String)!
             //是否可以编辑
             cell.canEdit = true
-            if(self.disPlayMarkingArray[index] as! String != ""){
+            if(self.displayMarkingArray[index] as! NSObject != 0){
                 cell.canEdit = false
             }
             cell.selectionStyle = .None
@@ -629,13 +566,7 @@ class CompletionQusViewController: UIViewController,UITextFieldDelegate,UIWebVie
         if(cell.Custag < cellHeights.count){
         if(self.cellHeights[cell.Custag] as! CGFloat != cell.cellHeight){
             self.cellHeights.replaceObjectAtIndex(cell.Custag, withObject: cell.cellHeight)
-//            if(cell.Custag != self.cellHeights.count - 1){
-//                frame?.origin.y = -100
-//                self.tableView?.frame = frame!
-//            }else{
-//                frame?.origin.y = 21 + 64 + 3
-//                self.tableView?.frame = frame!
-//            }
+
             self.tableView?.reloadData()
         }
         }
@@ -668,7 +599,6 @@ class CompletionQusViewController: UIViewController,UITextFieldDelegate,UIWebVie
             return false
         }
     }
-    
     func webViewShowBig(sender:UITapGestureRecognizer){
         var pt = CGPoint()
         var urlToSave = ""

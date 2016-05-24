@@ -7,10 +7,11 @@
 //
 
 import UIKit
-
+import Alamofire
+import SwiftyJSON
 class SendIdentifyCodeViewController: UIViewController {
     @IBOutlet weak var topLayout: NSLayoutConstraint!
-    
+    var email = String()
     @IBOutlet weak var identifyCode:UITextField?
     @IBOutlet weak var timerLabel:UILabel?
     var timer = NSTimer()
@@ -41,11 +42,31 @@ class SendIdentifyCodeViewController: UIViewController {
         //停止计时器
         self.timer.invalidate()
         //验证验证码是否正确 随后跳转到充值密码的界面
-        let sb = UIStoryboard(name: "LoginAndReset", bundle: nil)
-        let resetPassordVC = sb.instantiateViewControllerWithIdentifier("ResetPasswordVC") as! ResetPasswordViewController
-        resetPassordVC.title = "密码重置"
-        self.navigationController?.pushViewController(resetPassordVC, animated: true)
-        self.currentTime = 60
+        let dic:[String:AnyObject] = ["email":email,
+                   "validcode":(self.identifyCode?.text)!]
+        
+      Alamofire.request(.GET, "http://dodo.hznu.edu.cn/api/validcode", parameters: dic, encoding: ParameterEncoding.URL, headers: nil).responseJSON { (response) in
+        switch response.result{
+        case .Success(let Value):
+            let json = JSON(Value)
+            print(dic)
+            print(json)
+            if(json["retcode"].number == 0){
+                let sb = UIStoryboard(name: "LoginAndReset", bundle: nil)
+                let resetPassordVC = sb.instantiateViewControllerWithIdentifier("ResetPasswordVC") as! ResetPasswordViewController
+                resetPassordVC.title = "密码重置"
+            
+                resetPassordVC.token = json["info"]["token"].string!
+                self.navigationController?.pushViewController(resetPassordVC, animated: true)
+            
+            }else{
+                ProgressHUD.showError("验证失败")
+            }
+        case .Failure(_):
+            ProgressHUD.showError("验证失败")
+        }
+        }
+               self.currentTime = 60
         self.timerLabel?.text = "\(self.currentTime)" + "秒"
     }
     @IBAction func keyBoardHide(sender: UIControl) {
