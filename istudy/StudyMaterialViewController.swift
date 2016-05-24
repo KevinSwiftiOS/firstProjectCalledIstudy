@@ -24,6 +24,7 @@ UISearchControllerDelegate,UISearchResultsUpdating{
     var fileUrl = NSURL()
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.automaticallyAdjustsScrollViewInsets = false
         self.studyMaterialsTableView?.delegate = self
         self.studyMaterialsTableView?.dataSource = self
         self.studyMaterialsTableView?.tableFooterView = UIView()
@@ -121,23 +122,34 @@ UISearchControllerDelegate,UISearchResultsUpdating{
         //        previewVC.dataSource = self
         
         //随后改变url 然后推进preViewVC即可
-        tableView.deselectRowAtIndexPath(indexPath, animated: true)
+      tableView.deselectRowAtIndexPath(indexPath, animated: true)
         if(!sc.active){
+            //不能打开rar还有DIR文件
+            let type = self.items[indexPath.row].valueForKey("extensions") as! String
+            if(type == "rar" || type == "DIR" || type == "zip"){
+                ProgressHUD.showError("不能打开该类文件")
+                
+            }else{
             self.fileUrl = NSURL(string: (self.items[indexPath.row].valueForKey("url") as? String)!)!
             let preViewVC = UIStoryboard(name: "OneCourse", bundle: nil).instantiateViewControllerWithIdentifier("StudyResourcePreviewVC") as! StudyResourcePreviewViewController
             preViewVC.url = self.fileUrl
             preViewVC.title = self.items[indexPath.row].valueForKey("filename") as? String
+              
             self.navigationController?.pushViewController(preViewVC, animated: true)
-            
+            }
         }else{
-            
+            let type = self.filterItems[indexPath.row].valueForKey("extensions") as! String
+            if(type == "rar" || type == "DIR" || type == "zip"){
+                ProgressHUD.showError("不能打开该类文件")
+            }else{
             self.fileUrl = NSURL(string: (self.filterItems[indexPath.row].valueForKey("url") as? String)!)!
             let preViewVC = UIStoryboard(name: "OneCourse", bundle: nil).instantiateViewControllerWithIdentifier("StudyResourcePreviewVC") as! StudyResourcePreviewViewController
             preViewVC.url = self.fileUrl
             preViewVC.title = self.items[indexPath.row].valueForKey("filename") as? String
-            sc.active = false
+                sc.active = false
+                
             self.navigationController?.pushViewController(preViewVC, animated: true)
-            
+        }
         }
     }
     //    func numberOfPreviewItemsInPreviewController(controller: QLPreviewController) -> Int {
@@ -171,6 +183,7 @@ UISearchControllerDelegate,UISearchResultsUpdating{
                     dispatch_async(dispatch_get_main_queue(), {
                         self.studyMaterialsTableView?.mj_header.endRefreshing()
                         self.items = json["items"].arrayObject! as NSArray
+                        self.title = "学习资料" + "(共" + "\(self.items.count)" + "个)"
                         self.studyMaterialsTableView?.reloadData()
                     })
                 }
@@ -187,7 +200,6 @@ UISearchControllerDelegate,UISearchResultsUpdating{
     }
     func updateSearchResultsForSearchController(searchController: UISearchController) {
         self.filterItems.removeAllObjects()
-        
         let scopePredicate = NSPredicate(format: "SELF CONTAINS[c] %@", searchController.searchBar.text!)
         for i in 0 ..< self.items.count{
             if(scopePredicate.evaluateWithObject(self.items[i].valueForKey("filename")) == true){
@@ -201,10 +213,12 @@ UISearchControllerDelegate,UISearchResultsUpdating{
     }
     func willDismissSearchController(searchController: UISearchController) {
         self.studyMaterialsTableView?.mj_header.hidden = false
-        self.studyMaterialsTableView?.frame = CGRectMake(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT)
-        print(self.studyMaterialsTableView?.frame)
-    }
-    
+        }
+//    override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
+//        self.sc.active = false
+//        self.sc.searchBar.text = ""
+//       
+//        }
     deinit{
         print("StudyMaterialDeinit")
         self.sc.view.removeFromSuperview()

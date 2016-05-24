@@ -15,6 +15,8 @@ class StudyResourcePreviewViewController: UIViewController,UIWebViewDelegate{
         super.viewDidLoad()
         self.webView?.loadRequest(NSURLRequest(URL: url))
         self.webView?.delegate = self
+        self.webView!.scalesPageToFit = true
+        print(self.url)
         // Do any additional setup after loading the view.
     }
     
