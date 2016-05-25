@@ -10,9 +10,6 @@ import UIKit
 import Alamofire
 import SwiftyJSON
 class ComplexQusViewController: UIViewController,UITableViewDelegate,UITableViewDataSource ,UIWebViewDelegate,UIGestureRecognizerDelegate{
-    //有没有进行保存 
-    var isSave = false
-    var beforeEditString = ""
     //几个手势 为了键盘的bug
     var subLeftSwipe = UISwipeGestureRecognizer()
     var subRightSwipe = UISwipeGestureRecognizer()
@@ -29,11 +26,14 @@ class ComplexQusViewController: UIViewController,UITableViewDelegate,UITableView
     //当前是第几种类型的题目
     var testid = NSInteger()
     //已经超过期限了
+    var isSave = false
+    var beforeEditing = ""
     var isOver = false
     var kindOfQusIndex = 0
     var totalKindOfQus = 0
-    //阅卷的记录文字的数组 这是小题的阅卷
-    var displayMarkingArray = NSMutableArray()
+    //阅卷的记录文字的数组
+    var disPlayMarkTextArray = NSMutableArray()
+    var resultTextView = JVFloatLabeledTextView()
     //题目描述的webView
     @IBOutlet weak var qusDesWebView:UIWebView?
     //承载小题的题目描述和每个小题的内容
@@ -44,7 +44,7 @@ class ComplexQusViewController: UIViewController,UITableViewDelegate,UITableView
     //小题目现在是到第几题了 和现在的题型
     @IBOutlet weak var kindofSubQusLabel:UILabel?
     @IBOutlet weak var currentSubQusLabel:UILabel?
-    var resultTextView = JVFloatLabeledTextView()
+    
     //阅卷 重置 保存的按钮
     @IBOutlet weak var resetBtn:UIButton?
     @IBOutlet weak var saveBtn:UIButton?
@@ -60,9 +60,9 @@ class ComplexQusViewController: UIViewController,UITableViewDelegate,UITableView
     var index = 0
     //小题目到第几题
     var subIndex = 0
-   //标准答案
+    //标准答案
     var subQusStandAnswer = NSMutableArray()
-   //每个大题目的总共的标准答案
+    //每个大题目的总共的标准答案
     var totalBigSelfAnswers = NSMutableArray()
     //一个大题目的每个小题目的答案
     var oneQusSubSelfAnswers = NSMutableArray()
@@ -72,7 +72,8 @@ class ComplexQusViewController: UIViewController,UITableViewDelegate,UITableView
     var oneSubFillBlankSelfAnswerArray = NSMutableArray()
     override func viewDidLoad() {
         super.viewDidLoad()
-            self.tableView.keyboardDismissMode = .OnDrag
+        
+        self.tableView.keyboardDismissMode = .OnDrag
         //顶部加条线
         //设置阴影效果
         self.topView?.layer.shadowOffset = CGSizeMake(2.0, 1.0)
@@ -81,13 +82,14 @@ class ComplexQusViewController: UIViewController,UITableViewDelegate,UITableView
         self.subTopView?.layer.shadowOffset = CGSizeMake(2.0, 1.0)
         self.subTopView?.layer.shadowColor = UIColor.blueColor().CGColor
         self.subTopView?.layer.shadowOpacity = 0.5
-       self.tap = UITapGestureRecognizer(target: self, action: #selector(ComplexQusViewController.webViewShowBig(_:)))
+        
+        self.tap = UITapGestureRecognizer(target: self, action: #selector(ComplexQusViewController.webViewShowBig(_:)))
         tap.delegate = self
         self.qusDesWebView?.addGestureRecognizer(tap)
         //键盘出现时的挡住问题
         XKeyBoard.registerKeyBoardHide(self)
         XKeyBoard.registerKeyBoardShow(self)
-
+        
         self.totalKindOfQus = self.totalItems.count - 1
         //查看现在已经做了几题了
         //contentView添加手势
@@ -115,13 +117,13 @@ class ComplexQusViewController: UIViewController,UITableViewDelegate,UITableView
         let submitBtnItem = UIBarButtonItem(customView: submitBtn)
         let actBtnItem = UIBarButtonItem(customView: actBtn)
         self.navigationItem.rightBarButtonItems = [submitBtnItem,actBtnItem]
-
+        
         //注册通知
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ComplexQusViewController.noti(_:)), name: "ComplexChoicewebViewHeight", object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ComplexQusViewController.completionHeight(_:)), name: "ComplexCompletionwebViewHeight", object: nil)
-            NSNotificationCenter.defaultCenter().addObserver(self, selector:#selector(ComplexQusViewController.tap(_:)), name: "ComplexTapBtn", object: nil)
-    //获得自己填的答案的通知
-          NSNotificationCenter.defaultCenter().addObserver(self, selector:#selector(ComplexQusViewController.AssembleCompletionAnswer(_:)), name: "ComplexCompletionAnswer", object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector:#selector(ComplexQusViewController.tap(_:)), name: "ComplexTapBtn", object: nil)
+        //获得自己填的答案的通知
+        NSNotificationCenter.defaultCenter().addObserver(self, selector:#selector(ComplexQusViewController.AssembleCompletionAnswer(_:)), name: "ComplexCompletionAnswer", object: nil)
         //图片的预览放大
         NSNotificationCenter.defaultCenter().addObserver(self, selector:#selector(ComplexQusViewController.showImage(_:)), name: "ComplexShowBigImage", object: nil)
         self.totalKindOfQus = self.totalItems.count
@@ -137,16 +139,18 @@ class ComplexQusViewController: UIViewController,UITableViewDelegate,UITableView
         self.tableView.delegate = self
         self.tableView.dataSource = self
         self.tableView.tableFooterView = UIView()
-         subLeftSwipe = UISwipeGestureRecognizer(target: self, action: #selector(ComplexQusViewController.addNewSubQus(_:)))
+        // self.tableView.estimatedRowHeight = 88
+        //self.tableView.rowHeight = UITableViewAutomaticDimension
+        subLeftSwipe = UISwipeGestureRecognizer(target: self, action: #selector(ComplexQusViewController.addNewSubQus(_:)))
         subLeftSwipe.direction = .Left
-         subRightSwipe = UISwipeGestureRecognizer(target: self, action: #selector(ComplexQusViewController.addNewSubQus(_:)))
+        subRightSwipe = UISwipeGestureRecognizer(target: self, action: #selector(ComplexQusViewController.addNewSubQus(_:)))
         subRightSwipe.direction = .Right
         self.tableView.addGestureRecognizer(subLeftSwipe)
         self.tableView.userInteractionEnabled = true
         self.tableView.addGestureRecognizer(subRightSwipe)
-          leftSwipe = UISwipeGestureRecognizer(target: self, action:#selector(ComplexQusViewController.addNewQus(_:)))
+        leftSwipe = UISwipeGestureRecognizer(target: self, action:#selector(ComplexQusViewController.addNewQus(_:)))
         leftSwipe.direction = .Left
-         rightSwipe = UISwipeGestureRecognizer(target: self, action: #selector(ComplexQusViewController.addNewQus(_:)))
+        rightSwipe = UISwipeGestureRecognizer(target: self, action: #selector(ComplexQusViewController.addNewQus(_:)))
         rightSwipe.direction = .Right
         self.qusDesWebView?.userInteractionEnabled = true
         self.qusDesWebView?.addGestureRecognizer(leftSwipe)
@@ -154,7 +158,7 @@ class ComplexQusViewController: UIViewController,UITableViewDelegate,UITableView
         self.automaticallyAdjustsScrollViewInsets = false
         self.initView()
     }
-
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -167,13 +171,14 @@ class ComplexQusViewController: UIViewController,UITableViewDelegate,UITableView
         vc.testid = self.testid
         vc.enableClientJudge = self.enableClientJudge
         vc.keyVisible = self.keyVisible
-         vc.endDate = self.endDate
+        vc.endDate = self.endDate
         vc.viewOneWithAnswerKey = self.viewOneWithAnswerKey
         self.navigationController?.pushViewController(vc, animated: true)
     }
     
     //返回试卷列表或者根视图
     func back(sender:UIButton) {
+        
         if(sender.tag == 1) {
             let vc = UIStoryboard(name: "OneCourse", bundle: nil).instantiateViewControllerWithIdentifier("MyHomeWorkVC") as! MyHomeWorkViewController
             
@@ -195,37 +200,36 @@ class ComplexQusViewController: UIViewController,UITableViewDelegate,UITableView
         
         
     }
-
+    
     func initView() {
         //初始化界面
-       self.qusDesWebView?.loadHTMLString(self.items[index].valueForKey("content") as! String, baseURL: nil)
+        self.qusDesWebView?.loadHTMLString(self.items[index].valueForKey("content") as! String, baseURL: nil)
         self.subQusStandAnswer.removeAllObjects()
-      
+        
         //小题目的初始化
         self.subQusItems = self.items[index].valueForKey("subquestions") as! NSMutableArray
         for i in 0 ..< self.subQusItems.count{
             //初始化答案
-        
             self.subQusStandAnswer.addObject(self.subQusItems[i].valueForKey("strandanswer") as! String)
-        
+            
         }
-       self.kindOfQusLabel?.text = self.totalItems[kindOfQusIndex].valueForKey("title") as! String + "(" + "\(self.items[index].valueForKey("totalscore") as! NSNumber)" + "分/题)"
+        self.kindOfQusLabel?.text = self.totalItems[kindOfQusIndex].valueForKey("title") as! String + "(" + "\(self.items[index].valueForKey("totalscore") as! NSNumber)" + "分/题)"
         self.currentQusLabel?.text = "\(self.index + 1)" + "/" + "\(self.items.count)"
         //小题目的默认为第一题
         self.subIndex = 0
         //初始化自己答案
         self.oneQusSubSelfAnswers.removeAllObjects()
         //阅卷的文字
-        self.displayMarkingArray.removeAllObjects()
+        self.disPlayMarkTextArray.removeAllObjects()
         //总共有几个多少个自己的答案
         for _ in 0 ..< self.subQusItems.count{
             self.oneQusSubSelfAnswers.addObject("")
-            self.displayMarkingArray.addObject(0)
+            self.disPlayMarkTextArray.addObject("")
         }
         var oneBigSelfAnswer = self.totalBigSelfAnswers[index] as! String
-     //分割字符串
+        //分割字符串
         oneBigSelfAnswer = oneBigSelfAnswer.stringByReplacingOccurrencesOfString("~~~", withString: "☺︎")
-       //分割大题目的字符串 逆序的反转 真不知道他们是怎么组装的
+        //分割大题目的字符串 逆序的反转 真不知道他们是怎么组装的
         var temp = oneBigSelfAnswer.characters.count - 1
         var tempIndex = self.oneQusSubSelfAnswers.count - 1
         var tempString = ""
@@ -237,7 +241,7 @@ class ComplexQusViewController: UIViewController,UITableViewDelegate,UITableView
                 for letter in tempString.characters{
                     inReverse = "\(letter)" + inReverse
                 }
-               self.oneQusSubSelfAnswers.replaceObjectAtIndex(tempIndex, withObject: inReverse)
+                self.oneQusSubSelfAnswers.replaceObjectAtIndex(tempIndex, withObject: inReverse)
                 tempIndex -= 1
                 tempString = ""
                 temp -= 1
@@ -254,8 +258,8 @@ class ComplexQusViewController: UIViewController,UITableViewDelegate,UITableView
         self.oneQusSubSelfAnswers.replaceObjectAtIndex(tempIndex, withObject: inReverse)
         //初始化subView
         self.subIndex = 0
-      self.initSubView()
-     //分割字符串就是这样
+        self.initSubView()
+        //分割字符串就是这样
     }
     //每个subwebview的高度
     var subWebViewHeight:CGFloat = 0.0
@@ -265,42 +269,47 @@ class ComplexQusViewController: UIViewController,UITableViewDelegate,UITableView
         case "SINGLE_CHIOCE":
             self.kindofSubQusLabel?.text = "选择题" + "(" + "\(self.subQusItems[subIndex].valueForKey("totalscore") as! NSNumber)" + "分/题)"
         case "MULIT_CHIOCE":
-             self.kindofSubQusLabel?.text = "多选题" + "(" + "\(self.subQusItems[subIndex].valueForKey("totalscore") as! NSNumber)" + "分/题)"
+            self.kindofSubQusLabel?.text = "多选题" + "(" + "\(self.subQusItems[subIndex].valueForKey("totalscore") as! NSNumber)" + "分/题)"
         case "FILL_BLANK":
-               self.kindofSubQusLabel?.text = "填空题" + "(" + "\(self.subQusItems[subIndex].valueForKey("totalscore") as! NSNumber)" + "分/题)"
+            self.kindofSubQusLabel?.text = "填空题" + "(" + "\(self.subQusItems[subIndex].valueForKey("totalscore") as! NSNumber)" + "分/题)"
         case "JUDGE":
             self.kindofSubQusLabel?.text = "判断题" + "(" + "\(self.subQusItems[subIndex].valueForKey("totalscore") as! NSNumber)" + "分/题)"
+            
         default:
             break
             
         }
-
-self.currentSubQusLabel?.text = "\(self.subIndex + 1)" + "/" + "\(self.subQusItems.count)"
+   
+        
+        self.currentSubQusLabel?.text = "\(self.subIndex + 1)" + "/" + "\(self.subQusItems.count)"
         //tableView的headerView 小题目的描述
-         subWebView = UIWebView(frame: CGRectMake(0,0,SCREEN_WIDTH,1))
+        subWebView = UIWebView(frame: CGRectMake(0,0,SCREEN_WIDTH,1))
         self.tableView.tableHeaderView = subWebView
         subWebView.delegate = self
         subWebView.loadHTMLString(self.subQusItems[subIndex].valueForKey("content") as! String, baseURL: nil)
-     //初始化tableView总共有几格
+        //初始化tableView总共有几格
         self.cellHeights.removeAllObjects()
         //判断是选择题 还是 填空题
-      self.oneSubFillBlankSelfAnswerArray.removeAllObjects()
+        self.oneSubFillBlankSelfAnswerArray.removeAllObjects()
         if(self.subQusItems[subIndex].valueForKey("type") as! String != "FILL_BLANK"){
             for i in 0 ..< tempOptionArray.count{
                 let key = "option" + tempOptionArray[i]
                 if(self.subQusItems[subIndex].valueForKey(key) as? String != nil
                     && self.subQusItems[subIndex].valueForKey(key) as! String != ""){
-                  
+                    
                     cellHeights.addObject(50)
                 }
             }
+            
         }else{
-          //分割填空题的标准答案的字符串
+            
+            //分割填空题的标准答案的字符串
             var oneFillBlankStandAnswer = self.subQusItems[subIndex].valueForKey("strandanswer") as! String
             oneFillBlankStandAnswer = oneFillBlankStandAnswer.stringByReplacingOccurrencesOfString("&&&", withString: "☺︎")
             for i in 0 ..< oneFillBlankStandAnswer.characters.count{
                 let adv = oneFillBlankStandAnswer.startIndex.advancedBy(i)
                 if(oneFillBlankStandAnswer[adv] == "☺︎"){
+                    
                     cellHeights.addObject(40)
                     oneSubFillBlankSelfAnswerArray.addObject("")
                 }
@@ -309,9 +318,9 @@ self.currentSubQusLabel?.text = "\(self.subIndex + 1)" + "/" + "\(self.subQusIte
             cellHeights.addObject(40)
             
         }
-  
-    self.tableView.frame = CGRectMake(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT)
-    self.tableView.reloadData()
+         beforeEditing = self.oneQusSubSelfAnswers[subIndex] as! String
+        self.tableView.frame = CGRectMake(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT)
+        self.tableView.reloadData()
         
     }
     //滑动题目的内容来加载新的大题目
@@ -331,7 +340,7 @@ self.currentSubQusLabel?.text = "\(self.subIndex + 1)" + "/" + "\(self.subQusIte
                 vc.kindOfQusIndex = self.kindOfQusIndex + 1
                 vc.title = self.title
                 vc.testid = self.testid
-                 vc.endDate = self.endDate
+                vc.endDate = self.endDate
                 vc.enableClientJudge = self.enableClientJudge
                 vc.keyVisible = self.keyVisible
                 vc.viewOneWithAnswerKey = self.viewOneWithAnswerKey
@@ -349,7 +358,7 @@ self.currentSubQusLabel?.text = "\(self.subIndex + 1)" + "/" + "\(self.subQusIte
                 vc.title = self.title
                 vc.kindOfQusIndex = self.kindOfQusIndex
                 vc.testid = self.testid
-                 vc.endDate = self.endDate
+                vc.endDate = self.endDate
                 vc.enableClientJudge = self.enableClientJudge
                 vc.keyVisible = self.keyVisible
                 vc.viewOneWithAnswerKey = self.viewOneWithAnswerKey
@@ -360,10 +369,11 @@ self.currentSubQusLabel?.text = "\(self.subIndex + 1)" + "/" + "\(self.subQusIte
         if temp != index{
             self.initView()
             
-    }
+        }
     }
     //tablView加左滑右滑的手势来加载新的小题目
     func addNewSubQus(sender:UISwipeGestureRecognizer) {
+        
         //阅卷的问题
         
         if(sender.direction == .Left){
@@ -371,20 +381,31 @@ self.currentSubQusLabel?.text = "\(self.subIndex + 1)" + "/" + "\(self.subQusIte
             if(self.subIndex == self.subQusItems.count - 1){
                 ProgressHUD.showError("已到最后一小题")
             }else{
+                if(!isSave){
+                    self.oneQusSubSelfAnswers[subIndex] = beforeEditing
+                    
+                }
+ 
+                isSave = false
                 self.subIndex += 1
                 self.initSubView()
-                
-            }
+                          }
         }
         if(sender.direction == .Right){
             if(self.subIndex == 0){
                 ProgressHUD.showError("是第一小题")
             }else{
-             self.subIndex -= 1
-             self.initSubView()
-                  }
+                if(!isSave){
+                    self.oneQusSubSelfAnswers[subIndex] = beforeEditing
+                    
+                }
+              isSave = false
+            self.subIndex -= 1
+            self.initSubView()
+                
+            }
+        }
         
-    }
     }
     func webViewDidStartLoad(webView: UIWebView) {
         webView.frame = CGRectMake(0, 0, SCREEN_WIDTH, 1)
@@ -393,9 +414,12 @@ self.currentSubQusLabel?.text = "\(self.subIndex + 1)" + "/" + "\(self.subQusIte
         //左右滑动和上下滑动
         let scrollView = webView.subviews[0] as! UIScrollView
         let width = NSInteger(webView.stringByEvaluatingJavaScriptFromString("document.body.scrollWidth")!)
+        
         scrollView.contentSize = CGSizeMake(CGFloat(width!), 0)
         scrollView.showsVerticalScrollIndicator = false
-     
+        self.resetBtn?.enabled = true
+        self.goOVerBtn?.enabled = true
+        self.saveBtn?.enabled = true
         let height = NSInteger(webView.stringByEvaluatingJavaScriptFromString("document.body.offsetHeight")!)
         self.subWebViewHeight = CGFloat(height!) + 5
         var frame = webView.frame
@@ -403,30 +427,25 @@ self.currentSubQusLabel?.text = "\(self.subIndex + 1)" + "/" + "\(self.subQusIte
         webView.frame = frame
         webView.addGestureRecognizer(tap)
         self.tableView.tableHeaderView = webView
-        self.resetBtn?.enabled = true
-        self.goOVerBtn?.enabled = true
-        self.saveBtn?.enabled = true
+                let currentDate = NSDate()
+                let result:NSComparisonResult = currentDate.compare(endDate)
+                if result == .OrderedAscending{
+                     isOver = false
+                    if(self.disPlayMarkTextArray[subIndex] as! NSObject != ""){
+                        self.Over()
+                        self.saveBtn?.enabled = false
+                        self.goOVerBtn?.enabled = false
+                      
+                    }
+                }else{
+                    isOver = true
+                    self.resetBtn?.enabled = false
+                    self.goOVerBtn?.enabled = false
+                    self.saveBtn?.enabled = false
+                    //每道题目进行阅卷
+                    self.Over()
+                }
         
-        let currentDate = NSDate()
-        let result:NSComparisonResult = currentDate.compare(endDate)
-        if result == .OrderedAscending{
-            self.isOver = false
-            if(self.displayMarkingArray[subIndex] as! NSObject != 0){
-                self.goOVerBtn?.enabled = false
-                self.saveBtn?.enabled = false
-                self.Over()
-            }else{
-                self.tableView.tableFooterView = UIView()
-            }
-        }else{
-            isOver = true
-            self.resetBtn?.enabled = false
-            self.goOVerBtn?.enabled = false
-            self.saveBtn?.enabled = false
-            ProgressHUD.showError("已超过期限,不能做题")
-            //每道题目进行阅卷
-            self.Over()
-        }
         self.tableView.reloadData()
     }
     //tableView的代理
@@ -435,27 +454,31 @@ self.currentSubQusLabel?.text = "\(self.subIndex + 1)" + "/" + "\(self.subQusIte
     }
     let tempOptionArray = ["a","b","c","d","e","f","g","h","i"]
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-   
-       return cellHeights.count
+        
+        return cellHeights.count
     }
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-       //进行拆分每道题目的答案
+        
+        //进行拆分每道题目的答案
         var oneQusSelfAnswer = self.oneQusSubSelfAnswers[subIndex] as! String
         //判断是不是空的字符串 随后判断是填空题 还是选择题
         oneQusSelfAnswer = oneQusSelfAnswer.stringByReplacingOccurrencesOfString("&&&", withString: "☺︎")
         //随后分割字符串
         if(self.subQusItems[subIndex].valueForKey("type") as! String != "FILL_BLANK"){
             //随后进行遍历 和自己答案有相同的就涂色
-        let cell = ComplexChoiceTableViewCell(style: .Subtitle, reuseIdentifier: "ChoiceTableCell")
+            
+            let cell = ComplexChoiceTableViewCell(style: .Subtitle, reuseIdentifier: "ChoiceTableCell")
             if(indexPath.row < self.cellHeights.count){
-           cell.contentView.userInteractionEnabled = true
-                            let key = "option" + tempOptionArray[indexPath.row]
+                
+                cell.contentView.userInteractionEnabled = true
+                let key = "option" + tempOptionArray[indexPath.row]
                 if(self.subQusItems[subIndex].valueForKey(key) as? String != nil &&
                     self.subQusItems[subIndex].valueForKey(key) as! String != ""){
-        cell.optionWebView?.loadHTMLString(self.subQusItems[subIndex].valueForKey(key) as! String, baseURL: nil)
+                    cell.optionWebView?.loadHTMLString(self.subQusItems[subIndex].valueForKey(key) as! String, baseURL: nil)
                     cell.Custag = indexPath.row
                     cell.btn?.setTitle(tempOptionArray[indexPath.row].uppercaseString, forState: .Normal)
-                 //随后拿出自己的答案 无论是多选题 还是单选题 只要有这个字符 就设置背景色
+                    
+                    //随后拿出自己的答案 无论是多选题 还是单选题 只要有这个字符 就设置背景色
                     let oneSubQusSelfAnswer = self.oneQusSubSelfAnswers[subIndex] as! String
                     cell.btn?.backgroundColor = UIColor.whiteColor()
                     cell.btn?.setTitleColor(UIColor.blueColor(), forState: .Normal)
@@ -467,70 +490,70 @@ self.currentSubQusLabel?.text = "\(self.subIndex + 1)" + "/" + "\(self.subQusIte
                             cell.btn?.backgroundColor = RGB(0, g: 153, b: 255)
                             cell.btn?.setTitleColor(UIColor.whiteColor(), forState: .Normal)                        }
                     }
-            }
+                }
                 cell.canTap = true
-                if(self.displayMarkingArray[subIndex] as! NSObject != 0){
-                  
+                if(self.disPlayMarkTextArray[subIndex] as! String != ""){
+                    
                     cell.canTap = false
                 }
-            cell.selectionStyle = .None
-           
+                cell.selectionStyle = .None
+                
             }
-    return cell
+            return cell
             
         }
-    else{
+        else{
             let cell = ComplexCompletionTableViewCell(style: .Default, reuseIdentifier: "CompletionTableCell")
             if(indexPath.row < self.cellHeights.count){
-            //加载有没有提醒 就是blank
-            let key = "blank" + "\(indexPath.row + 1)"
-            if(self.subQusItems[subIndex].valueForKey(key) as? String != nil && self.subQusItems[subIndex].valueForKey(key) as! String != ""){
-                cell.webView?.loadHTMLString(self.subQusItems[subIndex].valueForKey(key) as! String, baseURL: nil)
-            }else{
-                cell.webView?.loadHTMLString("", baseURL: nil)
-            }
-            //填空题的分割
-            
-           cell.Custag = indexPath.row
-             var oneSubQusSelfAnswer = self.oneQusSubSelfAnswers[subIndex] as! String
-            //分割字符串
-          
-            //分割自己的答案
-            oneSubQusSelfAnswer = oneSubQusSelfAnswer.stringByReplacingOccurrencesOfString("&&&", withString: "☺︎")
-            var tempString = ""
-            var temp = oneSubQusSelfAnswer.characters.count - 1
-
-            var tempIndex = oneSubFillBlankSelfAnswerArray.count - 1
-            while temp >= 0 {
-                let adv = oneSubQusSelfAnswer.startIndex.advancedBy(temp)
-                if(oneSubQusSelfAnswer[adv] == "☺︎"){
-                    //逆序一下字符串
-                    var inReverse = ""
-                    for letter in tempString.characters{
-                        inReverse = "\(letter)" + inReverse
-                    }
-                   oneSubFillBlankSelfAnswerArray.replaceObjectAtIndex(tempIndex, withObject: inReverse)
-                    tempIndex -= 1
-                    tempString = ""
-                    temp -= 1
+                //加载有没有提醒 就是blank
+                let key = "blank" + "\(indexPath.row + 1)"
+                if(self.subQusItems[subIndex].valueForKey(key) as? String != nil && self.subQusItems[subIndex].valueForKey(key) as! String != ""){
+                    cell.webView?.loadHTMLString(self.subQusItems[subIndex].valueForKey(key) as! String, baseURL: nil)
                 }else{
-                    temp -= 1
-                    tempString.append(oneSubQusSelfAnswer[adv])
+                    cell.webView?.loadHTMLString("", baseURL: nil)
                 }
-            }
-            var inReverse = ""
-            for letter in tempString.characters{
-                inReverse = "\(letter)" + inReverse
-            }
-            oneSubFillBlankSelfAnswerArray.replaceObjectAtIndex(tempIndex, withObject: inReverse)
-            cell.canEdit = true
-               cell.selfAnswer = (oneSubFillBlankSelfAnswerArray[indexPath.row] as? String)!
-                if(self.displayMarkingArray[subIndex] as! NSObject != 0){
+                //填空题的分割
+                
+                cell.Custag = indexPath.row
+                var oneSubQusSelfAnswer = self.oneQusSubSelfAnswers[subIndex] as! String
+                //分割字符串
+                
+                //分割自己的答案
+                oneSubQusSelfAnswer = oneSubQusSelfAnswer.stringByReplacingOccurrencesOfString("&&&", withString: "☺︎")
+                var tempString = ""
+                var temp = oneSubQusSelfAnswer.characters.count - 1
+                
+                var tempIndex = oneSubFillBlankSelfAnswerArray.count - 1
+                while temp >= 0 {
+                    let adv = oneSubQusSelfAnswer.startIndex.advancedBy(temp)
+                    if(oneSubQusSelfAnswer[adv] == "☺︎"){
+                        //逆序一下字符串
+                        var inReverse = ""
+                        for letter in tempString.characters{
+                            inReverse = "\(letter)" + inReverse
+                        }
+                        oneSubFillBlankSelfAnswerArray.replaceObjectAtIndex(tempIndex, withObject: inReverse)
+                        tempIndex -= 1
+                        tempString = ""
+                        temp -= 1
+                    }else{
+                        temp -= 1
+                        tempString.append(oneSubQusSelfAnswer[adv])
+                    }
+                }
+                var inReverse = ""
+                for letter in tempString.characters{
+                    inReverse = "\(letter)" + inReverse
+                }
+                oneSubFillBlankSelfAnswerArray.replaceObjectAtIndex(tempIndex, withObject: inReverse)
+                cell.canEdit = true
+                cell.selfAnswer = (oneSubFillBlankSelfAnswerArray[indexPath.row] as? String)!
+                if(self.disPlayMarkTextArray[subIndex] as! String != ""){
                     cell.canEdit = false
                 }
-            cell.selectionStyle = .None
+                cell.selectionStyle = .None
             }
-        return cell
+            return cell
         }
         
     }
@@ -538,15 +561,16 @@ self.currentSubQusLabel?.text = "\(self.subIndex + 1)" + "/" + "\(self.subQusIte
     func tap(sender:NSNotification){
         //判断是多选题还是单选题 来进行不同的组装即可
         //如果是单选题的话
+        beforeEditing = self.oneQusSubSelfAnswers[subIndex] as! String
         let cell = sender.object as! ComplexChoiceTableViewCell
         if(self.subQusItems[subIndex].valueForKey("type") as! String != "MULIT_CHIOCE"){
-        self.oneQusSubSelfAnswers[subIndex] = tempOptionArray[cell.Custag].uppercaseString
+            self.oneQusSubSelfAnswers[subIndex] = tempOptionArray[cell.Custag].uppercaseString
             
         }else{
             //如果现在的答案中有的话就删除掉这个答案 否则就添加进这个答案
             let currentTapAnswer = self.tempOptionArray[cell.Custag].uppercaseString
             var oneSubAnswerForMutiChoice = self.oneQusSubSelfAnswers[subIndex] as! String
-           oneSubAnswerForMutiChoice = oneSubAnswerForMutiChoice.stringByReplacingOccurrencesOfString("&&&", withString: "")
+            oneSubAnswerForMutiChoice = oneSubAnswerForMutiChoice.stringByReplacingOccurrencesOfString("&&&", withString: "")
             //遍历字符串 如果有的话 就删除这个否则就加进这个
             if(oneSubAnswerForMutiChoice.containsString(currentTapAnswer)){
                 oneSubAnswerForMutiChoice = oneSubAnswerForMutiChoice.stringByReplacingOccurrencesOfString(currentTapAnswer, withString: "")
@@ -556,30 +580,31 @@ self.currentSubQusLabel?.text = "\(self.subIndex + 1)" + "/" + "\(self.subQusIte
             //随后再进行组装 用与符号来进行拼接
             var tempString = ""
             if(oneSubAnswerForMutiChoice.characters.count > 0){
-            for i in 0 ..< oneSubAnswerForMutiChoice.characters.count - 1{
-                let adv = oneSubAnswerForMutiChoice.startIndex.advancedBy(i)
+                for i in 0 ..< oneSubAnswerForMutiChoice.characters.count - 1{
+                    let adv = oneSubAnswerForMutiChoice.startIndex.advancedBy(i)
+                    tempString.append(oneSubAnswerForMutiChoice[adv])
+                    tempString = tempString.stringByAppendingString("&&&")
+                }
+                let adv = oneSubAnswerForMutiChoice.endIndex.predecessor()
                 tempString.append(oneSubAnswerForMutiChoice[adv])
-                tempString = tempString.stringByAppendingString("&&&")
-            }
-            let adv = oneSubAnswerForMutiChoice.endIndex.predecessor()
-            tempString.append(oneSubAnswerForMutiChoice[adv])
             }
             self.oneQusSubSelfAnswers[subIndex] = tempString
         }
         self.tableView.reloadData()
     }
-//    //每个tableViewCell的高度
+    //    //每个tableViewCell的高度
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         if(indexPath.row < self.cellHeights.count){
-       return CGFloat(cellHeights[indexPath.row] as! NSNumber)
+            return CGFloat(cellHeights[indexPath.row] as! NSNumber)
         }else{
             return 0
         }
     }
-//
+    //
     //保存着一道题目的小题目的所有答案
     @IBAction func save(sender:UIButton){
-       self.save()
+        isSave = true
+        self.save()
     }
     func save() {
         //组装字符串 变成~~~的形式
@@ -592,7 +617,7 @@ self.currentSubQusLabel?.text = "\(self.subIndex + 1)" + "/" + "\(self.subQusIte
         answerString += oneQusSubSelfAnswers[oneQusSubSelfAnswers.count - 1] as! String
         self.totalBigSelfAnswers.replaceObjectAtIndex(index, withObject: answerString)
         self.postAnswer()
-
+        
     }
     //向服务器传送答案
     func postAnswer() {
@@ -610,8 +635,11 @@ self.currentSubQusLabel?.text = "\(self.subIndex + 1)" + "/" + "\(self.subQusIte
         }
         
         
-     //设置15秒
-   let parameter:[String:AnyObject] = ["authtoken":authtoken,"data":result]
+        //设置15秒
+        
+        
+        let parameter:[String:AnyObject] = ["authtoken":authtoken,"data":result]
+        
         Alamofire.request(.POST, "http://dodo.hznu.edu.cn/api/submitquestion", parameters: parameter, encoding: ParameterEncoding.URL, headers: nil).responseJSON { (response) in
             switch response.result{
             case .Failure(_):
@@ -629,48 +657,66 @@ self.currentSubQusLabel?.text = "\(self.subIndex + 1)" + "/" + "\(self.subQusIte
         }
         
     }
-
+    
     func noti(sender:NSNotification){
         let cell = sender.object as! ComplexChoiceTableViewCell
-          self.view.bringSubviewToFront(self.subTopView!)
+        self.view.bringSubviewToFront(self.subTopView!)
         if(self.cellHeights[cell.Custag] as! CGFloat != cell.cellHeight){
             self.cellHeights.replaceObjectAtIndex(cell.Custag, withObject: cell.cellHeight)
             if(cell.Custag == self.cellHeights.count - 1){
                 let y = 64 + 21 + 4 + SCREEN_HEIGHT * 0.4 + 21 + 5 + 21 + 21
-             self.tableView.frame = CGRectMake(0, y, SCREEN_WIDTH, SCREEN_HEIGHT - 40 - y)
-            
+                self.tableView.frame = CGRectMake(0, y, SCREEN_WIDTH, SCREEN_HEIGHT - 40 - y)
+                //阅卷的
+                if(self.disPlayMarkTextArray[subIndex] as! String != ""){
+                    self.Over()
+                }else{
+                    self.tableView.tableFooterView = UIView()
+                }
             }
             self.tableView.reloadData()
-            }
+        }
     }
-  
     
-       func completionHeight(sender:NSNotification){
+    
+    func completionHeight(sender:NSNotification){
+        
         self.view.bringSubviewToFront(self.subTopView!)
         let cell = sender.object as! ComplexCompletionTableViewCell
-    //要看总共有多少个输入框
-    if(self.cellHeights[cell.Custag] as! CGFloat != cell.cellHeight){
-   //   var frame = self.tableView.frame
-       self.subTableViewToTop.constant = -100
-        if(cell.Custag == self.cellHeights.count - 1){
-        self.subTableViewToTop.constant = 3
-            let y = 64 + 21 + 4 + SCREEN_HEIGHT * 0.4 + 21 + 5 + 21 + 21
-            self.tableView.frame = CGRectMake(0, y, SCREEN_WIDTH, SCREEN_HEIGHT - 40 - y)
-                       }
-   }
-    self.cellHeights.replaceObjectAtIndex(cell.Custag, withObject: cell.cellHeight)
-       
-   self.tableView.reloadData()
-      }
+        //要看总共有多少个输入框
+        if(self.cellHeights[cell.Custag] as! CGFloat != cell.cellHeight){
+            //   var frame = self.tableView.frame
+            self.subTableViewToTop.constant = -100
+            if(cell.Custag == self.cellHeights.count - 1){
+                self.subTableViewToTop.constant = 3
+                let y = 64 + 21 + 4 + SCREEN_HEIGHT * 0.4 + 21 + 5 + 21 + 21
+                self.tableView.frame = CGRectMake(0, y, SCREEN_WIDTH, SCREEN_HEIGHT - 40 - y)
+                //是否已经阅过卷
+                if(!isOver){
+                    if(self.disPlayMarkTextArray[subIndex] as! String != ""){
+                        self.Over()
+                        
+                    }
+                    else{
+                        self.tableView.tableFooterView = UIView()
+                    }
+                    
+                }
+                
+            }
+            self.cellHeights.replaceObjectAtIndex(cell.Custag, withObject: cell.cellHeight)
+            
+            self.tableView.reloadData()
+        }
+    }
     
     
-  //在析构消失的时候必须除去所有通知
+    //在析构消失的时候必须除去所有通知
     deinit{
         print("ComplexDeinit")
         NSNotificationCenter.defaultCenter().removeObserver(self)
     }
-  
-  
+    
+    
     
     @IBOutlet weak var subTableViewToTop: NSLayoutConstraint!
     func keyboardWillShowNotification(notifacition:NSNotification) {
@@ -682,19 +728,19 @@ self.currentSubQusLabel?.text = "\(self.subIndex + 1)" + "/" + "\(self.subQusIte
         self.qusDesWebView?.removeGestureRecognizer(leftSwipe)
         let webViewforTableViewTotalHeight = NSInteger(self.subWebView.stringByEvaluatingJavaScriptFromString("document.body.offsetHeight")!)
         var totalTableViewHeight:CGFloat = CGFloat(webViewforTableViewTotalHeight!)
-     
+        
         for i in 0 ..< self.cellHeights.count{
             totalTableViewHeight += CGFloat(self.cellHeights[i] as! NSNumber)
         }
         
-    //和填空题相同的方法来做
-    
-    //    let rect = XKeyBoard.returnKeyBoardWindow(notifacition)
-      //  let total = rect.height + totalTableViewHeight + 3
-     UIView.animateWithDuration(0.3) {
+        //和填空题相同的方法来做
         
-        self.subTableViewToTop.constant = -1 * SCREEN_HEIGHT * 0.4 + 21
-        self.view.setNeedsLayout()
+        //    let rect = XKeyBoard.returnKeyBoardWindow(notifacition)
+        //  let total = rect.height + totalTableViewHeight + 3
+        UIView.animateWithDuration(0.3) {
+            
+            self.subTableViewToTop.constant = -1 * SCREEN_HEIGHT * 0.4 + 21
+            self.view.setNeedsLayout()
         }
     }
     //键盘出现的时候的代理
@@ -705,35 +751,35 @@ self.currentSubQusLabel?.text = "\(self.subIndex + 1)" + "/" + "\(self.subQusIte
         self.qusDesWebView?.addGestureRecognizer(leftSwipe)
         self.qusDesWebView?.addGestureRecognizer(rightSwipe)
         UIView.animateWithDuration(0.3) {
-           self.subTableViewToTop.constant = 3
+            self.subTableViewToTop.constant = 3
             self.view.setNeedsLayout()
-      
+            
         }
         
     }
     func resign() {
-            for i in 0 ..< self.cellHeights.count{
-                let cell = self.tableView.cellForRowAtIndexPath(NSIndexPath(forRow: i, inSection: 0)) as? ComplexCompletionTableViewCell
-                if(cell != nil){
-                    cell!.textField?.resignFirstResponder()
-                }
+        for i in 0 ..< self.cellHeights.count{
+            let cell = self.tableView.cellForRowAtIndexPath(NSIndexPath(forRow: i, inSection: 0)) as? ComplexCompletionTableViewCell
+            if(cell != nil){
+                cell!.textField?.resignFirstResponder()
+            }
             
+        }
     }
-    }
-   //进行填空题答案的组装
+    //进行填空题答案的组装
     func AssembleCompletionAnswer(sender:NSNotification) {
         let cell = sender.object as! ComplexCompletionTableViewCell
-       
+          beforeEditing = self.oneQusSubSelfAnswers[subIndex] as! String
         self.oneSubFillBlankSelfAnswerArray.replaceObjectAtIndex(cell.Custag, withObject: (cell.textField?.text)!)
         var answerString = ""
         for i in 0 ..< self.oneSubFillBlankSelfAnswerArray.count - 1{
-           
+            
             answerString += (oneSubFillBlankSelfAnswerArray[i] as! String + "&&&")
         }
-       
+        
         answerString += oneSubFillBlankSelfAnswerArray[oneSubFillBlankSelfAnswerArray.count - 1] as! String
         self.oneQusSubSelfAnswers.replaceObjectAtIndex(subIndex, withObject: answerString)
-    
+        
         //拼装答案
     }
     @IBAction func reset(sender:UIButton){
@@ -741,16 +787,15 @@ self.currentSubQusLabel?.text = "\(self.subIndex + 1)" + "/" + "\(self.subQusIte
         let resetAction = UIAlertAction(title: "确定", style: UIAlertActionStyle.Default) { (UIAlertAction) in
             
             
-        self.displayMarkingArray.replaceObjectAtIndex(self.subIndex, withObject: 0)
-         
-        self.oneQusSubSelfAnswers.replaceObjectAtIndex(self.subIndex, withObject: "")
-        self.tableView.tableFooterView = UIView()
-        self.goOVerBtn?.enabled = true
-        self.saveBtn?.enabled = true
-       self.tableView.reloadData()
-            //先是小题的全部重置 随后这道题目进行组装 来进行保存
-        self.save()
-    }
+            self.disPlayMarkTextArray.replaceObjectAtIndex(self.subIndex, withObject: "")
+            
+            self.oneQusSubSelfAnswers.replaceObjectAtIndex(self.subIndex, withObject: "")
+            self.tableView.tableFooterView = nil
+            self.initSubView()
+            self.saveBtn?.enabled = true
+            self.goOVerBtn?.enabled = true
+            self.save()
+        }
         let cancelAction = UIAlertAction(title: "取消", style: UIAlertActionStyle.Destructive, handler: nil)
         resetAlertView.addAction(resetAction)
         resetAlertView.addAction(cancelAction)
@@ -758,25 +803,29 @@ self.currentSubQusLabel?.text = "\(self.subIndex + 1)" + "/" + "\(self.subQusIte
         self.presentViewController(resetAlertView, animated: true, completion: nil)
     }
     @IBAction func goOver(sender:UIButton){
-        //先保存 再阅卷
-        self.save()
-     
-        self.Over()
-        
+        //没有超过指定日期且没有开放阅卷功能的
+        if(!self.isOver && !self.enableClientJudge){
+            ProgressHUD.showError("没有开启阅卷功能")
+        }
+        else{
+            self.save()
+            self.Over()
+        }
     }
     //阅卷的功能
     func Over() {
+        print(self.subQusItems[subIndex].valueForKey("id"))
         switch self.subQusItems[subIndex].valueForKey("type") as! String{
-       case "JUDGE","SINGLE_CHIOCE","MULIT_CHIOCE":
+        case "JUDGE","SINGLE_CHIOCE","MULIT_CHIOCE":
             self.choiceOver()
         case "FILL_BLANK":
-            self.filLBlankOver()
-        
-        default:
+    self.filLBlankOver()
+    default:
             break
         }
     }
     func choiceOver() {
+        print(self.items[index].valueForKey("id"))
         //没有超过指定日期且没有开放阅卷功能的
         if(!self.isOver && !self.enableClientJudge){
             ProgressHUD.showError("没有开启阅卷功能")
@@ -788,7 +837,7 @@ self.currentSubQusLabel?.text = "\(self.subIndex + 1)" + "/" + "\(self.subQusIte
             let authtoken = userDefault.valueForKey("authtoken") as! String
             let paramDic = ["authtoken":authtoken,
                             "testid":"\(self.testid)",
-                            "questionid":"\(self.subQusItems[subIndex].valueForKey("id") as! NSNumber)"
+                            "questionid":"\(self.items[index].valueForKey("id") as! NSNumber)"
             ]
             Alamofire.request(.GET, "http://dodo.hznu.edu.cn/api/judgequestion", parameters: paramDic, encoding: ParameterEncoding.URL, headers: nil).responseJSON(completionHandler: { (response) in
                 switch response.result{
@@ -835,7 +884,7 @@ self.currentSubQusLabel?.text = "\(self.subIndex + 1)" + "/" + "\(self.subQusIte
                         self.tableView?.tableFooterView = self.resultTextView
                         //阅卷的界面不可点击
                         self.resultTextView.userInteractionEnabled = false
-                        self.displayMarkingArray.replaceObjectAtIndex(self.index, withObject: 1)
+                        self.disPlayMarkTextArray.replaceObjectAtIndex(self.subIndex, withObject: "1")
                     }
                 case .Failure(_):
                     ProgressHUD.showError("阅卷失败")
@@ -843,8 +892,11 @@ self.currentSubQusLabel?.text = "\(self.subIndex + 1)" + "/" + "\(self.subQusIte
             })
         }
     }
-      func filLBlankOver() {
-        //没有超过指定日期且没有开放阅卷功能的
+    func filLBlankOver() {
+        print(self.isOver)
+        print(self.enableClientJudge)
+        
+              //没有超过指定日期且没有开放阅卷功能的
         if(!self.isOver && !self.enableClientJudge){
             ProgressHUD.showError("没有开启阅卷功能")
         }
@@ -856,7 +908,7 @@ self.currentSubQusLabel?.text = "\(self.subIndex + 1)" + "/" + "\(self.subQusIte
                             "testid":"\(self.testid)",
                             "questionid":"\(self.subQusItems[subIndex].valueForKey("id") as! NSNumber)"
             ]
-Alamofire.request(.GET, "http://dodo.hznu.edu.cn/api/judgequestion", parameters: paramDic, encoding: ParameterEncoding.URL, headers: nil).responseJSON(completionHandler: { (response) in
+            Alamofire.request(.GET, "http://dodo.hznu.edu.cn/api/judgequestion", parameters: paramDic, encoding: ParameterEncoding.URL, headers: nil).responseJSON(completionHandler: { (response) in
                 switch response.result{
                 case .Success(let Value):
                     let json = JSON(Value)
@@ -908,7 +960,7 @@ Alamofire.request(.GET, "http://dodo.hznu.edu.cn/api/judgequestion", parameters:
                         //阅卷的界面不可点击
                         self.resultTextView.userInteractionEnabled = false
                         
-                        self.displayMarkingArray.replaceObjectAtIndex(self.index, withObject: 1)
+                        self.disPlayMarkTextArray.replaceObjectAtIndex(self.subIndex, withObject: "1")
                         self.goOVerBtn?.enabled = false
                         self.saveBtn?.enabled = false
                         self.tableView?.reloadData()
@@ -918,11 +970,12 @@ Alamofire.request(.GET, "http://dodo.hznu.edu.cn/api/judgequestion", parameters:
                 }
             })
         }
-}
-    //图片放大时候的动作
+    }    //图片放大时候的动作
     func gestureRecognizerShouldBegin(gestureRecognizer: UIGestureRecognizer) -> Bool {
+        
         return true
-        }
+        
+    }
     func gestureRecognizer(gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWithGestureRecognizer otherGestureRecognizer: UIGestureRecognizer) -> Bool {
         if(gestureRecognizer == self.tap){
             return true
@@ -934,11 +987,14 @@ Alamofire.request(.GET, "http://dodo.hznu.edu.cn/api/judgequestion", parameters:
     func webViewShowBig(sender:UITapGestureRecognizer){
         var pt = CGPoint()
         var urlToSave = ""
+        
         pt = sender.locationInView(self.qusDesWebView)
         let imgUrl = String(format: "document.elementFromPoint(%f, %f).src",pt.x, pt.y);
         urlToSave = self.qusDesWebView!.stringByEvaluatingJavaScriptFromString(imgUrl)!
+        
+        
         let data = NSData(contentsOfURL: NSURL(string: urlToSave)!)
-               if(data != nil){
+        if(data != nil){
             let image = UIImage(data: data!)
             let previewPhotoVC = UIStoryboard(name: "Problem", bundle: nil).instantiateViewControllerWithIdentifier("previewPhotoVC") as! previewPhotoViewController
             previewPhotoVC.toShowBigImageArray = [image!]
@@ -954,9 +1010,5 @@ Alamofire.request(.GET, "http://dodo.hznu.edu.cn/api/judgequestion", parameters:
         previewPhotoVC.toShowBigImageArray = [image!]
         previewPhotoVC.contentOffsetX = 0
         self.navigationController?.pushViewController(previewPhotoVC, animated: true)
-    }
-    //当页面消失的时候没有等待圆圈的出现
-    override func viewWillDisappear(animated: Bool) {
-        ProgressHUD.dismiss()
     }
 }

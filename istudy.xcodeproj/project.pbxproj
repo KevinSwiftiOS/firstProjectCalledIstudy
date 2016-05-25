@@ -99,6 +99,9 @@
 		388741701C8AFF0C008B665A /* MyHomeWorkViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3887416F1C8AFF0C008B665A /* MyHomeWorkViewController.swift */; };
 		388741721C8AFF30008B665A /* PeerAssessmentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 388741711C8AFF30008B665A /* PeerAssessmentViewController.swift */; };
 		388741781C8AFF88008B665A /* DiscussViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 388741771C8AFF88008B665A /* DiscussViewController.swift */; };
+		388B3E4D1CF5F010000DD1F4 /* RXRotateButtonOverlayView.m in Sources */ = {isa = PBXBuildFile; fileRef = 388B3E4A1CF5F010000DD1F4 /* RXRotateButtonOverlayView.m */; };
+		388B3E4E1CF5F011000DD1F4 /* ImageAndTitleVerticalButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 388B3E4C1CF5F010000DD1F4 /* ImageAndTitleVerticalButton.m */; };
+		388B3E501CF5F017000DD1F4 /* rotateView.gif in Resources */ = {isa = PBXBuildFile; fileRef = 388B3E4F1CF5F017000DD1F4 /* rotateView.gif */; };
 		3890073A1CAAB2CB003E6944 /* LFLUISegmentedControl.m in Sources */ = {isa = PBXBuildFile; fileRef = 389007391CAAB2CB003E6944 /* LFLUISegmentedControl.m */; };
 		389BCF901CCFA817009B63EB /* AchCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 389BCF8F1CCFA817009B63EB /* AchCollectionViewCell.swift */; };
 		38A6E6CC1CB94E93000B340D /* mainTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38A6E6CB1CB94E93000B340D /* mainTableView.swift */; };
@@ -541,6 +544,11 @@
 		3887416F1C8AFF0C008B665A /* MyHomeWorkViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyHomeWorkViewController.swift; sourceTree = "<group>"; };
 		388741711C8AFF30008B665A /* PeerAssessmentViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PeerAssessmentViewController.swift; sourceTree = "<group>"; };
 		388741771C8AFF88008B665A /* DiscussViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DiscussViewController.swift; sourceTree = "<group>"; };
+		388B3E491CF5F010000DD1F4 /* RXRotateButtonOverlayView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RXRotateButtonOverlayView.h; sourceTree = "<group>"; };
+		388B3E4A1CF5F010000DD1F4 /* RXRotateButtonOverlayView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RXRotateButtonOverlayView.m; sourceTree = "<group>"; };
+		388B3E4B1CF5F010000DD1F4 /* ImageAndTitleVerticalButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageAndTitleVerticalButton.h; sourceTree = "<group>"; };
+		388B3E4C1CF5F010000DD1F4 /* ImageAndTitleVerticalButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImageAndTitleVerticalButton.m; sourceTree = "<group>"; };
+		388B3E4F1CF5F017000DD1F4 /* rotateView.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = rotateView.gif; sourceTree = "<group>"; };
 		389007381CAAB2CB003E6944 /* LFLUISegmentedControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LFLUISegmentedControl.h; sourceTree = "<group>"; };
 		389007391CAAB2CB003E6944 /* LFLUISegmentedControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LFLUISegmentedControl.m; sourceTree = "<group>"; };
 		389BCF8F1CCFA817009B63EB /* AchCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AchCollectionViewCell.swift; sourceTree = "<group>"; };
@@ -1028,6 +1036,7 @@
 		3811F5D71C88674300BCC841 /* Resource */ = {
 			isa = PBXGroup;
 			children = (
+				388B3E481CF5EFF3000DD1F4 /* OverlayView */,
 				38FC6FB11CEA00D80063E36B /* AYBuddleView */,
 				38FC6F7E1CE9F7660063E36B /* SDWebImage */,
 				38680BE21CDE128800EA6A5A /* ShowBigImage */,
@@ -1227,6 +1236,18 @@
 				38219B421CA158D1005839C5 /* Discuss */,
 			);
 			name = C;
+			sourceTree = "<group>";
+		};
+		388B3E481CF5EFF3000DD1F4 /* OverlayView */ = {
+			isa = PBXGroup;
+			children = (
+				388B3E4F1CF5F017000DD1F4 /* rotateView.gif */,
+				388B3E491CF5F010000DD1F4 /* RXRotateButtonOverlayView.h */,
+				388B3E4A1CF5F010000DD1F4 /* RXRotateButtonOverlayView.m */,
+				388B3E4B1CF5F010000DD1F4 /* ImageAndTitleVerticalButton.h */,
+				388B3E4C1CF5F010000DD1F4 /* ImageAndTitleVerticalButton.m */,
+			);
+			name = OverlayView;
 			sourceTree = "<group>";
 		};
 		389007371CAAB2B7003E6944 /* LFLUISegmentControl */ = {
@@ -2191,6 +2212,7 @@
 				38AED7EC1CA8044C009ADC44 /* segmented-bg-pressed-center@2x.png in Resources */,
 				3811F5AC1C883D5800BCC841 /* LoginAndReset.storyboard in Resources */,
 				38AED7F31CA8044C009ADC44 /* segmented-separator.png in Resources */,
+				388B3E501CF5F017000DD1F4 /* rotateView.gif in Resources */,
 				38AED7FA1CA8044C009ADC44 /* star-icon@2x.png in Resources */,
 				3811F5B01C8842FB00BCC841 /* Main.storyboard in Resources */,
 				382C14B91CA1390400AB420A /* OneCourse.storyboard in Resources */,
@@ -2232,6 +2254,7 @@
 				38FC6FA21CE9F98F0063E36B /* NSData+ImageContentType.m in Sources */,
 				38CCBF751C93B911002BEA6B /* PersonalHeadPortrait.swift in Sources */,
 				38BD7C271CA6D317001F44B2 /* MJRefreshBackGifFooter.m in Sources */,
+				388B3E4E1CF5F011000DD1F4 /* ImageAndTitleVerticalButton.m in Sources */,
 				387C25D21CB52C6B00531AE4 /* DetailTopicViewController.swift in Sources */,
 				38680BEA1CDE129C00EA6A5A /* TGRImageViewController.m in Sources */,
 				380D8BA91CA0338B00430E71 /* AJPhotoTapDetectingImageView.m in Sources */,
@@ -2290,6 +2313,7 @@
 				3831B4121C942E6B00F44278 /* ReadEmailViewController.swift in Sources */,
 				38D35FDF1CEDD6BB00F657FC /* BasicInformationTableViewCell.swift in Sources */,
 				38FC6FAB1CE9F98F0063E36B /* UIImage+GIF.m in Sources */,
+				388B3E4D1CF5F010000DD1F4 /* RXRotateButtonOverlayView.m in Sources */,
 				3890073A1CAAB2CB003E6944 /* LFLUISegmentedControl.m in Sources */,
 				3806F9D71CB284DF00CAD6F2 /* BlurEffectMenu.m in Sources */,
 				38DE95951C9040FC002E31F8 /* writeEmialOrMobilePhoneViewController.swift in Sources */,
@@ -2469,7 +2493,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -2508,7 +2532,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				ONLY_ACTIVE_ARCH = NO;
 				SDKROOT = iphoneos;

@@ -12,7 +12,7 @@ import SwiftyJSON
 class SubjectiveQusViewController: UIViewController,AJPhotoPickerProtocol,UINavigationControllerDelegate,UIImagePickerControllerDelegate,BlurEffectMenuDelegate,UIGestureRecognizerDelegate,UICollectionViewDelegate,UICollectionViewDelegateFlowLayout,UICollectionViewDataSource,UIWebViewDelegate{
     //记录date和阅卷是否开启 和阅卷的时候答案是否可见等等
     var endDate = NSDate()
-    //是否可以阅卷
+       //是否可以阅卷
     var  enableClientJudge = Bool()
     var keyVisible = Bool()
     var viewOneWithAnswerKey = Bool()
@@ -46,6 +46,7 @@ var resetBtn = UIButton()
     //展示图片的瀑布流形式的collectionView
     @IBOutlet weak var topView:UIView?
     var menu:BlurEffectMenu!
+    var longTap = UILongPressGestureRecognizer()
     //记录当前在第几页和总共的页数
     var index:NSInteger = 0
     var answerPhotos = NSMutableArray()
@@ -53,7 +54,7 @@ var resetBtn = UIButton()
     var selfAnswers = NSMutableArray()
     override func viewDidLoad() {
         super.viewDidLoad()
-        //顶部加条线
+              //顶部加条线
         //设置阴影效果
         self.topView?.layer.shadowOffset = CGSizeMake(2.0, 1.0)
         self.topView?.layer.shadowColor = UIColor.blueColor().CGColor
@@ -434,7 +435,9 @@ var resetBtn = UIButton()
         if(alert.accessibilityFrame == CGRect()){
         self.presentViewController(alert, animated: true, completion: nil)
         }
+     
     }
+ 
     func addNewQus(sender:UISwipeGestureRecognizer) {
           let temp = index
         //加载下一道题目
