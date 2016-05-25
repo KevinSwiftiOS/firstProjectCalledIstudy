@@ -19,7 +19,6 @@ class ChangeHeadPortraitViewController: UIViewController,UITableViewDelegate,UIT
     var isFromFromImagePicker = false
     override func viewDidLoad() {
         super.viewDidLoad()
-        print(222)
         self.headPortraitImageView?.layer.masksToBounds = true
         self.headPortraitImageView?.layer.cornerRadius = 50.0
         let saveBarItem = UIBarButtonItem(title: "保存", style:.Plain, target: self, action: #selector(ChangeHeadPortraitViewController.save(_:)))

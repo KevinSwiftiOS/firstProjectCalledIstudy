@@ -104,4 +104,7 @@ self.presentViewController(mainVC, animated: true, completion: nil)
             self.view.layoutIfNeeded()
         }
     }
+    override func viewWillDisappear(animated: Bool) {
+        ProgressHUD.dismiss()
+    }
 }

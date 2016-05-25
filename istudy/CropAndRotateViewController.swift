@@ -39,4 +39,7 @@ class CropAndRotateViewController: UIViewController {
     @IBAction func cancel(sender:UIButton){
         self.navigationController?.popViewControllerAnimated(true)
     }
+    override func viewWillDisappear(animated: Bool) {
+        ProgressHUD.dismiss()
+    }
 }

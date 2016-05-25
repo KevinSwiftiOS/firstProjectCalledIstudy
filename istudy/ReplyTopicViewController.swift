@@ -159,5 +159,8 @@ self.replyListTableView?.tableFooterView = UIView()
     }
     override func viewWillDisappear(animated: Bool) {
         topView.removeFromSuperview()
+    ProgressHUD.dismiss()
+        self.replyListTableView?.mj_header.endRefreshing()
     }
+    
 }

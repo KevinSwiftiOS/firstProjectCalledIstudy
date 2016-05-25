@@ -1089,8 +1089,8 @@
 				38AA52941CD4A486005D60F4 /* CropAndRotateViewController.swift */,
 				3800EF231CBE3F6800FDBCAB /* MultipleChoiceViewController.swift */,
 				38C367B71CCCE4C2009A5E00 /* ProgramDesignViewController.swift */,
-				38870C021C997A91007528C6 /* CompletionQusViewController.swift */,
 				38870C001C997A61007528C6 /* ChoiceQusViewController.swift */,
+				38870C021C997A91007528C6 /* CompletionQusViewController.swift */,
 				38D110421CD5F41B005000F1 /* ComplexQusViewController.swift */,
 				ABB35C6C1CA01E3E008D0B6C /* previewPhotoViewController.swift */,
 			);

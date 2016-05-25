@@ -125,4 +125,8 @@ class PeerAssessmentViewController: UIViewController ,UITableViewDataSource,UITa
             }
         }
     }
+    override func viewWillDisappear(animated: Bool) {
+        self.tableView?.mj_header.endRefreshing()
+        ProgressHUD.dismiss()
+    }
 }

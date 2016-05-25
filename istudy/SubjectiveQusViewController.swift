@@ -661,4 +661,7 @@ var resetBtn = UIButton()
     deinit{
         print("SubjectvcDeinit")
     }
+    override func viewWillDisappear(animated: Bool) {
+        ProgressHUD.dismiss()
+    }
 }

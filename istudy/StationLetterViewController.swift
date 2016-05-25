@@ -346,6 +346,8 @@ class StationLetterViewController: UIViewController,UITableViewDelegate,UITableV
         self.isShow = false
         self.stationLetterTableView?.userInteractionEnabled = !isShow
         self.stationLetterTableViewToSuperViewLeading.constant = 0
-       self.view.setNeedsLayout()
+        self.stationLetterTableView?.mj_header.endRefreshing()
+        ProgressHUD.dismiss()
+   self.view.setNeedsLayout()
     }
 }

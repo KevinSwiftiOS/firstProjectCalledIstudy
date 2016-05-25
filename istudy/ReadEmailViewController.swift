@@ -99,4 +99,7 @@ class ReadEmailViewController: UIViewController {
         writeEmailVC.title = "写邮件"
         self.navigationController?.pushViewController(writeEmailVC, animated: true)
     }
+    override func viewWillDisappear(animated: Bool) {
+        ProgressHUD.dismiss()
+    }
 }

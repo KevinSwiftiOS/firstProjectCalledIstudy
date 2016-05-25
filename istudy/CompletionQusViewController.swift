@@ -60,7 +60,7 @@ class CompletionQusViewController: UIViewController,UITextFieldDelegate,UIWebVie
     var index = 0
     override func viewDidLoad() {
         super.viewDidLoad()
-        //顶部加条线
+              //顶部加条线
         //设置阴影效果
         self.topView?.layer.shadowOffset = CGSizeMake(2.0, 1.0)
         self.topView?.layer.shadowColor = UIColor.blueColor().CGColor
@@ -294,7 +294,7 @@ class CompletionQusViewController: UIViewController,UITextFieldDelegate,UIWebVie
                     //设置颜色
                         for i in 0 ..< rangeArray.count{
                             let range = rangeArray[i] as! NSRange
-                            if(judgeItems[0].valueForKey("Right") as! Bool == true){
+                            if(judgeItems[i].valueForKey("Right") as! Bool == true){
                                 totalAttriString.addAttribute(NSForegroundColorAttributeName, value: UIColor.greenColor(), range: range)
                             }else{
                                 totalAttriString.addAttribute(NSForegroundColorAttributeName, value: UIColor.redColor(), range: range)
@@ -304,6 +304,9 @@ class CompletionQusViewController: UIViewController,UITextFieldDelegate,UIWebVie
                 self.resultTextView = JVFloatLabeledTextView(frame: CGRectMake(0, 0, SCREEN_WIDTH, 200))
                         self.resultTextView.attributedText = totalAttriString
                         self.tableView?.tableFooterView = self.resultTextView
+                        //阅卷的界面不可点击
+                        self.resultTextView.userInteractionEnabled = false
+
                         self.displayMarkingArray.replaceObjectAtIndex(self.index, withObject: 1)
                         self.goOVerBtn?.enabled = false
                         self.saveBtn?.enabled = false
@@ -329,7 +332,7 @@ class CompletionQusViewController: UIViewController,UITextFieldDelegate,UIWebVie
         }
         answerString += self.oneSubFillBlankSelfAnswerArray[self.oneSubFillBlankSelfAnswerArray.count - 1] as! String
         self.totalAnswerArray.replaceObjectAtIndex(index, withObject: answerString)
-    self.postAnswer()
+       self.postAnswer()
             self.Over()
         }
         
@@ -480,7 +483,10 @@ class CompletionQusViewController: UIViewController,UITextFieldDelegate,UIWebVie
             if(self.displayMarkingArray[index] as! NSObject != 0){
             self.isOver = false
                 self.Over()
-            
+            self.goOVerBtn?.enabled = false
+            self.saveBtn?.enabled = false
+            }else{
+                self.tableView?.tableFooterView = UIView()
             }
             
         }else{
@@ -617,5 +623,8 @@ class CompletionQusViewController: UIViewController,UITextFieldDelegate,UIWebVie
             previewPhotoVC.contentOffsetX = 0
             self.navigationController?.pushViewController(previewPhotoVC, animated: true)
         }
+    }
+    override func viewWillDisappear(animated: Bool) {
+        ProgressHUD.dismiss()
     }
 }

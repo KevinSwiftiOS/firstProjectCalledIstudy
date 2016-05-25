@@ -216,6 +216,9 @@ class ContactPersonViewController: UIViewController,UITableViewDelegate,UITableV
             }
         }
         }
-   
+    override func viewWillDisappear(animated: Bool) {
+        self.contactPersonTableView?.mj_header.endRefreshing()
+        ProgressHUD.dismiss()
+    }
     }
 

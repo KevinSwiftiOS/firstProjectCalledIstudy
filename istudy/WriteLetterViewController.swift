@@ -280,6 +280,8 @@ self.view.setNeedsLayout()
         
         self.collectionView?.reloadData()
     }
-    
+    override func viewWillDisappear(animated: Bool) {
+        ProgressHUD.dismiss()
+    }
 
 }

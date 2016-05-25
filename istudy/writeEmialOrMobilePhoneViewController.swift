@@ -51,6 +51,7 @@ class writeEmialOrMobilePhoneViewController: UIViewController {
         self.writeTextField?.resignFirstResponder()
     }
     @IBAction func  nextAction(sender:UIButton){
+        self.writeTextField?.resignFirstResponder()
         //检查邮箱或者手机号是否正确
         let mailPattern =
         "^([a-z0-9_\\.-]+)@([\\da-z\\.-]+)\\.([a-z\\.]{2,6})$"
@@ -61,7 +62,9 @@ class writeEmialOrMobilePhoneViewController: UIViewController {
             emailText = emailText!.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceCharacterSet())
             if matcher.match(emailText!){
               //发送验证码
-                let urlString = "http://dodo.hznu.edu.cn/api/sendvalidcode" + "?email=" + (self.writeTextField?.text)!
+              let emailText = self.writeTextField?.text?.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceCharacterSet())
+                
+                let urlString = "http://dodo.hznu.edu.cn/api/sendvalidcode" + "?email=" + (emailText)!
                 
                 Alamofire.request(.POST, urlString).responseJSON(completionHandler: { (response) in
                     switch response.result{
@@ -75,7 +78,7 @@ class writeEmialOrMobilePhoneViewController: UIViewController {
                             let sendIdentifyVC = UIStoryboard(name: "LoginAndReset", bundle: nil).instantiateViewControllerWithIdentifier("SendIdentifyCodeVC")
                                 as! SendIdentifyCodeViewController
                             sendIdentifyVC.title = "密码找回"
-                            sendIdentifyVC.email = (self.writeTextField?.text)!
+                            sendIdentifyVC.email = emailText!
                             self.navigationController?.pushViewController(sendIdentifyVC, animated: true)
                         }else{
                             ProgressHUD.showError("邮箱无效")
@@ -108,6 +111,7 @@ class writeEmialOrMobilePhoneViewController: UIViewController {
             self.view.layoutIfNeeded()
         }
     }
-
-   
+     override func viewWillDisappear(animated: Bool) {
+        ProgressHUD.dismiss()
+    }
 }

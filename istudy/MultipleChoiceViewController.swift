@@ -52,7 +52,7 @@ class MultipleChoiceViewController: UIViewController,UIWebViewDelegate,UITableVi
     override func viewDidLoad() {
         
         super.viewDidLoad()
-        //加线
+                //加线
         //顶部加条线
         //设置阴影效果
         self.topView?.layer.shadowOffset = CGSizeMake(2.0, 1.0)
@@ -303,6 +303,9 @@ class MultipleChoiceViewController: UIViewController,UIWebViewDelegate,UITableVi
                         self.goOVerBtn?.enabled = false
                         self.saveBtn?.enabled = false
                         self.tableView?.tableFooterView = self.resultTextView
+                        //阅卷的界面不可点击
+                        self.resultTextView.userInteractionEnabled = false
+
                         self.displayMarkingArray.replaceObjectAtIndex(self.index, withObject: 1)
                     }
                 case .Failure(_):
@@ -431,6 +434,8 @@ class MultipleChoiceViewController: UIViewController,UIWebViewDelegate,UITableVi
             self.isOver = false
             if(self.displayMarkingArray[index] as! NSObject != 0){
                 self.Over()
+            }else{
+                self.tableView?.tableFooterView = UIView()
             }
         }else{
             self.isOver = true
@@ -532,5 +537,8 @@ class MultipleChoiceViewController: UIViewController,UIWebViewDelegate,UITableVi
         previewPhotoVC.toShowBigImageArray = [image!]
         previewPhotoVC.contentOffsetX = 0
         self.navigationController?.pushViewController(previewPhotoVC, animated: true)
+    }
+    override func viewWillDisappear(animated: Bool) {
+        ProgressHUD.dismiss()
     }
 }

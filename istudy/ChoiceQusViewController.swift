@@ -221,6 +221,8 @@ func showAct(){
                             self.resultTextView.attributedText = totalAttriString
                             self.gooverBtn?.enabled = false
                         self.tableView?.tableFooterView = self.resultTextView
+                            //阅卷的界面不可点击
+                            self.resultTextView.userInteractionEnabled = false
                         self.displayMarkingArray.replaceObjectAtIndex(self.index, withObject: 1)
                         }
                 case .Failure(_):
@@ -378,6 +380,9 @@ func showAct(){
             self.isOver = false
             if(self.displayMarkingArray[index] as! NSObject != 0){
                 self.Over()
+                self.gooverBtn?.enabled = false
+            }else{
+                self.tableView?.tableFooterView = UIView()
             }
         }else{
             self.isOver = true
@@ -474,5 +479,7 @@ func showAct(){
         previewPhotoVC.contentOffsetX = 0
         self.navigationController?.pushViewController(previewPhotoVC, animated: true)
     }
-
+    override func viewWillDisappear(animated: Bool) {
+        ProgressHUD.dismiss()
+    }
 }

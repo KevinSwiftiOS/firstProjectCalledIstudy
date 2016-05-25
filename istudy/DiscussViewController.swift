@@ -252,4 +252,8 @@ override func viewWillAppear(animated: Bool) {
         }
         }
     }
+    override func viewWillDisappear(animated: Bool) {
+        ProgressHUD.dismiss()
+        self.discussTableView?.mj_header.endRefreshing()
+    }
 }

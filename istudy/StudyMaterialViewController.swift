@@ -225,8 +225,9 @@ UISearchControllerDelegate,UISearchResultsUpdating{
     }
     //当该界面消失的时候 应该progress.dismiss
     override func viewWillDisappear(animated: Bool) {
+        self.studyMaterialsTableView?.mj_header.endRefreshing()
         ProgressHUD.dismiss()
     }
-    
+  
     
 }

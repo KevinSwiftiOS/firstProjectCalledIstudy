@@ -234,4 +234,7 @@ class AchViewController: UIViewController,UICollectionViewDelegate,UICollectionV
                 }
             })
         }
+    override func viewWillDisappear(animated: Bool) {
+        ProgressHUD.dismiss()
+    }
 }

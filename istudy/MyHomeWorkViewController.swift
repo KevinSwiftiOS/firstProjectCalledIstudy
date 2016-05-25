@@ -291,4 +291,8 @@ class MyHomeWorkViewController: UIViewController,UITableViewDataSource,UITableVi
         self.sc.searchBar.text = ""
         sc.dismissViewControllerAnimated(true, completion: nil)
        }
+    override func viewWillDisappear(animated: Bool) {
+      self.tableView?.mj_header.endRefreshing()
+        ProgressHUD.dismiss()
+    }
 }

@@ -121,5 +121,7 @@ class DetailPeerAssementViewController: UIViewController,UICollectionViewDataSou
             }
         }
     }
-    
+    override func viewWillDisappear(animated: Bool) {
+        ProgressHUD.dismiss()
+    }
 }

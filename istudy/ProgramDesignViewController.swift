@@ -48,7 +48,7 @@ class ProgramDesignViewController: UIViewController,UIWebViewDelegate,UIGestureR
     var index = 0
     override func viewDidLoad() {
         super.viewDidLoad()
-        //顶部加条线
+               //顶部加条线
         //设置阴影效果
         self.topView?.layer.shadowOffset = CGSizeMake(2.0, 1.0)
         self.topView?.layer.shadowColor = UIColor.blueColor().CGColor
@@ -286,7 +286,9 @@ class ProgramDesignViewController: UIViewController,UIWebViewDelegate,UIGestureR
                         self.displayMarkingArray.replaceObjectAtIndex(self.index, withObject: 1)
                         self.saveBtn?.enabled = false
                         self.answerTextView?.userInteractionEnabled = false
-                        
+                        //阅卷的界面不可点击
+                        self.resultTextView.userInteractionEnabled = false
+
                         self.gooverBtn.enabled = false
                     }
                 case .Failure(_):
@@ -468,5 +470,8 @@ class ProgramDesignViewController: UIViewController,UIWebViewDelegate,UIGestureR
     }
     deinit{
         print("ProgreamDeint")
+    }
+    override func viewWillDisappear(animated: Bool) {
+        ProgressHUD.dismiss()
     }
 }

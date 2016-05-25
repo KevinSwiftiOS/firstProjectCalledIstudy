@@ -108,6 +108,10 @@ class MyTestViewController: UIViewController,UITableViewDataSource,UITableViewDe
         self.testTableView?.mj_header.endRefreshing()
         self.testTableView?.reloadData()
     }
+    override func viewWillDisappear(animated: Bool) {
+        self.testTableView?.mj_header.endRefreshing()
+        ProgressHUD.dismiss()
+    }
 }
 
               

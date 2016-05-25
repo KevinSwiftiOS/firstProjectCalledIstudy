@@ -28,7 +28,7 @@ class TranslateViewController: UIViewController{
     @IBOutlet weak var kindOfQusLabel:UILabel?
     override func viewDidLoad() {
         super.viewDidLoad()
-        print(4455)
+   
         let backBtn = UIButton(frame: CGRectMake(0,0,43,43))
         backBtn.contentHorizontalAlignment = .Left
         backBtn.setTitle("返回", forState: .Normal)
@@ -312,5 +312,7 @@ class TranslateViewController: UIViewController{
                 }
             })
         }
-    
+    override func viewWillDisappear(animated: Bool) {
+        ProgressHUD.dismiss()
+    }
 }

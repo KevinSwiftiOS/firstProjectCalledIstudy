@@ -48,4 +48,7 @@ self.webView?.loadHTMLString(detailString, baseURL: nil)
         frame.size.height = CGFloat(height!)
         webView.frame = frame
     }
+    override func viewWillDisappear(animated: Bool) {
+        ProgressHUD.dismiss()
+    }
 }

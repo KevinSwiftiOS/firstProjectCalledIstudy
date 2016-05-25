@@ -40,6 +40,7 @@ class ResetPasswordViewController: UIViewController {
                     ProgressHUD.showSuccess("重置成功")
                     let userDefault = NSUserDefaults.standardUserDefaults()
                     userDefault.setValue(json["info"]["username"].string, forKey: "userName")
+                    //然后直接拿登录
                     userDefault.setValue(self.configPassWord?.text, forKey: "passWord")
                     let sb = UIStoryboard(name: "Main", bundle: nil)
                     let mainVC = sb.instantiateViewControllerWithIdentifier("tabBarVC") as! UITabBarController
@@ -73,5 +74,8 @@ class ResetPasswordViewController: UIViewController {
             //加载新的约束
             self.view.layoutIfNeeded()
         }
+    }
+    override func viewWillDisappear(animated: Bool) {
+        ProgressHUD.dismiss()
     }
 }

@@ -50,4 +50,7 @@ class previewPhotoViewController: UIViewController{
     func tap() {
         self.navigationController?.popViewControllerAnimated(true)
     }
+    override func viewWillDisappear(animated: Bool) {
+        ProgressHUD.dismiss()
+    }
 }

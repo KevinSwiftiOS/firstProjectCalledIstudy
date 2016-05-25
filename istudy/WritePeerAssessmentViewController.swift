@@ -62,4 +62,7 @@ class WritePeerAssessmentViewController: UIViewController {
             }
         }
     }
+    override func viewWillDisappear(animated: Bool) {
+        ProgressHUD.dismiss()
+    }
 }

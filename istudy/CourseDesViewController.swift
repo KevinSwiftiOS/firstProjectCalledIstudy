@@ -217,8 +217,10 @@
 
           //顶部刷新
         func headerRefresh() {
+            //每次都是登录
+            
             let userDefault = NSUserDefaults.standardUserDefaults()
-            if(userDefault.valueForKey("authtoken") == nil){
+            if(userDefault.valueForKey("authtoken") as? String == nil){
                 let userName = userDefault.valueForKey("userName") as! String
                 let passWord = userDefault.valueForKey("passWord") as! String
                 let id = CFUUIDCreate(nil)
@@ -232,7 +234,7 @@
                     "os":"",
                     "clienttype":"1"
                 ]
-                Alamofire.request(.GET, "http://dodo.hznu.edu.cn/api/login", parameters: dic, encoding: ParameterEncoding.URL, headers: nil).responseJSON(completionHandler: { (response) -> Void in
+    Alamofire.request(.GET, "http://dodo.hznu.edu.cn/api/login", parameters: dic, encoding: ParameterEncoding.URL, headers: nil).responseJSON(completionHandler: { (response) -> Void in
                     switch response.result{
                     case .Success(let data):
                         let json = JSON(data)
@@ -242,53 +244,94 @@
                             userDefault.setValue(json["authtoken"].string, forKey: "authtoken")
                             //设置名字 名字和账号是不一样的
                             userDefault.setValue(json["info"]["name"].string, forKey: "name")
+                            userDefault.setValue(json["info"]["gender"].string, forKey: "sex")
+                            userDefault.setValue(json["info"]["cls"].string, forKey: "cls")
+                            userDefault.setValue(json["info"]["phone"].string, forKey: "phone")
+                            userDefault.setValue(json["info"]["email"].string, forKey: "email")
+                            let authDic :[String:AnyObject] = ["authtoken":userDefault.valueForKey("authtoken") as! String]
                             
+                            Alamofire.request(.GET, "http://dodo.hznu.edu.cn/api/coursequery", parameters: authDic, encoding: ParameterEncoding.URL, headers: nil).responseJSON { (response) in
+                                switch response.result{
+                                case .Success(let value):
+                                    let json = JSON(value)
+                                    if(json["retcode"].number == 0){
+                                        
+                                        self.items = json["items"].arrayObject! as NSArray
+                                        
+                                        for _ in  0 ..< self.items.count{
+                                            self.cellHeight.addObject(80)
+                                            self.isClick.addObject(false)
+                                        }
+                                        self.courseDesTableView?.mj_header.endRefreshing()
+                                        self.courseDesTableView?.reloadData()
+                                        //})
+                                    }else{
+                                        print(json["retcode"].number)
+                                        ProgressHUD.showError("请求失败")
+                                        self.items = NSArray()
+                                        dispatch_async(dispatch_get_main_queue(), {
+                                            self.courseDesTableView?.mj_header.endRefreshing()
+                                            self.courseDesTableView?.reloadData()
+                                        })
+                                        
+                                    }
+                                case .Failure(_):
+                                    ProgressHUD.showError("请求失败")
+                                    self.items = NSArray()
+                                    dispatch_async(dispatch_get_main_queue(), {
+                                        self.courseDesTableView?.mj_header.endRefreshing()
+                                        self.courseDesTableView?.reloadData()
+                                    })
+                                    
+                                }
+                            }
+
                         }
                     case .Failure(_):
                     ProgressHUD.showError("请求失败")
                 }
             })
-            }
-            
-            
-            let authDic :[String:AnyObject] = ["authtoken":userDefault.valueForKey("authtoken") as! String]
-           
-            Alamofire.request(.GET, "http://dodo.hznu.edu.cn/api/coursequery", parameters: authDic, encoding: ParameterEncoding.URL, headers: nil).responseJSON { (response) in
-                switch response.result{
-                case .Success(let value):
-                    let json = JSON(value)
-                    if(json["retcode"].number == 0){
-                   
-                        self.items = json["items"].arrayObject! as NSArray
-                      
-                        for _ in  0 ..< self.items.count{
-                            self.cellHeight.addObject(80)
-                            self.isClick.addObject(false)
+            }else{
+                let authDic :[String:AnyObject] = ["authtoken":userDefault.valueForKey("authtoken") as! String]
+                
+                Alamofire.request(.GET, "http://dodo.hznu.edu.cn/api/coursequery", parameters: authDic, encoding: ParameterEncoding.URL, headers: nil).responseJSON { (response) in
+                    switch response.result{
+                    case .Success(let value):
+                        let json = JSON(value)
+                        if(json["retcode"].number == 0){
+                            
+                            self.items = json["items"].arrayObject! as NSArray
+                            
+                            for _ in  0 ..< self.items.count{
+                                self.cellHeight.addObject(80)
+                                self.isClick.addObject(false)
+                            }
+                            self.courseDesTableView?.mj_header.endRefreshing()
+                            self.courseDesTableView?.reloadData()
+                            //})
+                        }else{
+                            print(json["retcode"].number)
+                            ProgressHUD.showError("请求失败")
+                            self.items = NSArray()
+                            dispatch_async(dispatch_get_main_queue(), {
+                                self.courseDesTableView?.mj_header.endRefreshing()
+                                self.courseDesTableView?.reloadData()
+                            })
+                            
                         }
-                        self.courseDesTableView?.mj_header.endRefreshing()
-                        self.courseDesTableView?.reloadData()
-                    //})
-                    }else{
-                        print(json["retcode"].number)
+                    case .Failure(_):
                         ProgressHUD.showError("请求失败")
                         self.items = NSArray()
                         dispatch_async(dispatch_get_main_queue(), {
                             self.courseDesTableView?.mj_header.endRefreshing()
                             self.courseDesTableView?.reloadData()
                         })
-
+                        
                     }
-                case .Failure(_):
-                    ProgressHUD.showError("请求失败")
-                    self.items = NSArray()
-                    dispatch_async(dispatch_get_main_queue(), {
-                        self.courseDesTableView?.mj_header.endRefreshing()
-                        self.courseDesTableView?.reloadData()
-                    })
-
                 }
+
             }
-    }
+            }
         func willPresentSearchController(searchController: UISearchController) {
             self.courseDesTableView?.mj_header.hidden = true
         }

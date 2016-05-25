@@ -41,24 +41,22 @@ class SendIdentifyCodeViewController: UIViewController {
     @IBAction func sureIdentifyCode(sender:UIButton){
         //停止计时器
         self.timer.invalidate()
-        //验证验证码是否正确 随后跳转到充值密码的界面
+        //验证验证码是否正确 随后跳转到充值密码的界面 去掉空格
+        let identifyCodeText = self.identifyCode?.text?.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceCharacterSet())
         let dic:[String:AnyObject] = ["email":email,
-                   "validcode":(self.identifyCode?.text)!]
+                   "validcode":(identifyCodeText)!]
         
       Alamofire.request(.GET, "http://dodo.hznu.edu.cn/api/validcode", parameters: dic, encoding: ParameterEncoding.URL, headers: nil).responseJSON { (response) in
         switch response.result{
         case .Success(let Value):
             let json = JSON(Value)
-            print(dic)
-            print(json)
             if(json["retcode"].number == 0){
+                ProgressHUD.showSuccess("验证成功")
                 let sb = UIStoryboard(name: "LoginAndReset", bundle: nil)
                 let resetPassordVC = sb.instantiateViewControllerWithIdentifier("ResetPasswordVC") as! ResetPasswordViewController
                 resetPassordVC.title = "密码重置"
-            
                 resetPassordVC.token = json["info"]["token"].string!
                 self.navigationController?.pushViewController(resetPassordVC, animated: true)
-            
             }else{
                 ProgressHUD.showError("验证失败")
             }
@@ -66,7 +64,7 @@ class SendIdentifyCodeViewController: UIViewController {
             ProgressHUD.showError("验证失败")
         }
         }
-               self.currentTime = 60
+        self.currentTime = 60
         self.timerLabel?.text = "\(self.currentTime)" + "秒"
     }
     @IBAction func keyBoardHide(sender: UIControl) {
@@ -89,5 +87,8 @@ class SendIdentifyCodeViewController: UIViewController {
         }
         
         
+    }
+    override func viewWillDisappear(animated: Bool) {
+        ProgressHUD.dismiss()
     }
 }
