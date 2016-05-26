@@ -69,7 +69,6 @@ class MultipleChoiceViewController: UIViewController,UIWebViewDelegate,UITableVi
        self.tableView?.delegate = self
         self.tableView?.dataSource = self
      //添加点击的通知
-        
         let backBtn = UIButton(frame: CGRectMake(0,0,43,43))
         
         backBtn.contentHorizontalAlignment = .Right
@@ -304,7 +303,7 @@ class MultipleChoiceViewController: UIViewController,UIWebViewDelegate,UITableVi
                         self.saveBtn?.enabled = false
                         self.tableView?.tableFooterView = self.resultTextView
                         //阅卷的界面不可点击
-                        self.resultTextView.userInteractionEnabled = false
+                        self.resultTextView.editable = false
 
                         self.displayMarkingArray.replaceObjectAtIndex(self.index, withObject: 1)
                     }

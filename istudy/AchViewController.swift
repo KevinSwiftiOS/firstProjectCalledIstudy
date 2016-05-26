@@ -215,7 +215,7 @@ class AchViewController: UIViewController,UICollectionViewDelegate,UICollectionV
     }
     //在显示完成多少的界面的时候 要根据是不是从其他界面跳转过来的进行判断
     override func viewWillAppear(animated: Bool) {
-        
+         ProgressHUD.show("请稍候")
             let userDefault = NSUserDefaults.standardUserDefaults()
             let authtoken = userDefault.valueForKey("authtoken") as! String
         print(authtoken)
@@ -228,6 +228,7 @@ class AchViewController: UIViewController,UICollectionViewDelegate,UICollectionV
                 case .Success(let Value):
                     let json = JSON(Value)
                     dispatch_async(dispatch_get_main_queue(), {
+                        ProgressHUD.dismiss()
                         self.totalItems = json["items"].arrayObject! as NSArray
                         self.achCollectionView.reloadData()
                     })

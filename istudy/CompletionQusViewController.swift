@@ -305,7 +305,7 @@ class CompletionQusViewController: UIViewController,UITextFieldDelegate,UIWebVie
                         self.resultTextView.attributedText = totalAttriString
                         self.tableView?.tableFooterView = self.resultTextView
                         //阅卷的界面不可点击
-                        self.resultTextView.userInteractionEnabled = false
+                        self.resultTextView.editable = false
 
                         self.displayMarkingArray.replaceObjectAtIndex(self.index, withObject: 1)
                         self.goOVerBtn?.enabled = false

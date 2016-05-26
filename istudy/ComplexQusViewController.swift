@@ -883,7 +883,7 @@ class ComplexQusViewController: UIViewController,UITableViewDelegate,UITableView
                         self.goOVerBtn?.enabled = false
                         self.tableView?.tableFooterView = self.resultTextView
                         //阅卷的界面不可点击
-                        self.resultTextView.userInteractionEnabled = false
+                        self.resultTextView.editable = false
                         self.disPlayMarkTextArray.replaceObjectAtIndex(self.subIndex, withObject: "1")
                     }
                 case .Failure(_):
@@ -958,7 +958,7 @@ class ComplexQusViewController: UIViewController,UITableViewDelegate,UITableView
                         self.resultTextView.attributedText = totalAttriString
                         self.tableView?.tableFooterView = self.resultTextView
                         //阅卷的界面不可点击
-                        self.resultTextView.userInteractionEnabled = false
+                        self.resultTextView.editable = false
                         
                         self.disPlayMarkTextArray.replaceObjectAtIndex(self.subIndex, withObject: "1")
                         self.goOVerBtn?.enabled = false

@@ -222,7 +222,7 @@ func showAct(){
                             self.gooverBtn?.enabled = false
                         self.tableView?.tableFooterView = self.resultTextView
                             //阅卷的界面不可点击
-                            self.resultTextView.userInteractionEnabled = false
+                            self.resultTextView.editable = false
                         self.displayMarkingArray.replaceObjectAtIndex(self.index, withObject: 1)
                         }
                 case .Failure(_):

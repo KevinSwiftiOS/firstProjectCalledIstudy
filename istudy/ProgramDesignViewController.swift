@@ -285,9 +285,9 @@ class ProgramDesignViewController: UIViewController,UIWebViewDelegate,UIGestureR
                         self.contentScrollView?.contentSize = CGSizeMake(SCREEN_WIDTH, self.webViewHeight + 320)
                         self.displayMarkingArray.replaceObjectAtIndex(self.index, withObject: 1)
                         self.saveBtn?.enabled = false
-                        self.answerTextView?.userInteractionEnabled = false
+                       self.answerTextView?.editable = false
                         //阅卷的界面不可点击
-                        self.resultTextView.userInteractionEnabled = false
+                        self.resultTextView.editable = false
 
                         self.gooverBtn.enabled = false
                     }
