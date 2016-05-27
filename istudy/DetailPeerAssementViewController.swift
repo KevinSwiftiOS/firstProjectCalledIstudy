@@ -84,12 +84,12 @@ class DetailPeerAssementViewController: UIViewController,UICollectionViewDataSou
         writePeerAssessmentVC.title = "评论"
         writePeerAssessmentVC.index = sender.tag
         writePeerAssessmentVC.usertestid = self.items[sender.tag].valueForKey("usertestid") as! NSInteger
-        writePeerAssessmentVC.callBack = {(index:NSInteger) -> Void in
-            weak var wself = self
-            wself!.isPeer[index] = 1
-            wself!.collectionView?.reloadData()
-          
-        }
+//        writePeerAssessmentVC.callBack = {(index:NSInteger) -> Void in
+//            weak var wself = self
+//            wself!.isPeer[index] = 1
+//            wself!.collectionView?.reloadData()
+
+        //}
         
         self.navigationController?.pushViewController(writePeerAssessmentVC, animated: true)
     }

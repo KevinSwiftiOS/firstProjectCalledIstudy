@@ -138,10 +138,10 @@ class BasicInformationViewController: UIViewController,UITableViewDelegate,UITab
         }else{
             self.detailArray.addObject(userDefault.valueForKey("name") as! String)
         }
-        if(userDefault.valueForKey("sex") == nil){
+        if(userDefault.valueForKey("gender") == nil){
             self.detailArray.addObject("未设置性别")
         }else{
-     self.detailArray.addObject(userDefault.valueForKey("sex") as! String)
+     self.detailArray.addObject(userDefault.valueForKey("gender") as! String)
         }
       self.tableView?.reloadData()
     }

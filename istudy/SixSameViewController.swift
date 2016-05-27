@@ -7,7 +7,8 @@
 //
 
 import UIKit
-
+import Alamofire
+import SwiftyJSON
 class SixSameViewController: UIViewController {
     struct RegexHelper {
         let regex: NSRegularExpression
@@ -85,9 +86,8 @@ let PhonePattern = "^((13[0-9])|(17[0-9])|(15[^4,\\D])|(18[0,5-9]))\\d{8}$"
                 matcher = try RegexHelper(PhonePattern)
                 if matcher.match(phoneText!){
                     userDefault.setValue(phoneText, forKey:dic[(self.name?.text)!]!)
-                    ProgressHUD.showSuccess("保存成功")
-                    self.navigationController?.popViewControllerAnimated(true)
-                }else{
+                    self.saveProfile()
+                                  }else{
                     ProgressHUD.showError("填写手机格式错误")
                 }
 
@@ -107,8 +107,8 @@ let PhonePattern = "^((13[0-9])|(17[0-9])|(15[^4,\\D])|(18[0,5-9]))\\d{8}$"
                     emailText = emailText!.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceCharacterSet())
                 if matcher.match(emailText!){
                     userDefault.setValue(self.changeNameTextField?.text, forKey:dic[(self.name?.text)!]!)
-                    ProgressHUD.showSuccess("保存成功")
-                    self.navigationController?.popViewControllerAnimated(true)
+                    self.saveProfile()
+                   
                 }else{
                     ProgressHUD.showError("填写邮箱格式错误")
                 }
@@ -127,9 +127,8 @@ let PhonePattern = "^((13[0-9])|(17[0-9])|(15[^4,\\D])|(18[0,5-9]))\\d{8}$"
                 matcher = try RegexHelper(QQPattern)
                 if matcher.match(QQText!){
                     userDefault.setValue(QQText, forKey:dic[(self.name?.text)!]!)
-                    ProgressHUD.showSuccess("保存成功")
-                    self.navigationController?.popViewControllerAnimated(true)
-                }else{
+                    self.saveProfile()
+                    }else{
                     ProgressHUD.showError("填写QQ格式错误")
                 }
 
@@ -146,9 +145,8 @@ let PhonePattern = "^((13[0-9])|(17[0-9])|(15[^4,\\D])|(18[0,5-9]))\\d{8}$"
               
                 if matcher.match(PostCodeText!){
                     userDefault.setValue(PostCodeText, forKey:dic[(self.name?.text)!]!)
-                    ProgressHUD.showSuccess("保存成功")
-                    self.navigationController?.popViewControllerAnimated(true)
-                }else{
+                  self.saveProfile()
+                                 }else{
                     ProgressHUD.showError("填写邮编格式错误")
                                }
 
@@ -158,7 +156,41 @@ let PhonePattern = "^((13[0-9])|(17[0-9])|(15[^4,\\D])|(18[0,5-9]))\\d{8}$"
             
         default:break
         }
-        
-        
+       
+
+    }
+    func saveProfile() {
+        let userDefault = NSUserDefaults.standardUserDefaults()
+        let dicParam:[String:AnyObject] = ["gender":userDefault.valueForKey("gender") as! String,
+                                           "cls": userDefault.valueForKey("cls") as! String,
+                                           "phone": userDefault.valueForKey("phone") as! String,
+                                           "email": userDefault.valueForKey("email") as! String,
+                                           "avtarurl": userDefault.valueForKey("avtarurl") as! String]
+        //进行base64字符串加密
+        var result = String()
+        do { let parameterData = try NSJSONSerialization.dataWithJSONObject(dicParam, options: NSJSONWritingOptions.PrettyPrinted)
+            
+            result = parameterData.base64EncodedStringWithOptions(.Encoding64CharacterLineLength)
+        }catch{
+            ProgressHUD.showError("保存失败")
+        }
+        let parameter:[String:AnyObject] = ["authtoken":userDefault.valueForKey("authtoken") as! String,"data":result]
+        Alamofire.request(.POST, "http://dodo.hznu.edu.cn/api/saveprofile", parameters: parameter, encoding: ParameterEncoding.URL, headers: nil).responseJSON { (response) in
+            switch response.result{
+            case .Success(let Value):
+                let json = JSON(Value)
+                if(json["retcode"].number == 0){
+                    ProgressHUD.showSuccess("保存成功")
+                     self.navigationController?.popViewControllerAnimated(true)
+                }else{
+                    ProgressHUD.showError("保存失败")
+                    print(json["retcode"].number)
+                }
+            case .Failure(_):ProgressHUD.showError("保存失败")
+            }
+        }
+        }
+    override func viewWillDisappear(animated: Bool) {
+        ProgressHUD.dismiss()
     }
    }

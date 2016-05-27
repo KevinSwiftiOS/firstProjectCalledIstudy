@@ -56,7 +56,7 @@ class LoginViewController: UIViewController {
         "devicetoken":"",
         "os":"",
         "clienttype":"1"]
-Alamofire.request(.GET, "http://dodo.hznu.edu.cn/api/login", parameters: self.dic, encoding: ParameterEncoding.URL, headers: nil).responseJSON { (response ) -> Void in
+Alamofire.request(.POST, "http://dodo.hznu.edu.cn/api/login", parameters: self.dic, encoding: ParameterEncoding.URL, headers: nil).responseJSON { (response ) -> Void in
             switch response.result{
             case .Success(let data):
                 let json = JSON(data)
@@ -68,10 +68,12 @@ userDefaults.setValue(self.userName?.text, forKey: "userName")
 userDefaults.setValue(self.passWord?.text, forKey: "passWord")
 userDefaults.setValue(json["authtoken"].string, forKey: "authtoken")
 userDefaults.setValue(json["info"]["name"].string, forKey: "name")
-userDefaults.setValue(json["info"]["gender"].string, forKey: "sex")
+userDefaults.setValue(json["info"]["gender"].string, forKey: "gender")
 userDefaults.setValue(json["info"]["cls"].string, forKey: "cls")
 userDefaults.setValue(json["info"]["phone"].string, forKey: "phone")
 userDefaults.setValue(json["info"]["email"].string, forKey: "email")
+//设置头像
+userDefaults.setValue(json["info"]["avtarurl"].string, forKey: "avtarurl")
 ProgressHUD.showSuccess("登录成功")
 let mainVC = UIStoryboard(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("tabBarVC") as! UITabBarController
 self.presentViewController(mainVC, animated: true, completion: nil)

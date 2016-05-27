@@ -7,7 +7,8 @@
 //
 
 import UIKit
-
+import Alamofire
+import SwiftyJSON
 class ChangeSexViewController: UIViewController {
     @IBOutlet weak var manBtn:UIButton?
     //选择性别的
@@ -45,12 +46,12 @@ class ChangeSexViewController: UIViewController {
             sex = "女"
         }
     let userDefault = NSUserDefaults.standardUserDefaults()
-        userDefault.setValue(sex, forKey: "sex")
-        self.navigationController?.popViewControllerAnimated(true)
-    }
+        userDefault.setValue(sex, forKey: "gender")
+        self.saveProfile()
+            }
     override func viewWillAppear(animated: Bool) {
         let userDefaults = NSUserDefaults.standardUserDefaults()
-        if(userDefaults.valueForKey("sex") == nil || userDefaults.valueForKey("sex") as! String == "男"){
+        if(userDefaults.valueForKey("gender") == nil || userDefaults.valueForKey("gender") as! String == "男"){
             self.manBtn?.setImage(UIImage(named: "选择信件"), forState: .Normal)
             self.womanBtn?.setImage(UIImage(named: "未选择信件"), forState: .Normal)
             self.selectedSex = 1
@@ -61,4 +62,40 @@ class ChangeSexViewController: UIViewController {
             self.selectedSex = 0
         }
     }
+    override func viewWillDisappear(animated: Bool) {
+        ProgressHUD.dismiss()
+    }
+    func saveProfile() {
+        let userDefault = NSUserDefaults.standardUserDefaults()
+        let dicParam:[String:AnyObject] = ["gender":userDefault.valueForKey("gender") as! String,
+                                           "cls": userDefault.valueForKey("cls") as! String,
+                                           "phone": userDefault.valueForKey("phone") as! String,
+                                           "email": userDefault.valueForKey("email") as! String,
+                                           "avtarurl": userDefault.valueForKey("avtarurl") as! String]
+        //进行base64字符串加密
+        var result = String()
+        do { let parameterData = try NSJSONSerialization.dataWithJSONObject(dicParam, options: NSJSONWritingOptions.PrettyPrinted)
+            
+            result = parameterData.base64EncodedStringWithOptions(.Encoding64CharacterLineLength)
+        }catch{
+            ProgressHUD.showError("保存失败")
+        }
+        let parameter:[String:AnyObject] = ["authtoken":userDefault.valueForKey("authtoken") as! String,"data":result]
+        Alamofire.request(.POST, "http://dodo.hznu.edu.cn/api/saveprofile", parameters: parameter, encoding: ParameterEncoding.URL, headers: nil).responseJSON { (response) in
+            switch response.result{
+            case .Success(let Value):
+                let json = JSON(Value)
+                if(json["retcode"].number == 0){
+                    ProgressHUD.showSuccess("保存成功")
+                    self.navigationController?.popViewControllerAnimated(true)
+
+                }else{
+                    ProgressHUD.showError("保存失败")
+                    print(json["retcode"].number)
+                }
+            case .Failure(_):ProgressHUD.showError("保存失败")
+            }
+        }
+    }
+  
 }

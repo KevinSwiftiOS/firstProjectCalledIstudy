@@ -87,7 +87,7 @@ class PersonalViewController: UIViewController,UITableViewDelegate,UITableViewDa
             userDefault.setValue(nil, forKey: "passWord")
             userDefault.setValue(nil, forKey: "authtoken")
             userDefault.setValue(nil, forKey: "name")
-            userDefault.setValue(nil, forKey: "sex")
+            userDefault.setValue(nil, forKey: "gender")
             userDefault.setValue(nil, forKey: "cls")
             userDefault.setValue(nil, forKey: "phone")
             userDefault.setValue(nil, forKey: "QQNumber")

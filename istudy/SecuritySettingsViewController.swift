@@ -7,7 +7,8 @@
 //
 
 import UIKit
-
+import Alamofire
+import SwiftyJSON
 class SecuritySettingsViewController: UIViewController {
     @IBOutlet weak var labelTopLayout: NSLayoutConstraint!
     @IBOutlet weak var topLayout: NSLayoutConstraint!
@@ -32,8 +33,35 @@ class SecuritySettingsViewController: UIViewController {
 //完成密码确认后
      func save(sender:UIButton){
         let userDefault = NSUserDefaults.standardUserDefaults()
-        userDefault.setValue(self.newPassWord?.text, forKey: "passWord")
-        self.navigationController?.popViewControllerAnimated(true)
+        //新旧密码
+        let configPwd = self.configNewPassWord?.text
+        let newPwd = self.configNewPassWord?.text
+        if(newPwd != configPwd){
+            ProgressHUD.showError("密码不相同")
+        }else{
+            
+            let ParamDic:[String:AnyObject] = ["oldpassword":(self.lastPassWord?.text)!,
+                                               "newpassword":(self.newPassWord?.text)!,
+                                               "authtoken":userDefault.valueForKey("authtoken") as! String]
+            //转化成base64字符串
+            Alamofire.request(.POST, "http:dodo.hznu.edu.cn/api/changepassword", parameters: ParamDic, encoding: ParameterEncoding.URL, headers: nil).responseJSON(completionHandler: { (response) in
+                switch response.result{
+                case .Success(let Value):
+                    let json = JSON(Value)
+                    if(json["retcode"].number == 0){
+                        ProgressHUD.showSuccess("设置成功")
+                        userDefault.setValue(self.newPassWord?.text, forKey: "passWord")
+                        self.navigationController?.popViewControllerAnimated(true)
+                   
+                    }else{
+                        ProgressHUD.showError("设置失败")
+                        print(json["retcode"].number)
+                    }
+                case .Failure(_):
+                    ProgressHUD.showError("设置失败")
+                }
+            })
+             }
     }
     @IBAction func keyBoardHide(sender: UIControl) {
         self.lastPassWord?.resignFirstResponder()
@@ -57,5 +85,8 @@ class SecuritySettingsViewController: UIViewController {
                         //加载新的约束
             self.view.layoutIfNeeded()
         }
+    }
+    func changePassword() {
+        
     }
 }

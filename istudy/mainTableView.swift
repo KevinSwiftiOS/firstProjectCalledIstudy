@@ -9,6 +9,7 @@
 import UIKit
 
 class mainTableView: UITableView {
+    
     /*
     // Only override drawRect: if you perform custom drawing.
     // An empty implementation adversely affects performance during animation.
@@ -19,4 +20,5 @@ class mainTableView: UITableView {
     override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
         self.nextResponder()?.touchesBegan(touches, withEvent: event)
     }
+    
 }

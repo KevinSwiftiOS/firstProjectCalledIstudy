@@ -234,7 +234,7 @@
                     "os":"",
                     "clienttype":"1"
                 ]
-    Alamofire.request(.GET, "http://dodo.hznu.edu.cn/api/login", parameters: dic, encoding: ParameterEncoding.URL, headers: nil).responseJSON(completionHandler: { (response) -> Void in
+    Alamofire.request(.POST, "http://dodo.hznu.edu.cn/api/login", parameters: dic, encoding: ParameterEncoding.URL, headers: nil).responseJSON(completionHandler: { (response) -> Void in
                     switch response.result{
                     case .Success(let data):
                         let json = JSON(data)
@@ -244,13 +244,15 @@
                             userDefault.setValue(json["authtoken"].string, forKey: "authtoken")
                             //设置名字 名字和账号是不一样的
                             userDefault.setValue(json["info"]["name"].string, forKey: "name")
-                            userDefault.setValue(json["info"]["gender"].string, forKey: "sex")
+                            userDefault.setValue(json["info"]["gender"].string, forKey: "gender")
                             userDefault.setValue(json["info"]["cls"].string, forKey: "cls")
                             userDefault.setValue(json["info"]["phone"].string, forKey: "phone")
                             userDefault.setValue(json["info"]["email"].string, forKey: "email")
                             let authDic :[String:AnyObject] = ["authtoken":userDefault.valueForKey("authtoken") as! String]
-                            
-                            Alamofire.request(.GET, "http://dodo.hznu.edu.cn/api/coursequery", parameters: authDic, encoding: ParameterEncoding.URL, headers: nil).responseJSON { (response) in
+                            //设置头像
+                            userDefault.setValue(json["info"]["avtarurl"].string, forKey: "avtarurl")
+
+                            Alamofire.request(.POST, "http://dodo.hznu.edu.cn/api/coursequery", parameters: authDic, encoding: ParameterEncoding.URL, headers: nil).responseJSON { (response) in
                                 switch response.result{
                                 case .Success(let value):
                                     let json = JSON(value)
