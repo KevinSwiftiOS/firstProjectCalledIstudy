@@ -72,6 +72,7 @@ userDefaults.setValue(json["info"]["gender"].string, forKey: "gender")
 userDefaults.setValue(json["info"]["cls"].string, forKey: "cls")
 userDefaults.setValue(json["info"]["phone"].string, forKey: "phone")
 userDefaults.setValue(json["info"]["email"].string, forKey: "email")
+                    
 //设置头像
 userDefaults.setValue(json["info"]["avtarurl"].string, forKey: "avtarurl")
 ProgressHUD.showSuccess("登录成功")

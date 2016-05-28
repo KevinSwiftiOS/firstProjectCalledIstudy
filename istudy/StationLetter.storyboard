@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10117" systemVersion="15E65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="mye-pg-XSt">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10117" systemVersion="15F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="mye-pg-XSt">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
@@ -67,27 +67,6 @@
                                 </variation>
                                 <connections>
                                     <action selector="selectPerson:" destination="rv7-2e-Wfa" eventType="touchUpInside" id="sQO-8b-dt0"/>
-                                </connections>
-                            </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Qnj-yS-AL4">
-                                <rect key="frame" x="-23" y="-15" width="46" height="30"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="25" id="PEE-dG-FHT"/>
-                                </constraints>
-                                <inset key="contentEdgeInsets" minX="33" minY="0.0" maxX="0.0" maxY="0.0"/>
-                                <state key="normal" title="Button" image="发送"/>
-                                <variation key="default">
-                                    <mask key="constraints">
-                                        <exclude reference="PEE-dG-FHT"/>
-                                    </mask>
-                                </variation>
-                                <variation key="heightClass=regular-widthClass=compact">
-                                    <mask key="constraints">
-                                        <include reference="PEE-dG-FHT"/>
-                                    </mask>
-                                </variation>
-                                <connections>
-                                    <action selector="sendEmail:" destination="rv7-2e-Wfa" eventType="touchUpInside" id="zRI-WU-J8h"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="EIm-i4-JW2">
@@ -184,6 +163,27 @@
                                     <action selector="addPhoto:" destination="rv7-2e-Wfa" eventType="touchUpInside" id="qGx-TY-uA5"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Qnj-yS-AL4">
+                                <rect key="frame" x="-23" y="-15" width="46" height="30"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="25" id="PEE-dG-FHT"/>
+                                </constraints>
+                                <inset key="contentEdgeInsets" minX="33" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                <state key="normal" title="Button" image="发送"/>
+                                <variation key="default">
+                                    <mask key="constraints">
+                                        <exclude reference="PEE-dG-FHT"/>
+                                    </mask>
+                                </variation>
+                                <variation key="heightClass=regular-widthClass=compact">
+                                    <mask key="constraints">
+                                        <include reference="PEE-dG-FHT"/>
+                                    </mask>
+                                </variation>
+                                <connections>
+                                    <action selector="sendEmail:" destination="rv7-2e-Wfa" eventType="touchUpInside" id="clK-n0-g2K"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
@@ -228,12 +228,12 @@
                                 <exclude reference="8fj-w1-uEf"/>
                                 <exclude reference="uOQ-Lw-MXT"/>
                                 <exclude reference="rsP-Zz-hor"/>
-                                <exclude reference="Qnj-yS-AL4"/>
                                 <exclude reference="EIm-i4-JW2"/>
                                 <exclude reference="Vjv-ne-z9p"/>
                                 <exclude reference="EVg-XD-Ief"/>
                                 <exclude reference="NoI-DG-zv7"/>
                                 <exclude reference="oEh-92-enE"/>
+                                <exclude reference="Qnj-yS-AL4"/>
                             </mask>
                             <mask key="constraints">
                                 <exclude reference="Vdh-Wd-pnX"/>
@@ -274,12 +274,12 @@
                                 <include reference="8fj-w1-uEf"/>
                                 <include reference="uOQ-Lw-MXT"/>
                                 <include reference="rsP-Zz-hor"/>
-                                <include reference="Qnj-yS-AL4"/>
                                 <include reference="EIm-i4-JW2"/>
                                 <include reference="Vjv-ne-z9p"/>
                                 <include reference="EVg-XD-Ief"/>
                                 <include reference="NoI-DG-zv7"/>
                                 <include reference="oEh-92-enE"/>
+                                <include reference="Qnj-yS-AL4"/>
                             </mask>
                             <mask key="constraints">
                                 <include reference="Vdh-Wd-pnX"/>

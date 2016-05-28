@@ -79,12 +79,14 @@ class ReadEmailViewController: UIViewController {
         self.sendNames.removeAllObjects()
         self.sendIds.addObject(senderId)
         self.sendNames.addObject(senderName)
+        
         let writeEmailVC = UIStoryboard(name: "StationLetter", bundle: nil)
         .instantiateViewControllerWithIdentifier("writeLetterVC") as! WriteLetterViewController
         writeEmailVC.repleyToOneName = self.senderName
         writeEmailVC.repleyToOneId = self.senderId
         writeEmailVC.title = "写邮件"
-           writeEmailVC.subject = self.subject
+        writeEmailVC.parentcode = self.id
+        writeEmailVC.subject = self.subject
         self.navigationController?.pushViewController(writeEmailVC, animated: true)
       
     }

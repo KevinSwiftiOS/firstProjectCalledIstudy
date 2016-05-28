@@ -11,6 +11,7 @@ import Alamofire
 import SwiftyJSON
 class WriteLetterViewController: UIViewController,UICollectionViewDataSource,UICollectionViewDelegate,AJPhotoPickerProtocol,UIImagePickerControllerDelegate,UINavigationControllerDelegate{
  //收件人的添加
+    var parentcode  = NSInteger()
     //主题
 //主题的id
     //看是有回复发件人的还是没有回复发件人的
@@ -162,19 +163,26 @@ self.view.setNeedsLayout()
         }
        
         let dic:[String:AnyObject] = ["subject":subject!,
-                                      "parentcode":"",
+//                                     "parentcode":"",
                                        "content":content,
-                                       "receives":receives]
+                                       "receives":receives
+          ]
+  
+    print(dic)
+    
         var result = ""
         do { let paramData = try NSJSONSerialization.dataWithJSONObject(dic, options: NSJSONWritingOptions.PrettyPrinted)
             result = paramData.base64EncodedStringWithOptions(NSDataBase64EncodingOptions.Encoding64CharacterLineLength)
         }catch{
             ProgressHUD.showError("发送失败")
           
-            let paramDic:[String:AnyObject] = ["authtoken":authtoken,
-                                             "data":result]
+                 }
+        print(result)
+        let paramDic:[String:AnyObject] = ["authtoken":authtoken,
+                                           "data":result]
+
         Alamofire.request(.POST, "http://dodo.hznu.edu.cn/api/messagesend", parameters: paramDic, encoding: ParameterEncoding.URL, headers: nil).responseJSON(completionHandler: { (response) in
-            print(3)
+           
             switch response.result{
                 
             case .Failure(_):
@@ -190,7 +198,6 @@ self.view.setNeedsLayout()
             }
             }
         )
-}
 }
     //添加照片的按钮
     @IBAction func addPhoto(sender:UIButton){

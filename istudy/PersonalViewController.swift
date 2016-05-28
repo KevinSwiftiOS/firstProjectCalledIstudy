@@ -106,27 +106,53 @@ class PersonalViewController: UIViewController,UITableViewDelegate,UITableViewDa
     }
     override func viewWillAppear(animated: Bool) {
         
+//        let app = UIApplication.sharedApplication().delegate as! AppDelegate
+//        self.managedContext = app.managedObjectContext
+//        let fetchResquest = NSFetchRequest(entityName: "PersonalHeadPortrait")
+//        do { self.fetchedResults = try self.managedContext?.executeFetchRequest(fetchResquest) as! [PersonalHeadPortrait]
+//            if(self.fetchedResults.count > 0){
+//                self.selectedImageData = (self.fetchedResults.last?.headPortraitData)!
+//            }else{
+//                self.selectedImageData = UIImagePNGRepresentation(UIImage(named: "默认头像")!)!
+//            }
+//            self.headPortrait?.image = UIImage(data: self.selectedImageData)
+//        }catch{
+//            ProgressHUD.showError("读取图像失败")
+//        }
+//        let userDefault = NSUserDefaults.standardUserDefaults()
+//        if(userDefault.valueForKey("userName") == nil){
+//            self.userName?.text = "未设置账号"
+//        }else{
+//            self.userName?.text = userDefault.valueForKey("userName")
+//            as? String
+//        }
+//    
+//    }
+    let userDefault = NSUserDefaults.standardUserDefaults()
+        var string = userDefault.valueForKey("avtarurl") as! String
+        if(userDefault.valueForKey("avtarurl") as? String != nil && userDefault.valueForKey("avtarurl") as! String != ""){
+            string = string.stringByReplacingOccurrencesOfString("http://dodo.hznu.edu.cn", withString: "")
+            string = "http://dodo.hznu.edu.cn" + string
+            let data = NSData(contentsOfURL: NSURL(string: string)!)
+            self.selectedImageData = data!
+        }else{
+             self.selectedImageData = UIImagePNGRepresentation(UIImage(named: "默认头像")!)!
+        }
+        //保存进core data
+        
+        self.headPortrait?.image = UIImage(data: self.selectedImageData)
+        //做save的一些事情 将头像保存 还有后台数据也要存储
         let app = UIApplication.sharedApplication().delegate as! AppDelegate
         self.managedContext = app.managedObjectContext
-        let fetchResquest = NSFetchRequest(entityName: "PersonalHeadPortrait")
-        do { self.fetchedResults = try self.managedContext?.executeFetchRequest(fetchResquest) as! [PersonalHeadPortrait]
-            if(self.fetchedResults.count > 0){
-                self.selectedImageData = (self.fetchedResults.last?.headPortraitData)!
-            }else{
-                self.selectedImageData = UIImagePNGRepresentation(UIImage(named: "默认头像")!)!
-            }
-            self.headPortrait?.image = UIImage(data: self.selectedImageData)
+        let entity = NSEntityDescription.entityForName("PersonalHeadPortrait", inManagedObjectContext: self.managedContext!)
+        let person = NSManagedObject(entity: entity!, insertIntoManagedObjectContext: self.managedContext) as! PersonalHeadPortrait
+        person.headPortraitData = self.selectedImageData
+        do {try self.managedContext?.save()
+          
         }catch{
-            ProgressHUD.showError("读取图像失败")
+           
         }
-        let userDefault = NSUserDefaults.standardUserDefaults()
-        if(userDefault.valueForKey("userName") == nil){
-            self.userName?.text = "未设置账号"
-        }else{
-            self.userName?.text = userDefault.valueForKey("userName")
-            as? String
-        }
+
     
     }
-
   }

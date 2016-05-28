@@ -11,7 +11,10 @@ import Alamofire
 import SwiftyJSON
 //闭包来传值
 typealias send_index = (index:NSInteger) -> Void
-class WritePeerAssessmentViewController: UIViewController,UIWebViewDelegate,UIPickerViewDelegate,UIPickerViewDataSource {
+class WritePeerAssessmentViewController: UIViewController,UIWebViewDelegate,UIPickerViewDelegate,UIPickerViewDataSource,UITextViewDelegate,UIGestureRecognizerDelegate{
+    //键盘出现时的操作
+    var tap = UITapGestureRecognizer()
+    var aboveCommentTextHeight = CGFloat()
     var commentTextView = JVFloatLabeledTextView()
     //scrollView
     @IBOutlet weak var scrollView:UIScrollView!
@@ -22,15 +25,19 @@ class WritePeerAssessmentViewController: UIViewController,UIWebViewDelegate,UIPi
     var rightSwipe = UISwipeGestureRecognizer()
     var contentWebView = UIWebView()
     var totalHeight = CGFloat()
+var questions = NSMutableArray()
   //评论的是第几个
     var items = NSArray()
     var usertestid = NSInteger()
     var index = NSInteger()
-    //评论的数组
-    var scores = NSMutableArray()
+ 
     //var callBack:send_index?
     override func viewDidLoad() {
         super.viewDidLoad()
+        //键盘出现的时候
+        XKeyBoard.registerKeyBoardHide(self)
+        XKeyBoard.registerKeyBoardShow(self)
+        self.scrollView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(WritePeerAssessmentViewController.resign)))
         //设置阴影效果
         self.topView?.layer.shadowOffset = CGSizeMake(2.0, 1.0)
         self.topView?.layer.shadowColor = UIColor.blueColor().CGColor
@@ -58,8 +65,40 @@ class WritePeerAssessmentViewController: UIViewController,UIWebViewDelegate,UIPi
     @IBAction func savePeer(sender:UIButton){
      //   self.callBack!(index:self.index)
         //进行保存
+        let userDefault = NSUserDefaults.standardUserDefaults()
+     
+      
+        //进行base64字符串解码
+        let paramDic:[String:AnyObject] = ["usertestid":"\(self.usertestid)",
+                                           "questions":self.questions]
+        var result = String()
+        do { let parameterData = try NSJSONSerialization.dataWithJSONObject(paramDic, options: NSJSONWritingOptions.PrettyPrinted)
+            
+            result = parameterData.base64EncodedStringWithOptions(.Encoding64CharacterLineLength)
+        }catch{
+            ProgressHUD.showError("保存失败")
+        }
+        let parameter:[String:AnyObject] = ["authtoken":userDefault.valueForKey("authtoken") as! String,"data":result]
+       print(result)
         
-        self.navigationController?.popViewControllerAnimated(true)
+        Alamofire.request(.POST, "http://dodo.hznu.edu.cn/api/submithuping", parameters: parameter, encoding: ParameterEncoding.URL, headers: nil).responseJSON { (response) in
+            
+            switch response.result{
+            case .Success(let Value):
+                let json = JSON(Value)
+                print(json)
+                if(json["retcode"].number != 0){
+                    print(json["retcode"].number)
+                ProgressHUD.showError("评论失败")
+                }else{
+                    ProgressHUD.showSuccess("评论成功")
+                
+
+}
+            case .Failure(_):ProgressHUD.showError("评论失败")
+            }
+        }
+
         
     }
     override func viewWillAppear(animated: Bool) {
@@ -69,6 +108,7 @@ class WritePeerAssessmentViewController: UIViewController,UIWebViewDelegate,UIPi
         //写请求时间等等
         let dic:[String:AnyObject] = ["usertestid":"\(self.usertestid)",
                                       "authtoken":authtoken]
+  
     Alamofire.request(.POST, "http://dodo.hznu.edu.cn/api/hupingusertest", parameters: dic, encoding: ParameterEncoding.URL, headers: nil).responseJSON { (response) in
         switch response.result{
             case .Failure(_):
@@ -83,7 +123,33 @@ class WritePeerAssessmentViewController: UIViewController,UIWebViewDelegate,UIPi
                     dispatch_async(dispatch_get_main_queue(), {
                         ProgressHUD.dismiss()
                         self.items = json["items"].arrayObject! as NSArray
-            self.initView()
+                        for tempOut in 0 ..< self.items.count{
+                            let dic1 = NSMutableDictionary()
+                            dic1.setObject(self.items[tempOut].valueForKey("id") as! NSNumber, forKey: "questioned")
+                            if(self.items[tempOut].valueForKey("comments") as? String != nil &&
+                                self.items[tempOut].valueForKey("comments") as! String != ""){
+                                    dic1.setObject(self.items[tempOut].valueForKey("comments") as! String, forKey: "comments")
+                            }else{
+                                   dic1.setObject("", forKey: "comments")
+                            }
+                        dic1.setObject(0, forKey: "isauthorvisible")
+                            let rules = self.items[tempOut].valueForKey("rules") as! NSMutableArray
+                            let arr1 = NSMutableArray()
+                            for tempIn in 0 ..< rules.count{
+                                let dic2 = NSMutableDictionary()
+                            dic2.setObject(rules[tempIn].valueForKey("ruleid") as! NSNumber, forKey: "ruleid")
+                             if(rules[tempIn].valueForKey("score") as? NSNumber != nil &&
+                                rules[tempIn].valueForKey("score") as! NSNumber != 0){
+                                dic2.setObject(rules[tempIn].valueForKey("score") as! NSNumber, forKey: "score")
+                             }else{
+                                dic2.setObject(0, forKey: "score")
+                                }
+                            arr1.addObject(dic2)
+                            }
+                        dic1.setObject(arr1, forKey: "rules")
+                        self.questions.addObject(dic1)
+                        }
+                                   self.initView()
                     })
                 }
             }
@@ -101,32 +167,18 @@ class WritePeerAssessmentViewController: UIViewController,UIWebViewDelegate,UIPi
         frame.size.height = CGFloat(height!) + 5
         totalHeight = frame.size.height + 2
         webView.frame = frame
-        
         self.scrollView.addSubview(webView)
-      //学生的答案
-        let stuAnswerLabel = UILabel(frame: CGRectMake(0,totalHeight,SCREEN_WIDTH, 21))
-        stuAnswerLabel.text = "学生答案:"
-        stuAnswerLabel.tag = 10000
-        self.scrollView.addSubview(stuAnswerLabel)
-        self.totalHeight += 22
-        let  stuAnswerWebView = UIWebView(frame: CGRectMake(0,totalHeight,SCREEN_WIDTH,110))
-        if(self.items[index].valueForKey("answer") as? String != nil && self.items[index].valueForKey("answer") as! String != ""){
-        stuAnswerWebView.loadHTMLString(self.items[index].valueForKey("answer") as! String, baseURL: nil)
-              self.totalHeight += 110
-        }else{
-            stuAnswerWebView.loadHTMLString("无学生答案", baseURL: nil)
-            stuAnswerWebView.frame.size.height = 22
-            self.totalHeight += 24
-        }
-       
-        self.scrollView.addSubview(stuAnswerWebView)
+        tap.delegate = self
+        tap.addTarget(self, action: "showBig:")
+        webView.addGestureRecognizer(tap)
         let peerAssermentLabel = UILabel(frame: CGRectMake(0,totalHeight,SCREEN_WIDTH,21))
         peerAssermentLabel.text = "我的评论:"
 peerAssermentLabel.tag = 100000
         self.scrollView.addSubview(peerAssermentLabel)
         self.totalHeight += 22
-        let rules = self.items[index].valueForKey("rules") as! NSArray
+        let rules = self.items[index].valueForKey("rules") as! NSMutableArray
         //循环加载rules
+        let scores = self.questions[index].valueForKey("rules") as! NSMutableArray
         for i in 0 ..< rules.count{
             let ruleContentLabel = UILabel(frame: CGRectMake(0,self.totalHeight,SCREEN_WIDTH,1))
             ruleContentLabel.text = rules[i].valueForKey("contents") as? String
@@ -140,8 +192,9 @@ peerAssermentLabel.tag = 100000
             self.totalHeight += size.height + 2
             //评论的分数显示
             ruleContentLabel.tag = 1000000
+            
             let assermentLabel = UILabel(frame: CGRectMake(0,self.totalHeight,100,21))
-            assermentLabel.text = "评论分数:" + "\(self.scores[i] as! NSNumber)"
+            assermentLabel.text = "评论分数:" + "\(scores[i].valueForKey("score") as! NSNumber)"
             assermentLabel.tag = i
             self.scrollView.addSubview(assermentLabel)
             let assermentBtn = UIButton(frame: CGRectMake(120,self.totalHeight,100,21))
@@ -153,8 +206,21 @@ peerAssermentLabel.tag = 100000
             self.scrollView.addSubview(assermentBtn)
             self.totalHeight += 22
         }
+        aboveCommentTextHeight = self.totalHeight
+        let commentTextLabel = UILabel(frame: CGRectMake(0,self.totalHeight,SCREEN_WIDTH,21))
+        commentTextLabel.tag = 10000000
+        commentTextLabel.text = "评论区:"
+        self.scrollView.addSubview(commentTextLabel)
+        self.totalHeight += 22
         //加评论的文本框
          commentTextView = JVFloatLabeledTextView(frame: CGRectMake(0,self.totalHeight,SCREEN_WIDTH,100))
+        if(self.questions[index].valueForKey("comments") as? String != nil && self.questions[index].valueForKey("comments") as! String != ""){
+            commentTextView.text = self.questions[index].valueForKey("comments") as! String
+        }else{
+              commentTextView.placeholder = "在此处输入评论..."
+        }
+        commentTextView.delegate = self
+        commentTextView.keyboardDismissMode = .OnDrag
         self.totalHeight += 100
         self.scrollView.addSubview(commentTextView)
         self.scrollView.contentSize = CGSizeMake(SCREEN_WIDTH, self.totalHeight)
@@ -182,21 +248,18 @@ peerAssermentLabel.tag = 100000
         for view in self.scrollView.subviews{
             view.removeFromSuperview()
         }
+        var totalString = self.items[index].valueForKey("content") as! String + "学生答案:" + "<br>"
+        if(self.items[index].valueForKey("answer") as? String != nil && self.items[index].valueForKey("answer") as! String != ""){
+            totalString += self.items[index].valueForKey("answer") as! String
+        }else{
+            totalString += "无学生答案"
+        }
         self.currentQusLabel.text = "\(self.index + 1)" + "/"  +  "\(self.items.count)"
-        self.contentWebView.loadHTMLString(self.items[index].valueForKey("content") as! String, baseURL: nil)
+        self.contentWebView.loadHTMLString(totalString, baseURL: nil)
+        
         self.contentWebView.delegate = self
         self.totalHeight = 0
-        //加载评论的分数
-        self.scores.removeAllObjects()
-        let rules = self.items[index].valueForKey("rules") as! NSMutableArray
-        for i in 0 ..< rules.count{
-            if(rules[i].valueForKey("score") as? NSNumber != nil && rules[i].valueForKey("score") as! NSNumber != 0 ){
-                self.scores.addObject(rules[i].valueForKey("score") as! NSNumber)
-            }else{
-                self.scores.addObject(0)
-            }
-        }
-    }
+          }
     func gotoPeer(sender:UIButton){
         self.pickerView.delegate = self
         self.pickerView.dataSource = self
@@ -225,9 +288,69 @@ peerAssermentLabel.tag = 100000
                 if(view.tag == tag){
         let label =  view as! UILabel
            label.text =  "评论分数:" + "\(row)"
-}
+            let arr1 = self.questions[index].valueForKey("rules") as! NSMutableArray
+                      let dic1 = arr1[tag] as! NSMutableDictionary
+                    dic1.setObject(row, forKey: "score")
+                    arr1.replaceObjectAtIndex(tag, withObject: dic1)
+                self.questions[index].setObject(arr1, forKey: "rules")
+                }
             }
         }
-        pickerView.hidden = true
+      
+    }
+    func resign(){
+      commentTextView.resignFirstResponder()
+        self.pickerView.hidden = true
+    }
+    func textViewDidEndEditing(textView: UITextView) {
+        //改变评论的文本
+        self.questions[index].setObject(textView.text, forKey: "comments")
+    }
+    //键盘出现时的代理
+    func keyboardWillHideNotification(notifacition:NSNotification) {
+        self.scrollView.addGestureRecognizer(self.leftSwipe)
+        self.scrollView.addGestureRecognizer(self.rightSwipe)
+        UIView.animateWithDuration(0.3) { () -> Void in
+            self.scrollView.contentOffset = CGPointMake(0, 0)
+                 }
+    }
+    func keyboardWillShowNotification(notifacition:NSNotification) {
+        //做一个动画
+        self.scrollView.removeGestureRecognizer(self.leftSwipe)
+        self.scrollView.removeGestureRecognizer(self.rightSwipe)
+        UIView.animateWithDuration(0.3) { () -> Void in
+        self.scrollView.contentOffset = CGPointMake(0, self.aboveCommentTextHeight)
+        }
+    }
+//显示图片放大
+    //图片放大的效果
+    func gestureRecognizerShouldBegin(gestureRecognizer: UIGestureRecognizer) -> Bool {
+        
+        return true
+        
+    }
+    func gestureRecognizer(gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWithGestureRecognizer otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+        if(gestureRecognizer == self.tap){
+            return true
+        }else{
+            return false
+        }
+    }
+    func showBig(sender:UITapGestureRecognizer){
+        var pt = CGPoint()
+        var urlToSave = ""
+        pt = sender.locationInView(self.contentWebView)
+        let imgUrl = String(format: "document.elementFromPoint(%f, %f).src",pt.x, pt.y);
+        urlToSave = self.contentWebView.stringByEvaluatingJavaScriptFromString(imgUrl)!
+        
+        
+        let data = NSData(contentsOfURL: NSURL(string: urlToSave)!)
+        if(data != nil){
+            let image = UIImage(data: data!)
+            let previewPhotoVC = UIStoryboard(name: "Problem", bundle: nil).instantiateViewControllerWithIdentifier("previewPhotoVC") as! previewPhotoViewController
+            previewPhotoVC.toShowBigImageArray = [image!]
+            previewPhotoVC.contentOffsetX = 0
+            self.navigationController?.pushViewController(previewPhotoVC, animated: true)
+        }
     }
 }

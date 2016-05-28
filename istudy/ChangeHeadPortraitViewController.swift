@@ -8,6 +8,8 @@
 
 import UIKit
 import CoreData
+import SwiftyJSON
+import Alamofire
 class ChangeHeadPortraitViewController: UIViewController,UITableViewDelegate,UITableViewDataSource,UIImagePickerControllerDelegate,UINavigationControllerDelegate{
     @IBOutlet weak var headPortraitImageView:UIImageView?
     @IBOutlet weak var selectImageFromTableView:UITableView?
@@ -76,7 +78,9 @@ class ChangeHeadPortraitViewController: UIViewController,UITableViewDelegate,UIT
     func imagePickerController(picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : AnyObject]) {
     let tempImage = info[UIImagePickerControllerEditedImage] as! UIImage
       picker.dismissViewControllerAnimated(true, completion: nil)
-        self.selectedImageData = UIImagePNGRepresentation(tempImage)!
+        let url = info[UIImagePickerControllerReferenceURL]
+        print(url)
+        self.selectedImageData = UIImageJPEGRepresentation(tempImage, 0.6)!
         self.headPortraitImageView?.image = UIImage(data: self.selectedImageData)
         self.isFromFromImagePicker = true
         
@@ -94,10 +98,13 @@ class ChangeHeadPortraitViewController: UIViewController,UITableViewDelegate,UIT
         person.headPortraitData = self.selectedImageData
         do {try self.managedContext?.save()
             ProgressHUD.showSuccess("保存成功")
+           // self.saveProfile()
             self.navigationController?.popViewControllerAnimated(true)
         }catch{
             ProgressHUD.showError("保存失败")
         }
+        
+        
     }
     override func viewWillAppear(animated: Bool) {
         let app = UIApplication.sharedApplication().delegate as! AppDelegate
@@ -119,4 +126,36 @@ class ChangeHeadPortraitViewController: UIViewController,UITableViewDelegate,UIT
         }
     }
     }
+    func saveProfile() {
+        let userDefault = NSUserDefaults.standardUserDefaults()
+        let dicParam:[String:AnyObject] = ["gender":userDefault.valueForKey("gender") as! String,
+                                           "cls": userDefault.valueForKey("cls") as! String,
+                                           "phone": userDefault.valueForKey("phone") as! String,
+                                           "email": userDefault.valueForKey("email") as! String,
+                                           "avtarurl": self.selectedImageData]
+        //进行base64字符串加密
+        var result = String()
+        do { let parameterData = try NSJSONSerialization.dataWithJSONObject(dicParam, options: NSJSONWritingOptions.PrettyPrinted)
+            
+            result = parameterData.base64EncodedStringWithOptions(.Encoding64CharacterLineLength)
+        }catch{
+            ProgressHUD.showError("保存失败")
+        }
+        let parameter:[String:AnyObject] = ["authtoken":userDefault.valueForKey("authtoken") as! String,"data":result]
+        Alamofire.request(.POST, "http://dodo.hznu.edu.cn/api/saveprofile", parameters: parameter, encoding: ParameterEncoding.URL, headers: nil).responseJSON { (response) in
+            switch response.result{
+            case .Success(let Value):
+                let json = JSON(Value)
+                if(json["retcode"].number == 0){
+                    ProgressHUD.showSuccess("保存成功")
+                    self.navigationController?.popViewControllerAnimated(true)
+                }else{
+                    ProgressHUD.showError("保存失败")
+                    print(json["retcode"].number)
+                }
+            case .Failure(_):ProgressHUD.showError("保存失败")
+            }
+        }
+    }
+
 }

@@ -116,6 +116,7 @@ class PeerAssessmentViewController: UIViewController ,UITableViewDataSource,UITa
                     
                     dispatch_async(dispatch_get_main_queue(), {
                         self.items = json["items"].arrayObject! as NSArray
+                        print(self.items)
                     self.tableView?.mj_header.endRefreshing()
                         self.tableView?.reloadData()
             })

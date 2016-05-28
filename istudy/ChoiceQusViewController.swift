@@ -325,7 +325,7 @@ func showAct(){
                       "answer":self.answers.objectAtIndex(index)]
         let userDefault = NSUserDefaults.standardUserDefaults()
         let authtoken = userDefault.valueForKey("authtoken") as! String
-        
+        print(answer)
         var result = String()
         do { let parameterData = try NSJSONSerialization.dataWithJSONObject(answer, options: NSJSONWritingOptions.PrettyPrinted)
             
