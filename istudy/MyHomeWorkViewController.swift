@@ -231,7 +231,7 @@ class MyHomeWorkViewController: UIViewController,UITableViewDataSource,UITableVi
         let userDefault = NSUserDefaults.standardUserDefaults()
         let dic:[String:AnyObject] = ["authtoken":userDefault.valueForKey("authtoken") as! String,
                                       "courseid": "\(self.id)"]
-        Alamofire.request(.GET, self.postString, parameters: dic, encoding: ParameterEncoding.URL, headers: nil).responseJSON { (response) in
+        Alamofire.request(.POST, self.postString, parameters: dic, encoding: ParameterEncoding.URL, headers: nil).responseJSON { (response) in
             switch response.result{
             case .Success(let Value):
                 let json = JSON(Value)
@@ -292,7 +292,7 @@ class MyHomeWorkViewController: UIViewController,UITableViewDataSource,UITableVi
         sc.dismissViewControllerAnimated(true, completion: nil)
        }
     override func viewWillDisappear(animated: Bool) {
-      self.tableView?.mj_header.endRefreshing()
+   
         ProgressHUD.dismiss()
     }
 }

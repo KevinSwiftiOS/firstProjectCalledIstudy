@@ -106,7 +106,7 @@ class PeerAssessmentViewController: UIViewController ,UITableViewDataSource,UITa
         let userDefault = NSUserDefaults.standardUserDefaults()
         let dic:[String:AnyObject] = ["authtoken":userDefault.valueForKey("authtoken") as! String,
                                       "courseid":"\(self.id)"]
-        Alamofire.request(.GET, "http://dodo.hznu.edu.cn/api/hupingquery", parameters: dic, encoding: ParameterEncoding.URL, headers: nil).responseJSON { (response) in
+        Alamofire.request(.POST, "http://dodo.hznu.edu.cn/api/hupingquery", parameters: dic, encoding: ParameterEncoding.URL, headers: nil).responseJSON { (response) in
             switch response.result{
             case .Success(let Value):
                 let json = JSON(Value)
@@ -116,8 +116,7 @@ class PeerAssessmentViewController: UIViewController ,UITableViewDataSource,UITa
                     
                     dispatch_async(dispatch_get_main_queue(), {
                         self.items = json["items"].arrayObject! as NSArray
-                        print(self.items)
-                    self.tableView?.mj_header.endRefreshing()
+                        self.tableView?.mj_header.endRefreshing()
                         self.tableView?.reloadData()
             })
                 }
@@ -127,7 +126,7 @@ class PeerAssessmentViewController: UIViewController ,UITableViewDataSource,UITa
         }
     }
     override func viewWillDisappear(animated: Bool) {
-        self.tableView?.mj_header.endRefreshing()
+      
         ProgressHUD.dismiss()
     }
 }

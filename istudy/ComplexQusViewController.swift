@@ -11,8 +11,10 @@ import Alamofire
 import SwiftyJSON
 class ComplexQusViewController: UIViewController,UITableViewDelegate,UITableViewDataSource ,UIWebViewDelegate,UIGestureRecognizerDelegate{
     //几个手势 为了键盘的bug
-    var subLeftSwipe = UISwipeGestureRecognizer()
-    var subRightSwipe = UISwipeGestureRecognizer()
+    //每个题目的范围 
+    var everySubQusRange = NSMutableArray()
+    var subUpSwipe = UISwipeGestureRecognizer()
+    var subDownSwipe = UISwipeGestureRecognizer()
     var rightSwipe = UISwipeGestureRecognizer()
     var leftSwipe = UISwipeGestureRecognizer()
     var tap = UITapGestureRecognizer()
@@ -141,13 +143,13 @@ class ComplexQusViewController: UIViewController,UITableViewDelegate,UITableView
         self.tableView.tableFooterView = UIView()
         // self.tableView.estimatedRowHeight = 88
         //self.tableView.rowHeight = UITableViewAutomaticDimension
-        subLeftSwipe = UISwipeGestureRecognizer(target: self, action: #selector(ComplexQusViewController.addNewSubQus(_:)))
-        subLeftSwipe.direction = .Left
-        subRightSwipe = UISwipeGestureRecognizer(target: self, action: #selector(ComplexQusViewController.addNewSubQus(_:)))
-        subRightSwipe.direction = .Right
-        self.tableView.addGestureRecognizer(subLeftSwipe)
+        subUpSwipe = UISwipeGestureRecognizer(target: self, action: #selector(ComplexQusViewController.addNewSubQus(_:)))
+        subUpSwipe.direction = .Left
+        subDownSwipe = UISwipeGestureRecognizer(target: self, action: #selector(ComplexQusViewController.addNewSubQus(_:)))
+        subDownSwipe.direction = .Right
+        self.tableView.addGestureRecognizer(subDownSwipe)
         self.tableView.userInteractionEnabled = true
-        self.tableView.addGestureRecognizer(subRightSwipe)
+        self.tableView.addGestureRecognizer(subUpSwipe)
         leftSwipe = UISwipeGestureRecognizer(target: self, action:#selector(ComplexQusViewController.addNewQus(_:)))
         leftSwipe.direction = .Left
         rightSwipe = UISwipeGestureRecognizer(target: self, action: #selector(ComplexQusViewController.addNewQus(_:)))
@@ -217,6 +219,8 @@ class ComplexQusViewController: UIViewController,UITableViewDelegate,UITableView
         self.currentQusLabel?.text = "\(self.index + 1)" + "/" + "\(self.items.count)"
         //小题目的默认为第一题
         self.subIndex = 0
+        //每一道大题目的范围给他拿掉
+        self.everySubQusRange.removeAllObjects()
         //初始化自己答案
         self.oneQusSubSelfAnswers.removeAllObjects()
         //阅卷的文字
@@ -292,6 +296,10 @@ class ComplexQusViewController: UIViewController,UITableViewDelegate,UITableView
         //判断是选择题 还是 填空题
         self.oneSubFillBlankSelfAnswerArray.removeAllObjects()
         if(self.subQusItems[subIndex].valueForKey("type") as! String != "FILL_BLANK"){
+            //判断这时这个数组有没有在
+            if(self.everySubQusRange.count <= subIndex){
+            self.everySubQusRange.addObject(1)
+            }
             for i in 0 ..< tempOptionArray.count{
                 let key = "option" + tempOptionArray[i]
                 if(self.subQusItems[subIndex].valueForKey(key) as? String != nil
@@ -316,7 +324,10 @@ class ComplexQusViewController: UIViewController,UITableViewDelegate,UITableView
             }
             oneSubFillBlankSelfAnswerArray.addObject("")
             cellHeights.addObject(40)
+            if(self.everySubQusRange.count <= subIndex){
             
+         self.everySubQusRange.addObject(self.cellHeights.count)
+            }
         }
          beforeEditing = self.oneQusSubSelfAnswers[subIndex] as! String
         self.tableView.frame = CGRectMake(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT)
@@ -603,10 +614,10 @@ class ComplexQusViewController: UIViewController,UITableViewDelegate,UITableView
     //
     //保存着一道题目的小题目的所有答案
     @IBAction func save(sender:UIButton){
-        isSave = true
-        self.save()
+      self.save()
     }
     func save() {
+        isSave = true
         //组装字符串 变成~~~的形式
         var answerString = ""
         for i in 0 ..< self.oneQusSubSelfAnswers.count - 1{
@@ -617,8 +628,7 @@ class ComplexQusViewController: UIViewController,UITableViewDelegate,UITableView
         answerString += oneQusSubSelfAnswers[oneQusSubSelfAnswers.count - 1] as! String
         self.totalBigSelfAnswers.replaceObjectAtIndex(index, withObject: answerString)
         self.postAnswer()
-        
-    }
+        }
     //向服务器传送答案
     func postAnswer() {
         let answer = ["testid":"\(testid)",
@@ -651,7 +661,12 @@ class ComplexQusViewController: UIViewController,UITableViewDelegate,UITableView
                     ProgressHUD.showError("保存失败")
                     print(json["retcode"].number)
                 }else{
-                    ProgressHUD.showSuccess("保存成功")
+                   
+                    if(self.disPlayMarkTextArray[self.subIndex] as? String != ""){
+                        self.Over()
+                    }else{
+                        ProgressHUD.showSuccess("保存成功")
+                    }
                 }
             }
         }
@@ -722,8 +737,8 @@ class ComplexQusViewController: UIViewController,UITableViewDelegate,UITableView
     func keyboardWillShowNotification(notifacition:NSNotification) {
         self.tableView.tableFooterView = UIView()
         //解除手势
-        self.tableView.removeGestureRecognizer(subLeftSwipe)
-        self.tableView.removeGestureRecognizer(subRightSwipe)
+        self.tableView.removeGestureRecognizer(subUpSwipe)
+        self.tableView.removeGestureRecognizer(subDownSwipe)
         self.qusDesWebView?.removeGestureRecognizer(rightSwipe)
         self.qusDesWebView?.removeGestureRecognizer(leftSwipe)
         let webViewforTableViewTotalHeight = NSInteger(self.subWebView.stringByEvaluatingJavaScriptFromString("document.body.offsetHeight")!)
@@ -745,9 +760,9 @@ class ComplexQusViewController: UIViewController,UITableViewDelegate,UITableView
     }
     //键盘出现的时候的代理
     func keyboardWillHideNotification(notifacition:NSNotification) {
-        self.tableView.addGestureRecognizer(subLeftSwipe)
+        self.tableView.addGestureRecognizer(subUpSwipe)
         self.tableView.userInteractionEnabled = true
-        self.tableView.addGestureRecognizer(subRightSwipe)
+        self.tableView.addGestureRecognizer(subDownSwipe)
         self.qusDesWebView?.addGestureRecognizer(leftSwipe)
         self.qusDesWebView?.addGestureRecognizer(rightSwipe)
         UIView.animateWithDuration(0.3) {
@@ -804,17 +819,25 @@ class ComplexQusViewController: UIViewController,UITableViewDelegate,UITableView
     }
     @IBAction func goOver(sender:UIButton){
         //没有超过指定日期且没有开放阅卷功能的
-        if(!self.isOver && !self.enableClientJudge){
-            ProgressHUD.showError("没有开启阅卷功能")
-        }
-        else{
-            self.save()
-            self.Over()
-        }
+//        if(!self.isOver && !self.enableClientJudge){
+//            ProgressHUD.showError("没有开启阅卷功能")
+//        }
+//        else{
+     self.disPlayMarkTextArray.replaceObjectAtIndex(subIndex, withObject: "1")
+        self.save()
+       // }
     }
     //阅卷的功能
     func Over() {
-        print(self.subQusItems[subIndex].valueForKey("id"))
+        //没有超过指定日期且没有开放阅卷功能的
+        //        if(!self.isOver && !self.enableClientJudge){
+        //            ProgressHUD.showError("没有开启阅卷功能")
+        //        }
+        //        else{
+        
+     
+       
+        // }
         switch self.subQusItems[subIndex].valueForKey("type") as! String{
         case "JUDGE","SINGLE_CHIOCE","MULIT_CHIOCE":
             self.choiceOver()
@@ -825,6 +848,13 @@ class ComplexQusViewController: UIViewController,UITableViewDelegate,UITableView
         }
     }
     func choiceOver() {
+        //进行过滤和遍历 还要加多少
+        var startRange = 0
+        var endRange = 0
+        for i in 0 ..< self.subIndex{
+            startRange += self.everySubQusRange[i] as! NSInteger
+        }
+   endRange += startRange + (self.everySubQusRange[subIndex] as! NSInteger)
         print(self.items[index].valueForKey("id"))
         //没有超过指定日期且没有开放阅卷功能的
         if(!self.isOver && !self.enableClientJudge){
@@ -839,7 +869,7 @@ class ComplexQusViewController: UIViewController,UITableViewDelegate,UITableView
                             "testid":"\(self.testid)",
                             "questionid":"\(self.items[index].valueForKey("id") as! NSNumber)"
             ]
-            Alamofire.request(.GET, "http://dodo.hznu.edu.cn/api/judgequestion", parameters: paramDic, encoding: ParameterEncoding.URL, headers: nil).responseJSON(completionHandler: { (response) in
+            Alamofire.request(.POST, "http://dodo.hznu.edu.cn/api/judgequestion", parameters: paramDic, encoding: ParameterEncoding.URL, headers: nil).responseJSON(completionHandler: { (response) in
                 switch response.result{
                 case .Success(let Value):
                     let json = JSON(Value)
@@ -850,7 +880,7 @@ class ComplexQusViewController: UIViewController,UITableViewDelegate,UITableView
                     else{
                         let judgeItems = json["info"]["JudgeResultItemSet"].arrayObject! as NSArray
                         var totalString = "答案:"
-                        if(judgeItems[0].valueForKey("Right") as! Bool == true){
+                        if(judgeItems[startRange].valueForKey("Right") as! Bool == true){
                             totalString += "正确" + "\n"
                             
                         }else{
@@ -858,29 +888,30 @@ class ComplexQusViewController: UIViewController,UITableViewDelegate,UITableView
                         }
                         totalString += "知识点:"  + (self.items[self.index].valueForKey("knowledge") as! String) + "\n"
                         
-                        totalString += "得分:" + "\(judgeItems[0].valueForKey("GotScore") as! NSNumber)"
-                            + "/" + "\(judgeItems[0].valueForKey("FullScore") as! NSNumber)" + "\n"
+                        totalString += "得分:" + "\(judgeItems[startRange].valueForKey("GotScore") as! NSNumber)"
+                            + "/" + "\(judgeItems[startRange].valueForKey("FullScore") as! NSNumber)" + "\n"
                         
-                        if((self.keyVisible && !self.isOver) || (self.isOver && self.viewOneWithAnswerKey)){                            totalString += "答案:" + (judgeItems[0].valueForKey("Key") as! String)
+                        if((self.keyVisible && !self.isOver) || (self.isOver && self.viewOneWithAnswerKey)){                            totalString += "答案:" + (judgeItems[startRange].valueForKey("Key") as! String)
                         }
                         else{
                             totalString += "标准答案未开放" + "\n"
                             
                         }
-                        if(judgeItems[0].valueForKey("Message") as? String != nil && judgeItems[0].valueForKey("Message") as! String != "") {
-                            totalString += "信息:" + (judgeItems[0].valueForKey("Message") as! String)
+                        if(judgeItems[startRange].valueForKey("Message") as? String != nil && judgeItems[startRange].valueForKey("Message") as! String != "") {
+                            totalString += "信息:" + (judgeItems[startRange].valueForKey("Message") as! String)
                         }
                         self.resultTextView = JVFloatLabeledTextView(frame: CGRectMake(0, 0, SCREEN_WIDTH, 200))
                         //设置字体
                         let totalAttriString = NSMutableAttributedString(string: totalString)
                         let range = NSMakeRange(3, 2)
-                        if(judgeItems[0].valueForKey("Right") as! Bool == true){
+                        if(judgeItems[startRange].valueForKey("Right") as! Bool == true){
                             totalAttriString.addAttribute(NSForegroundColorAttributeName, value: UIColor.greenColor(), range: range)
                         }else{
                             totalAttriString.addAttribute(NSForegroundColorAttributeName, value: UIColor.redColor(), range: range)
                         }
                         self.resultTextView.attributedText = totalAttriString
                         self.goOVerBtn?.enabled = false
+                        self.saveBtn?.enabled = false
                         self.tableView?.tableFooterView = self.resultTextView
                         //阅卷的界面不可点击
                         self.resultTextView.editable = false
@@ -893,22 +924,27 @@ class ComplexQusViewController: UIViewController,UITableViewDelegate,UITableView
         }
     }
     func filLBlankOver() {
-        print(self.isOver)
-        print(self.enableClientJudge)
-        
-              //没有超过指定日期且没有开放阅卷功能的
-        if(!self.isOver && !self.enableClientJudge){
-            ProgressHUD.showError("没有开启阅卷功能")
+        //进行过滤和遍历 还要加多少
+        var startRange = 0
+        var endRange = 0
+      
+        for i in 0 ..< self.subIndex{
+            startRange += self.everySubQusRange[i] as! NSInteger
         }
+   endRange += startRange + (self.everySubQusRange[subIndex] as! NSInteger)
+//没有超过指定日期且没有开放阅卷功能的
+//        if(!self.isOver && !self.enableClientJudge){
+//            ProgressHUD.showError("没有开启阅卷功能")
+//        }
         //如果没有超过指定日期且可以阅卷或者已经超过日期的
-        if(!self.isOver && self.enableClientJudge || (self.isOver)){
+  //      if(!self.isOver && self.enableClientJudge || (self.isOver)){
             let userDefault = NSUserDefaults.standardUserDefaults()
             let authtoken = userDefault.valueForKey("authtoken") as! String
             let paramDic = ["authtoken":authtoken,
                             "testid":"\(self.testid)",
-                            "questionid":"\(self.subQusItems[subIndex].valueForKey("id") as! NSNumber)"
+                            "questionid":"\(self.items[index].valueForKey("id") as! NSNumber)"
             ]
-            Alamofire.request(.GET, "http://dodo.hznu.edu.cn/api/judgequestion", parameters: paramDic, encoding: ParameterEncoding.URL, headers: nil).responseJSON(completionHandler: { (response) in
+            Alamofire.request(.POST, "http://dodo.hznu.edu.cn/api/judgequestion", parameters: paramDic, encoding: ParameterEncoding.URL, headers: nil).responseJSON(completionHandler: { (response) in
                 switch response.result{
                 case .Success(let Value):
                     let json = JSON(Value)
@@ -921,8 +957,8 @@ class ComplexQusViewController: UIViewController,UITableViewDelegate,UITableView
                         var totalString = "答案:"
                         //设置红绿字的范围
                         let rangeArray = NSMutableArray()
-                        for i in 0 ..< judgeItems.count{
-                            let range = NSMakeRange(3 + i * 3,2)
+                        for i in startRange ..< endRange{
+                            let range = NSMakeRange(3 + (i - startRange) * 3,2)
                             rangeArray.addObject(range)
                             if(judgeItems[i].valueForKey("Right") as! Bool == true){
                                 totalString += "正确" + " "
@@ -935,19 +971,19 @@ class ComplexQusViewController: UIViewController,UITableViewDelegate,UITableView
                         totalString += "\n" + "知识点:" + (self.items[self.index].valueForKey("knowledge") as! String) + "\n"
                         //再加得分
                         totalString += "得分:"
-                        for i in 0 ..< judgeItems.count{
+                        for i in startRange ..< endRange{
                             totalString += "\(judgeItems[i].valueForKey("GotScore") as! NSNumber)" + "/" + "\(judgeItems[i].valueForKey("FullScore") as! NSNumber)" + " "
                         }
                         //随后再加载标准答案
                         totalString += "\n" + "答案:"
-                        for i in 0 ..< judgeItems.count{
+                        for i in startRange ..< endRange{
                             totalString += (judgeItems[i].valueForKey("Key") as! String) + "\n"
                         }
                         let totalAttriString = NSMutableAttributedString(string: totalString)
                         //设置颜色
                         for i in 0 ..< rangeArray.count{
                             let range = rangeArray[i] as! NSRange
-                            if(judgeItems[i].valueForKey("Right") as! Bool == true){
+                            if(judgeItems[i + startRange].valueForKey("Right") as! Bool == true){
                                 totalAttriString.addAttribute(NSForegroundColorAttributeName, value: UIColor.greenColor(), range: range)
                             }else{
                                 totalAttriString.addAttribute(NSForegroundColorAttributeName, value: UIColor.redColor(), range: range)
@@ -969,7 +1005,7 @@ class ComplexQusViewController: UIViewController,UITableViewDelegate,UITableView
                     ProgressHUD.showError("阅卷失败")
                 }
             })
-        }
+        //}
     }    //图片放大时候的动作
     func gestureRecognizerShouldBegin(gestureRecognizer: UIGestureRecognizer) -> Bool {
         

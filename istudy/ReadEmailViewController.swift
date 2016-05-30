@@ -87,6 +87,7 @@ class ReadEmailViewController: UIViewController {
         writeEmailVC.title = "写邮件"
         writeEmailVC.parentcode = self.id
         writeEmailVC.subject = self.subject
+        writeEmailVC.isReply = true
         self.navigationController?.pushViewController(writeEmailVC, animated: true)
       
     }

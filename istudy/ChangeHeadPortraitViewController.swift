@@ -78,8 +78,7 @@ class ChangeHeadPortraitViewController: UIViewController,UITableViewDelegate,UIT
     func imagePickerController(picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : AnyObject]) {
     let tempImage = info[UIImagePickerControllerEditedImage] as! UIImage
       picker.dismissViewControllerAnimated(true, completion: nil)
-        let url = info[UIImagePickerControllerReferenceURL]
-        print(url)
+        
         self.selectedImageData = UIImageJPEGRepresentation(tempImage, 0.6)!
         self.headPortraitImageView?.image = UIImage(data: self.selectedImageData)
         self.isFromFromImagePicker = true
@@ -97,10 +96,8 @@ class ChangeHeadPortraitViewController: UIViewController,UITableViewDelegate,UIT
         let person = NSManagedObject(entity: entity!, insertIntoManagedObjectContext: self.managedContext) as! PersonalHeadPortrait
         person.headPortraitData = self.selectedImageData
         do {try self.managedContext?.save()
-            ProgressHUD.showSuccess("保存成功")
-           // self.saveProfile()
-            self.navigationController?.popViewControllerAnimated(true)
-        }catch{
+           self.saveProfile()
+                   }catch{
             ProgressHUD.showError("保存失败")
         }
         
@@ -128,12 +125,64 @@ class ChangeHeadPortraitViewController: UIViewController,UITableViewDelegate,UIT
     }
     func saveProfile() {
         let userDefault = NSUserDefaults.standardUserDefaults()
-        let dicParam:[String:AnyObject] = ["gender":userDefault.valueForKey("gender") as! String,
-                                           "cls": userDefault.valueForKey("cls") as! String,
-                                           "phone": userDefault.valueForKey("phone") as! String,
-                                           "email": userDefault.valueForKey("email") as! String,
-                                           "avtarurl": self.selectedImageData]
-        //进行base64字符串加密
+      let string = "http://dodo.hznu.edu.cn/api/upfile?authtoken=" + (userDefault.valueForKey("authtoken") as! String)
+Alamofire.upload(.POST, string, multipartFormData: { (formData) in
+        formData.appendBodyPart(data: self.selectedImageData, name: "name", fileName: "head.jpg", mimeType: "image/jpeg")
+        }) { (encodingResult) in
+            switch encodingResult {
+            case .Success(let upload, _, _):
+   //         print((upload.request?.allHTTPHeaderFields))
+                upload.responseJSON(completionHandler: { (response) in
+                    switch response.result{
+                    case .Success(let Value):
+                        let json = JSON(Value)
+                      userDefault.setValue(json["info"]["uploadedurl"].string, forKey: "avtarurl")
+                        self.save()
+                    case .Failure(_):
+                        print(2)
+                        ProgressHUD.showError("保存失败")
+                    }
+                })
+            case .Failure(_):
+                ProgressHUD.showError("保存失败")
+                print(3)
+            }
+        }
+    }
+    func save(){
+        let userDefault = NSUserDefaults.standardUserDefaults()
+               var email = ""
+        var phone = ""
+        var avtarurl = ""
+        var cls = ""
+        var name = ""
+        var gender = ""
+        if(userDefault.valueForKey("email") as? String != nil && userDefault.valueForKey("email") as! String != ""){
+            email = userDefault.valueForKey("email") as! String
+        }
+        if(userDefault.valueForKey("phone") as? String != nil && userDefault.valueForKey("phone") as! String != ""){
+            phone = userDefault.valueForKey("phone") as! String
+        }
+        if(userDefault.valueForKey("avtarurl") as? String != nil && userDefault.valueForKey("avtarurl") as! String != ""){
+            avtarurl = userDefault.valueForKey("avtarurl") as! String
+        }
+        if(userDefault.valueForKey("cls") as? String != nil && userDefault.valueForKey("cls") as! String != ""){
+            cls = userDefault.valueForKey("cls") as! String
+        }
+        if(userDefault.valueForKey("name") as? String != nil && userDefault.valueForKey("name") as! String != ""){
+            name = userDefault.valueForKey("name") as! String
+        }
+        if(userDefault.valueForKey("gender") as? String != nil && userDefault.valueForKey("gender") as! String != ""){
+            gender = userDefault.valueForKey("gender") as! String
+        }
+        
+        let dicParam:[String:AnyObject] = [
+            "name":name,
+            "gender":gender,
+            "cls": cls,
+            "phone":phone,
+            "email": email,
+            "avtarurl":avtarurl]        //进行base64字符串加密
         var result = String()
         do { let parameterData = try NSJSONSerialization.dataWithJSONObject(dicParam, options: NSJSONWritingOptions.PrettyPrinted)
             
@@ -156,6 +205,9 @@ class ChangeHeadPortraitViewController: UIViewController,UITableViewDelegate,UIT
             case .Failure(_):ProgressHUD.showError("保存失败")
             }
         }
-    }
 
+    }
+    override func viewWillDisappear(animated: Bool) {
+        ProgressHUD.dismiss()
+    }
 }

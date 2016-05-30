@@ -76,6 +76,11 @@ override func didReceiveMemoryWarning() {
         //对每个进行保存的时候要进行判断 用正则表达式进行匹配
       let userDefault = NSUserDefaults.standardUserDefaults()
         switch self.title!{
+            case "真实姓名":
+            let text = self.changeNameTextField?.text
+            let userDefault = NSUserDefaults.standardUserDefaults()
+               userDefault.setValue(text, forKey: "name")
+            self.saveProfile()
           case "手机":
 let PhonePattern = "^((13[0-9])|(17[0-9])|(15[^4,\\D])|(18[0,5-9]))\\d{8}$"
             let matcher: RegexHelper
@@ -161,12 +166,38 @@ let PhonePattern = "^((13[0-9])|(17[0-9])|(15[^4,\\D])|(18[0,5-9]))\\d{8}$"
     }
     func saveProfile() {
         let userDefault = NSUserDefaults.standardUserDefaults()
-        let dicParam:[String:AnyObject] = ["gender":userDefault.valueForKey("gender") as! String,
-                                           "cls": userDefault.valueForKey("cls") as! String,
-                                           "phone": userDefault.valueForKey("phone") as! String,
-                                           "email": userDefault.valueForKey("email") as! String,
-                                           "avtarurl": userDefault.valueForKey("avtarurl") as! String]
-        //进行base64字符串加密
+        var email = ""
+        var phone = ""
+        var avtarurl = ""
+        var cls = ""
+        var name = ""
+        var gender = ""
+        if(userDefault.valueForKey("email") as? String != nil && userDefault.valueForKey("email") as! String != ""){
+            email = userDefault.valueForKey("email") as! String
+        }
+        if(userDefault.valueForKey("phone") as? String != nil && userDefault.valueForKey("phone") as! String != ""){
+            phone = userDefault.valueForKey("phone") as! String
+        }
+        if(userDefault.valueForKey("avtarurl") as? String != nil && userDefault.valueForKey("avtarurl") as! String != ""){
+            avtarurl = userDefault.valueForKey("avtarurl") as! String
+        }
+        if(userDefault.valueForKey("cls") as? String != nil && userDefault.valueForKey("cls") as! String != ""){
+            cls = userDefault.valueForKey("cls") as! String
+        }
+        if(userDefault.valueForKey("name") as? String != nil && userDefault.valueForKey("name") as! String != ""){
+            name = userDefault.valueForKey("name") as! String
+        }
+        if(userDefault.valueForKey("gender") as? String != nil && userDefault.valueForKey("gender") as! String != ""){
+            gender = userDefault.valueForKey("gender") as! String
+        }
+        
+        let dicParam:[String:AnyObject] = [
+            "name":name,
+            "gender":gender,
+            "cls": cls,
+            "phone":phone,
+            "email": email,
+            "avtarurl":avtarurl]          //进行base64字符串加密
         var result = String()
         do { let parameterData = try NSJSONSerialization.dataWithJSONObject(dicParam, options: NSJSONWritingOptions.PrettyPrinted)
             

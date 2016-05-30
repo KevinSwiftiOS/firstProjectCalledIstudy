@@ -67,12 +67,38 @@ class ChangeSexViewController: UIViewController {
     }
     func saveProfile() {
         let userDefault = NSUserDefaults.standardUserDefaults()
-        let dicParam:[String:AnyObject] = ["gender":userDefault.valueForKey("gender") as! String,
-                                           "cls": userDefault.valueForKey("cls") as! String,
-                                           "phone": userDefault.valueForKey("phone") as! String,
-                                           "email": userDefault.valueForKey("email") as! String,
-                                           "avtarurl": userDefault.valueForKey("avtarurl") as! String]
-        //进行base64字符串加密
+        var email = ""
+        var phone = ""
+        var avtarurl = ""
+        var cls = ""
+        var name = ""
+        var gender = ""
+        if(userDefault.valueForKey("email") as? String != nil && userDefault.valueForKey("email") as! String != ""){
+            email = userDefault.valueForKey("email") as! String
+        }
+        if(userDefault.valueForKey("phone") as? String != nil && userDefault.valueForKey("phone") as! String != ""){
+            phone = userDefault.valueForKey("phone") as! String
+        }
+        if(userDefault.valueForKey("avtarurl") as? String != nil && userDefault.valueForKey("avtarurl") as! String != ""){
+            avtarurl = userDefault.valueForKey("avtarurl") as! String
+        }
+        if(userDefault.valueForKey("cls") as? String != nil && userDefault.valueForKey("cls") as! String != ""){
+            cls = userDefault.valueForKey("cls") as! String
+        }
+        if(userDefault.valueForKey("name") as? String != nil && userDefault.valueForKey("name") as! String != ""){
+            name = userDefault.valueForKey("name") as! String
+        }
+        if(userDefault.valueForKey("gender") as? String != nil && userDefault.valueForKey("gender") as! String != ""){
+            gender = userDefault.valueForKey("gender") as! String
+        }
+        
+        let dicParam:[String:AnyObject] = [
+            "name":name,
+            "gender":gender,
+            "cls": cls,
+            "phone":phone,
+            "email": email,
+            "avtarurl":avtarurl]          //进行base64字符串加密
         var result = String()
         do { let parameterData = try NSJSONSerialization.dataWithJSONObject(dicParam, options: NSJSONWritingOptions.PrettyPrinted)
             
@@ -97,5 +123,7 @@ class ChangeSexViewController: UIViewController {
             }
         }
     }
-  
+    override func viewDidDisappear(animated: Bool) {
+        ProgressHUD.dismiss()
+    }
 }

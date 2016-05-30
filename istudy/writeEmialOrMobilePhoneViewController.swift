@@ -62,7 +62,7 @@ class writeEmialOrMobilePhoneViewController: UIViewController {
             emailText = emailText!.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceCharacterSet())
             if matcher.match(emailText!){
               //发送验证码
-              let emailText = self.writeTextField?.text?.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceCharacterSet())
+              let emailText = self.writeTextField?.text
                 
                 let urlString = "http://dodo.hznu.edu.cn/api/sendvalidcode" + "?email=" + (emailText)!
                 

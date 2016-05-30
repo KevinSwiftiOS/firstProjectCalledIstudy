@@ -306,7 +306,7 @@ class StationLetterViewController: UIViewController,UITableViewDelegate,UITableV
             paramDic = self.outDic
          url = "http://dodo.hznu.edu.cn/api/messagesendquery"
         }
-        Alamofire.request(.GET, url, parameters: paramDic, encoding: ParameterEncoding.URL, headers: nil).responseJSON { (response) in
+        Alamofire.request(.POST, url, parameters: paramDic, encoding: ParameterEncoding.URL, headers: nil).responseJSON { (response) in
             switch response.result{
             case .Failure(_):
                 ProgressHUD.showError("请求失败")
@@ -346,7 +346,7 @@ class StationLetterViewController: UIViewController,UITableViewDelegate,UITableV
         self.isShow = false
         self.stationLetterTableView?.userInteractionEnabled = !isShow
         self.stationLetterTableViewToSuperViewLeading.constant = 0
-        self.stationLetterTableView?.mj_header.endRefreshing()
+       
         ProgressHUD.dismiss()
    self.view.setNeedsLayout()
     }

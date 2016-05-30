@@ -212,7 +212,7 @@ override func viewWillAppear(animated: Bool) {
                                    "page":"1",
                                    "projectid":"\(self.id)",
                                    "mode":"2"]
-      Alamofire.request(.GET, "http://dodo.hznu.edu.cn/api/forumquery", parameters: dic, encoding: ParameterEncoding.URL, headers: nil).responseJSON { (response) in
+      Alamofire.request(.POST, "http://dodo.hznu.edu.cn/api/forumquery", parameters: dic, encoding: ParameterEncoding.URL, headers: nil).responseJSON { (response) in
         switch response.result{
         case .Success(let Value):
             let json = JSON(Value)
@@ -254,6 +254,5 @@ override func viewWillAppear(animated: Bool) {
     }
     override func viewWillDisappear(animated: Bool) {
         ProgressHUD.dismiss()
-        self.discussTableView?.mj_header.endRefreshing()
-    }
+        }
 }

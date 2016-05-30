@@ -70,6 +70,7 @@ userDefaults.setValue(json["authtoken"].string, forKey: "authtoken")
 userDefaults.setValue(json["info"]["name"].string, forKey: "name")
 userDefaults.setValue(json["info"]["gender"].string, forKey: "gender")
 userDefaults.setValue(json["info"]["cls"].string, forKey: "cls")
+                    
 userDefaults.setValue(json["info"]["phone"].string, forKey: "phone")
 userDefaults.setValue(json["info"]["email"].string, forKey: "email")
                     

@@ -181,7 +181,7 @@ class ContactPersonViewController: UIViewController,UITableViewDelegate,UITableV
         let userDefault = NSUserDefaults.standardUserDefaults()
         let authtoken = userDefault.valueForKey("authtoken") as! String
         let dic:[String:AnyObject] = ["authtoken":authtoken]
-        Alamofire.request(.GET, "http://dodo.hznu.edu.cn/api/messagecontact", parameters: dic, encoding: ParameterEncoding.URL, headers: nil).responseJSON { (response) in
+        Alamofire.request(.POST, "http://dodo.hznu.edu.cn/api/messagecontact", parameters: dic, encoding: ParameterEncoding.URL, headers: nil).responseJSON { (response) in
             switch response.result{
             case .Failure(_):
                 ProgressHUD.showError("请求失败")
@@ -217,8 +217,7 @@ class ContactPersonViewController: UIViewController,UITableViewDelegate,UITableV
         }
         }
     override func viewWillDisappear(animated: Bool) {
-        self.contactPersonTableView?.mj_header.endRefreshing()
-        ProgressHUD.dismiss()
+              ProgressHUD.dismiss()
     }
     }
 

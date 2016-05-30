@@ -82,7 +82,7 @@ class DetailPeerAssementViewController: UIViewController,UICollectionViewDataSou
     func goToPeer(sender:UIButton){
         let writePeerAssessmentVC = UIStoryboard(name: "PeerAssessment", bundle: nil).instantiateViewControllerWithIdentifier("WritePeerAssessmentVC") as! WritePeerAssessmentViewController
         writePeerAssessmentVC.title = "评论"
-        writePeerAssessmentVC.index = sender.tag
+       
         writePeerAssessmentVC.usertestid = self.items[sender.tag].valueForKey("usertestid") as! NSInteger
 //        writePeerAssessmentVC.callBack = {(index:NSInteger) -> Void in
 //            weak var wself = self
@@ -100,7 +100,7 @@ class DetailPeerAssementViewController: UIViewController,UICollectionViewDataSou
         //写请求时间等等
         let urlString = "http://dodo.hznu.edu.cn/api/hupinginfo?testid=" + "\(self.id)" + "&authtoken=" + authtoken
         let request = NSMutableURLRequest(URL: NSURL(string: urlString)!, cachePolicy:NSURLRequestCachePolicy.UseProtocolCachePolicy, timeoutInterval: 5)
-       request.HTTPMethod = "GET"
+       request.HTTPMethod = "POST"
         Alamofire.request(request).responseJSON { (response) in
             switch response.result{
             case .Failure(_):

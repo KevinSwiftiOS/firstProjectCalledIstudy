@@ -178,7 +178,7 @@ func showAct(){
                                 "testid":"\(self.testid)",
                                 "questionid":"\(self.items[index].valueForKey("id") as! NSNumber)"
                 ]
-                Alamofire.request(.GET, "http://dodo.hznu.edu.cn/api/judgequestion", parameters: paramDic, encoding: ParameterEncoding.URL, headers: nil).responseJSON(completionHandler: { (response) in
+                Alamofire.request(.POST, "http://dodo.hznu.edu.cn/api/judgequestion", parameters: paramDic, encoding: ParameterEncoding.URL, headers: nil).responseJSON(completionHandler: { (response) in
                     switch response.result{
                     case .Success(let Value):
                         let json = JSON(Value)

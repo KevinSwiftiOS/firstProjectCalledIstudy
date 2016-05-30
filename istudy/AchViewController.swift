@@ -5,7 +5,6 @@
 //  Created by hznucai on 16/4/28.
 //  Copyright © 2016年 hznucai. All rights reserved.
 //
-
 import UIKit
 import Alamofire
 import SwiftyJSON
@@ -218,16 +217,18 @@ class AchViewController: UIViewController,UICollectionViewDelegate,UICollectionV
          ProgressHUD.show("请稍候")
             let userDefault = NSUserDefaults.standardUserDefaults()
             let authtoken = userDefault.valueForKey("authtoken") as! String
-        print(authtoken)
+   self.achCollectionView.backgroundColor = UIColor.grayColor()
             let dic:[String:AnyObject] = ["authtoken":authtoken,
                                           "testid":"\(self.testid)"]
-            Alamofire.request(.GET, "http://dodo.hznu.edu.cn/api/testinfo", parameters: dic, encoding: ParameterEncoding.URL, headers: nil).responseJSON(completionHandler: { (response) in
+            Alamofire.request(.POST, "http://dodo.hznu.edu.cn/api/testinfo", parameters: dic, encoding: ParameterEncoding.URL, headers: nil).responseJSON(completionHandler: { (response) in
                 switch response.result{
                 case .Failure(_):
                     ProgressHUD.showError("请求失败")
                 case .Success(let Value):
                     let json = JSON(Value)
                     dispatch_async(dispatch_get_main_queue(), {
+                        
+                        self.view.backgroundColor = UIColor.whiteColor()
                         ProgressHUD.dismiss()
                         self.totalItems = json["items"].arrayObject! as NSArray
                         self.achCollectionView.reloadData()

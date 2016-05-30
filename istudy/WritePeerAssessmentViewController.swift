@@ -29,8 +29,7 @@ var questions = NSMutableArray()
   //评论的是第几个
     var items = NSArray()
     var usertestid = NSInteger()
-    var index = NSInteger()
- 
+    var index = 0 
     //var callBack:send_index?
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -79,10 +78,9 @@ var questions = NSMutableArray()
             ProgressHUD.showError("保存失败")
         }
         let parameter:[String:AnyObject] = ["authtoken":userDefault.valueForKey("authtoken") as! String,"data":result]
-       print(result)
+       print(parameter)
         
         Alamofire.request(.POST, "http://dodo.hznu.edu.cn/api/submithuping", parameters: parameter, encoding: ParameterEncoding.URL, headers: nil).responseJSON { (response) in
-            
             switch response.result{
             case .Success(let Value):
                 let json = JSON(Value)
@@ -125,7 +123,7 @@ var questions = NSMutableArray()
                         self.items = json["items"].arrayObject! as NSArray
                         for tempOut in 0 ..< self.items.count{
                             let dic1 = NSMutableDictionary()
-                            dic1.setObject(self.items[tempOut].valueForKey("id") as! NSNumber, forKey: "questioned")
+                            dic1.setObject(self.items[tempOut].valueForKey("id") as! NSNumber, forKey: "questionid")
                             if(self.items[tempOut].valueForKey("comments") as? String != nil &&
                                 self.items[tempOut].valueForKey("comments") as! String != ""){
                                     dic1.setObject(self.items[tempOut].valueForKey("comments") as! String, forKey: "comments")
@@ -169,11 +167,11 @@ var questions = NSMutableArray()
         webView.frame = frame
         self.scrollView.addSubview(webView)
         tap.delegate = self
-        tap.addTarget(self, action: "showBig:")
+        tap.addTarget(self, action: #selector(WritePeerAssessmentViewController.showBig(_:)))
         webView.addGestureRecognizer(tap)
         let peerAssermentLabel = UILabel(frame: CGRectMake(0,totalHeight,SCREEN_WIDTH,21))
         peerAssermentLabel.text = "我的评论:"
-peerAssermentLabel.tag = 100000
+        peerAssermentLabel.tag = 100000
         self.scrollView.addSubview(peerAssermentLabel)
         self.totalHeight += 22
         let rules = self.items[index].valueForKey("rules") as! NSMutableArray
@@ -353,4 +351,5 @@ peerAssermentLabel.tag = 100000
             self.navigationController?.pushViewController(previewPhotoVC, animated: true)
         }
     }
+    
 }

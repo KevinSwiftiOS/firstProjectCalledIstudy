@@ -83,6 +83,7 @@ class PersonalViewController: UIViewController,UITableViewDelegate,UITableViewDa
         let action1 = UIAlertAction(title: "确定", style: .Default, handler: { (alertAction) -> Void in
                 //确定退出
           let userDefault = NSUserDefaults.standardUserDefaults()
+            userDefault.setValue(nil, forKey: "name")
             userDefault.setValue(nil, forKey: "userName")
             userDefault.setValue(nil, forKey: "passWord")
             userDefault.setValue(nil, forKey: "authtoken")
@@ -129,8 +130,9 @@ class PersonalViewController: UIViewController,UITableViewDelegate,UITableViewDa
 //    
 //    }
     let userDefault = NSUserDefaults.standardUserDefaults()
-        var string = userDefault.valueForKey("avtarurl") as! String
-        if(userDefault.valueForKey("avtarurl") as? String != nil && userDefault.valueForKey("avtarurl") as! String != ""){
+             if(userDefault.valueForKey("avtarurl") as? String != nil && userDefault.valueForKey("avtarurl") as! String != ""){
+            var string = userDefault.valueForKey("avtarurl") as! String
+ print(string)
             string = string.stringByReplacingOccurrencesOfString("http://dodo.hznu.edu.cn", withString: "")
             string = "http://dodo.hznu.edu.cn" + string
             let data = NSData(contentsOfURL: NSURL(string: string)!)
@@ -154,5 +156,8 @@ class PersonalViewController: UIViewController,UITableViewDelegate,UITableViewDa
         }
 
     
+    }
+    override func viewWillDisappear(animated: Bool) {
+        ProgressHUD.dismiss()
     }
   }

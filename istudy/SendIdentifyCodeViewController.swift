@@ -42,7 +42,7 @@ class SendIdentifyCodeViewController: UIViewController {
         //停止计时器
         self.timer.invalidate()
         //验证验证码是否正确 随后跳转到充值密码的界面 去掉空格
-        let identifyCodeText = self.identifyCode?.text?.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceCharacterSet())
+        let identifyCodeText = self.identifyCode?.text
         let dic:[String:AnyObject] = ["email":email,
                    "validcode":(identifyCodeText)!]
         

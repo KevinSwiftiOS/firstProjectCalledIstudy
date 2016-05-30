@@ -104,6 +104,7 @@
 		388B3E501CF5F017000DD1F4 /* rotateView.gif in Resources */ = {isa = PBXBuildFile; fileRef = 388B3E4F1CF5F017000DD1F4 /* rotateView.gif */; };
 		3890073A1CAAB2CB003E6944 /* LFLUISegmentedControl.m in Sources */ = {isa = PBXBuildFile; fileRef = 389007391CAAB2CB003E6944 /* LFLUISegmentedControl.m */; };
 		389BCF901CCFA817009B63EB /* AchCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 389BCF8F1CCFA817009B63EB /* AchCollectionViewCell.swift */; };
+		38A194B21CFB0A5600AF71E5 /* HZQUserResizableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 38A194B11CFB0A5600AF71E5 /* HZQUserResizableView.m */; };
 		38A6E6CC1CB94E93000B340D /* mainTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38A6E6CB1CB94E93000B340D /* mainTableView.swift */; };
 		38AA52951CD4A486005D60F4 /* CropAndRotateViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38AA52941CD4A486005D60F4 /* CropAndRotateViewController.swift */; };
 		38AD67921C8EF74600D10F05 /* StudyMaterialTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38AD67911C8EF74600D10F05 /* StudyMaterialTableViewCell.swift */; };
@@ -552,6 +553,8 @@
 		389007381CAAB2CB003E6944 /* LFLUISegmentedControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LFLUISegmentedControl.h; sourceTree = "<group>"; };
 		389007391CAAB2CB003E6944 /* LFLUISegmentedControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LFLUISegmentedControl.m; sourceTree = "<group>"; };
 		389BCF8F1CCFA817009B63EB /* AchCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AchCollectionViewCell.swift; sourceTree = "<group>"; };
+		38A194B01CFB0A5600AF71E5 /* HZQUserResizableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HZQUserResizableView.h; sourceTree = "<group>"; };
+		38A194B11CFB0A5600AF71E5 /* HZQUserResizableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HZQUserResizableView.m; sourceTree = "<group>"; };
 		38A6E6CB1CB94E93000B340D /* mainTableView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = mainTableView.swift; sourceTree = "<group>"; };
 		38AA52941CD4A486005D60F4 /* CropAndRotateViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CropAndRotateViewController.swift; sourceTree = "<group>"; };
 		38AD67911C8EF74600D10F05 /* StudyMaterialTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StudyMaterialTableViewCell.swift; sourceTree = "<group>"; };
@@ -1036,6 +1039,7 @@
 		3811F5D71C88674300BCC841 /* Resource */ = {
 			isa = PBXGroup;
 			children = (
+				38A1949B1CFB0A4900AF71E5 /* ComplexSubView */,
 				388B3E481CF5EFF3000DD1F4 /* OverlayView */,
 				38FC6FB11CEA00D80063E36B /* AYBuddleView */,
 				38FC6F7E1CE9F7660063E36B /* SDWebImage */,
@@ -1099,9 +1103,9 @@
 				3800EF231CBE3F6800FDBCAB /* MultipleChoiceViewController.swift */,
 				38C367B71CCCE4C2009A5E00 /* ProgramDesignViewController.swift */,
 				38870C021C997A91007528C6 /* CompletionQusViewController.swift */,
-				38D110421CD5F41B005000F1 /* ComplexQusViewController.swift */,
 				ABB35C6C1CA01E3E008D0B6C /* previewPhotoViewController.swift */,
 				38870C001C997A61007528C6 /* ChoiceQusViewController.swift */,
+				38D110421CD5F41B005000F1 /* ComplexQusViewController.swift */,
 			);
 			name = MyHomeWork;
 			sourceTree = "<group>";
@@ -1257,6 +1261,15 @@
 				389007391CAAB2CB003E6944 /* LFLUISegmentedControl.m */,
 			);
 			name = LFLUISegmentControl;
+			sourceTree = "<group>";
+		};
+		38A1949B1CFB0A4900AF71E5 /* ComplexSubView */ = {
+			isa = PBXGroup;
+			children = (
+				38A194B01CFB0A5600AF71E5 /* HZQUserResizableView.h */,
+				38A194B11CFB0A5600AF71E5 /* HZQUserResizableView.m */,
+			);
+			name = ComplexSubView;
 			sourceTree = "<group>";
 		};
 		38AED7C91CA7FCF8009ADC44 /* arrayPicker */ = {
@@ -2250,6 +2263,7 @@
 				38FC6FA51CE9F98F0063E36B /* SDWebImageDecoder.m in Sources */,
 				38680BED1CDE129C00EA6A5A /* UIImage+AspectFit.m in Sources */,
 				380D8BA51CA0338B00430E71 /* AJPhotoListView.m in Sources */,
+				38A194B21CFB0A5600AF71E5 /* HZQUserResizableView.m in Sources */,
 				38DF99561C8C687800BBE15E /* ChangeHeadPortraitViewController.swift in Sources */,
 				38FC6FA21CE9F98F0063E36B /* NSData+ImageContentType.m in Sources */,
 				38CCBF751C93B911002BEA6B /* PersonalHeadPortrait.swift in Sources */,

@@ -21,6 +21,7 @@ class WriteLetterViewController: UIViewController,UICollectionViewDataSource,UIC
     var subject = ""
       var photos = NSMutableArray()
     var tempString = ""
+    var isReply = false
     @IBOutlet weak var subjectTextField:UITextField?
 @IBOutlet weak var writeTextView: JVFloatLabeledTextView!
     @IBOutlet weak var collectionView:UICollectionView!
@@ -32,6 +33,7 @@ class WriteLetterViewController: UIViewController,UICollectionViewDataSource,UIC
   
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.subjectTextField?.enabled = !isReply
         self.collectionView.delegate = self
         self.collectionView.dataSource = self
         self.collectionView.backgroundColor = UIColor.whiteColor()
@@ -142,9 +144,10 @@ self.view.setNeedsLayout()
         let userDefault = NSUserDefaults.standardUserDefaults()
         let authtoken = userDefault.valueForKey("authtoken") as! String
         //主题
+    
         let subject = self.subjectTextField?.text
         var content = ""
-    content = self.writeTextView.text
+        content = self.writeTextView.text
         //转换成base64字符串
         for i in 0 ..< self.photos.count{
             let widthAndHeight = " width = " + "\(50)" + " height = " + "\(50)"
@@ -161,27 +164,34 @@ self.view.setNeedsLayout()
             }
         receives += String(self.selectedPersonIdArray[self.selectedPersonIdArray.count - 1] as! NSNumber)
         }
-       
-        let dic:[String:AnyObject] = ["subject":subject!,
-//                                     "parentcode":"",
-                                       "content":content,
-                                       "receives":receives
+        var  dic = [String:AnyObject]()
+        if(parentcode == 0 ){
+         dic = ["subject":subject!,
+                "parentcode":"",
+                "content":content,
+                "receives":receives
           ]
-  
-    print(dic)
-    
-        var result = ""
-        do { let paramData = try NSJSONSerialization.dataWithJSONObject(dic, options: NSJSONWritingOptions.PrettyPrinted)
+        }else{
+            dic = ["subject":subject!,
+                   "parentcode":"\(self.parentcode)",
+                   "content":content,
+                   "receives":receives
+            ]
+
+        }
+        print(dic)
+ var result = ""
+    do { let paramData = try NSJSONSerialization.dataWithJSONObject(dic, options: NSJSONWritingOptions.PrettyPrinted)
             result = paramData.base64EncodedStringWithOptions(NSDataBase64EncodingOptions.Encoding64CharacterLineLength)
         }catch{
             ProgressHUD.showError("发送失败")
           
                  }
-        print(result)
+        
         let paramDic:[String:AnyObject] = ["authtoken":authtoken,
                                            "data":result]
-
-        Alamofire.request(.POST, "http://dodo.hznu.edu.cn/api/messagesend", parameters: paramDic, encoding: ParameterEncoding.URL, headers: nil).responseJSON(completionHandler: { (response) in
+        print(paramDic)
+Alamofire.request(.POST, "http://dodo.hznu.edu.cn/api/messagesend", parameters: paramDic, encoding: ParameterEncoding.URL, headers: nil).responseJSON(completionHandler: { (response) in
            
             switch response.result{
                 

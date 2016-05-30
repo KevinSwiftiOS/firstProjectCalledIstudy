@@ -283,7 +283,7 @@ class TranslateViewController: UIViewController{
             let authtoken = userDefault.valueForKey("authtoken") as! String
             let dic:[String:AnyObject] = ["authtoken":authtoken,
                                           "testid":"\(self.testid)"]
-                      Alamofire.request(.GET, "http://dodo.hznu.edu.cn/api/testinfo", parameters: dic, encoding: ParameterEncoding.URL, headers: nil).responseJSON(completionHandler: { (response) in
+                      Alamofire.request(.POST, "http://dodo.hznu.edu.cn/api/testinfo", parameters: dic, encoding: ParameterEncoding.URL, headers: nil).responseJSON(completionHandler: { (response) in
               
 
                 switch response.result{

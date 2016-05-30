@@ -148,5 +148,8 @@ class AdressViewController: UIViewController,CLLocationManagerDelegate,HZAreaPic
         self.cancelLocatePicker()
         self.addressTextField?.resignFirstResponder()
     }
+    override func viewWillDisappear(animated: Bool) {
+        ProgressHUD.dismiss()
+    }
 }
  

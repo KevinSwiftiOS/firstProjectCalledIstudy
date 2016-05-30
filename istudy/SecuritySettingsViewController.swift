@@ -17,12 +17,13 @@ class SecuritySettingsViewController: UIViewController {
     @IBOutlet weak var configNewPassWord:UITextField?
     override func viewDidLoad() {
         super.viewDidLoad()
-      self.view.backgroundColor = UIColor.grayColor()
+      
      let rightBatButtonItem = UIBarButtonItem(title: "完成", style: UIBarButtonItemStyle.Plain, target: self, action: #selector(SecuritySettingsViewController.save(_:)))
         self.navigationItem.rightBarButtonItem = rightBatButtonItem
         // Do any additional setup after loading the view.
         XKeyBoard.registerKeyBoardHide(self)
         XKeyBoard.registerKeyBoardShow(self)
+        self.view.backgroundColor = UIColor.lightGrayColor()
     }
 
     override func didReceiveMemoryWarning() {
@@ -35,16 +36,20 @@ class SecuritySettingsViewController: UIViewController {
         let userDefault = NSUserDefaults.standardUserDefaults()
         //新旧密码
         let configPwd = self.configNewPassWord?.text
-        let newPwd = self.configNewPassWord?.text
+        let newPwd = self.newPassWord?.text
         if(newPwd != configPwd){
-            ProgressHUD.showError("密码不相同")
-        }else{
+            ProgressHUD.showError("新密码与认证密码填写不相同")
+        }
+        else if((userDefault.valueForKey("passWord") as! String) != self.lastPassWord?.text){
+            ProgressHUD.showError("原密码填写不正确")
+        }
+        else{
             
             let ParamDic:[String:AnyObject] = ["oldpassword":(self.lastPassWord?.text)!,
                                                "newpassword":(self.newPassWord?.text)!,
                                                "authtoken":userDefault.valueForKey("authtoken") as! String]
             //转化成base64字符串
-            Alamofire.request(.POST, "http:dodo.hznu.edu.cn/api/changepassword", parameters: ParamDic, encoding: ParameterEncoding.URL, headers: nil).responseJSON(completionHandler: { (response) in
+            Alamofire.request(.POST, "http://dodo.hznu.edu.cn/api/changepassword", parameters: ParamDic, encoding: ParameterEncoding.URL, headers: nil).responseJSON(completionHandler: { (response) in
                 switch response.result{
                 case .Success(let Value):
                     let json = JSON(Value)
@@ -86,7 +91,7 @@ class SecuritySettingsViewController: UIViewController {
             self.view.layoutIfNeeded()
         }
     }
-    func changePassword() {
-        
+    override func viewWillDisappear(animated: Bool) {
+        ProgressHUD.dismiss()
     }
 }

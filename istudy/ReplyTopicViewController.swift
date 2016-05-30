@@ -88,7 +88,7 @@ self.replyListTableView?.tableFooterView = UIView()
                                       "count":"100",
                                        "page":"1",
                                         "tag":"\(self.id)"]
-        Alamofire.request(.GET, "http://dodo.hznu.edu.cn/api/forumcommentquery", parameters: dic, encoding: ParameterEncoding.URL, headers: nil).responseJSON { (response) in
+        Alamofire.request(.POST, "http://dodo.hznu.edu.cn/api/forumcommentquery", parameters: dic, encoding: ParameterEncoding.URL, headers: nil).responseJSON { (response) in
             switch response.result{
             case .Success(let Value):
                 let json = JSON(Value)
@@ -159,8 +159,8 @@ self.replyListTableView?.tableFooterView = UIView()
     }
     override func viewWillDisappear(animated: Bool) {
         topView.removeFromSuperview()
-    ProgressHUD.dismiss()
-        self.replyListTableView?.mj_header.endRefreshing()
-    }
+        ProgressHUD.dismiss()
     
+        
+    }
 }

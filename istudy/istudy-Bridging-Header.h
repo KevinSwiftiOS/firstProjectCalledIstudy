@@ -36,6 +36,7 @@
 #import "AYBubbleView.h"
 #import "RXRotateButtonOverlayView.h"
 #import "ImageAndTitleVerticalButton.h"
+#import "HZQUserResizableView.h"
 
 
 

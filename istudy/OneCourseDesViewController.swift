@@ -267,4 +267,7 @@ class OneCourseDesViewController:UIViewController,UICollectionViewDelegateFlowLa
         self.infoTableView?.mj_header.beginRefreshing()
         
     }
+    override func viewDidDisappear(animated: Bool) {
+              ProgressHUD.dismiss()
+    }
       }

@@ -220,7 +220,7 @@
             //每次都是登录
             
             let userDefault = NSUserDefaults.standardUserDefaults()
-            if(userDefault.valueForKey("authtoken") as? String == nil){
+         
                 let userName = userDefault.valueForKey("userName") as! String
                 let passWord = userDefault.valueForKey("passWord") as! String
                 let id = CFUUIDCreate(nil)
@@ -292,48 +292,8 @@
                     case .Failure(_):
                     ProgressHUD.showError("请求失败")
                 }
-            })
-            }else{
-                let authDic :[String:AnyObject] = ["authtoken":userDefault.valueForKey("authtoken") as! String]
-                
-                Alamofire.request(.GET, "http://dodo.hznu.edu.cn/api/coursequery", parameters: authDic, encoding: ParameterEncoding.URL, headers: nil).responseJSON { (response) in
-                    switch response.result{
-                    case .Success(let value):
-                        let json = JSON(value)
-                        if(json["retcode"].number == 0){
-                            
-                            self.items = json["items"].arrayObject! as NSArray
-                            
-                            for _ in  0 ..< self.items.count{
-                                self.cellHeight.addObject(80)
-                                self.isClick.addObject(false)
-                            }
-                            self.courseDesTableView?.mj_header.endRefreshing()
-                            self.courseDesTableView?.reloadData()
-                            //})
-                        }else{
-                            print(json["retcode"].number)
-                            ProgressHUD.showError("请求失败")
-                            self.items = NSArray()
-                            dispatch_async(dispatch_get_main_queue(), {
-                                self.courseDesTableView?.mj_header.endRefreshing()
-                                self.courseDesTableView?.reloadData()
-                            })
-                            
-                        }
-                    case .Failure(_):
-                        ProgressHUD.showError("请求失败")
-                        self.items = NSArray()
-                        dispatch_async(dispatch_get_main_queue(), {
-                            self.courseDesTableView?.mj_header.endRefreshing()
-                            self.courseDesTableView?.reloadData()
-                        })
-                        
-                    }
-                }
-
-            }
-            }
+    })}
+        
         func willPresentSearchController(searchController: UISearchController) {
             self.courseDesTableView?.mj_header.hidden = true
         }

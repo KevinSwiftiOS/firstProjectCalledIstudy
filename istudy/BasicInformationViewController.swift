@@ -204,5 +204,7 @@ class BasicInformationViewController: UIViewController,UITableViewDelegate,UITab
 //        }
 //    picker.dismissViewControllerAnimated(true, completion: nil)
 //    }
-    
+    override func viewWillDisappear(animated: Bool) {
+        ProgressHUD.dismiss()
+    }
 }
