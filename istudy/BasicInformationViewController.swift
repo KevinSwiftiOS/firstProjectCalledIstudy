@@ -47,9 +47,15 @@ class BasicInformationViewController: UIViewController,UITableViewDelegate,UITab
         if indexPath.section == 0{
             if indexPath.row == 0{
                 let imageView = UIImageView(frame: CGRectMake(SCREEN_WIDTH - 80, 5, 40, 40))
-                imageView.layer.masksToBounds = true
+              let userDefault = NSUserDefaults.standardUserDefaults()
+               
+            if(userDefault.valueForKey("avtarurl") as? String != nil && userDefault.valueForKey("avtarurl") as! String != ""){
+                   imageView.sd_setImageWithURL(NSURL(string: userDefault.valueForKey("avtarurl") as! String), placeholderImage: UIImage(named: "默认头像"))
+                }else{
+                   imageView.image = UIImage(named: "默认头像")
+                }
+               imageView.layer.masksToBounds = true
                 imageView.layer.cornerRadius = 20
-                imageView.image = UIImage(data: self.selectedImageData)
                 cell.contentView.addSubview(imageView)
             }
             else{
@@ -113,21 +119,7 @@ class BasicInformationViewController: UIViewController,UITableViewDelegate,UITab
         self.tableView?.scrollIndicatorInsets = UIEdgeInsetsZero
     }
     override func viewWillAppear(animated: Bool) {
-            
-        let app = UIApplication.sharedApplication().delegate as! AppDelegate
-        self.managedContext = app.managedObjectContext
-            let fetchResquest = NSFetchRequest(entityName: "PersonalHeadPortrait")
-            do { self.fetchedResults = try self.managedContext?.executeFetchRequest(fetchResquest) as! [PersonalHeadPortrait]
-                if(self.fetchedResults.count > 0){
-                    self.selectedImageData = (self.fetchedResults.last?.headPortraitData)!
-                }else{
-                    self.selectedImageData = UIImagePNGRepresentation(UIImage(named: "默认头像")!)!
-                }
-                
-            }catch{
-                ProgressHUD.showError("读取图像失败")
-            }
-        let userDefault = NSUserDefaults.standardUserDefaults()
+            let userDefault = NSUserDefaults.standardUserDefaults()
         if(userDefault.valueForKey("userName") == nil){
             self.detailArray.addObject("未设置账号")
         }else{

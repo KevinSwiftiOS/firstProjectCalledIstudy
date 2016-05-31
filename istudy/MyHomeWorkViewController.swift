@@ -65,6 +65,7 @@ class MyHomeWorkViewController: UIViewController,UITableViewDataSource,UITableVi
         }
     }
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+    
         var date = String()
         var tempEndDate = NSString()
         var tempStartDate = NSString()
@@ -75,6 +76,7 @@ class MyHomeWorkViewController: UIViewController,UITableViewDataSource,UITableVi
         let hourRange = NSMakeRange(8, 2)
         let minuateRange = NSMakeRange(10, 2)
         let secondRange = NSMakeRange(12, 2)
+    
         if(sc?.active == false){
          
         cell.title?.text = self.items[indexPath.row].valueForKey("title") as? String
@@ -167,6 +169,7 @@ class MyHomeWorkViewController: UIViewController,UITableViewDataSource,UITableVi
             
         }
         }
+         cell.Score?.text = ""
         //string转化为date
         if(jsonDateString != ""){
         let formatter = NSDateFormatter()

@@ -11,7 +11,7 @@ import UIKit
 class ComplexChoiceTableViewCell: UITableViewCell,UIWebViewDelegate{
     var  optionWebView:UIWebView?
      var btn:UIButton?
-    var Selfdata = NSData()
+    var url = ""
     var cellHeight:CGFloat = 0
     var canTap  = false
     var view:UIView?
@@ -84,13 +84,11 @@ let height = NSInteger(webView.stringByEvaluatingJavaScriptFromString("document.
         pt = sender.locationInView(self.optionWebView)
         let imgUrl = String(format: "document.elementFromPoint(%f, %f).src",pt.x, pt.y);
         urlToSave = self.optionWebView!.stringByEvaluatingJavaScriptFromString(imgUrl)!
-        let  data = NSData(contentsOfURL: NSURL(string: urlToSave)!)
-        if(data != nil){
-           //发送通知 来进行预览
-            Selfdata = data!
-             NSNotificationCenter.defaultCenter().postNotificationName("ComplexShowBigImage", object: self, userInfo: nil)
+        if(urlToSave != ""){
+            self.url = urlToSave
+        NSNotificationCenter.defaultCenter().postNotificationName("ComplexShowBigImage", object: self, userInfo: nil)
         }
-
+    
       //发送点击的通知
             NSNotificationCenter.defaultCenter().postNotificationName("ComplexTapBtn", object: self, userInfo: nil)
     }

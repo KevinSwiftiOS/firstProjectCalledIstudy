@@ -103,6 +103,7 @@
 		388B3E4E1CF5F011000DD1F4 /* ImageAndTitleVerticalButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 388B3E4C1CF5F010000DD1F4 /* ImageAndTitleVerticalButton.m */; };
 		388B3E501CF5F017000DD1F4 /* rotateView.gif in Resources */ = {isa = PBXBuildFile; fileRef = 388B3E4F1CF5F017000DD1F4 /* rotateView.gif */; };
 		3890073A1CAAB2CB003E6944 /* LFLUISegmentedControl.m in Sources */ = {isa = PBXBuildFile; fileRef = 389007391CAAB2CB003E6944 /* LFLUISegmentedControl.m */; };
+		389051C11CFDC5E200E6D57F /* ImageShowBigViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 389051C01CFDC5E200E6D57F /* ImageShowBigViewController.swift */; };
 		389BCF901CCFA817009B63EB /* AchCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 389BCF8F1CCFA817009B63EB /* AchCollectionViewCell.swift */; };
 		38A194B21CFB0A5600AF71E5 /* HZQUserResizableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 38A194B11CFB0A5600AF71E5 /* HZQUserResizableView.m */; };
 		38A6E6CC1CB94E93000B340D /* mainTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38A6E6CB1CB94E93000B340D /* mainTableView.swift */; };
@@ -552,6 +553,7 @@
 		388B3E4F1CF5F017000DD1F4 /* rotateView.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = rotateView.gif; sourceTree = "<group>"; };
 		389007381CAAB2CB003E6944 /* LFLUISegmentedControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LFLUISegmentedControl.h; sourceTree = "<group>"; };
 		389007391CAAB2CB003E6944 /* LFLUISegmentedControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LFLUISegmentedControl.m; sourceTree = "<group>"; };
+		389051C01CFDC5E200E6D57F /* ImageShowBigViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageShowBigViewController.swift; sourceTree = "<group>"; };
 		389BCF8F1CCFA817009B63EB /* AchCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AchCollectionViewCell.swift; sourceTree = "<group>"; };
 		38A194B01CFB0A5600AF71E5 /* HZQUserResizableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HZQUserResizableView.h; sourceTree = "<group>"; };
 		38A194B11CFB0A5600AF71E5 /* HZQUserResizableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HZQUserResizableView.m; sourceTree = "<group>"; };
@@ -1106,6 +1108,7 @@
 				ABB35C6C1CA01E3E008D0B6C /* previewPhotoViewController.swift */,
 				38870C001C997A61007528C6 /* ChoiceQusViewController.swift */,
 				38D110421CD5F41B005000F1 /* ComplexQusViewController.swift */,
+				389051C01CFDC5E200E6D57F /* ImageShowBigViewController.swift */,
 			);
 			name = MyHomeWork;
 			sourceTree = "<group>";
@@ -2389,6 +2392,7 @@
 				38BD7C401CA6D348001F44B2 /* UIScrollView+MJExtension.m in Sources */,
 				38FC6FA71CE9F98F0063E36B /* SDWebImageDownloaderOperation.m in Sources */,
 				38219B491CA16607005839C5 /* DetailPeerAssementViewController.swift in Sources */,
+				389051C11CFDC5E200E6D57F /* ImageShowBigViewController.swift in Sources */,
 				387C25E81CB53AA700531AE4 /* ReplyTopicViewController.swift in Sources */,
 				38097CBB1CD09D62006C0EA1 /* FooterCollectionReusableView.swift in Sources */,
 				3811F5B31C884A0B00BCC841 /* CourseDesTableViewCell.swift in Sources */,

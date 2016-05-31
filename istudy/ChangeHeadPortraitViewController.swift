@@ -60,7 +60,7 @@ class ChangeHeadPortraitViewController: UIViewController,UITableViewDelegate,UIT
         switch row{
         case 0: if(UIImagePickerController.isSourceTypeAvailable(.PhotoLibrary)){
             self.imagePicker.sourceType = .PhotoLibrary
-               self.imagePicker.allowsEditing = true
+            self.imagePicker.allowsEditing = true
             self.presentViewController(self.imagePicker, animated: true, completion: nil)
         }else{
             ProgressHUD.showError("相册无法打开")
@@ -76,8 +76,8 @@ class ChangeHeadPortraitViewController: UIViewController,UITableViewDelegate,UIT
         }
     }
     func imagePickerController(picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : AnyObject]) {
-    let tempImage = info[UIImagePickerControllerEditedImage] as! UIImage
-      picker.dismissViewControllerAnimated(true, completion: nil)
+        let tempImage = info[UIImagePickerControllerEditedImage] as! UIImage
+        picker.dismissViewControllerAnimated(true, completion: nil)
         
         self.selectedImageData = UIImageJPEGRepresentation(tempImage, 0.6)!
         self.headPortraitImageView?.image = UIImage(data: self.selectedImageData)
@@ -89,54 +89,33 @@ class ChangeHeadPortraitViewController: UIViewController,UITableViewDelegate,UIT
         self.dismissViewControllerAnimated(true, completion: nil)
     }
     func save(sender:UIBarButtonItem){
-        //做save的一些事情 将头像保存 还有后台数据也要存储
-        let app = UIApplication.sharedApplication().delegate as! AppDelegate
-        self.managedContext = app.managedObjectContext
-        let entity = NSEntityDescription.entityForName("PersonalHeadPortrait", inManagedObjectContext: self.managedContext!)
-        let person = NSManagedObject(entity: entity!, insertIntoManagedObjectContext: self.managedContext) as! PersonalHeadPortrait
-        person.headPortraitData = self.selectedImageData
-        do {try self.managedContext?.save()
-           self.saveProfile()
-                   }catch{
-            ProgressHUD.showError("保存失败")
-        }
-        
-        
+        self.saveProfile()
     }
     override func viewWillAppear(animated: Bool) {
-        let app = UIApplication.sharedApplication().delegate as! AppDelegate
-        dispatch_async(dispatch_get_main_queue()) {
-            
-        self.managedContext = app.managedObjectContext
         if(self.isFromFromImagePicker == false){
-            let fetchResquest = NSFetchRequest(entityName: "PersonalHeadPortrait")
-            do { self.fetchedResults = try self.managedContext?.executeFetchRequest(fetchResquest) as! [PersonalHeadPortrait]
-                if(self.fetchedResults.count > 0){
-                    self.selectedImageData = (self.fetchedResults.last?.headPortraitData)!
-                }else{
-                    self.selectedImageData = UIImagePNGRepresentation(UIImage(named: "默认头像")!)!
-                }
-                self.headPortraitImageView?.image = UIImage(data: self.selectedImageData)
-            }catch{
-                ProgressHUD.showError("读取图像失败")
+            let userDefault = NSUserDefaults.standardUserDefaults()
+            if(userDefault.valueForKey("avtarurl") as? String != nil && userDefault.valueForKey("avtarurl") as! String != ""){
+                self.headPortraitImageView?.sd_setImageWithURL(NSURL(string: userDefault.valueForKey("avtarurl") as! String), placeholderImage: UIImage(named: "默认头像"))
+                
+            }else{
+                self.headPortraitImageView?.image = UIImage(named: "默认头像")
             }
         }
     }
-    }
     func saveProfile() {
         let userDefault = NSUserDefaults.standardUserDefaults()
-      let string = "http://dodo.hznu.edu.cn/api/upfile?authtoken=" + (userDefault.valueForKey("authtoken") as! String)
-Alamofire.upload(.POST, string, multipartFormData: { (formData) in
-        formData.appendBodyPart(data: self.selectedImageData, name: "name", fileName: "head.jpg", mimeType: "image/jpeg")
+        let string = "http://dodo.hznu.edu.cn/api/upfile?authtoken=" + (userDefault.valueForKey("authtoken") as! String)
+        Alamofire.upload(.POST, string, multipartFormData: { (formData) in
+            formData.appendBodyPart(data: self.selectedImageData, name: "name", fileName: "head.jpg", mimeType: "image/jpeg")
         }) { (encodingResult) in
             switch encodingResult {
             case .Success(let upload, _, _):
-   //         print((upload.request?.allHTTPHeaderFields))
+                //         print((upload.request?.allHTTPHeaderFields))
                 upload.responseJSON(completionHandler: { (response) in
                     switch response.result{
                     case .Success(let Value):
                         let json = JSON(Value)
-                      userDefault.setValue(json["info"]["uploadedurl"].string, forKey: "avtarurl")
+                        userDefault.setValue(json["info"]["uploadedurl"].string, forKey: "avtarurl")
                         self.save()
                     case .Failure(_):
                         print(2)
@@ -151,7 +130,7 @@ Alamofire.upload(.POST, string, multipartFormData: { (formData) in
     }
     func save(){
         let userDefault = NSUserDefaults.standardUserDefaults()
-               var email = ""
+        var email = ""
         var phone = ""
         var avtarurl = ""
         var cls = ""
@@ -182,7 +161,7 @@ Alamofire.upload(.POST, string, multipartFormData: { (formData) in
             "cls": cls,
             "phone":phone,
             "email": email,
-            "avtarurl":avtarurl]        //进行base64字符串加密
+            "avtarurl":avtarurl]        
         var result = String()
         do { let parameterData = try NSJSONSerialization.dataWithJSONObject(dicParam, options: NSJSONWritingOptions.PrettyPrinted)
             
@@ -205,7 +184,7 @@ Alamofire.upload(.POST, string, multipartFormData: { (formData) in
             case .Failure(_):ProgressHUD.showError("保存失败")
             }
         }
-
+        
     }
     override func viewWillDisappear(animated: Bool) {
         ProgressHUD.dismiss()

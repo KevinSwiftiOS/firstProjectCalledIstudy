@@ -10,7 +10,7 @@ import UIKit
 
 class ChoiceTableViewCell: UITableViewCell,UIWebViewDelegate {
     var  optionWebView:UIWebView?
-    var Selfdata = NSData()
+    var url = ""
     var btn:UIButton?
     var cellHeight:CGFloat = 0
     var canTap  = false
@@ -82,10 +82,9 @@ class ChoiceTableViewCell: UITableViewCell,UIWebViewDelegate {
         pt = sender.locationInView(self.optionWebView)
         let imgUrl = String(format: "document.elementFromPoint(%f, %f).src",pt.x, pt.y);
         urlToSave = self.optionWebView!.stringByEvaluatingJavaScriptFromString(imgUrl)!
-        let  data = NSData(contentsOfURL: NSURL(string: urlToSave)!)
-        if(data != nil){
+               if(urlToSave != ""){
             //发送通知 来进行预览
-            Selfdata = data!
+            url = urlToSave
             NSNotificationCenter.defaultCenter().postNotificationName("ChoiceShowBigImage", object: self, userInfo: nil)
         }
 

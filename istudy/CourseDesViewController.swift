@@ -9,9 +9,14 @@
     import UIKit
     import Alamofire
     import SwiftyJSON
+    import CoreData
+    
     class CourseDesViewController: UIViewController,UITableViewDataSource,UITableViewDelegate,
     UISearchControllerDelegate,UISearchResultsUpdating{
-       
+        var managedContext:NSManagedObjectContext?
+        var fetchedResults = [PersonalHeadPortrait]()
+        var imageHeadData = NSData()
+
         var items = NSArray()
         var filterItems = NSMutableArray()
         var sc = UISearchController(searchResultsController: nil)
@@ -251,7 +256,9 @@
                             let authDic :[String:AnyObject] = ["authtoken":userDefault.valueForKey("authtoken") as! String]
                             //设置头像
                             userDefault.setValue(json["info"]["avtarurl"].string, forKey: "avtarurl")
-
+//进行头像的保存
+                   let thread = NSThread(target: self, selector: #selector(CourseDesViewController.saveHeadImage), object: self)
+                            thread.start()
                             Alamofire.request(.POST, "http://dodo.hznu.edu.cn/api/coursequery", parameters: authDic, encoding: ParameterEncoding.URL, headers: nil).responseJSON { (response) in
                                 switch response.result{
                                 case .Success(let value):
@@ -316,4 +323,16 @@
         override func viewWillDisappear(animated: Bool) {
             ProgressHUD.dismiss()
         }
+        //进行头像的保存
+        func saveHeadImage() {
+            let userDefault = NSUserDefaults.standardUserDefaults()
+        if(userDefault.valueForKey("avtarurl") as? String != nil && userDefault.valueForKey("avtarurl") as! String != ""){
+            var urlString = userDefault.valueForKey("avtarurl") as! String
+                        urlString = urlString.stringByReplacingOccurrencesOfString("http://dodo.hznu.edu.cn", withString: "")
+                        urlString = "http://dodo.hznu.edu.cn" + (urlString as String)
+                        userDefault.setValue(urlString, forKey: "avtarurl")
+                               }
+            //进行保存
+        }
+    
     }

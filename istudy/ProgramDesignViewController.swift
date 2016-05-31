@@ -311,6 +311,7 @@ class ProgramDesignViewController: UIViewController,UIWebViewDelegate,UIGestureR
             self.selfAnswers.replaceObjectAtIndex(self.index, withObject: "")
             self.saveBtn?.enabled = true
             self.answerTextView?.userInteractionEnabled = true
+            self.answerTextView?.editable = true
             self.resultTextView.removeFromSuperview()
             self.gooverBtn.enabled = true
             self.postAnswer()
@@ -452,22 +453,18 @@ class ProgramDesignViewController: UIViewController,UIWebViewDelegate,UIGestureR
     func webViewShowBig(sender:UITapGestureRecognizer){
         var pt = CGPoint()
         var urlToSave = ""
-        
         pt = sender.locationInView(self.qusDesWebView)
         let imgUrl = String(format: "document.elementFromPoint(%f, %f).src",pt.x, pt.y);
         urlToSave = self.qusDesWebView.stringByEvaluatingJavaScriptFromString(imgUrl)!
         
-        
-        let data = NSData(contentsOfURL: NSURL(string: urlToSave)!)
-        print(data)
-        if(data != nil){
-            let image = UIImage(data: data!)
-            let previewPhotoVC = UIStoryboard(name: "Problem", bundle: nil).instantiateViewControllerWithIdentifier("previewPhotoVC") as! previewPhotoViewController
-            previewPhotoVC.toShowBigImageArray = [image!]
-            previewPhotoVC.contentOffsetX = 0
-            self.navigationController?.pushViewController(previewPhotoVC, animated: true)
+        if(urlToSave != ""){
+            let vc = UIStoryboard(name: "Problem", bundle: nil).instantiateViewControllerWithIdentifier("showBigVC") as! ImageShowBigViewController
+            vc.url = urlToSave
+            self.navigationController?.pushViewController(vc, animated: true)
         }
-    }
+
+        }
+    
     deinit{
         print("ProgreamDeint")
     }

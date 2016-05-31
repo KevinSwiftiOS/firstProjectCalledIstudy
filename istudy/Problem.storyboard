@@ -1534,6 +1534,102 @@
             </objects>
             <point key="canvasLocation" x="-210" y="189"/>
         </scene>
+        <!--Image Show Big View Controller-->
+        <scene sceneID="dDp-Ta-bAx">
+            <objects>
+                <viewController storyboardIdentifier="showBigVC" id="nHN-eO-ayI" customClass="ImageShowBigViewController" customModule="istudy" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="C8h-gV-6bl"/>
+                        <viewControllerLayoutGuide type="bottom" id="Pkk-Oh-fnn"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="G0x-Sh-RhH">
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="3sa-lu-tEs">
+                                <rect key="frame" x="0.0" y="0.0" width="240" height="128"/>
+                                <subviews>
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Cpm-cB-dCv">
+                                        <rect key="frame" x="0.0" y="0.0" width="240" height="128"/>
+                                    </imageView>
+                                </subviews>
+                                <constraints>
+                                    <constraint firstItem="Cpm-cB-dCv" firstAttribute="centerX" secondItem="3sa-lu-tEs" secondAttribute="centerX" id="5Lg-TL-RCg"/>
+                                    <constraint firstItem="Cpm-cB-dCv" firstAttribute="centerY" secondItem="3sa-lu-tEs" secondAttribute="centerY" id="FzF-u1-oap"/>
+                                    <constraint firstItem="Cpm-cB-dCv" firstAttribute="leading" secondItem="3sa-lu-tEs" secondAttribute="leading" id="OgV-Pt-Rfx"/>
+                                    <constraint firstAttribute="bottom" secondItem="Cpm-cB-dCv" secondAttribute="bottom" id="akZ-Hh-8x2"/>
+                                    <constraint firstAttribute="trailing" secondItem="Cpm-cB-dCv" secondAttribute="trailing" id="qQ7-Ak-r8U"/>
+                                    <constraint firstItem="Cpm-cB-dCv" firstAttribute="top" secondItem="3sa-lu-tEs" secondAttribute="top" id="yKP-GP-Pms"/>
+                                </constraints>
+                                <variation key="default">
+                                    <mask key="subviews">
+                                        <exclude reference="Cpm-cB-dCv"/>
+                                    </mask>
+                                    <mask key="constraints">
+                                        <exclude reference="5Lg-TL-RCg"/>
+                                        <exclude reference="FzF-u1-oap"/>
+                                        <exclude reference="OgV-Pt-Rfx"/>
+                                        <exclude reference="akZ-Hh-8x2"/>
+                                        <exclude reference="qQ7-Ak-r8U"/>
+                                        <exclude reference="yKP-GP-Pms"/>
+                                    </mask>
+                                </variation>
+                                <variation key="heightClass=regular-widthClass=compact">
+                                    <mask key="subviews">
+                                        <include reference="Cpm-cB-dCv"/>
+                                    </mask>
+                                    <mask key="constraints">
+                                        <include reference="5Lg-TL-RCg"/>
+                                        <include reference="FzF-u1-oap"/>
+                                        <include reference="OgV-Pt-Rfx"/>
+                                        <include reference="akZ-Hh-8x2"/>
+                                        <include reference="qQ7-Ak-r8U"/>
+                                        <include reference="yKP-GP-Pms"/>
+                                    </mask>
+                                </variation>
+                            </scrollView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="3sa-lu-tEs" firstAttribute="height" secondItem="G0x-Sh-RhH" secondAttribute="height" multiplier="0.5" id="3i6-sj-E2O"/>
+                            <constraint firstItem="3sa-lu-tEs" firstAttribute="width" secondItem="G0x-Sh-RhH" secondAttribute="width" id="JQ3-VG-tiD"/>
+                            <constraint firstItem="3sa-lu-tEs" firstAttribute="top" secondItem="C8h-gV-6bl" secondAttribute="bottom" constant="100" id="d3D-XZ-aiK"/>
+                            <constraint firstItem="3sa-lu-tEs" firstAttribute="leading" secondItem="G0x-Sh-RhH" secondAttribute="leading" id="rfR-bw-LE5"/>
+                            <constraint firstAttribute="trailing" secondItem="3sa-lu-tEs" secondAttribute="trailing" id="wzd-eH-vKD"/>
+                        </constraints>
+                        <variation key="default">
+                            <mask key="subviews">
+                                <exclude reference="3sa-lu-tEs"/>
+                            </mask>
+                            <mask key="constraints">
+                                <exclude reference="3i6-sj-E2O"/>
+                                <exclude reference="JQ3-VG-tiD"/>
+                                <exclude reference="d3D-XZ-aiK"/>
+                                <exclude reference="rfR-bw-LE5"/>
+                                <exclude reference="wzd-eH-vKD"/>
+                            </mask>
+                        </variation>
+                        <variation key="heightClass=regular-widthClass=compact">
+                            <mask key="subviews">
+                                <include reference="3sa-lu-tEs"/>
+                            </mask>
+                            <mask key="constraints">
+                                <include reference="3i6-sj-E2O"/>
+                                <include reference="JQ3-VG-tiD"/>
+                                <include reference="d3D-XZ-aiK"/>
+                                <include reference="rfR-bw-LE5"/>
+                                <include reference="wzd-eH-vKD"/>
+                            </mask>
+                        </variation>
+                    </view>
+                    <connections>
+                        <outlet property="imageView" destination="Cpm-cB-dCv" id="oSR-DS-xHL"/>
+                        <outlet property="scrollView" destination="3sa-lu-tEs" id="2yY-L7-eYr"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Hgq-Ew-MX5" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-36" y="-352.5"/>
+        </scene>
         <!--Complex Qus View Controller-->
         <scene sceneID="ZYr-sR-e6Z">
             <objects>

@@ -217,8 +217,7 @@ class AchViewController: UIViewController,UICollectionViewDelegate,UICollectionV
          ProgressHUD.show("请稍候")
             let userDefault = NSUserDefaults.standardUserDefaults()
             let authtoken = userDefault.valueForKey("authtoken") as! String
-   self.achCollectionView.backgroundColor = UIColor.grayColor()
-            let dic:[String:AnyObject] = ["authtoken":authtoken,
+             let dic:[String:AnyObject] = ["authtoken":authtoken,
                                           "testid":"\(self.testid)"]
             Alamofire.request(.POST, "http://dodo.hznu.edu.cn/api/testinfo", parameters: dic, encoding: ParameterEncoding.URL, headers: nil).responseJSON(completionHandler: { (response) in
                 switch response.result{
@@ -228,7 +227,7 @@ class AchViewController: UIViewController,UICollectionViewDelegate,UICollectionV
                     let json = JSON(Value)
                     dispatch_async(dispatch_get_main_queue(), {
                         
-                        self.view.backgroundColor = UIColor.whiteColor()
+                     
                         ProgressHUD.dismiss()
                         self.totalItems = json["items"].arrayObject! as NSArray
                         self.achCollectionView.reloadData()

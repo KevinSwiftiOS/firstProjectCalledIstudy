@@ -458,26 +458,23 @@ func showAct(){
     func webViewShowBig(sender:UITapGestureRecognizer){
         var pt = CGPoint()
         var urlToSave = ""
-      pt = sender.locationInView(self.queDes)
+             pt = sender.locationInView(self.queDes)
         let imgUrl = String(format: "document.elementFromPoint(%f, %f).src",pt.x, pt.y);
         urlToSave = self.queDes.stringByEvaluatingJavaScriptFromString(imgUrl)!
-        let data = NSData(contentsOfURL: NSURL(string: urlToSave)!)
-        if(data != nil){
-            let image = UIImage(data: data!)
-            let previewPhotoVC = UIStoryboard(name: "Problem", bundle: nil).instantiateViewControllerWithIdentifier("previewPhotoVC") as! previewPhotoViewController
-            previewPhotoVC.toShowBigImageArray = [image!]
-            previewPhotoVC.contentOffsetX = 0
-            self.navigationController?.pushViewController(previewPhotoVC, animated: true)
+        
+        if(urlToSave != ""){
+            let vc = UIStoryboard(name: "Problem", bundle: nil).instantiateViewControllerWithIdentifier("showBigVC") as! ImageShowBigViewController
+            vc.url = urlToSave
+            self.navigationController?.pushViewController(vc, animated: true)
         }
     }
+
     func showImage(sender:NSNotification){
         let cell = sender.object as! ChoiceTableViewCell
-        let data = cell.Selfdata
-        let image = UIImage(data: data)
-        let previewPhotoVC = UIStoryboard(name: "Problem", bundle: nil).instantiateViewControllerWithIdentifier("previewPhotoVC") as! previewPhotoViewController
-        previewPhotoVC.toShowBigImageArray = [image!]
-        previewPhotoVC.contentOffsetX = 0
-        self.navigationController?.pushViewController(previewPhotoVC, animated: true)
+     
+        let vc = UIStoryboard(name: "Problem", bundle: nil).instantiateViewControllerWithIdentifier("showBigVC") as! ImageShowBigViewController
+        vc.url = cell.url
+        self.navigationController?.pushViewController(vc, animated: true)
     }
     override func viewWillDisappear(animated: Bool) {
         ProgressHUD.dismiss()
