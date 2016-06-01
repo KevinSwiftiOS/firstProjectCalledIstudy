@@ -56,9 +56,7 @@ var resetBtn = UIButton()
         super.viewDidLoad()
               //顶部加条线
         //设置阴影效果
-        self.topView?.layer.shadowOffset = CGSizeMake(2.0, 1.0)
-        self.topView?.layer.shadowColor = UIColor.blueColor().CGColor
-        self.topView?.layer.shadowOpacity = 0.5
+       ShowBigImageFactory.topViewEDit(self.topView!)
 
         self.contentScrollView?.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(SubjectiveQusViewController.contResign)))
         self.view.endEditing(true)
@@ -94,8 +92,7 @@ var resetBtn = UIButton()
         let submitBtnItem = UIBarButtonItem(customView: submitBtn)
         let actBtnItem = UIBarButtonItem(customView: actBtn)
         self.navigationItem.rightBarButtonItems = [submitBtnItem,actBtnItem]
-   
-        //键盘出现的时候
+          //键盘出现的时候
         //键盘的代理
         XKeyBoard.registerKeyBoardHide(self)
         XKeyBoard.registerKeyBoardShow(self)
@@ -515,24 +512,8 @@ var resetBtn = UIButton()
         }
     }
     func webViewShowBig(sender:UITapGestureRecognizer){
-        var pt = CGPoint()
-     var urlToSave = ""
-        if(sender.view?.tag == 1){
-         pt = sender.locationInView(self.answerWebView)
-            let imgUrl = String(format: "document.elementFromPoint(%f, %f).src",pt.x, pt.y);
-             urlToSave = self.answerWebView.stringByEvaluatingJavaScriptFromString(imgUrl)!
-        }else{
-        
-        pt = sender.locationInView(self.qusDes)
-            let imgUrl = String(format: "document.elementFromPoint(%f, %f).src",pt.x, pt.y);
-             urlToSave = self.qusDes.stringByEvaluatingJavaScriptFromString(imgUrl)!
-             }
-   
-  if(urlToSave != ""){
-            let vc = UIStoryboard(name: "Problem", bundle: nil).instantiateViewControllerWithIdentifier("showBigVC") as! ImageShowBigViewController
-            vc.url = urlToSave
-            self.navigationController?.pushViewController(vc, animated: true)
-        }
+
+        ShowBigImageFactory.showBigImage(self, webView: sender.view as! UIWebView, sender: sender)
 }
     //图片显示区域的CollectionView的实现
     func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {

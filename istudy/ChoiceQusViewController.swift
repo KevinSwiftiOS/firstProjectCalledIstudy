@@ -51,11 +51,10 @@ class ChoiceQusViewController: UIViewController,UIWebViewDelegate,UITableViewDel
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        //顶部加条线
         //设置阴影效果
-        self.topView?.layer.shadowOffset = CGSizeMake(2.0, 1.0)
-        self.topView?.layer.shadowColor = UIColor.blueColor().CGColor
-        self.topView?.layer.shadowOpacity = 0.5
+        ShowBigImageFactory.topViewEDit(self.topView!)
+        
+
 
         self.tap = UITapGestureRecognizer(target: self, action: #selector(ChoiceQusViewController.webViewShowBig(_:)))
         self.tap.delegate = self
@@ -224,6 +223,7 @@ func showAct(){
                             //阅卷的界面不可点击
                             self.resultTextView.editable = false
                         self.displayMarkingArray.replaceObjectAtIndex(self.index, withObject: 1)
+                        self.tableView?.reloadData()
                         }
                 case .Failure(_):
                     ProgressHUD.showError("阅卷失败")
@@ -390,6 +390,7 @@ func showAct(){
             self.Over()
             self.gooverBtn?.enabled = false
             self.resetBtn?.enabled = false
+            self.displayMarkingArray[index] = 1
         }
         self.tableView?.reloadData()
         }
@@ -456,17 +457,7 @@ func showAct(){
     }
     
     func webViewShowBig(sender:UITapGestureRecognizer){
-        var pt = CGPoint()
-        var urlToSave = ""
-             pt = sender.locationInView(self.queDes)
-        let imgUrl = String(format: "document.elementFromPoint(%f, %f).src",pt.x, pt.y);
-        urlToSave = self.queDes.stringByEvaluatingJavaScriptFromString(imgUrl)!
-        
-        if(urlToSave != ""){
-            let vc = UIStoryboard(name: "Problem", bundle: nil).instantiateViewControllerWithIdentifier("showBigVC") as! ImageShowBigViewController
-            vc.url = urlToSave
-            self.navigationController?.pushViewController(vc, animated: true)
-        }
+    ShowBigImageFactory.showBigImage(self, webView: self.queDes, sender: sender)
     }
 
     func showImage(sender:NSNotification){

@@ -164,6 +164,7 @@ class AchViewController: UIViewController,UICollectionViewDelegate,UICollectionV
                 let vc = UIStoryboard(name: "Problem", bundle: nil).instantiateViewControllerWithIdentifier("SubjectiveQusVC") as!
                 SubjectiveQusViewController
                 vc.items = self.totalItems[indexPath.section].valueForKey("questions") as! NSArray
+            
                 vc.isFromOtherKindQus = true
                 vc.title = self.title
                 vc.testid = self.testid

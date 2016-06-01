@@ -179,8 +179,7 @@ self.view.setNeedsLayout()
             ]
 
         }
-        print(dic)
- var result = ""
+        var result = ""
     do { let paramData = try NSJSONSerialization.dataWithJSONObject(dic, options: NSJSONWritingOptions.PrettyPrinted)
             result = paramData.base64EncodedStringWithOptions(NSDataBase64EncodingOptions.Encoding64CharacterLineLength)
         }catch{
@@ -190,7 +189,7 @@ self.view.setNeedsLayout()
         
         let paramDic:[String:AnyObject] = ["authtoken":authtoken,
                                            "data":result]
-        print(paramDic)
+        
 Alamofire.request(.POST, "http://dodo.hznu.edu.cn/api/messagesend", parameters: paramDic, encoding: ParameterEncoding.URL, headers: nil).responseJSON(completionHandler: { (response) in
            
             switch response.result{

@@ -171,6 +171,7 @@
 		38D110431CD5F41B005000F1 /* ComplexQusViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38D110421CD5F41B005000F1 /* ComplexQusViewController.swift */; };
 		38D1105B1CD6164E005000F1 /* ComplexChoiceTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38D1105A1CD6164E005000F1 /* ComplexChoiceTableViewCell.swift */; };
 		38D35FDF1CEDD6BB00F657FC /* BasicInformationTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38D35FDE1CEDD6BB00F657FC /* BasicInformationTableViewCell.swift */; };
+		38D8E60F1CFE789E0092C458 /* ShowBigImageFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38D8E60E1CFE789E0092C458 /* ShowBigImageFactory.swift */; };
 		38DE95951C9040FC002E31F8 /* writeEmialOrMobilePhoneViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38DE95941C9040FC002E31F8 /* writeEmialOrMobilePhoneViewController.swift */; };
 		38DF99521C8C14E200BBE15E /* SendIdentifyCodeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38DF99511C8C14E200BBE15E /* SendIdentifyCodeViewController.swift */; };
 		38DF99541C8C14EC00BBE15E /* ResetPasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38DF99531C8C14EC00BBE15E /* ResetPasswordViewController.swift */; };
@@ -643,6 +644,7 @@
 		38D110421CD5F41B005000F1 /* ComplexQusViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComplexQusViewController.swift; sourceTree = "<group>"; };
 		38D1105A1CD6164E005000F1 /* ComplexChoiceTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComplexChoiceTableViewCell.swift; sourceTree = "<group>"; };
 		38D35FDE1CEDD6BB00F657FC /* BasicInformationTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BasicInformationTableViewCell.swift; sourceTree = "<group>"; };
+		38D8E60E1CFE789E0092C458 /* ShowBigImageFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShowBigImageFactory.swift; sourceTree = "<group>"; };
 		38DE95941C9040FC002E31F8 /* writeEmialOrMobilePhoneViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = writeEmialOrMobilePhoneViewController.swift; sourceTree = "<group>"; };
 		38DF99511C8C14E200BBE15E /* SendIdentifyCodeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SendIdentifyCodeViewController.swift; sourceTree = "<group>"; };
 		38DF99531C8C14EC00BBE15E /* ResetPasswordViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ResetPasswordViewController.swift; sourceTree = "<group>"; };
@@ -1218,6 +1220,7 @@
 		3887416A1C8AFD44008B665A /* M */ = {
 			isa = PBXGroup;
 			children = (
+				38D8E60E1CFE789E0092C458 /* ShowBigImageFactory.swift */,
 			);
 			name = M;
 			sourceTree = "<group>";
@@ -2383,6 +2386,7 @@
 				385774E51CCB2F8100C9CDA8 /* GUAAlertView.m in Sources */,
 				3811F5C01C885C4500BCC841 /* testTableViewCell.swift in Sources */,
 				38219B251CA151CD005839C5 /* PeerAssessmentTableViewCell.swift in Sources */,
+				38D8E60F1CFE789E0092C458 /* ShowBigImageFactory.swift in Sources */,
 				38CCBF741C93B911002BEA6B /* PersonalHeadPortrait+CoreDataProperties.swift in Sources */,
 				38870C091C997CB4007528C6 /* MyHomeWorkTableViewCell.swift in Sources */,
 				38DF995A1C8C69EC00BBE15E /* SixSameViewController.swift in Sources */,

@@ -50,9 +50,9 @@ class ProgramDesignViewController: UIViewController,UIWebViewDelegate,UIGestureR
         super.viewDidLoad()
                //顶部加条线
         //设置阴影效果
-        self.topView?.layer.shadowOffset = CGSizeMake(2.0, 1.0)
-        self.topView?.layer.shadowColor = UIColor.blueColor().CGColor
-        self.topView?.layer.shadowOpacity = 0.5
+        ShowBigImageFactory.topViewEDit(self.topView!)
+        
+
         
         self.automaticallyAdjustsScrollViewInsets = false
         self.tap = UITapGestureRecognizer(target: self, action: #selector(ProgramDesignViewController.webViewShowBig(_:)))
@@ -411,6 +411,7 @@ class ProgramDesignViewController: UIViewController,UIWebViewDelegate,UIGestureR
                 self.gooverBtn.enabled = false
             }
         }else{
+              self.displayMarkingArray[index] = 1
             self.gooverBtn.enabled = false
             self.saveBtn?.enabled = false
             self.answerTextView?.userInteractionEnabled = false
@@ -451,18 +452,8 @@ class ProgramDesignViewController: UIViewController,UIWebViewDelegate,UIGestureR
     }
     
     func webViewShowBig(sender:UITapGestureRecognizer){
-        var pt = CGPoint()
-        var urlToSave = ""
-        pt = sender.locationInView(self.qusDesWebView)
-        let imgUrl = String(format: "document.elementFromPoint(%f, %f).src",pt.x, pt.y);
-        urlToSave = self.qusDesWebView.stringByEvaluatingJavaScriptFromString(imgUrl)!
+     ShowBigImageFactory.showBigImage(self, webView: self.qusDesWebView, sender: sender)
         
-        if(urlToSave != ""){
-            let vc = UIStoryboard(name: "Problem", bundle: nil).instantiateViewControllerWithIdentifier("showBigVC") as! ImageShowBigViewController
-            vc.url = urlToSave
-            self.navigationController?.pushViewController(vc, animated: true)
-        }
-
         }
     
     deinit{

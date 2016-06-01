@@ -10,6 +10,7 @@ import UIKit
 
 class DetailTopicViewController: UIViewController,UIWebViewDelegate{
     //webView来加载字符串
+    @IBOutlet weak var replyBtn:UIButton!
     @IBOutlet weak var webView:UIWebView?
    var detailString = ""
     var projectid = NSInteger()
@@ -20,7 +21,7 @@ class DetailTopicViewController: UIViewController,UIWebViewDelegate{
         self.webView?.frame = CGRectMake(0, 0, SCREEN_WIDTH, 1)
         self.webView?.delegate = self
 self.webView?.loadHTMLString(detailString, baseURL: nil)
-       
+       self.automaticallyAdjustsScrollViewInsets = false
         
         // Do any additional setup after loading the view.
     }
@@ -38,17 +39,21 @@ self.webView?.loadHTMLString(detailString, baseURL: nil)
         self.navigationController?.pushViewController(replyTopicVC, animated: true)
     }
     func webViewDidStartLoad(webView: UIWebView) {
+        ProgressHUD.show("请稍候")
         let frame = CGRectMake(0, 0, SCREEN_WIDTH, 2)
         webView.frame = frame
+        self.view.bringSubviewToFront(self.replyBtn)
     }
     func webViewDidFinishLoad(webView: UIWebView) {
-    
+    ProgressHUD.dismiss()
         let height = NSInteger(webView.stringByEvaluatingJavaScriptFromString("document.body.offsetHeight")!)
         var frame = webView.frame
         frame.size.height = CGFloat(height!)
         webView.frame = frame
+        self.view.bringSubviewToFront(self.replyBtn)
     }
     override func viewWillDisappear(animated: Bool) {
         ProgressHUD.dismiss()
+        self.view.bringSubviewToFront(self.replyBtn)
     }
 }

@@ -62,9 +62,8 @@ class CompletionQusViewController: UIViewController,UITextFieldDelegate,UIWebVie
         super.viewDidLoad()
               //顶部加条线
         //设置阴影效果
-        self.topView?.layer.shadowOffset = CGSizeMake(2.0, 1.0)
-        self.topView?.layer.shadowColor = UIColor.blueColor().CGColor
-        self.topView?.layer.shadowOpacity = 0.5
+        ShowBigImageFactory.topViewEDit(self.topView!)
+        
 
         self.tap = UITapGestureRecognizer(target: self, action: #selector(CompletionQusViewController.webViewShowBig(_:)))
         self.tap.delegate = self
@@ -479,7 +478,7 @@ class CompletionQusViewController: UIViewController,UITextFieldDelegate,UIWebVie
         let currentDate = NSDate()
         let result:NSComparisonResult = currentDate.compare(endDate)
         if result == .OrderedAscending{
-            
+              self.displayMarkingArray[index] = 1
             if(self.displayMarkingArray[index] as! NSObject != 0){
             self.isOver = false
                 self.Over()
@@ -606,19 +605,9 @@ class CompletionQusViewController: UIViewController,UITextFieldDelegate,UIWebVie
         }
     }
     func webViewShowBig(sender:UITapGestureRecognizer){
-        var pt = CGPoint()
-        var urlToSave = ""
-     
-        pt = sender.locationInView(self.queDes)
-        let imgUrl = String(format: "document.elementFromPoint(%f, %f).src",pt.x, pt.y);
-        urlToSave = self.queDes.stringByEvaluatingJavaScriptFromString(imgUrl)!
-
-        if(urlToSave != ""){
-        let vc = UIStoryboard(name: "Problem", bundle: nil).instantiateViewControllerWithIdentifier("showBigVC") as! ImageShowBigViewController
-        vc.url = urlToSave
-        self.navigationController?.pushViewController(vc, animated: true)
-        }
+  ShowBigImageFactory.showBigImage(self, webView: self.queDes, sender: sender)
             }
+    
     
     
     override func viewWillDisappear(animated: Bool) {

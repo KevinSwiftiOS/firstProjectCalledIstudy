@@ -255,7 +255,7 @@ class TranslateViewController: UIViewController{
         case "DESIGN":
             let vc = UIStoryboard(name: "Problem", bundle: nil).instantiateViewControllerWithIdentifier("SubjectiveQusVC") as!
             SubjectiveQusViewController
-            vc.items = self.totalItems[kindOfQusIndex].valueForKey("questions") as! NSArray
+                       vc.items = self.totalItems[kindOfQusIndex].valueForKey("questions") as! NSArray
             vc.totalItems = self.totalItems
           
             vc.testid = self.testid

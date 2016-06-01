@@ -55,9 +55,8 @@ class MultipleChoiceViewController: UIViewController,UIWebViewDelegate,UITableVi
                 //加线
         //顶部加条线
         //设置阴影效果
-        self.topView?.layer.shadowOffset = CGSizeMake(2.0, 1.0)
-        self.topView?.layer.shadowColor = UIColor.blueColor().CGColor
-        self.topView?.layer.shadowOpacity = 0.5
+        ShowBigImageFactory.topViewEDit(self.topView!)
+        
 
         self.tap = UITapGestureRecognizer(target: self, action: #selector(MultipleChoiceViewController.webViewShowBig(_:)))
         self.tap.delegate = self
@@ -443,6 +442,7 @@ class MultipleChoiceViewController: UIViewController,UIWebViewDelegate,UITableVi
             self.goOVerBtn?.enabled = false
             self.resetBtn?.enabled = false
             self.saveBtn?.enabled = false
+              self.displayMarkingArray[index] = 1
         }
         self.tableView?.reloadData()
     }
@@ -510,17 +510,7 @@ class MultipleChoiceViewController: UIViewController,UIWebViewDelegate,UITableVi
     }
     
     func webViewShowBig(sender:UITapGestureRecognizer){
-        var pt = CGPoint()
-        var urlToSave = ""
-        pt = sender.locationInView(self.qusDesWebView)
-        let imgUrl = String(format: "document.elementFromPoint(%f, %f).src",pt.x, pt.y);
-        urlToSave = self.qusDesWebView.stringByEvaluatingJavaScriptFromString(imgUrl)!
-        
-        if(urlToSave != ""){
-            let vc = UIStoryboard(name: "Problem", bundle: nil).instantiateViewControllerWithIdentifier("showBigVC") as! ImageShowBigViewController
-            vc.url = urlToSave
-            self.navigationController?.pushViewController(vc, animated: true)
-        }
+  ShowBigImageFactory.showBigImage(self, webView: self.qusDesWebView, sender: sender)
     }
     func showImage(sender:NSNotification){
         let cell = sender.object as! ChoiceTableViewCell

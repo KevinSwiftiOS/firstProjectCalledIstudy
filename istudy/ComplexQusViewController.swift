@@ -74,17 +74,14 @@ class ComplexQusViewController: UIViewController,UITableViewDelegate,UITableView
     var oneSubFillBlankSelfAnswerArray = NSMutableArray()
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         self.tableView.keyboardDismissMode = .OnDrag
         //顶部加条线
         //设置阴影效果
-        self.topView?.layer.shadowOffset = CGSizeMake(2.0, 1.0)
-        self.topView?.layer.shadowColor = UIColor.blueColor().CGColor
-        self.topView?.layer.shadowOpacity = 0.5
-        self.subTopView?.layer.shadowOffset = CGSizeMake(2.0, 1.0)
-        self.subTopView?.layer.shadowColor = UIColor.blueColor().CGColor
-        self.subTopView?.layer.shadowOpacity = 0.5
+        //设置阴影效果
+        ShowBigImageFactory.topViewEDit(self.topView!)
         
+        //设置阴影效果
+        ShowBigImageFactory.topViewEDit(self.subTopView!)
         self.tap = UITapGestureRecognizer(target: self, action: #selector(ComplexQusViewController.webViewShowBig(_:)))
         tap.delegate = self
         self.qusDesWebView?.addGestureRecognizer(tap)
@@ -449,6 +446,7 @@ class ComplexQusViewController: UIViewController,UITableViewDelegate,UITableView
                       
                     }
                 }else{
+                    self.disPlayMarkTextArray[subIndex] = "1"
                     isOver = true
                     self.resetBtn?.enabled = false
                     self.goOVerBtn?.enabled = false
@@ -465,7 +463,6 @@ class ComplexQusViewController: UIViewController,UITableViewDelegate,UITableView
     }
     let tempOptionArray = ["a","b","c","d","e","f","g","h","i"]
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        
         return cellHeights.count
     }
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
@@ -916,6 +913,7 @@ class ComplexQusViewController: UIViewController,UITableViewDelegate,UITableView
                         //阅卷的界面不可点击
                         self.resultTextView.editable = false
                         self.disPlayMarkTextArray.replaceObjectAtIndex(self.subIndex, withObject: "1")
+                        self.tableView.reloadData()
                     }
                 case .Failure(_):
                     ProgressHUD.showError("阅卷失败")
@@ -1021,22 +1019,9 @@ class ComplexQusViewController: UIViewController,UITableViewDelegate,UITableView
     }
     
     func webViewShowBig(sender:UITapGestureRecognizer){
-        var pt = CGPoint()
-        var urlToSave = ""
-        
-        pt = sender.locationInView(self.qusDesWebView)
-        let imgUrl = String(format: "document.elementFromPoint(%f, %f).src",pt.x, pt.y);
-        urlToSave = self.qusDesWebView!.stringByEvaluatingJavaScriptFromString(imgUrl)!
-        
-        
-        if(urlToSave != ""){
-            let vc = UIStoryboard(name: "Problem", bundle: nil).instantiateViewControllerWithIdentifier("showBigVC") as! ImageShowBigViewController
-            vc.url = urlToSave
-            self.navigationController?.pushViewController(vc, animated: true)
-        }
-
+       ShowBigImageFactory.showBigImage(self, webView: self.qusDesWebView!, sender: sender)
     }
-    func showImage(sender:NSNotification){
+      func showImage(sender:NSNotification){
         let cell = sender.object as! ComplexChoiceTableViewCell
         let vc = UIStoryboard(name: "Problem", bundle: nil).instantiateViewControllerWithIdentifier("showBigVC") as! ImageShowBigViewController
          vc.url = cell.url
