@@ -478,9 +478,9 @@ class CompletionQusViewController: UIViewController,UITextFieldDelegate,UIWebVie
         let currentDate = NSDate()
         let result:NSComparisonResult = currentDate.compare(endDate)
         if result == .OrderedAscending{
-              self.displayMarkingArray[index] = 1
+            
             if(self.displayMarkingArray[index] as! NSObject != 0){
-            self.isOver = false
+                self.isOver = false
                 self.Over()
             self.goOVerBtn?.enabled = false
             self.saveBtn?.enabled = false
@@ -496,6 +496,7 @@ class CompletionQusViewController: UIViewController,UITextFieldDelegate,UIWebVie
             self.resetBtn?.enabled = false
             self.goOVerBtn?.enabled = false
             self.saveBtn?.enabled = false
+            self.displayMarkingArray[index] = 1
             
         }
         webView.addGestureRecognizer(tap)

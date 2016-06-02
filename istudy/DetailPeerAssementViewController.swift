@@ -51,10 +51,14 @@ class DetailPeerAssementViewController: UIViewController,UICollectionViewDataSou
             cell.isPeerBtn?.setTitle("已评", forState: .Normal)
             cell.changePeerBtn?.hidden = false
             cell.isPeerBtn?.enabled = false
+        if(self.items[indexPath.row].valueForKey("score") as? NSNumber != nil){
+         cell.isPeerBtn?.setTitle("\(self.items[indexPath.row].valueForKey("score") as! NSNumber )", forState: .Normal)
+        }
         }else{
             cell.isPeerBtn?.setTitle("未评", forState: .Normal)
             cell.isPeerBtn?.enabled = true
             cell.changePeerBtn?.hidden = true
+        
             }
         cell.isPeerBtn?.tag = indexPath.row
         cell.changePeerBtn?.tag = indexPath.row
@@ -114,6 +118,7 @@ class DetailPeerAssementViewController: UIViewController,UICollectionViewDataSou
                     dispatch_async(dispatch_get_main_queue(), {
                         ProgressHUD.dismiss()
                         self.items = json["items"].arrayObject! as NSArray
+                       
                         self.collectionView?.reloadData()
                        // print(self.items)
                     })

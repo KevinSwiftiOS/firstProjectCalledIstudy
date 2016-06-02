@@ -78,19 +78,18 @@ var questions = NSMutableArray()
             ProgressHUD.showError("保存失败")
         }
         let parameter:[String:AnyObject] = ["authtoken":userDefault.valueForKey("authtoken") as! String,"data":result]
-       print(parameter)
+       
         
         Alamofire.request(.POST, "http://dodo.hznu.edu.cn/api/submithuping", parameters: parameter, encoding: ParameterEncoding.URL, headers: nil).responseJSON { (response) in
             switch response.result{
             case .Success(let Value):
                 let json = JSON(Value)
-                print(json)
-                if(json["retcode"].number != 0){
+                              if(json["retcode"].number != 0){
                     print(json["retcode"].number)
                 ProgressHUD.showError("评论失败")
                 }else{
                     ProgressHUD.showSuccess("评论成功")
-                
+                self.navigationController?.popViewControllerAnimated(true)
 
 }
             case .Failure(_):ProgressHUD.showError("评论失败")
