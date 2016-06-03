@@ -51,9 +51,6 @@
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="头像4" translatesAutoresizingMaskIntoConstraints="NO" id="Mdn-v9-GQW">
                                 <rect key="frame" x="0.0" y="0.0" width="240" height="128"/>
                             </imageView>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="安全设置2" translatesAutoresizingMaskIntoConstraints="NO" id="pwK-LS-eTd">
-                                <rect key="frame" x="0.0" y="0.0" width="240" height="128"/>
-                            </imageView>
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="请输入账号" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="D1J-S9-3FV">
                                 <rect key="frame" x="-25" y="-30" width="97" height="30"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
@@ -69,6 +66,9 @@
                                     <action selector="login:" destination="QBB-J4-r5L" eventType="touchUpInside" id="fXJ-pd-XNO"/>
                                 </connections>
                             </button>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="安全设置2" translatesAutoresizingMaskIntoConstraints="NO" id="pwK-LS-eTd">
+                                <rect key="frame" x="0.0" y="0.0" width="240" height="128"/>
+                            </imageView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
@@ -102,9 +102,9 @@
                                 <exclude reference="4KD-dz-VyJ"/>
                                 <exclude reference="qGO-DN-K1L"/>
                                 <exclude reference="Mdn-v9-GQW"/>
-                                <exclude reference="pwK-LS-eTd"/>
                                 <exclude reference="D1J-S9-3FV"/>
                                 <exclude reference="M6K-4v-spK"/>
+                                <exclude reference="pwK-LS-eTd"/>
                             </mask>
                             <mask key="constraints">
                                 <exclude reference="WYP-PJ-lr0"/>
@@ -138,9 +138,9 @@
                                 <include reference="4KD-dz-VyJ"/>
                                 <include reference="qGO-DN-K1L"/>
                                 <include reference="Mdn-v9-GQW"/>
-                                <include reference="pwK-LS-eTd"/>
                                 <include reference="D1J-S9-3FV"/>
                                 <include reference="M6K-4v-spK"/>
+                                <include reference="pwK-LS-eTd"/>
                             </mask>
                             <mask key="constraints">
                                 <include reference="WYP-PJ-lr0"/>

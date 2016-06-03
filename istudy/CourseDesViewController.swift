@@ -247,7 +247,7 @@
                             ProgressHUD.showError("请求失败")
                         }else{
                             userDefault.setValue(json["authtoken"].string, forKey: "authtoken")
-                            print(userDefault.valueForKey("authtoken"))
+                      
                             //设置名字 名字和账号是不一样的
                             userDefault.setValue(json["info"]["name"].string, forKey: "name")
                             userDefault.setValue(json["info"]["gender"].string, forKey: "gender")
