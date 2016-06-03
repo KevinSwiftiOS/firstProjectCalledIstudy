@@ -9,9 +9,9 @@
 import UIKit
 import CoreData
 class PersonalViewController: UIViewController,UITableViewDelegate,UITableViewDataSource {
-    var managedContext:NSManagedObjectContext?
-    var fetchedResults = [PersonalHeadPortrait]()
-    var selectedImageData = NSData()
+//    var managedContext:NSManagedObjectContext?
+//    var fetchedResults = [PersonalHeadPortrait]()
+//    var selectedImageData = NSData()
     @IBOutlet weak var tableView:UITableView?
     //账号
     @IBOutlet weak var userName:UILabel?

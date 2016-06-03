@@ -729,7 +729,7 @@
                             <constraint firstItem="cRq-Ta-z2Z" firstAttribute="top" secondItem="IAp-vY-Y1z" secondAttribute="bottom" constant="16" id="Eg7-D8-1PW"/>
                             <constraint firstItem="IAp-vY-Y1z" firstAttribute="width" secondItem="cxn-dq-jlo" secondAttribute="width" id="Jcf-Ig-sGD"/>
                             <constraint firstItem="Cke-2k-6M3" firstAttribute="leading" secondItem="Suh-w9-qEg" secondAttribute="leadingMargin" multiplier="0.7" constant="21" id="K9f-gX-Zxh"/>
-                            <constraint firstItem="YsM-26-DfD" firstAttribute="leading" secondItem="Suh-w9-qEg" secondAttribute="leading" multiplier="0.5" constant="41" id="Qq6-Bh-zCl"/>
+                            <constraint firstItem="YsM-26-DfD" firstAttribute="leading" secondItem="Suh-w9-qEg" secondAttribute="leading" multiplier="0.5" constant="21" id="Qq6-Bh-zCl"/>
                             <constraint firstItem="IAp-vY-Y1z" firstAttribute="top" secondItem="cxn-dq-jlo" secondAttribute="bottom" constant="17" id="atc-P4-iyN"/>
                             <constraint firstItem="cRq-Ta-z2Z" firstAttribute="width" secondItem="IAp-vY-Y1z" secondAttribute="width" id="d45-DB-COx"/>
                             <constraint firstItem="jp8-f9-Rfr" firstAttribute="leading" secondItem="Suh-w9-qEg" secondAttribute="leading" constant="26" id="hEV-zr-LMA"/>

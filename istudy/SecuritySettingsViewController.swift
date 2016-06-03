@@ -23,7 +23,8 @@ class SecuritySettingsViewController: UIViewController {
         // Do any additional setup after loading the view.
         XKeyBoard.registerKeyBoardHide(self)
         XKeyBoard.registerKeyBoardShow(self)
-        self.view.backgroundColor = UIColor.lightGrayColor()
+      
+      
     }
 
     override func didReceiveMemoryWarning() {
