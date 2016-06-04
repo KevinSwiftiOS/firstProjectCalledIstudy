@@ -15,9 +15,9 @@ class ChangeHeadPortraitViewController: UIViewController,UITableViewDelegate,UIT
     @IBOutlet weak var selectImageFromTableView:UITableView?
     var selectFromArray = ["相册","相机"]
     var imagePicker = UIImagePickerController()
-    var managedContext:NSManagedObjectContext?
-    var fetchedResults = [PersonalHeadPortrait]()
-    var selectedImageData = NSData()
+//    var managedContext:NSManagedObjectContext?
+//    var fetchedResults = [PersonalHeadPortrait]()
+  var selectedImageData = NSData()
     var isFromFromImagePicker = false
     override func viewDidLoad() {
         super.viewDidLoad()
