@@ -325,7 +325,7 @@ func showAct(){
                       "answer":self.answers.objectAtIndex(index)]
         let userDefault = NSUserDefaults.standardUserDefaults()
         let authtoken = userDefault.valueForKey("authtoken") as! String
-        print(answer)
+       
         var result = String()
         do { let parameterData = try NSJSONSerialization.dataWithJSONObject(answer, options: NSJSONWritingOptions.PrettyPrinted)
             
@@ -363,7 +363,7 @@ func showAct(){
 //        //左右滑动和上下滑动
         let scrollView = webView.subviews[0] as! UIScrollView
         let width = NSInteger(webView.stringByEvaluatingJavaScriptFromString("document.body.scrollWidth")!)
-        scrollView.contentSize = CGSizeMake(CGFloat(width!), 0)
+               scrollView.contentSize = CGSizeMake(CGFloat(width!), 0)
         scrollView.showsVerticalScrollIndicator = false
         self.tableView?.tableHeaderView = self.queDes
 

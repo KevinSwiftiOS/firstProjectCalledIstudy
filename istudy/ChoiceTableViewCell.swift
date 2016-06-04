@@ -23,7 +23,7 @@ class ChoiceTableViewCell: UITableViewCell,UIWebViewDelegate {
     }
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        btn = UIButton(frame: CGRectMake(10,10,30,30))
+        btn = UIButton(frame: CGRectMake(10,2,30,30))
         for view in self.contentView.subviews{
             view.removeFromSuperview()
         }
@@ -48,7 +48,7 @@ class ChoiceTableViewCell: UITableViewCell,UIWebViewDelegate {
         
     }
     func webViewDidFinishLoad(webView: UIWebView) {
-        webView.stopLoading()
+      
         let height = NSInteger(webView.stringByEvaluatingJavaScriptFromString("document.body.offsetHeight")!)
         //左右滑动和上下滑动
         let scrollView = webView.subviews[0] as! UIScrollView
@@ -59,10 +59,10 @@ class ChoiceTableViewCell: UITableViewCell,UIWebViewDelegate {
         var frame = webView.frame
         frame.size.height = CGFloat(height!) + 5
         webView.frame = frame
-        self.cellHeight = CGFloat(height!) + 6
+        self.cellHeight = CGFloat(height!) + 10
         webView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(ComplexChoiceTableViewCell.tap(_:))))
         //小于按钮的高度
-        if(self.cellHeight <= 30){
+        if(self.cellHeight < 50){
             self.cellHeight = 50
         }
         self.contentView.addSubview(webView)
