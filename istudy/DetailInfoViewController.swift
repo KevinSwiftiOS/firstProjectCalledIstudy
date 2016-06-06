@@ -34,6 +34,7 @@ class DetailInfoViewController: UIViewController,UIWebViewDelegate{
                 }else{
                     dispatch_async(dispatch_get_main_queue(), {
                        
+                       
                         self.title = json["info"]["title"].string
                         self.webView.loadHTMLString(json["info"]["content"].string!,baseURL: nil)
                         self.webView.delegate = self

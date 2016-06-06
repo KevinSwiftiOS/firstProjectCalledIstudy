@@ -53,10 +53,11 @@ class CompletionTableViewCell: UITableViewCell,UITextFieldDelegate,UIWebViewDele
         scrollView.contentSize = CGSizeMake(CGFloat(width!), 0)
         scrollView.showsVerticalScrollIndicator = false
         var frame = webView.frame
-        frame.size.height = CGFloat(height!) + 2
+        frame.size.height = CGFloat(height!) + 5
         webView.frame = frame
-        self.cellHeight = CGFloat(height!) + 2
+        self.cellHeight = CGFloat(height!) + 10
         textField?.frame = CGRectMake(10, self.cellHeight,SCREEN_WIDTH - 20, 30)
+        self.cellHeight += 32
         textField?.delegate = self
         self.contentView.setNeedsDisplay()
         self.contentView.addSubview(webView)
@@ -68,7 +69,7 @@ class CompletionTableViewCell: UITableViewCell,UITextFieldDelegate,UIWebViewDele
         }
         textField?.layer.borderWidth = 1.0
         textField?.enabled = canEdit
-        self.cellHeight = CGFloat(height!) + 2 + 32
+  
         //发送通知
         NSNotificationCenter.defaultCenter().postNotificationName("CompletionWebViewHeight", object: self, userInfo: nil)
     }

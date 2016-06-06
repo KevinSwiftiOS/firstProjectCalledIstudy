@@ -51,6 +51,7 @@ class SendIdentifyCodeViewController: UIViewController {
         case .Success(let Value):
             let json = JSON(Value)
             if(json["retcode"].number == 0){
+                print(json)
                 ProgressHUD.showSuccess("验证成功")
                 let sb = UIStoryboard(name: "LoginAndReset", bundle: nil)
                 let resetPassordVC = sb.instantiateViewControllerWithIdentifier("ResetPasswordVC") as! ResetPasswordViewController

@@ -7,7 +7,8 @@
 //
 
 import UIKit
-
+import Alamofire
+import SwiftyJSON
 class MyTestViewController: UIViewController,UITableViewDataSource,UITableViewDelegate,UISearchResultsUpdating,UISearchControllerDelegate{
     @IBOutlet weak var topLayout: NSLayoutConstraint!
     //接受数据信息的数组
@@ -54,21 +55,45 @@ class MyTestViewController: UIViewController,UITableViewDataSource,UITableViewDe
     }
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier("testCell") as! testTableViewCell
+        var trueItems = NSArray()
         if(sc.active == true){
-            cell.testCourseName?.text = self.trueArray[indexPath.row] as? String
+            trueItems = self.trueArray
+           
         }else{
-            cell.testCourseName?.text = self.testDataArray[indexPath.row] as? String
+        trueItems = self.testDataArray
+        }
+        cell.testCourseName?.text = "考试科目:" + (trueItems[indexPath.row].valueForKey("title") as? String)!
+        
+        if(trueItems[indexPath.row].valueForKey("teacher") as? String != nil
+            && trueItems[indexPath.row].valueForKey("teacher") as! String != ""){
+        cell.testCourseTea?.text = trueItems[indexPath.row].valueForKey("teacher") as? String
+        }
+        cell.testCourseTea?.tintColor = UIColor.whiteColor()
+        cell.testCourseTea?.backgroundColor =  RGB(0, g: 153, b: 255)
+        var dateStartArr = [String]()
+        var dateEndArr = [String]()
+        if(trueItems[indexPath.row].valueForKey("datestart") as? String != nil && trueItems[indexPath.row].valueForKey("datestart") as! String != ""){
+             dateStartArr = diviseDateString(trueItems[indexPath.row].valueForKey("datestart") as! String)
+        }
+        if(trueItems[indexPath.row].valueForKey("dateend") as? String != nil && trueItems[indexPath.row].valueForKey("dateend") as! String != ""){
+            dateEndArr = diviseDateString(trueItems[indexPath.row].valueForKey("dateend") as! String)
+        }
+        cell.testCourseTime?.text = "开始时间:" + dateStartArr[0] + "年" + dateStartArr[1] + "月" + dateStartArr[2] + "日" + dateStartArr[3] + ":" + dateStartArr[4] + ":" +  dateStartArr[5] + "\n" +
+        "截止时间:" + dateEndArr[0] + "年" + dateEndArr[1] + "月" + dateEndArr[2] + "日" + dateEndArr[3] + ":" + dateEndArr[4] + ":" +  dateEndArr[5]
+    //考试地点
+        var adress = ""
+        if(trueItems[indexPath.row].valueForKey("ksdd") as? String != nil && trueItems[indexPath.row].valueForKey("ksdd") as! String != ""){
+            adress = trueItems[indexPath.row].valueForKey("ksdd") as! String
+        }
+        if(trueItems[indexPath.row].valueForKey("kszw") as? String != nil && trueItems[indexPath.row].valueForKey("kszw") as! String != ""){
+            adress += trueItems[indexPath.row].valueForKey("kszw") as! String
         }
         
-        cell.testCourseTea?.text = "张量"
-//        cell.testCourseTea?.tintColor = UIColor.whiteColor()
-//                cell.testCourseTea?.backgroundColor =  RGB(0, g: 153, b: 255)
-
-        cell.testCourseTime?.text = "2016年12月12日 周日 上午12：00 - 13：00"
         cell.testCourseTime?.editable = false
-        cell.testCourseAdress?.text = "恕园33号楼"
+        cell.testCourseAdress?.text = adress
         cell.selectionStyle = .None
         //cell赋值
+        
         return cell
     }
     
@@ -80,7 +105,7 @@ class MyTestViewController: UIViewController,UITableViewDataSource,UITableViewDe
         self.trueArray.removeAllObjects()
         let scopePredicate = NSPredicate(format: "SELF contains[c] %@", searchController.searchBar.text!)
         for i in 0 ..< self.testDataArray.count{
-            if(scopePredicate.evaluateWithObject(self.testDataArray[i]) == true){
+            if(scopePredicate.evaluateWithObject(self.testDataArray[i].valueForKey("title")) == true){
                 self.trueArray.addObject(self.testDataArray[i])
             }
         }
@@ -104,12 +129,68 @@ class MyTestViewController: UIViewController,UITableViewDataSource,UITableViewDe
             
         }
     func headRefresh() {
-        self.testDataArray = ["a","b"]
-        self.testTableView?.mj_header.endRefreshing()
-        self.testTableView?.reloadData()
+        let userDefault = NSUserDefaults.standardUserDefaults()
+        let dic:[String:AnyObject] = ["authtoken":userDefault.valueForKey("authtoken") as! String]
+        Alamofire.request(.POST, "http://dodo.hznu.edu.cn/api/testquery", parameters: dic, encoding: ParameterEncoding.URL, headers: nil).responseJSON { (response) in
+            switch response.result{
+            case .Failure(_):
+                dispatch_async(dispatch_get_main_queue(), {
+                    self.testDataArray = NSArray()
+                    self.testTableView?.mj_header.endRefreshing()
+                    self.testTableView?.reloadData()
+                    ProgressHUD.showError("请求失败")
+                })
+
+                ProgressHUD.showError("请求失败")
+            case .Success(let Value):
+                let json = JSON(Value)
+                if(json["retcode"].number != 0){
+                    dispatch_async(dispatch_get_main_queue(), {
+                        self.testDataArray = NSArray()
+                        self.testTableView?.mj_header.endRefreshing()
+                        self.testTableView?.reloadData()
+                        ProgressHUD.showError("请求失败")
+                    })
+                  
+                    print(json["retcode"])
+                }else{
+                    dispatch_async(dispatch_get_main_queue(), {
+                        self.testDataArray = json["items"].arrayObject! as NSArray
+                        self.testTableView?.mj_header.endRefreshing()
+                        self.testTableView?.reloadData()
+                    })
+                
+                }
+            }
+        }
+      
     }
     override func viewWillDisappear(animated: Bool) {
              ProgressHUD.dismiss()
+    }
+    //进行日期字符串分割
+    //分割日期的字符串
+    func diviseDateString(totalDate:NSString) -> [String] {
+        var arr = [String]()
+        let yearRange = NSMakeRange(0, 4)
+        let monthRange = NSMakeRange(4, 2)
+        let dateRange = NSMakeRange(6, 2)
+        let hourRange = NSMakeRange(8, 2)
+        let minuateRange = NSMakeRange(10, 2)
+        let secondRange = NSMakeRange(12, 2)
+        let year = totalDate.substringWithRange(yearRange) as String
+        let month = totalDate.substringWithRange(monthRange) as String
+        let date = totalDate.substringWithRange(dateRange) as String
+        let hour = totalDate.substringWithRange(hourRange) as String
+        let minate = totalDate.substringWithRange(minuateRange) as String
+        let second = totalDate.substringWithRange(secondRange) as String
+        arr.append(year)
+        arr.append(month)
+        arr.append(date)
+        arr.append(hour)
+        arr.append(minate)
+        arr.append(second)
+        return arr
     }
 }
 

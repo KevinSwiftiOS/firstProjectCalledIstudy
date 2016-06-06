@@ -237,7 +237,8 @@ class MyHomeWorkViewController: UIViewController,UITableViewDataSource,UITableVi
         Alamofire.request(.POST, self.postString, parameters: dic, encoding: ParameterEncoding.URL, headers: nil).responseJSON { (response) in
             switch response.result{
             case .Success(let Value):
-                let json = JSON(Value)
+             let json = JSON(Value)
+                   print(json)
                 if (json["retcode"].number != 0){
                     ProgressHUD.showError("请求失败")
                     self.items = NSArray()
@@ -287,6 +288,8 @@ class MyHomeWorkViewController: UIViewController,UITableViewDataSource,UITableVi
         self.tableView?.mj_header.hidden = false
     }
     deinit{
+        print("MyHomeWorkDeinit")
+
         self.sc?.view.removeFromSuperview()
     }
     override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
@@ -298,4 +301,5 @@ class MyHomeWorkViewController: UIViewController,UITableViewDataSource,UITableVi
    
         ProgressHUD.dismiss()
     }
+  
 }

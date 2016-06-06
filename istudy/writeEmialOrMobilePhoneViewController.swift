@@ -73,6 +73,7 @@ class writeEmialOrMobilePhoneViewController: UIViewController {
                     case .Success(let Value):
                         let json = JSON(Value)
                         if(json["retcode"].number == 0){
+                            print(json)
                             ProgressHUD.showSuccess("已发送")
                             //正确了推往下一个视图
                             let sendIdentifyVC = UIStoryboard(name: "LoginAndReset", bundle: nil).instantiateViewControllerWithIdentifier("SendIdentifyCodeVC")

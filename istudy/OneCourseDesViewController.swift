@@ -209,6 +209,7 @@ class OneCourseDesViewController:UIViewController,UICollectionViewDelegateFlowLa
             case .Success(let value):
                 let json = JSON(value)
                 if(json["retcode"].number == 0){
+                  
                     dispatch_async(dispatch_get_main_queue(), {
                         self.items = json["items"].arrayObject! as NSArray
                         self.infoTableView?.mj_header.endRefreshing()
@@ -244,6 +245,7 @@ class OneCourseDesViewController:UIViewController,UICollectionViewDelegateFlowLa
                 if(json["retcode"].number != 0){
                     ProgressHUD.showError("请求失败")
                 }else{
+                    print(json)
                     dispatch_async(dispatch_get_main_queue(), {
                         self.items = json["items"].arrayObject! as NSArray
                         self.infoTableView?.mj_header.endRefreshing()

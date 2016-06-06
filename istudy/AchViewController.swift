@@ -22,8 +22,7 @@ class AchViewController: UIViewController,UICollectionViewDelegate,UICollectionV
         super.viewDidLoad()
         self.achCollectionView?.delegate = self
         self.achCollectionView?.dataSource = self
-        self.achCollectionView.backgroundColor = UIColor.clearColor()
-        //提交的作业
+             //提交的作业
         let backBtn = UIButton(frame: CGRectMake(0,0,43,43))
         backBtn.setTitle("返回", forState: .Normal)
         backBtn.addTarget(self, action: #selector(AchViewController.submit(_:)), forControlEvents: .TouchUpInside)
@@ -215,6 +214,9 @@ class AchViewController: UIViewController,UICollectionViewDelegate,UICollectionV
     }
     //在显示完成多少的界面的时候 要根据是不是从其他界面跳转过来的进行判断
     override func viewWillAppear(animated: Bool) {
+        self.achCollectionView.userInteractionEnabled = false
+        self.achCollectionView.alpha = 0.4
+        self.achCollectionView.backgroundColor = UIColor.lightGrayColor()
          ProgressHUD.show("请稍候")
             let userDefault = NSUserDefaults.standardUserDefaults()
             let authtoken = userDefault.valueForKey("authtoken") as! String
@@ -228,7 +230,9 @@ class AchViewController: UIViewController,UICollectionViewDelegate,UICollectionV
                     let json = JSON(Value)
                     dispatch_async(dispatch_get_main_queue(), {
                         
-                     
+                        self.achCollectionView.userInteractionEnabled = true
+                        self.achCollectionView.alpha = 1.0
+                        self.achCollectionView.backgroundColor = UIColor.clearColor()
                         ProgressHUD.dismiss()
                         self.totalItems = json["items"].arrayObject! as NSArray
                         self.achCollectionView.reloadData()
@@ -238,5 +242,8 @@ class AchViewController: UIViewController,UICollectionViewDelegate,UICollectionV
         }
     override func viewWillDisappear(animated: Bool) {
         ProgressHUD.dismiss()
+    }
+    deinit{
+        print("AchDeinit")
     }
 }

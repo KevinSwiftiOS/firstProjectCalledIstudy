@@ -570,9 +570,10 @@ class CompletionQusViewController: UIViewController,UITextFieldDelegate,UIWebVie
         let cell = sender.object as! CompletionTableViewCell
         //要看总共有多少个输入框
         if(cell.Custag < cellHeights.count){
+            
         if(self.cellHeights[cell.Custag] as! CGFloat != cell.cellHeight){
             self.cellHeights.replaceObjectAtIndex(cell.Custag, withObject: cell.cellHeight)
-
+                       
             self.tableView?.reloadData()
         }
         }

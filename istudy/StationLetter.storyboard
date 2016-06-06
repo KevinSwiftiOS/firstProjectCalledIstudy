@@ -488,7 +488,7 @@
                                 <rect key="frame" x="0.0" y="0.0" width="240" height="128"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="ContactPersonTableViewCell" rowHeight="65" id="JZp-zl-jFf" customClass="ContactPersonTableViewCell" customModule="istudy" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="ContactPersonTableViewCell" rowHeight="80" id="JZp-zl-jFf" customClass="ContactPersonTableViewCell" customModule="istudy" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="JZp-zl-jFf" id="aZG-er-1JT">
@@ -498,8 +498,12 @@
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="b1G-dv-qXN">
                                                     <rect key="frame" x="0.0" y="0.0" width="240" height="128"/>
                                                     <constraints>
-                                                        <constraint firstAttribute="height" constant="65" id="PCX-iY-qY9"/>
-                                                        <constraint firstAttribute="width" constant="65" id="Zzo-Jw-7Wp"/>
+                                                        <constraint firstAttribute="height" constant="65" id="PCX-iY-qY9">
+                                                            <variation key="heightClass=regular-widthClass=compact" constant="50"/>
+                                                        </constraint>
+                                                        <constraint firstAttribute="width" constant="65" id="Zzo-Jw-7Wp">
+                                                            <variation key="heightClass=regular-widthClass=compact" constant="50"/>
+                                                        </constraint>
                                                     </constraints>
                                                     <variation key="default">
                                                         <mask key="constraints">
@@ -554,12 +558,18 @@
                                                 </button>
                                             </subviews>
                                             <constraints>
-                                                <constraint firstItem="b1G-dv-qXN" firstAttribute="top" secondItem="aZG-er-1JT" secondAttribute="top" id="BMU-f6-32H"/>
+                                                <constraint firstItem="b1G-dv-qXN" firstAttribute="top" secondItem="aZG-er-1JT" secondAttribute="top" id="BMU-f6-32H">
+                                                    <variation key="heightClass=regular-widthClass=compact" constant="5"/>
+                                                </constraint>
                                                 <constraint firstItem="WMK-As-bxD" firstAttribute="centerY" secondItem="aZG-er-1JT" secondAttribute="centerY" id="HUA-RQ-UFH"/>
                                                 <constraint firstAttribute="trailing" secondItem="WMK-As-bxD" secondAttribute="trailing" constant="8" id="PTp-hR-eAZ"/>
-                                                <constraint firstItem="tmG-12-T3Z" firstAttribute="leading" secondItem="b1G-dv-qXN" secondAttribute="trailing" id="bvb-Ys-5Fl"/>
+                                                <constraint firstItem="tmG-12-T3Z" firstAttribute="leading" secondItem="b1G-dv-qXN" secondAttribute="trailing" id="bvb-Ys-5Fl">
+                                                    <variation key="heightClass=regular-widthClass=compact" constant="10"/>
+                                                </constraint>
                                                 <constraint firstItem="tmG-12-T3Z" firstAttribute="centerY" secondItem="aZG-er-1JT" secondAttribute="centerY" id="kHx-5C-itM"/>
-                                                <constraint firstItem="b1G-dv-qXN" firstAttribute="leading" secondItem="aZG-er-1JT" secondAttribute="leading" id="leg-m2-Edq"/>
+                                                <constraint firstItem="b1G-dv-qXN" firstAttribute="leading" secondItem="aZG-er-1JT" secondAttribute="leading" id="leg-m2-Edq">
+                                                    <variation key="heightClass=regular-widthClass=compact" constant="10"/>
+                                                </constraint>
                                                 <constraint firstItem="tmG-12-T3Z" firstAttribute="width" secondItem="aZG-er-1JT" secondAttribute="width" multiplier="0.56" id="mR3-ub-x9S"/>
                                             </constraints>
                                             <variation key="default">

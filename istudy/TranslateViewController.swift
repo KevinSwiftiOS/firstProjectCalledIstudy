@@ -315,4 +315,7 @@ class TranslateViewController: UIViewController{
     override func viewWillDisappear(animated: Bool) {
         ProgressHUD.dismiss()
     }
+    deinit{
+        print("TranslateDeinit")
+    }
 }

@@ -244,7 +244,14 @@
                     case .Success(let data):
                         let json = JSON(data)
                         if(json["retcode"].number != 0){
+                            if(json["retcode"].number == 12){
+                                ProgressHUD.showError("请重新登录")
+                            }else{
                             ProgressHUD.showError("请求失败")
+                            }
+                            self.courseDesTableView?.mj_header.endRefreshing()
+                            self.items = NSArray()
+                            self.courseDesTableView?.reloadData()
                         }else{
                             userDefault.setValue(json["authtoken"].string, forKey: "authtoken")
                       
@@ -263,7 +270,7 @@
                                 case .Success(let value):
                                     let json = JSON(value)
                                     if(json["retcode"].number == 0){
-                                        
+                                       
                                         self.items = json["items"].arrayObject! as NSArray
                                         
                                         for _ in  0 ..< self.items.count{
@@ -297,6 +304,10 @@
                         }
                     case .Failure(_):
                     ProgressHUD.showError("请求失败")
+                    self.courseDesTableView?.mj_header.endRefreshing()
+                    self.items = NSArray()
+                    self.courseDesTableView?.reloadData()
+ 
                 }
     })}
         

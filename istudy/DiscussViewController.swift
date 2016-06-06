@@ -30,8 +30,6 @@ class DiscussViewController: UIViewController,UITableViewDelegate,UITableViewDat
     override func viewDidLoad() {
         super.viewDidLoad()
         self.automaticallyAdjustsScrollViewInsets = false
-    
-       
         //顶部topView赋值
         self.courseNameLabel?.text = self.courseNameString
         self.classLabel?.backgroundColor = RGB(Float(rgbArray[0] as! NSNumber), g:Float(rgbArray[1] as! NSNumber), b: Float(rgbArray[2] as! NSNumber))
@@ -43,9 +41,7 @@ class DiscussViewController: UIViewController,UITableViewDelegate,UITableViewDat
         self.discussTableView?.delegate = self
       
         //设置阴影效果
-        self.topView?.layer.shadowOffset = CGSizeMake(2.0, 1.0)
-        self.topView?.layer.shadowColor = UIColor.blueColor().CGColor
-        self.topView?.layer.shadowOpacity = 0.5
+       ShowBigImageFactory.topViewEDit(self.topView!)
       self.discussTableView?.mj_header  = MJRefreshNormalHeader(refreshingTarget: self, refreshingAction: #selector(DiscussViewController.headRefresh))
         let point = CGPointMake(SCREEN_WIDTH , SCREEN_HEIGHT - 70 - 100)
         //设置tag
@@ -90,7 +86,11 @@ class DiscussViewController: UIViewController,UITableViewDelegate,UITableViewDat
             date = "于" + tempStartDate.substringWithRange(yearRange) + "年" + tempStartDate.substringWithRange(monthRange) + "月" + tempStartDate.substringWithRange(dateRange) + "日 发表"
         
             cell.teacherAndDateLabel?.text = (item.valueForKey("author") as! String + date)
-                cell.headImageView?.image = UIImage(named: "教师头像")
+            if(item.valueForKey("avatar_url") as? String != nil && item.valueForKey("avatar_url") as! String != ""){
+                cell.headImageView?.sd_setImageWithURL(NSURL(string: item.valueForKey("avatar_url") as! String), placeholderImage: UIImage(named: "默认头像"))
+            }else{
+                cell.headImageView?.image = UIImage(named: "默认头像")
+            }
             cell.contentView.layer.borderWidth = 1.0
             cell.contentView.layer.borderColor = UIColor.blueColor().CGColor
             cell.contentView.layer.cornerRadius = 5.0
@@ -155,7 +155,6 @@ override func viewWillAppear(animated: Bool) {
             isShow = true
             self.view.addSubview(pop!)
     self.discussTableView?.alpha = 0.5
-   
     self.topView?.alpha = 0.5
  
             pop?.selectRowAtIndex = {(index:NSInteger) -> Void in
@@ -212,14 +211,17 @@ override func viewWillAppear(animated: Bool) {
                                    "page":"1",
                                    "projectid":"\(self.id)",
                                    "mode":"2"]
+      
       Alamofire.request(.POST, "http://dodo.hznu.edu.cn/api/forumquery", parameters: dic, encoding: ParameterEncoding.URL, headers: nil).responseJSON { (response) in
         switch response.result{
         case .Success(let Value):
             let json = JSON(Value)
             if(json["retcode"].number != 0){
+               
                 ProgressHUD.showError("请求失败")
             }else{
-                //遍历循环取到的item随后更新列表即可
+               
+                               //遍历循环取到的item随后更新列表即可
                 let items = json["items"].arrayObject! as NSArray
                 self.topitems.removeAllObjects()
                 self.unTopitems.removeAllObjects()

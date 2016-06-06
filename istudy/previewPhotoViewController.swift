@@ -41,7 +41,7 @@ class previewPhotoViewController: UIViewController{
             ProgressHUD.show("请稍候")
             let imageView = UIImageView()
           imageView.sd_setImageWithURL(NSURL(string: urlString), placeholderImage: UIImage(named: "默认头像"))
-            
+            imageView.contentMode = .ScaleAspectFill
             if(imageView.image != UIImage(named: "默认头像")){
                 ProgressHUD.dismiss()
             let showBigView = VIPhotoView(frame: CGRectMake(0,0,SCREEN_WIDTH, SCREEN_HEIGHT * 0.6), andImage: imageView.image)

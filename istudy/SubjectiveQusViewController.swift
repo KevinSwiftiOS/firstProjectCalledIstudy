@@ -55,7 +55,7 @@ var resetBtn = UIButton()
     override func viewDidLoad() {
         super.viewDidLoad()
               //顶部加条线
-        //设置阴影效果
+        //设置阴影效果   
        ShowBigImageFactory.topViewEDit(self.topView!)
 
         self.contentScrollView?.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(SubjectiveQusViewController.contResign)))

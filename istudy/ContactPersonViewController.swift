@@ -104,9 +104,13 @@ class ContactPersonViewController: UIViewController,UITableViewDelegate,UITableV
         self.contacterlistArray = self.items[indexPath.section].valueForKey("ContacterList") as! NSArray
         let cell = tableView.dequeueReusableCellWithIdentifier("ContactPersonTableViewCell")
         as! ContactPersonTableViewCell
+        
         //先不赋值
         if(self.selectArr[indexPath.section] as! NSObject == 1){
-        cell.teacherHeadImageView?.image = UIImage(named: "教师头像")
+        cell.teacherHeadImageView?.sd_setImageWithURL(NSURL(string: self.contacterlistArray[indexPath.row].valueForKey("Face") as! String), placeholderImage: UIImage(named: "默认头像"))
+            cell.teacherHeadImageView?.contentMode = .ScaleAspectFit
+            cell.teacherHeadImageView?.layer.cornerRadius = 25
+            cell.teacherHeadImageView?.layer.masksToBounds = true
         cell.teacherNameLabel?.text = self.contacterlistArray[indexPath.row].valueForKey("Name") as? String
         cell.selectedBtn?.addTarget(self, action: #selector(ContactPersonViewController.selectPerson(_:)), forControlEvents: .TouchUpInside)
         cell.id = self.contacterlistArray[indexPath.row].valueForKey("Id") as! NSInteger
@@ -193,6 +197,7 @@ class ContactPersonViewController: UIViewController,UITableViewDelegate,UITableV
 
                            case .Success(let Value):
                 let json = JSON(Value)
+              
                 if(json["retcode"].number != 0){
                     self.items = NSArray()
                     ProgressHUD.showError("请求失败")

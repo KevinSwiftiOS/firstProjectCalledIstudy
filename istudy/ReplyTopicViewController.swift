@@ -54,17 +54,15 @@ self.replyListTableView?.tableFooterView = UIView()
         as! ReplyListTableViewCell
         cell.authorLabel?.text = self.items[indexPath.row].valueForKey("author") as? String
         //加载头像
-//        if(self.items[indexPath.row].valueForKey("avatar_url") as? String != nil &&
-//            self.items[indexPath.row].valueForKey("avatar_url") as! String != ""){
-//            //将base64转化成图片 首先转化成数据流 随后再转化图片
-//            let imageData = NSData(base64EncodedString: self.items[indexPath.row].valueForKey("avatar_url") as! String, options: .IgnoreUnknownCharacters)
-//        let image = UIImage(data: imageData!)
-//            cell.headImageView?.image = image
-//        
-//        }else{
-        cell.headImageView?.image = UIImage(named: "教师头像")
+        if(self.items[indexPath.row].valueForKey("avatar_url") as? String != nil &&
+            self.items[indexPath.row].valueForKey("avatar_url") as! String != ""){
+            //将base64转化成图片 首先转化成数据流 随后再转化图片
+           cell.headImageView?.sd_setImageWithURL(NSURL(string: self.items[indexPath.row].valueForKey("avatar_url") as! String), placeholderImage: UIImage(named: "默认头像"))
         
-        //}
+        }else{
+        cell.headImageView?.image = UIImage(named: "默认头像")
+        
+        }
         //时间的切割
         let yearRange = NSMakeRange(0, 4)
         let monthRange = NSMakeRange(4, 2)
@@ -92,7 +90,7 @@ self.replyListTableView?.tableFooterView = UIView()
             switch response.result{
             case .Success(let Value):
                 let json = JSON(Value)
-                if(json["retcode"].number != 0){
+                              if(json["retcode"].number != 0){
                     ProgressHUD.showError("请求失败")
                 }else{
                     self.items = json["items"].arrayObject! as NSArray
@@ -109,6 +107,7 @@ self.replyListTableView?.tableFooterView = UIView()
             }
         }
     }
+    
     //回复的按钮
     @IBAction func reply(sender:UIButton){
         let userDefault = NSUserDefaults.standardUserDefaults()
