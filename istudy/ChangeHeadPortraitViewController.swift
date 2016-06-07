@@ -115,8 +115,17 @@ class ChangeHeadPortraitViewController: UIViewController,UITableViewDelegate,UIT
                     switch response.result{
                     case .Success(let Value):
                         let json = JSON(Value)
+                        if(json["retcode"].number != 0){
+                            ProgressHUD.showError("保存失败")
+                        }else{
+                            
+                            if(json["info"]["succ"].bool == false){
+                                ProgressHUD.showError("保存失败")
+                            }else{
                         userDefault.setValue(json["info"]["uploadedurl"].string, forKey: "avtarurl")
                         self.save()
+                            }
+                        }
                     case .Failure(_):
                         print(2)
                         ProgressHUD.showError("保存失败")
@@ -174,6 +183,7 @@ class ChangeHeadPortraitViewController: UIViewController,UITableViewDelegate,UIT
             switch response.result{
             case .Success(let Value):
                 let json = JSON(Value)
+                print(json)
                 if(json["retcode"].number == 0){
                     ProgressHUD.showSuccess("保存成功")
                     self.navigationController?.popViewControllerAnimated(true)

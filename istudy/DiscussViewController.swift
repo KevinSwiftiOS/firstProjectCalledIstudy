@@ -216,6 +216,7 @@ override func viewWillAppear(animated: Bool) {
         switch response.result{
         case .Success(let Value):
             let json = JSON(Value)
+            
             if(json["retcode"].number != 0){
                
                 ProgressHUD.showError("请求失败")

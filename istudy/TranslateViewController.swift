@@ -8,6 +8,7 @@
 
 import UIKit
 import Alamofire
+import Font_Awesome_Swift
 import SwiftyJSON
 //每个界面的过渡界面 从选择题到填空题时的过渡界面
 
@@ -31,8 +32,8 @@ class TranslateViewController: UIViewController{
    
         let backBtn = UIButton(frame: CGRectMake(0,0,43,43))
         backBtn.contentHorizontalAlignment = .Left
-        backBtn.setTitle("返回", forState: .Normal)
-      backBtn.setTitleColor(UIColor.blackColor(), forState: .Normal)
+        backBtn.setFAText(prefixText: "", icon: FAType.FAArrowLeft, postfixText: "", size: 25, forState: .Normal)
+        backBtn.setTitleColor(UIColor.blackColor(), forState: .Normal)
         backBtn.addTarget(self, action: #selector(TranslateViewController.back as (TranslateViewController) -> () -> ()), forControlEvents: .TouchUpInside)
         self.navigationItem.leftBarButtonItem = UIBarButtonItem(customView: backBtn)
    

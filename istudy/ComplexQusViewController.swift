@@ -692,16 +692,17 @@ class ComplexQusViewController: UIViewController,UITableViewDelegate,UITableView
     
     func completionHeight(sender:NSNotification){
         
-        self.view.bringSubviewToFront(self.subTopView!)
-        let cell = sender.object as! ComplexCompletionTableViewCell
+               let cell = sender.object as! ComplexCompletionTableViewCell
         //要看总共有多少个输入框
         if(self.cellHeights[cell.Custag] as! CGFloat != cell.cellHeight){
             //   var frame = self.tableView.frame
-            self.subTableViewToTop.constant = -100
+            
+            self.subTableViewToTop.constant = -400
             if(cell.Custag == self.cellHeights.count - 1){
                 self.subTableViewToTop.constant = 3
                 let y = 64 + 21 + 4 + SCREEN_HEIGHT * 0.4 + 21 + 5 + 21 + 21
                 self.tableView.frame = CGRectMake(0, y, SCREEN_WIDTH, SCREEN_HEIGHT - 40 - y)
+          print(self.tableView.frame)
                 //是否已经阅过卷
                 if(!isOver){
                     if(self.disPlayMarkTextArray[subIndex] as! String != ""){
@@ -716,7 +717,7 @@ class ComplexQusViewController: UIViewController,UITableViewDelegate,UITableView
                 
             }
             self.cellHeights.replaceObjectAtIndex(cell.Custag, withObject: cell.cellHeight)
-            
+                  self.view.setNeedsLayout()
             self.tableView.reloadData()
         }
     }

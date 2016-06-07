@@ -8,6 +8,7 @@
 import UIKit
 import Alamofire
 import SwiftyJSON
+import Font_Awesome_Swift
 class ChoiceQusViewController: UIViewController,UIWebViewDelegate,UITableViewDelegate,UITableViewDataSource,UIGestureRecognizerDelegate{
     //有没有超过指定的日期
     var isOver = false
@@ -50,11 +51,13 @@ class ChoiceQusViewController: UIViewController,UIWebViewDelegate,UITableViewDel
     //当在初始化的时候
 
     override func viewDidLoad() {
+        
         super.viewDidLoad()
+    
         //设置阴影效果
         ShowBigImageFactory.topViewEDit(self.topView!)
         
-
+     
 
         self.tap = UITapGestureRecognizer(target: self, action: #selector(ChoiceQusViewController.webViewShowBig(_:)))
         self.tap.delegate = self
@@ -76,7 +79,7 @@ class ChoiceQusViewController: UIViewController,UIWebViewDelegate,UITableViewDel
         backBtn.setTitleColor(UIColor.blackColor(), forState: .Normal)
         backBtn.addTarget(self, action: #selector(ChoiceQusViewController.back(_:)), forControlEvents: .TouchUpInside)
         self.navigationItem.leftBarButtonItem = UIBarButtonItem(customView: backBtn)
-        let actBtn = UIButton(frame: CGRectMake(0,0,43,43))
+        let actBtn = UIButton(frame: CGRectMake(10,0,43,43))
         //查看的btn
         actBtn.contentHorizontalAlignment = .Left
         actBtn.setTitle("查看", forState: .Normal)
@@ -95,6 +98,12 @@ class ChoiceQusViewController: UIViewController,UIWebViewDelegate,UITableViewDel
              self.queDes = UIWebView(frame: CGRectMake(0,0,SCREEN_WIDTH,1))
         self.queDes.delegate = self
             self.automaticallyAdjustsScrollViewInsets = false
+        backBtn.setFAIcon(FAType.FAArrowLeft, iconSize: 25, forState: .Normal)
+        actBtn.setFAIcon(FAType.FABookmark, iconSize: 25, forState: .Normal)
+             gooverBtn?.setFATitleColor(UIColor.blackColor())
+       gooverBtn?.setFAText(prefixText: "", icon: FAType.FAEdit, postfixText: "", size: 25, forState: .Normal)
+   
+        resetBtn?.setFAText(prefixText: "", icon: FAType.FAMinusSquare, postfixText: "", size: 25, forState: .Normal)
         
         for i in 0 ..< self.items.count{
             self.displayMarkingArray.addObject(0)

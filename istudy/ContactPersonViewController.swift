@@ -9,6 +9,7 @@
 import UIKit
 import SwiftyJSON
 import Alamofire
+import Font_Awesome_Swift
 //传回联系人
 typealias push_selectedPersons = (idArray:NSMutableArray,items:NSArray) -> Void
 class ContactPersonViewController: UIViewController,UITableViewDelegate,UITableViewDataSource{
@@ -55,9 +56,10 @@ class ContactPersonViewController: UIViewController,UITableViewDelegate,UITableV
         
         let imageView = UIImageView(frame: CGRectMake(0, 0, 40, 30))
         if(self.selectArr[section] as! NSObject == 1){
-        imageView.image = UIImage(named: "选择信件")
+            imageView.setFAIconWithName(FAType.FAArrowDown, textColor: UIColor.blueColor())
+
         }else{
-            imageView.image = UIImage(named: "未选择信件")
+            imageView.setFAIconWithName(FAType.FAArrowRight, textColor: UIColor.blueColor())
         }
        
         let btn = UIButton(frame: CGRectMake(0,0,SCREEN_WIDTH,50))
@@ -197,7 +199,7 @@ class ContactPersonViewController: UIViewController,UITableViewDelegate,UITableV
 
                            case .Success(let Value):
                 let json = JSON(Value)
-              
+              print(json)
                 if(json["retcode"].number != 0){
                     self.items = NSArray()
                     ProgressHUD.showError("请求失败")

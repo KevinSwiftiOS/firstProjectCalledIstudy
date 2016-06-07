@@ -110,6 +110,7 @@ class PeerAssessmentViewController: UIViewController ,UITableViewDataSource,UITa
             switch response.result{
             case .Success(let Value):
                 let json = JSON(Value)
+                print(json)
                 if(json["retcode"].number != 0){
                     ProgressHUD.showError("请求失败")
                 }else{

@@ -120,15 +120,16 @@ class StationLetterViewController: UIViewController,UITableViewDelegate,UITableV
      //随后推到一个页面中进行详细的说明
     let readEmailVC = UIStoryboard(name: "StationLetter", bundle: nil).instantiateViewControllerWithIdentifier("ReadEmailVC") as! ReadEmailViewController
         readEmailVC.string = self.items[indexPath.row].valueForKey("content") as! String
-        readEmailVC.id = self.items[indexPath.row].valueForKey("id") as! NSInteger
+      
         readEmailVC.subject = self.items[indexPath.row].valueForKey("subject") as! String
        
         readEmailVC.title = "读邮件"
         if(isIn){
+            readEmailVC.code = self.items[indexPath.row].valueForKey("code") as! String
             readEmailVC.senderName = (self.items[indexPath.row].valueForKey("sendername") as? String)!
             readEmailVC.senderId = (self.items[indexPath.row].valueForKey("senderid") as? NSInteger)!
             readEmailVC.subject = (self.items[indexPath.row].valueForKey("subject") as! String)
-        cell.isRead = 1
+            cell.isRead = 1
         }
         if(isOut){
             readEmailVC.isOut = true
@@ -318,6 +319,7 @@ class StationLetterViewController: UIViewController,UITableViewDelegate,UITableV
                
             case .Success(let Value):
                 let json = JSON(Value)
+                print(json)
                 if(json["retcode"].number != 0){
                     ProgressHUD.showError("请求失败")
                     self.items = NSArray()

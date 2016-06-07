@@ -9,9 +9,11 @@
 import UIKit
 import Alamofire
 import SwiftyJSON
-
+import Font_Awesome_Swift
 class ReadEmailViewController: UIViewController {
     //webView用来加载
+   //下面的两个按钮 
+    @IBOutlet weak var writeBtn:UIButton!
     //是发件箱的话 下面回复所有和回复的键消失
     var isOut = false
      var tempReceiveArray = NSArray()
@@ -27,8 +29,8 @@ class ReadEmailViewController: UIViewController {
     //要发送的人的名字和姓名
     var sendIds = NSMutableArray()
     var sendNames = NSMutableArray()
-    //短信id
-    var id = NSInteger()
+    //短信的code
+    var code = ""
     //内容的html格式的字符串
     var string = ""
     //发信人的名字和id 单独回复的时候有用
@@ -38,33 +40,24 @@ class ReadEmailViewController: UIViewController {
     //所有收件人的id和名字
     var receiveIds = NSMutableArray()
     var receiveNames = NSMutableArray()
-    @IBOutlet weak var replyToAllBtn:UIButton?
+
     @IBOutlet weak var replyToOneBtn:UIButton?
-    @IBOutlet weak var writeEmailBtn:UIButton?
-    @IBOutlet weak var deleteBtn:UIButton?
+   
     override func viewDidLoad() {
         super.viewDidLoad()
         //加载数组
           //当有navigationBar的时候 不设置向下移动64个单位 textView和tableView都是scrollView，因此当有navigationBar的时候 都会自动的往下移
         // Do any additional setup after loading the view.
         //receiveid和recevieName 进行标示
-
-
+        writeBtn.setFAIcon(FAType.FAEdit, iconSize: 30, forState: .Normal)
+        replyToOneBtn?.setFAIcon(FAType.FAReply, iconSize: 30, forState: .Normal)
+self.view.bringSubviewToFront(self.writeBtn)
     self.automaticallyAdjustsScrollViewInsets = false
     self.tabBarController?.tabBar.hidden = true
         self.subjectLabel?.text = self.subject
         self.webView?.loadHTMLString(string, baseURL: nil)
-        if(isOut){
-            replyToAllBtn?.hidden = true
-            replyToOneBtn?.hidden = true
-            deleteBtn?.hidden = true
-            let writeBtnFrame = CGRectMake(0, SCREEN_HEIGHT - 30, SCREEN_WIDTH, 30)
-            self.writeEmailBtn?.frame = writeBtnFrame
-            
-            self.view.setNeedsDisplay()
-            self.view.setNeedsLayout()
-            
-        }
+        
+
     }
 
     override func didReceiveMemoryWarning() {
@@ -74,6 +67,9 @@ class ReadEmailViewController: UIViewController {
     }
     //回复单个人的发件人
     @IBAction func replyToOne(sender:UIButton){
+        if(isOut){
+            ProgressHUD.showError("不能回复自己")
+        }else{
         //只加载发件人
         self.sendIds.removeAllObjects()
         self.sendNames.removeAllObjects()
@@ -85,11 +81,11 @@ class ReadEmailViewController: UIViewController {
         writeEmailVC.repleyToOneName = self.senderName
         writeEmailVC.repleyToOneId = self.senderId
         writeEmailVC.title = "写邮件"
-        writeEmailVC.parentcode = self.id
+        writeEmailVC.parentcode = self.code
         writeEmailVC.subject = self.subject
         writeEmailVC.isReply = true
         self.navigationController?.pushViewController(writeEmailVC, animated: true)
-      
+        }
     }
       //只写信不发人的
     @IBAction func writeEmail(sender:UIButton){

@@ -10,9 +10,11 @@ import UIKit
 
 class testTableViewCell: UITableViewCell {
     @IBOutlet weak var testCourseName:UILabel?
-    @IBOutlet weak var testCourseTime:UITextView?
+    @IBOutlet weak var testCourseTime:UILabel?
     @IBOutlet weak var testCourseAdress:UILabel?
     @IBOutlet weak var testCourseTea:UILabel?
+    @IBOutlet weak var fontTimeLabel:UILabel!
+    @IBOutlet weak var fontAdressLabel:UILabel!
     override func awakeFromNib() {
         super.awakeFromNib()
         self.testCourseTea?.backgroundColor = RGB(0, g: 153, b: 255)

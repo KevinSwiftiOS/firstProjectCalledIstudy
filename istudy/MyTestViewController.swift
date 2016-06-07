@@ -9,6 +9,7 @@
 import UIKit
 import Alamofire
 import SwiftyJSON
+import Font_Awesome_Swift
 class MyTestViewController: UIViewController,UITableViewDataSource,UITableViewDelegate,UISearchResultsUpdating,UISearchControllerDelegate{
     @IBOutlet weak var topLayout: NSLayoutConstraint!
     //接受数据信息的数组
@@ -89,12 +90,14 @@ class MyTestViewController: UIViewController,UITableViewDataSource,UITableViewDe
             adress += trueItems[indexPath.row].valueForKey("kszw") as! String
         }
         
-        cell.testCourseTime?.editable = false
+      
         cell.testCourseAdress?.text = adress
         cell.selectionStyle = .None
         //cell赋值
-        
-        return cell
+       cell.fontAdressLabel.FAIcon = FAType.FAMapMarker
+        cell.fontTimeLabel.FAIcon = FAType.FAClockO
+      
+              return cell
     }
     
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {

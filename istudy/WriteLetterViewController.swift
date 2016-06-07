@@ -8,29 +8,31 @@
 
 import UIKit
 import Alamofire
+import Font_Awesome_Swift
 import SwiftyJSON
 class WriteLetterViewController: UIViewController,UICollectionViewDataSource,UICollectionViewDelegate,AJPhotoPickerProtocol,UIImagePickerControllerDelegate,UINavigationControllerDelegate{
  //收件人的添加
-    var parentcode  = NSInteger()
+    var parentcode  = ""
     //主题
 //主题的id
     //看是有回复发件人的还是没有回复发件人的
     var repleyToOneId = NSInteger()
     var repleyToOneName = ""
-  var alertView = GUAAlertView()
+     var alertView = GUAAlertView()
     var subject = ""
-      var photos = NSMutableArray()
+    var photos = NSMutableArray()
     var tempString = ""
     var isReply = false
     @IBOutlet weak var subjectTextField:UITextField?
-@IBOutlet weak var writeTextView: JVFloatLabeledTextView!
+    @IBOutlet weak var writeTextView: JVFloatLabeledTextView!
     @IBOutlet weak var collectionView:UICollectionView!
   var selectedPersonIdArray = NSMutableArray()
    var selectedPersonNameArray = NSMutableArray()
     var items = NSArray()
     
     @IBOutlet weak var recevieBtn:UIButton?
-  
+    @IBOutlet weak var photoBtn:UIButton!
+    @IBOutlet weak var sendBtn:UIButton!
     override func viewDidLoad() {
         super.viewDidLoad()
         self.subjectTextField?.enabled = !isReply
@@ -165,7 +167,7 @@ self.view.setNeedsLayout()
         receives += String(self.selectedPersonIdArray[self.selectedPersonIdArray.count - 1] as! NSNumber)
         }
         var  dic = [String:AnyObject]()
-        if(parentcode == 0 ){
+        if(parentcode == "" ){
          dic = ["subject":subject!,
                 "parentcode":"",
                 "content":content,
@@ -173,7 +175,7 @@ self.view.setNeedsLayout()
           ]
         }else{
             dic = ["subject":subject!,
-                   "parentcode":"\(self.parentcode)",
+                   "parentcode":self.parentcode,
                    "content":content,
                    "receives":receives
             ]

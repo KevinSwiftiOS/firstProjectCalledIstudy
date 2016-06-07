@@ -152,6 +152,7 @@ class ProgramDesignViewController: UIViewController,UIWebViewDelegate,UIGestureR
         // Dispose of any resources that can be recreated.
     }
     func addNewQus(sender:UISwipeGestureRecognizer){
+        
         let temp = index
         if(sender.direction == .Left){
             if(index != self.items.count - 1){
@@ -199,7 +200,7 @@ class ProgramDesignViewController: UIViewController,UIWebViewDelegate,UIGestureR
         for view in (self.contentScrollView?.subviews)!{
             view.removeFromSuperview()
         }
-        
+        print(self.items[index].valueForKey("defaultanswer"))
         self.kindOfQusLabel?.text = self.totalitems[kindOfQusIndex].valueForKey("title") as! String + "(" + "\(self.items[index].valueForKey("totalscore") as! NSNumber)" + "分/题)"
         self.currentQusLabel?.text = "\(self.index + 1)" + "/" + "\(self.items.count)"
         self.qusDesWebView.loadHTMLString(self.items[index].valueForKey("content") as! String, baseURL: nil)

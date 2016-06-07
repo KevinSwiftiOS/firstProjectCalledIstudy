@@ -9,6 +9,7 @@
 import UIKit
 import Alamofire
 import SwiftyJSON
+import Font_Awesome_Swift
 class CompletionQusViewController: UIViewController,UITextFieldDelegate,UIWebViewDelegate,UITableViewDelegate,UITableViewDataSource,UIGestureRecognizerDelegate{
     //手势
     var rightSwap = UISwipeGestureRecognizer()
@@ -96,6 +97,11 @@ class CompletionQusViewController: UIViewController,UITextFieldDelegate,UIWebVie
         let submitBtnItem = UIBarButtonItem(customView: submitBtn)
         let actBtnItem = UIBarButtonItem(customView: actBtn)
         self.navigationItem.rightBarButtonItems = [submitBtnItem,actBtnItem]
+        backBtn.setFAIcon(FAType.FAArrowLeft, iconSize: 25, forState: .Normal)
+        actBtn.setFAIcon(FAType.FABookmark, iconSize: 25, forState: .Normal)
+          goOVerBtn?.setFAText(prefixText: "", icon: FAType.FAEdit, postfixText: "", size: 25, forState: .Normal)
+        saveBtn?.setFAText(prefixText: "", icon: FAType.FASave, postfixText: "", size: 25, forState: .Normal)
+        resetBtn?.setFAText(prefixText: "", icon: FAType.FAMinusSquare, postfixText: "", size: 25, forState: .Normal)
 
         self.queDes = UIWebView(frame: CGRectMake(0,0,SCREEN_WIDTH,1))
         self.queDes.delegate = self

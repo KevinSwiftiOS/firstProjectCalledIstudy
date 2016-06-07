@@ -90,7 +90,7 @@ self.replyListTableView?.tableFooterView = UIView()
             switch response.result{
             case .Success(let Value):
                 let json = JSON(Value)
-                              if(json["retcode"].number != 0){
+                if(json["retcode"].number != 0){
                     ProgressHUD.showError("请求失败")
                 }else{
                     self.items = json["items"].arrayObject! as NSArray
