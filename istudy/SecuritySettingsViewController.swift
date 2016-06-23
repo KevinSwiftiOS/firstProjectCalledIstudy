@@ -49,11 +49,12 @@ class SecuritySettingsViewController: UIViewController {
             let ParamDic:[String:AnyObject] = ["oldpassword":(self.lastPassWord?.text)!,
                                                "newpassword":(self.newPassWord?.text)!,
                                                "authtoken":userDefault.valueForKey("authtoken") as! String]
-            //转化成base64字符串
+            
             Alamofire.request(.POST, "http://dodo.hznu.edu.cn/api/changepassword", parameters: ParamDic, encoding: ParameterEncoding.URL, headers: nil).responseJSON(completionHandler: { (response) in
                 switch response.result{
                 case .Success(let Value):
                     let json = JSON(Value)
+                    print(json)
                     if(json["retcode"].number == 0){
                         ProgressHUD.showSuccess("设置成功")
                         userDefault.setValue(self.newPassWord?.text, forKey: "passWord")

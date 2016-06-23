@@ -9,6 +9,7 @@
 import UIKit
 import Alamofire
 import SwiftyJSON
+import Font_Awesome_Swift
 class ProgramDesignViewController: UIViewController,UIWebViewDelegate,UIGestureRecognizerDelegate{
     var kindOfQusIndex = NSInteger()
     var totalKindOfQus = NSInteger()
@@ -107,7 +108,11 @@ class ProgramDesignViewController: UIViewController,UIWebViewDelegate,UIGestureR
         // Do any additional setup after loading the view.
         
         self.initView()
-        
+        backBtn.setFAIcon(FAType.FAArrowLeft, iconSize: 25, forState: .Normal)
+        actBtn.setFAIcon(FAType.FABookmark, iconSize: 25, forState: .Normal)
+        gooverBtn?.setFAText(prefixText: "", icon: FAType.FAPencil, postfixText: "", size: 25, forState: .Normal)
+        saveBtn?.setFAText(prefixText: "", icon: FAType.FASave, postfixText: "", size: 25, forState: .Normal)
+        resetBtn?.setFAText(prefixText: "", icon: FAType.FAMinusSquare, postfixText: "", size: 25, forState: .Normal)
     }
     
     func actShow() {

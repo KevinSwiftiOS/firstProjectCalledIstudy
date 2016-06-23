@@ -8,6 +8,7 @@
 import UIKit
 import Alamofire
 import SwiftyJSON
+import Font_Awesome_Swift
 class AchViewController: UIViewController,UICollectionViewDelegate,UICollectionViewDataSource,UICollectionViewDelegateFlowLayout {
    @IBOutlet weak var achCollectionView: UICollectionView!
     var totalItems = NSArray()
@@ -37,6 +38,7 @@ class AchViewController: UIViewController,UICollectionViewDelegate,UICollectionV
         submitBtn.setTitleColor(UIColor.blackColor(), forState: .Normal)
         let submitItem = UIBarButtonItem(customView: submitBtn)
         self.navigationItem.rightBarButtonItem = submitItem
+         backBtn.setFAIcon(FAType.FAArrowLeft, iconSize: 25, forState: .Normal)
         // Do any additional setup after loading the view.
     }
     func submit(sender:UIButton) {

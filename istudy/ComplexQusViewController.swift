@@ -9,6 +9,7 @@
 import UIKit
 import Alamofire
 import SwiftyJSON
+import Font_Awesome_Swift
 class ComplexQusViewController: UIViewController,UITableViewDelegate,UITableViewDataSource ,UIWebViewDelegate,UIGestureRecognizerDelegate{
     //几个手势 为了键盘的bug
     //每个题目的范围 
@@ -156,6 +157,12 @@ class ComplexQusViewController: UIViewController,UITableViewDelegate,UITableView
         self.qusDesWebView?.addGestureRecognizer(rightSwipe)
         self.automaticallyAdjustsScrollViewInsets = false
         self.initView()
+        backBtn.setFAIcon(FAType.FAArrowLeft, iconSize: 25, forState: .Normal)
+        actBtn.setFAIcon(FAType.FABookmark, iconSize: 25, forState: .Normal)
+        goOVerBtn?.setFATitleColor(UIColor.blackColor())
+        goOVerBtn?.setFAText(prefixText: "", icon: FAType.FAPencil, postfixText: "", size: 25, forState: .Normal)
+        saveBtn?.setFAIcon(FAType.FASave, iconSize: 25, forState: .Normal)
+        resetBtn?.setFAText(prefixText: "", icon: FAType.FAMinusSquare, postfixText: "", size: 25, forState: .Normal)
     }
     
     override func didReceiveMemoryWarning() {

@@ -9,6 +9,7 @@
 import UIKit
 import Alamofire
 import SwiftyJSON
+import Font_Awesome_Swift
 class SubjectiveQusViewController: UIViewController,AJPhotoPickerProtocol,UINavigationControllerDelegate,UIImagePickerControllerDelegate,BlurEffectMenuDelegate,UIGestureRecognizerDelegate,UICollectionViewDelegate,UICollectionViewDelegateFlowLayout,UICollectionViewDataSource,UIWebViewDelegate{
     //记录date和阅卷是否开启 和阅卷的时候答案是否可见等等
     var endDate = NSDate()
@@ -54,6 +55,8 @@ var resetBtn = UIButton()
     var selfAnswers = NSMutableArray()
     override func viewDidLoad() {
         super.viewDidLoad()
+    
+
               //顶部加条线
         //设置阴影效果   
        ShowBigImageFactory.topViewEDit(self.topView!)
@@ -113,8 +116,11 @@ var resetBtn = UIButton()
                 self.selfAnswers.addObject("")
             }
         }
-      
+       
+       
         self.initView()
+        backBtn.setFAIcon(FAType.FAArrowLeft, iconSize: 25, forState: .Normal)
+        actBtn.setFAIcon(FAType.FABookmark, iconSize: 25, forState: .Normal)
      
     }
     func showAct(){
@@ -578,6 +584,10 @@ var resetBtn = UIButton()
         self.saveBtn.backgroundColor = RGB(0, g: 153, b: 255)
         self.contentScrollView?.addSubview(self.resetBtn)
         self.contentScrollView?.addSubview(self.addBtn)
+            addBtn.setFAText(prefixText: "", icon: FAType.FAPlusSquare, postfixText: "", size: 25, forState: .Normal)
+        saveBtn?.setFAText(prefixText: "", icon: FAType.FASave, postfixText: "", size: 25, forState: .Normal)
+        resetBtn.setFAText(prefixText: "", icon: FAType.FAMinusSquare, postfixText: "", size: 25, forState: .Normal)
+
         totalHeight += 35
         self.resetBtnAndQusHeight = totalHeight
         //比较日期 加载不同的控件

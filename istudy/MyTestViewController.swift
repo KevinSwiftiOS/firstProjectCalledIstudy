@@ -94,8 +94,8 @@ class MyTestViewController: UIViewController,UITableViewDataSource,UITableViewDe
         cell.testCourseAdress?.text = adress
         cell.selectionStyle = .None
         //cell赋值
-       cell.fontAdressLabel.FAIcon = FAType.FAMapMarker
-        cell.fontTimeLabel.FAIcon = FAType.FAClockO
+       cell.fontAdressLabel.setFAIcon(FAType.FAMapMarker, iconSize: 25)
+        cell.fontTimeLabel.setFAIcon(FAType.FAClockO, iconSize: 25)
       
               return cell
     }
@@ -147,6 +147,7 @@ class MyTestViewController: UIViewController,UITableViewDataSource,UITableViewDe
                 ProgressHUD.showError("请求失败")
             case .Success(let Value):
                 let json = JSON(Value)
+                print(json)
                 if(json["retcode"].number != 0){
                     dispatch_async(dispatch_get_main_queue(), {
                         self.testDataArray = NSArray()

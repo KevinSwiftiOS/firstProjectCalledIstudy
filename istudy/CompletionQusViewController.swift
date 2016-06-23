@@ -99,7 +99,7 @@ class CompletionQusViewController: UIViewController,UITextFieldDelegate,UIWebVie
         self.navigationItem.rightBarButtonItems = [submitBtnItem,actBtnItem]
         backBtn.setFAIcon(FAType.FAArrowLeft, iconSize: 25, forState: .Normal)
         actBtn.setFAIcon(FAType.FABookmark, iconSize: 25, forState: .Normal)
-          goOVerBtn?.setFAText(prefixText: "", icon: FAType.FAEdit, postfixText: "", size: 25, forState: .Normal)
+          goOVerBtn?.setFAText(prefixText: "", icon: FAType.FAPencil, postfixText: "", size: 25, forState: .Normal)
         saveBtn?.setFAText(prefixText: "", icon: FAType.FASave, postfixText: "", size: 25, forState: .Normal)
         resetBtn?.setFAText(prefixText: "", icon: FAType.FAMinusSquare, postfixText: "", size: 25, forState: .Normal)
 

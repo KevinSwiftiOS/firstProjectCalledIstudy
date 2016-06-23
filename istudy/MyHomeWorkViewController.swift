@@ -18,6 +18,7 @@ class MyHomeWorkViewController: UIViewController,UITableViewDataSource,UITableVi
     //获取到json的数组
     var id = NSInteger()
     var items = NSArray()
+    
     var filterItems = NSMutableArray()
     var postString  = String()
     //获取到每份题目随后要进行日期的判断

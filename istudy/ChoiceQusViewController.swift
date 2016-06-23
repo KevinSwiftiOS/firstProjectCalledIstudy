@@ -101,7 +101,7 @@ class ChoiceQusViewController: UIViewController,UIWebViewDelegate,UITableViewDel
         backBtn.setFAIcon(FAType.FAArrowLeft, iconSize: 25, forState: .Normal)
         actBtn.setFAIcon(FAType.FABookmark, iconSize: 25, forState: .Normal)
              gooverBtn?.setFATitleColor(UIColor.blackColor())
-       gooverBtn?.setFAText(prefixText: "", icon: FAType.FAEdit, postfixText: "", size: 25, forState: .Normal)
+       gooverBtn?.setFAText(prefixText: "", icon: FAType.FAPencil, postfixText: "", size: 25, forState: .Normal)
    
         resetBtn?.setFAText(prefixText: "", icon: FAType.FAMinusSquare, postfixText: "", size: 25, forState: .Normal)
         

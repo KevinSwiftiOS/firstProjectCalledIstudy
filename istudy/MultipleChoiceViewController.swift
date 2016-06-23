@@ -9,6 +9,7 @@
 import UIKit
 import Alamofire
 import SwiftyJSON
+import Font_Awesome_Swift
 class MultipleChoiceViewController: UIViewController,UIWebViewDelegate,UITableViewDelegate,UITableViewDataSource,UIGestureRecognizerDelegate{
     //阅卷 重置 保存的按钮
     @IBOutlet weak var resetBtn:UIButton?
@@ -114,6 +115,11 @@ class MultipleChoiceViewController: UIViewController,UIWebViewDelegate,UITableVi
         self.view.multipleTouchEnabled = true
         self.tableView?.addGestureRecognizer(leftSwipe)
         self.tableView?.addGestureRecognizer(rightSwipe)
+        backBtn.setFAIcon(FAType.FAArrowLeft, iconSize: 25, forState: .Normal)
+        actBtn.setFAIcon(FAType.FABookmark, iconSize: 25, forState: .Normal)
+        goOVerBtn?.setFAText(prefixText: "", icon: FAType.FAPencil, postfixText: "", size: 25, forState: .Normal)
+        saveBtn?.setFAText(prefixText: "", icon: FAType.FASave, postfixText: "", size: 25, forState: .Normal)
+        resetBtn?.setFAText(prefixText: "", icon: FAType.FAMinusSquare, postfixText: "", size: 25, forState: .Normal)
         self.initView()
          }
  //销毁所有的通知
