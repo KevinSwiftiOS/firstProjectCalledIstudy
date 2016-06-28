@@ -1,12 +1,15 @@
 PODS:
+  - DZNEmptyDataSet (1.7.2)
   - Font-Awesome-Swift (1.4.5)
 
 DEPENDENCIES:
+  - DZNEmptyDataSet
   - Font-Awesome-Swift
 
 SPEC CHECKSUMS:
+  DZNEmptyDataSet: 0ec00bfc230d7450997b60c127afdd0b9f24f3b6
   Font-Awesome-Swift: 0af30357ab68dbcfa2d211254a5c11a158261112
 
-PODFILE CHECKSUM: 8a7ea0314323488a527d3c3e09851c02e2331631
+PODFILE CHECKSUM: 59eba4e5bfed201eca2fded916cfe9bdc8b6a87c
 
 COCOAPODS: 1.0.0

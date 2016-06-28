@@ -35,6 +35,8 @@ class WriteLetterViewController: UIViewController,UICollectionViewDataSource,UIC
     @IBOutlet weak var sendBtn:UIButton!
     override func viewDidLoad() {
         super.viewDidLoad()
+        photoBtn.setFAText(prefixText: "", icon: FAType.FAImage, postfixText: "", size: 25, forState: .Normal)
+        sendBtn.setFAText(prefixText: "", icon: FAType.FASend, postfixText: "", size: 25, forState: .Normal)
         self.subjectTextField?.enabled = !isReply
         self.collectionView.delegate = self
         self.collectionView.dataSource = self

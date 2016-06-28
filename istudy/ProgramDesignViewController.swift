@@ -28,6 +28,8 @@ class ProgramDesignViewController: UIViewController,UIWebViewDelegate,UIGestureR
     @IBOutlet weak var contentScrollView:UIScrollView?
     @IBOutlet weak var kindOfQusLabel:UILabel?
     @IBOutlet weak var currentQusLabel:UILabel?
+    @IBOutlet weak var leftBtn:UIButton!
+    @IBOutlet weak var rightBtn:UIButton!
     //记录是程序改错题还是程序设计题 如果是程序改错题 那么还有默认的回答的内容的初始化
     var type = ""
     //文本输入框
@@ -49,6 +51,15 @@ class ProgramDesignViewController: UIViewController,UIWebViewDelegate,UIGestureR
     var index = 0
     override func viewDidLoad() {
         super.viewDidLoad()
+        //加左右的按钮
+        leftBtn?.tag = 1
+        rightBtn?.tag = 2
+        rightBtn?.addTarget(self, action: #selector(ProgramDesignViewController.changeIndex(_:)), forControlEvents: .TouchUpInside)
+        leftBtn!.addTarget(self, action:  #selector(ProgramDesignViewController.changeIndex(_:)), forControlEvents: .TouchUpInside)
+        //设置左右的按钮
+        leftBtn?.setFAText(prefixText: "", icon: FAType.FAArrowLeft, postfixText: "", size: 25, forState: .Normal)
+        rightBtn?.setFAText(prefixText: "", icon: FAType.FAArrowRight, postfixText: "", size: 25, forState: .Normal)
+
                //顶部加条线
         //设置阴影效果
         ShowBigImageFactory.topViewEDit(self.topView!)
@@ -209,6 +220,7 @@ class ProgramDesignViewController: UIViewController,UIWebViewDelegate,UIGestureR
         self.kindOfQusLabel?.text = self.totalitems[kindOfQusIndex].valueForKey("title") as! String + "(" + "\(self.items[index].valueForKey("totalscore") as! NSNumber)" + "分/题)"
         self.currentQusLabel?.text = "\(self.index + 1)" + "/" + "\(self.items.count)"
         self.qusDesWebView.loadHTMLString(self.items[index].valueForKey("content") as! String, baseURL: nil)
+
     }
     @IBAction func goOver(sender:UIButton){
         //阅卷都是先保存 后阅卷
@@ -404,6 +416,14 @@ class ProgramDesignViewController: UIViewController,UIWebViewDelegate,UIGestureR
                 self.answerTextView?.text = self.items[index].valueForKey("defaultanswer") as! String
             }
         }
+        if(self.items[index].valueForKey("defaultanswer") as? String != nil && self.items[index].valueForKey("defaultanswer") as! String != ""){
+            var defaultAnswerString = self.items[index].valueForKey("defaultanswer") as! String
+            print(defaultAnswerString)
+            defaultAnswerString = defaultAnswerString.stringByReplacingOccurrencesOfString("[E]", withString: " ")
+            defaultAnswerString = defaultAnswerString.stringByReplacingOccurrencesOfString("[/E]", withString:" ")
+            self.answerTextView?.text = defaultAnswerString
+            
+        }
         self.contentScrollView?.contentSize = CGSizeMake(SCREEN_WIDTH, webViewHeight + 150)
         let currentDate = NSDate()
         let result:NSComparisonResult = currentDate.compare(endDate)
@@ -467,5 +487,50 @@ class ProgramDesignViewController: UIViewController,UIWebViewDelegate,UIGestureR
     }
     override func viewWillDisappear(animated: Bool) {
         ProgressHUD.dismiss()
+    }
+    func changeIndex(sender:UIButton){
+        let temp = index
+        if(sender.tag == 2){
+            if(index != self.items.count - 1){
+                index += 1
+            }
+            else if self.kindOfQusIndex == self.totalKindOfQus - 1{
+                ProgressHUD.showSuccess("已完成全部")
+            }else{
+                let vc = UIStoryboard(name: "Problem", bundle: nil)
+                    .instantiateViewControllerWithIdentifier("TranslateVC") as!
+                TranslateViewController
+                vc.kindOfQusIndex = self.kindOfQusIndex + 1
+                vc.testid = self.testid
+                vc.title = self.title
+                vc.endDate = self.endDate
+                vc.enableClientJudge = self.enableClientJudge
+                vc.keyVisible = self.keyVisible
+                vc.viewOneWithAnswerKey = self.viewOneWithAnswerKey
+                self.navigationController?.pushViewController(vc, animated: false)
+                
+            }
+        }
+        if(sender.tag == 1){
+            if(index != 0){
+                index -= 1
+            }else{
+                let vc = UIStoryboard(name: "Problem", bundle: nil)
+                    .instantiateViewControllerWithIdentifier("TranslateVC") as!
+                TranslateViewController
+                vc.kindOfQusIndex = self.kindOfQusIndex
+                vc.testid = self.testid
+                vc.endDate = self.endDate
+                vc.enableClientJudge = self.enableClientJudge
+                vc.keyVisible = self.keyVisible
+                vc.viewOneWithAnswerKey = self.viewOneWithAnswerKey
+                vc.title = self.title
+                self.navigationController?.pushViewController(vc, animated: false)
+            }
+        }
+        if(temp != index){
+            self.initView()
+        }
+
     }
 }

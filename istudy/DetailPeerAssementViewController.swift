@@ -9,7 +9,8 @@
 import UIKit
 import Alamofire
 import SwiftyJSON
-class DetailPeerAssementViewController: UIViewController,UICollectionViewDataSource,UICollectionViewDelegate,UICollectionViewDelegateFlowLayout{
+import DZNEmptyDataSet
+class DetailPeerAssementViewController: UIViewController,UICollectionViewDataSource,UICollectionViewDelegate,UICollectionViewDelegateFlowLayout,DZNEmptyDataSetSource{
     @IBOutlet weak var collectionView:UICollectionView?
     @IBOutlet weak var TitleLabel:UILabel?
     var titleString = NSString()
@@ -109,17 +110,27 @@ class DetailPeerAssementViewController: UIViewController,UICollectionViewDataSou
             switch response.result{
             case .Failure(_):
               ProgressHUD.showError("请求失败")
+                dispatch_async(dispatch_get_main_queue(), {
+                    self.items = NSArray()
+                    self.collectionView?.emptyDataSetSource = self
+                    self.collectionView?.reloadData()
+                })
             case .Success(let Value):
                 let json = JSON(Value)
                 print(json)
                 if(json["retcode"].number != 0){
                  
                     ProgressHUD.showError("请求失败")
+                    dispatch_async(dispatch_get_main_queue(), {
+                        self.items = NSArray()
+                        self.collectionView?.emptyDataSetSource = self
+                        self.collectionView?.reloadData()
+                    })
                 }else{
                     dispatch_async(dispatch_get_main_queue(), {
                         ProgressHUD.dismiss()
                         self.items = json["items"].arrayObject! as NSArray
-                       
+                       self.collectionView?.emptyDataSetSource = self
                         self.collectionView?.reloadData()
                        // print(self.items)
                     })
@@ -130,4 +141,12 @@ class DetailPeerAssementViewController: UIViewController,UICollectionViewDataSou
     override func viewWillDisappear(animated: Bool) {
         ProgressHUD.dismiss()
     }
+    func titleForEmptyDataSet(scrollView: UIScrollView!) -> NSAttributedString! {
+        let string = "暂无互评信息"
+        let dic = [NSFontAttributeName:UIFont.boldSystemFontOfSize(18.0),
+                   NSForegroundColorAttributeName:UIColor.grayColor()]
+        let attriString = NSMutableAttributedString(string: string, attributes: dic)
+        return attriString
+    }
+    
 }

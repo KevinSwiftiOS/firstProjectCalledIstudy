@@ -70,7 +70,7 @@ class TranslateViewController: UIViewController{
                     
                     let vc = UIStoryboard(name: "Problem", bundle: nil).instantiateViewControllerWithIdentifier("ChoiceQusVC") as! ChoiceQusViewController
                     vc.testid = self.testid
-                    vc.totalKindOfQus = self.totalItems.count
+                                       vc.totalKindOfQus = self.totalItems.count
                     vc.totalItems = self.totalItems
                     vc.title = self.title
                 
@@ -178,6 +178,9 @@ class TranslateViewController: UIViewController{
         case "JUDGE","SINGLE_CHIOCE":
             let vc = UIStoryboard(name: "Problem", bundle: nil).instantiateViewControllerWithIdentifier("ChoiceQusVC") as! ChoiceQusViewController
             vc.testid = self.testid
+           
+         
+
             vc.totalKindOfQus = self.totalItems.count
             vc.totalItems = self.totalItems
             vc.title = self.title

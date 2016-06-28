@@ -40,6 +40,8 @@ class MultipleChoiceViewController: UIViewController,UIWebViewDelegate,UITableVi
     @IBOutlet weak var kindOfQuesLabel:UILabel?
     @IBOutlet weak var currentQus:UILabel?
     @IBOutlet weak var topView:UIView?
+    @IBOutlet weak var leftBtn:UIButton?
+    @IBOutlet weak var rightBtn:UIButton?
     var totalAnswers = NSMutableArray()
     //临时的答案变量 若保存的话 就替换掉原来的否则就不用进行替换
     var tempString = ""
@@ -53,6 +55,15 @@ class MultipleChoiceViewController: UIViewController,UIWebViewDelegate,UITableVi
     override func viewDidLoad() {
         
         super.viewDidLoad()
+        //加左右的按钮
+        //加左右的按钮
+        leftBtn?.tag = 1
+        rightBtn?.tag = 2
+        rightBtn?.addTarget(self, action:  #selector(MultipleChoiceViewController.changeIndex(_:)), forControlEvents: .TouchUpInside)
+        leftBtn!.addTarget(self, action: #selector(MultipleChoiceViewController.changeIndex(_:)), forControlEvents: .TouchUpInside)
+        //设置左右的按钮
+        leftBtn?.setFAText(prefixText: "", icon: FAType.FAArrowLeft, postfixText: "", size: 25, forState: .Normal)
+        rightBtn?.setFAText(prefixText: "", icon: FAType.FAArrowRight, postfixText: "", size: 25, forState: .Normal)
                 //加线
         //顶部加条线
         //设置阴影效果
@@ -528,4 +539,58 @@ class MultipleChoiceViewController: UIViewController,UIWebViewDelegate,UITableVi
     override func viewWillDisappear(animated: Bool) {
         ProgressHUD.dismiss()
     }
+    //左右的滑动
+    func changeIndex(sender:UIButton){
+        let temp = index
+        if sender.tag == 2{
+            if self.index != self.items.count - 1{
+                self.index += 1
+            }
+            else if(self.kindOfQusIndex == self.totalKindOfQus - 1){
+                ProgressHUD.showSuccess("题目已完成")
+            }else{
+                let vc = UIStoryboard(name: "Problem", bundle: nil)
+                    .instantiateViewControllerWithIdentifier("TranslateVC") as!
+                TranslateViewController
+                vc.kindOfQusIndex = self.kindOfQusIndex + 1
+                vc.testid = self.testid
+                vc.title = self.title
+                vc.endDate = self.endDate
+                vc.enableClientJudge = self.enableClientJudge
+                vc.keyVisible = self.keyVisible
+                vc.viewOneWithAnswerKey = self.viewOneWithAnswerKey
+                self.navigationController?.pushViewController(vc, animated: false)
+                
+            }
+            
+        }
+        if sender.tag == 1{
+            if self.index != 0{
+                (self.index) -= 1
+            }else{
+                let vc = UIStoryboard(name: "Problem", bundle: nil)
+                    .instantiateViewControllerWithIdentifier("TranslateVC") as!
+                TranslateViewController
+                vc.title = self.title
+                vc.kindOfQusIndex = self.kindOfQusIndex
+                vc.testid = self.testid
+                vc.enableClientJudge = self.enableClientJudge
+                vc.keyVisible = self.keyVisible
+                vc.endDate = self.endDate
+                vc.viewOneWithAnswerKey = self.viewOneWithAnswerKey
+                self.navigationController?.pushViewController(vc, animated: false)
+            }
+        }
+        //说明发生了滑动 选择题的按钮都要变色
+        if temp != index{
+            if(!isSave){
+                self.totalAnswers[temp] = beforeTapString
+            }
+            isSave = false
+            beforeTapString = ""
+            tempString = ""
+            self.initView()
+            
+        }
+}
 }

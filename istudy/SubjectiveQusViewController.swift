@@ -33,9 +33,11 @@ class SubjectiveQusViewController: UIViewController,AJPhotoPickerProtocol,UINavi
     var totalKindOfQus = NSInteger()
     
     @IBOutlet weak var qusKind:UILabel?
-var  addBtn = UIButton()
-var resetBtn = UIButton()
+    @IBOutlet weak var addBtn:UIButton?
+    @IBOutlet weak var resetBtn: UIButton?
    @IBOutlet weak var saveBtn:UIButton!
+    @IBOutlet weak var leftBtn:UIButton!
+    @IBOutlet weak var rightBtn:UIButton!
     @IBOutlet weak var contentScrollView:UIScrollView?
     @IBOutlet weak var currentQus:UILabel?
   var qusDes = UIWebView()
@@ -55,7 +57,14 @@ var resetBtn = UIButton()
     var selfAnswers = NSMutableArray()
     override func viewDidLoad() {
         super.viewDidLoad()
-    
+       //加左右的按钮
+        leftBtn?.tag = 1
+        rightBtn?.tag = 2
+        rightBtn?.addTarget(self, action: #selector(SubjectiveQusViewController.changeIndex(_:)), forControlEvents: .TouchUpInside)
+        leftBtn!.addTarget(self, action: #selector(SubjectiveQusViewController.changeIndex(_:)), forControlEvents: .TouchUpInside)
+        //设置左右的按钮
+        leftBtn?.setFAText(prefixText: "", icon: FAType.FAArrowLeft, postfixText: "", size: 25, forState: .Normal)
+        rightBtn?.setFAText(prefixText: "", icon: FAType.FAArrowRight, postfixText: "", size: 25, forState: .Normal)
 
               //顶部加条线
         //设置阴影效果   
@@ -572,23 +581,17 @@ var resetBtn = UIButton()
     scrollView.contentSize = CGSizeMake(CGFloat(width!), 0)
      self.totalHeight = CGFloat(height!) + 10
     self.contentScrollView?.addSubview(webView)
-        self.resetBtn = UIButton(frame: CGRectMake(SCREEN_WIDTH / 2 + 30,totalHeight,60,30))
-        self.resetBtn.backgroundColor = RGB(0, g: 153, b: 255)
-        self.resetBtn.setTitleColor(UIColor.whiteColor(), forState: .Normal)
-        self.resetBtn.setTitle("重置", forState: .Normal)
-        self.addBtn = UIButton(frame: CGRectMake(SCREEN_WIDTH / 2 - 90,totalHeight,60,30))
-        self.addBtn.backgroundColor = RGB(0, g: 153, b: 255)
-        self.addBtn.setTitle("添加", forState: .Normal)
-        self.addBtn.setTitleColor(UIColor.whiteColor(), forState: .Normal)
+        //self.resetBtn!.backgroundColor = RGB(0, g: 153, b: 255)
+    //    self.resetBtn!.setTitleColor(UIColor.whiteColor(), forState: .Normal)
+      //  self.addBtn!.backgroundColor = RGB(0, g: 153, b: 255)
+              // self.addBtn!.setTitleColor(UIColor.whiteColor(), forState: .Normal)
         self.saveBtn.addTarget(self, action: #selector(SubjectiveQusViewController.save(_:)), forControlEvents: .TouchUpInside)
-        self.saveBtn.backgroundColor = RGB(0, g: 153, b: 255)
-        self.contentScrollView?.addSubview(self.resetBtn)
-        self.contentScrollView?.addSubview(self.addBtn)
-            addBtn.setFAText(prefixText: "", icon: FAType.FAPlusSquare, postfixText: "", size: 25, forState: .Normal)
+        //self.saveBtn.backgroundColor = RGB(0, g: 153, b: 255)
+     
+            addBtn!.setFAText(prefixText: "", icon: FAType.FAPlusSquare, postfixText: "", size: 25, forState: .Normal)
         saveBtn?.setFAText(prefixText: "", icon: FAType.FASave, postfixText: "", size: 25, forState: .Normal)
-        resetBtn.setFAText(prefixText: "", icon: FAType.FAMinusSquare, postfixText: "", size: 25, forState: .Normal)
+        resetBtn!.setFAText(prefixText: "", icon: FAType.FAMinusSquare, postfixText: "", size: 25, forState: .Normal)
 
-        totalHeight += 35
         self.resetBtnAndQusHeight = totalHeight
         //比较日期 加载不同的控件
         //先要看看有没有answerWebView
@@ -616,8 +619,8 @@ var resetBtn = UIButton()
         self.answerTextView.keyboardDismissMode = .OnDrag
             totalHeight += 110
           self.contentScrollView?.addSubview(answerTextView)
-            self.resetBtn.addTarget(self, action: #selector(SubjectiveQusViewController.resetAnswer(_:)), forControlEvents: .TouchUpInside)
-            self.addBtn.addTarget(self, action: #selector(SubjectiveQusViewController.selectAnswerType(_:)), forControlEvents: .TouchUpInside)
+            self.resetBtn!.addTarget(self, action: #selector(SubjectiveQusViewController.resetAnswer(_:)), forControlEvents: .TouchUpInside)
+            self.addBtn!.addTarget(self, action: #selector(SubjectiveQusViewController.selectAnswerType(_:)), forControlEvents: .TouchUpInside)
             self.saveBtn.addTarget(self, action: #selector(SubjectiveQusViewController.save(_:)), forControlEvents: .TouchUpInside)
         }else{
             totalHeight += 55
@@ -652,5 +655,55 @@ var resetBtn = UIButton()
     }
     override func viewWillDisappear(animated: Bool) {
         ProgressHUD.dismiss()
+    }
+    func changeIndex(sender:UIButton){
+        let temp = index
+        //加载下一道题目
+        if sender.tag == 2{
+            if self.index != self.items.count - 1{
+                self.index += 1
+            }
+            else if(self.kindOfQusIndex == self.totalItems.count - 1){
+                ProgressHUD.showError("已是最后一题")
+            }
+            else {
+                let vc = UIStoryboard(name: "Problem", bundle: nil)
+                    .instantiateViewControllerWithIdentifier("TranslateVC") as!
+                TranslateViewController
+                vc.kindOfQusIndex = self.kindOfQusIndex + 1
+                vc.title = self.title
+                vc.testid = self.testid
+                vc.endDate = self.endDate
+                vc.enableClientJudge = self.enableClientJudge
+                vc.keyVisible = self.keyVisible
+                vc.viewOneWithAnswerKey = self.viewOneWithAnswerKey
+                self.navigationController?.pushViewController(vc, animated: false)
+                
+            }
+        }
+        if sender.tag == 1{
+            if self.index != 0{
+                self.index -= 1
+            }else{
+                let vc = UIStoryboard(name: "Problem", bundle: nil)
+                    .instantiateViewControllerWithIdentifier("TranslateVC") as!
+                TranslateViewController
+                vc.kindOfQusIndex = self.kindOfQusIndex
+                vc.title = self.title
+                vc.testid = self.testid
+                vc.endDate = self.endDate
+                self.navigationController?.pushViewController(vc, animated: false)
+                vc.enableClientJudge = self.enableClientJudge
+                vc.keyVisible = self.keyVisible
+                vc.viewOneWithAnswerKey = self.viewOneWithAnswerKey
+                
+            }
+        }
+        //加载下一道题目的时候需要记录下题目和答案
+        if(temp != index){
+            self.initView()
+            self.collectionView?.reloadData()
+        }
+
     }
 }

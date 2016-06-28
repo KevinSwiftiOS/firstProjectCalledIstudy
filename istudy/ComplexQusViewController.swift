@@ -47,6 +47,8 @@ class ComplexQusViewController: UIViewController,UITableViewDelegate,UITableView
     //小题目现在是到第几题了 和现在的题型
     @IBOutlet weak var kindofSubQusLabel:UILabel?
     @IBOutlet weak var currentSubQusLabel:UILabel?
+    @IBOutlet weak var leftBtn:UIButton?
+    @IBOutlet weak var rightBtn:UIButton?
     
     //阅卷 重置 保存的按钮
     @IBOutlet weak var resetBtn:UIButton?
@@ -75,6 +77,14 @@ class ComplexQusViewController: UIViewController,UITableViewDelegate,UITableView
     var oneSubFillBlankSelfAnswerArray = NSMutableArray()
     override func viewDidLoad() {
         super.viewDidLoad()
+        //加左右的按钮
+        leftBtn?.tag = 1
+        rightBtn?.tag = 2
+        rightBtn?.addTarget(self, action: #selector(ComplexQusViewController.changeIndex(_:)), forControlEvents: .TouchUpInside)
+        leftBtn!.addTarget(self, action: #selector(ComplexQusViewController.changeIndex(_:)), forControlEvents: .TouchUpInside)
+        //设置左右的按钮
+        leftBtn?.setFAText(prefixText: "", icon: FAType.FAArrowLeft, postfixText: "", size: 25, forState: .Normal)
+        rightBtn?.setFAText(prefixText: "", icon: FAType.FAArrowRight, postfixText: "", size: 25, forState: .Normal)
         self.tableView.keyboardDismissMode = .OnDrag
         //顶部加条线
         //设置阴影效果
@@ -1035,4 +1045,38 @@ class ComplexQusViewController: UIViewController,UITableViewDelegate,UITableView
          vc.url = cell.url
     self.navigationController?.pushViewController(vc, animated: true)
    }
+    func changeIndex(sender:UIButton){
+        //阅卷的问题
+        
+        if(sender.tag == 2){
+            //判断是不是到最后一题
+            if(self.subIndex == self.subQusItems.count - 1){
+                ProgressHUD.showError("已到最后一小题")
+            }else{
+                if(!isSave){
+                    self.oneQusSubSelfAnswers[subIndex] = beforeEditing
+                    
+                }
+                
+                isSave = false
+                self.subIndex += 1
+                self.initSubView()
+            }
+        }
+        if(sender.tag == 1){
+            if(self.subIndex == 0){
+                ProgressHUD.showError("是第一小题")
+            }else{
+                if(!isSave){
+                    self.oneQusSubSelfAnswers[subIndex] = beforeEditing
+                    
+                }
+                isSave = false
+                self.subIndex -= 1
+                self.initSubView()
+                
+            }
+        }
+
+    }
 }

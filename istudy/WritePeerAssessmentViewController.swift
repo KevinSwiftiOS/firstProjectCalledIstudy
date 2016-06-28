@@ -9,6 +9,7 @@
 import UIKit
 import Alamofire
 import SwiftyJSON
+import Font_Awesome_Swift
 //闭包来传值
 typealias send_index = (index:NSInteger) -> Void
 class WritePeerAssessmentViewController: UIViewController,UIWebViewDelegate,UIPickerViewDelegate,UIPickerViewDataSource,UITextViewDelegate,UIGestureRecognizerDelegate{
@@ -21,6 +22,9 @@ class WritePeerAssessmentViewController: UIViewController,UIWebViewDelegate,UIPi
     @IBOutlet weak var pickerView:UIPickerView!
     @IBOutlet weak var topView:UIView!
     @IBOutlet weak var currentQusLabel:UILabel!
+    @IBOutlet weak var leftBtn:UIButton?
+    @IBOutlet weak var rightBtn:UIButton?
+    @IBOutlet weak var saveBtn:UIButton?
     var leftSwipe = UISwipeGestureRecognizer()
     var rightSwipe = UISwipeGestureRecognizer()
     var contentWebView = UIWebView()
@@ -33,15 +37,22 @@ var questions = NSMutableArray()
     //var callBack:send_index?
     override func viewDidLoad() {
         super.viewDidLoad()
+        //加左右的按钮
+        leftBtn?.tag = 1
+        rightBtn?.tag = 2
+        rightBtn?.addTarget(self, action: #selector(WritePeerAssessmentViewController.changeIndex(_:)), forControlEvents: .TouchUpInside)
+        leftBtn!.addTarget(self, action:#selector(WritePeerAssessmentViewController.changeIndex(_:)), forControlEvents: .TouchUpInside)
+        //设置左右的按钮
+        leftBtn?.setFAText(prefixText: "", icon: FAType.FAArrowLeft, postfixText: "", size: 25, forState: .Normal)
+        rightBtn?.setFAText(prefixText: "", icon: FAType.FAArrowRight, postfixText: "", size: 25, forState: .Normal)
+        saveBtn?.setFAText(prefixText: "", icon: FAType.FASave, postfixText: "", size: 25, forState: .Normal)
+
         //键盘出现的时候
         XKeyBoard.registerKeyBoardHide(self)
         XKeyBoard.registerKeyBoardShow(self)
         self.scrollView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(WritePeerAssessmentViewController.resign)))
         //设置阴影效果
-        self.topView?.layer.shadowOffset = CGSizeMake(2.0, 1.0)
-        self.topView?.layer.shadowColor = UIColor.blueColor().CGColor
-        self.topView?.layer.shadowOpacity = 0.5
-
+       ShowBigImageFactory.topViewEDit(self.topView)
        self.pickerView.hidden = true
         leftSwipe.direction = .Left
         rightSwipe.direction = .Right
@@ -167,6 +178,8 @@ var questions = NSMutableArray()
         totalHeight = frame.size.height + 2
         webView.frame = frame
         self.scrollView.addSubview(webView)
+        let webScrollView = webView.subviews[0] as! UIScrollView
+        webScrollView.contentSize = CGSizeMake(SCREEN_WIDTH, CGFloat(height!))
         tap.delegate = self
         tap.addTarget(self, action: #selector(WritePeerAssessmentViewController.showBig(_:)))
         webView.addGestureRecognizer(tap)
@@ -193,14 +206,19 @@ var questions = NSMutableArray()
             ruleContentLabel.tag = 1000000
             
             let assermentLabel = UILabel(frame: CGRectMake(0,self.totalHeight,100,21))
-            assermentLabel.text = "评论分数:" + "\(scores[i].valueForKey("score") as! NSNumber)"
-            assermentLabel.tag = i
+            assermentLabel.text = "评论分数:"
+            //assermentLabel.tag = i
             self.scrollView.addSubview(assermentLabel)
-            let assermentBtn = UIButton(frame: CGRectMake(120,self.totalHeight,100,21))
-            assermentBtn.tag = i + 100
-            assermentBtn.setTitle("评论", forState: .Normal)
-            assermentBtn.backgroundColor = RGB(0, g: 153, b: 255)
-            assermentBtn.setTitleColor(UIColor.whiteColor(), forState: .Normal)
+            let assermentBtn = UIButton(frame: CGRectMake(50,self.totalHeight,100,21))
+            assermentBtn.tag = i
+            if((scores[i].valueForKey("score") as? NSNumber) != nil && scores[i].valueForKey("score") as! NSNumber != 0) {
+            
+            assermentBtn.setTitle("\(scores[i].valueForKey("score") as! NSNumber)" + "分", forState: .Normal)
+            }else{
+                assermentBtn.setTitle("0分", forState: .Normal)
+            }
+           // assermentBtn.backgroundColor = RGB(0, g: 153, b: 255)
+            assermentBtn.setTitleColor(UIColor.blackColor(), forState: .Normal)
             assermentBtn.addTarget(self, action: #selector(WritePeerAssessmentViewController.gotoPeer(_:)), forControlEvents: .TouchUpInside)
             self.scrollView.addSubview(assermentBtn)
             self.totalHeight += 22
@@ -226,6 +244,7 @@ var questions = NSMutableArray()
     }
     //加载新题目
     func addNewQus(sender:UISwipeGestureRecognizer){
+             pickerView.hidden = true
         if sender.direction == .Left{
             if(self.index != self.items.count - 1){
                 self.index += 1
@@ -250,6 +269,7 @@ var questions = NSMutableArray()
         var totalString = self.items[index].valueForKey("content") as! String + "学生答案:" + "<br>"
         if(self.items[index].valueForKey("answer") as? String != nil && self.items[index].valueForKey("answer") as! String != ""){
             totalString += self.items[index].valueForKey("answer") as! String
+            totalString = "<pre>" + totalString + "</pre>"
         }else{
             totalString += "无学生答案"
         }
@@ -257,15 +277,20 @@ var questions = NSMutableArray()
         self.contentWebView.loadHTMLString(totalString, baseURL: nil)
         
         self.contentWebView.delegate = self
+        self.contentWebView.userInteractionEnabled = true
         self.totalHeight = 0
           }
     func gotoPeer(sender:UIButton){
         self.pickerView.delegate = self
         self.pickerView.dataSource = self
-        let tag = sender.tag - 100
+        let tag = sender.tag
         self.pickerView.tag = 1000 + tag
         self.pickerView.hidden = false
-        
+        let arr1 = self.questions[index].valueForKey("rules") as! NSMutableArray
+        let dic1 = arr1[tag] as! NSMutableDictionary
+       let score = dic1.valueForKey("score") as! NSInteger
+
+        self.pickerView.selectRow(score, inComponent: 0, animated: true)
     }
     func pickerView(pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
         let rules = self.items[index].valueForKey("rules") as! NSMutableArray
@@ -283,10 +308,10 @@ var questions = NSMutableArray()
               let tag = pickerView.tag - 1000
        
         for view in self.scrollView.subviews{
-            if view.isKindOfClass(UILabel.classForCoder()){
+            if view.isKindOfClass(UIButton.classForCoder()){
                 if(view.tag == tag){
-        let label =  view as! UILabel
-           label.text =  "评论分数:" + "\(row)"
+        let btn =  view as! UIButton
+          btn.setTitle("\(row)" + "分", forState: .Normal)
             let arr1 = self.questions[index].valueForKey("rules") as! NSMutableArray
                       let dic1 = arr1[tag] as! NSMutableDictionary
                     dic1.setObject(row, forKey: "score")
@@ -295,10 +320,10 @@ var questions = NSMutableArray()
                 }
             }
         }
-      
+     pickerView.hidden = true
     }
     func resign(){
-      commentTextView.resignFirstResponder()
+         commentTextView.resignFirstResponder()
         self.pickerView.hidden = true
     }
     func textViewDidEndEditing(textView: UITextView) {
@@ -307,7 +332,7 @@ var questions = NSMutableArray()
     }
     //键盘出现时的代理
     func keyboardWillHideNotification(notifacition:NSNotification) {
-        self.scrollView.addGestureRecognizer(self.leftSwipe)
+                    self.scrollView.addGestureRecognizer(self.leftSwipe)
         self.scrollView.addGestureRecognizer(self.rightSwipe)
         UIView.animateWithDuration(0.3) { () -> Void in
             self.scrollView.contentOffset = CGPointMake(0, 0)
@@ -315,6 +340,8 @@ var questions = NSMutableArray()
     }
     func keyboardWillShowNotification(notifacition:NSNotification) {
         //做一个动画
+        pickerView.hidden = true
+
         self.scrollView.removeGestureRecognizer(self.leftSwipe)
         self.scrollView.removeGestureRecognizer(self.rightSwipe)
         UIView.animateWithDuration(0.3) { () -> Void in
@@ -336,21 +363,30 @@ var questions = NSMutableArray()
         }
     }
     func showBig(sender:UITapGestureRecognizer){
-        var pt = CGPoint()
-        var urlToSave = ""
-        pt = sender.locationInView(self.contentWebView)
-        let imgUrl = String(format: "document.elementFromPoint(%f, %f).src",pt.x, pt.y);
-        urlToSave = self.contentWebView.stringByEvaluatingJavaScriptFromString(imgUrl)!
-        
-        
-        let data = NSData(contentsOfURL: NSURL(string: urlToSave)!)
-        if(data != nil){
-            let image = UIImage(data: data!)
-            let previewPhotoVC = UIStoryboard(name: "Problem", bundle: nil).instantiateViewControllerWithIdentifier("previewPhotoVC") as! previewPhotoViewController
-            previewPhotoVC.toShowBigImageArray = [image!]
-            previewPhotoVC.contentOffsetX = 0
-            self.navigationController?.pushViewController(previewPhotoVC, animated: true)
+        pickerView.hidden = true
+         ShowBigImageFactory.showBigImage(self, webView: self.contentWebView, sender: sender)
+    }
+    func changeIndex(sender:UIButton){
+        pickerView.hidden = true
+        if sender.tag == 2{
+            if(self.index != self.items.count - 1){
+                self.index += 1
+                self.initView()
+            }else{
+                ProgressHUD.showError("已完成评论")
+            }
         }
+        if sender.tag == 1{
+            if(self.index != 0){
+                self.index -= 1
+                self.initView()
+            }else{
+                ProgressHUD.showError("开头")
+            }
+        }
+}
+    @IBAction func PickerViewResign(sender: UIControl) {
+        pickerView.hidden = true
     }
     
 }

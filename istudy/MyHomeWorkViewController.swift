@@ -9,7 +9,8 @@
 import UIKit
 import Alamofire
 import SwiftyJSON
-class MyHomeWorkViewController: UIViewController,UITableViewDataSource,UITableViewDelegate,UISearchResultsUpdating,UISearchControllerDelegate{
+import DZNEmptyDataSet
+class MyHomeWorkViewController: UIViewController,UITableViewDataSource,UITableViewDelegate,UISearchResultsUpdating,UISearchControllerDelegate,DZNEmptyDataSetSource{
     @IBOutlet weak var kindOfQuesLabel:UILabel?
     @IBOutlet weak var topLayout: NSLayoutConstraint!
     var isHomeWork = false
@@ -245,6 +246,7 @@ class MyHomeWorkViewController: UIViewController,UITableViewDataSource,UITableVi
                     self.items = NSArray()
                     dispatch_async(dispatch_get_main_queue(), {
                         self.tableView?.mj_header.endRefreshing()
+                        self.tableView?.emptyDataSetSource = self
                         self.tableView?.reloadData()
                     })
 
@@ -263,11 +265,19 @@ class MyHomeWorkViewController: UIViewController,UITableViewDataSource,UITableVi
                         self.title = string
                         }
                         self.tableView?.mj_header.endRefreshing()
+                        self.tableView?.emptyDataSetSource = self
                         self.tableView?.reloadData()
                     })
                 }
             case .Failure(_):
                 ProgressHUD.showError("请求失败")
+                dispatch_async(dispatch_get_main_queue(), {
+                     self.tableView?.emptyDataSetSource = self
+                    self.items = NSArray()
+                    self.tableView?.mj_header.endRefreshing()
+                    self.tableView?.reloadData()
+                })
+                
             }
         }
     }
@@ -302,5 +312,11 @@ class MyHomeWorkViewController: UIViewController,UITableViewDataSource,UITableVi
    
         ProgressHUD.dismiss()
     }
-  
+    func titleForEmptyDataSet(scrollView: UIScrollView!) -> NSAttributedString! {
+        let string = "暂无作业信息"
+        let dic = [NSFontAttributeName:UIFont.boldSystemFontOfSize(18.0),
+                   NSForegroundColorAttributeName:UIColor.grayColor()]
+        let attriString = NSMutableAttributedString(string: string, attributes: dic)
+        return attriString
+    }
 }

@@ -10,7 +10,8 @@ import UIKit
 import Alamofire
 import SwiftyJSON
 import Font_Awesome_Swift
-class MyTestViewController: UIViewController,UITableViewDataSource,UITableViewDelegate,UISearchResultsUpdating,UISearchControllerDelegate{
+import DZNEmptyDataSet
+class MyTestViewController: UIViewController,UITableViewDataSource,UITableViewDelegate,UISearchResultsUpdating,UISearchControllerDelegate,DZNEmptyDataSetSource{
     @IBOutlet weak var topLayout: NSLayoutConstraint!
     //接受数据信息的数组
     var sc = UISearchController(searchResultsController: nil)
@@ -139,11 +140,12 @@ class MyTestViewController: UIViewController,UITableViewDataSource,UITableViewDe
             case .Failure(_):
                 dispatch_async(dispatch_get_main_queue(), {
                     self.testDataArray = NSArray()
+                     self.testTableView?.emptyDataSetSource = self
                     self.testTableView?.mj_header.endRefreshing()
                     self.testTableView?.reloadData()
                     ProgressHUD.showError("请求失败")
                 })
-
+            
                 ProgressHUD.showError("请求失败")
             case .Success(let Value):
                 let json = JSON(Value)
@@ -152,16 +154,23 @@ class MyTestViewController: UIViewController,UITableViewDataSource,UITableViewDe
                     dispatch_async(dispatch_get_main_queue(), {
                         self.testDataArray = NSArray()
                         self.testTableView?.mj_header.endRefreshing()
+                         self.testTableView?.emptyDataSetSource = self
                         self.testTableView?.reloadData()
                         ProgressHUD.showError("请求失败")
                     })
-                  
+                 
+                    
                     print(json["retcode"])
                 }else{
                     dispatch_async(dispatch_get_main_queue(), {
                         self.testDataArray = json["items"].arrayObject! as NSArray
                         self.testTableView?.mj_header.endRefreshing()
                         self.testTableView?.reloadData()
+                        if(self.testDataArray.count == 0)
+                        {
+                              self.testTableView?.emptyDataSetSource = self
+                            self.testTableView?.reloadData()
+                        }
                     })
                 
                 }
@@ -195,6 +204,13 @@ class MyTestViewController: UIViewController,UITableViewDataSource,UITableViewDe
         arr.append(minate)
         arr.append(second)
         return arr
+    }
+    func titleForEmptyDataSet(scrollView: UIScrollView!) -> NSAttributedString! {
+        let string = "暂无考试信息"
+        let dic = [NSFontAttributeName:UIFont.boldSystemFontOfSize(18.0),
+                   NSForegroundColorAttributeName:UIColor.grayColor()]
+    let attriString = NSMutableAttributedString(string: string, attributes: dic)
+        return attriString
     }
 }
 

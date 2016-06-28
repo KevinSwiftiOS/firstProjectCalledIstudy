@@ -51,6 +51,8 @@ class CompletionQusViewController: UIViewController,UITextFieldDelegate,UIWebVie
     @IBOutlet weak var currentQus:UILabel?
     @IBOutlet weak var qusScore:UILabel?
     @IBOutlet weak var topView:UIView?
+    @IBOutlet weak var leftBtn:UIButton?
+    @IBOutlet weak var rightBtn:UIButton?
     var standAnswers = NSMutableArray()
     var beforeEditString = ""
     var isSave = Bool()
@@ -61,6 +63,14 @@ class CompletionQusViewController: UIViewController,UITextFieldDelegate,UIWebVie
     var index = 0
     override func viewDidLoad() {
         super.viewDidLoad()
+        //加左右的按钮
+        leftBtn?.tag = 1
+        rightBtn?.tag = 2
+        rightBtn?.addTarget(self, action: #selector(CompletionQusViewController.changeIndex(_:)), forControlEvents: .TouchUpInside)
+        leftBtn!.addTarget(self, action: #selector(CompletionQusViewController.changeIndex(_:)), forControlEvents: .TouchUpInside)
+        //设置左右的按钮
+        leftBtn?.setFAText(prefixText: "", icon: FAType.FAArrowLeft, postfixText: "", size: 25, forState: .Normal)
+        rightBtn?.setFAText(prefixText: "", icon: FAType.FAArrowRight, postfixText: "", size: 25, forState: .Normal)
               //顶部加条线
         //设置阴影效果
         ShowBigImageFactory.topViewEDit(self.topView!)
@@ -621,4 +631,51 @@ class CompletionQusViewController: UIViewController,UITextFieldDelegate,UIWebVie
     override func viewWillDisappear(animated: Bool) {
         ProgressHUD.dismiss()
     }
+    func changeIndex(sender:UIButton){
+    //左右的滑动
+    let temp = index
+    if sender.tag == 2{
+    if index != self.items.count - 1{
+    index += 1
+    }
+    else if self.totalKindOfQus - 1 == self.kindOfQusIndex{
+    ProgressHUD.showSuccess("已经完成全部试题")
+    }else{
+    let vc = UIStoryboard(name: "Problem", bundle: nil)
+    .instantiateViewControllerWithIdentifier("TranslateVC") as!
+    TranslateViewController
+    vc.title = self.title
+    vc.kindOfQusIndex = self.kindOfQusIndex + 1
+    vc.testid = self.testid
+    vc.endDate = self.endDate
+    vc.enableClientJudge = self.enableClientJudge
+    vc.keyVisible = self.keyVisible
+    vc.viewOneWithAnswerKey = self.viewOneWithAnswerKey
+    self.navigationController?.pushViewController(vc, animated: true)
+    }
+    }
+    if sender.tag == 1{
+    if index != 0{
+    index -= 1
+    }else{
+    let vc = UIStoryboard(name: "Problem", bundle: nil)
+    .instantiateViewControllerWithIdentifier("TranslateVC") as!
+    TranslateViewController
+    vc.title = self.title
+    vc.kindOfQusIndex = self.kindOfQusIndex
+    vc.testid = self.testid
+    vc.enableClientJudge = self.enableClientJudge
+    vc.keyVisible = self.keyVisible
+    vc.endDate = self.endDate
+    vc.viewOneWithAnswerKey = self.viewOneWithAnswerKey
+    self.navigationController?.pushViewController(vc, animated: false)
+    }
+    }
+    if(temp != index){
+    self.initView()
+    self.currentQus?.text = "\(self.index + 1)" + "/" + "\(self.items.count)"
+    self.currentQus?.text = "\(index + 1)" + "/" + "\(self.items.count)"
+    
+    }
+}
 }

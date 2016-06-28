@@ -9,7 +9,8 @@
 import UIKit
 import Alamofire
 import SwiftyJSON
-class PeerAssessmentViewController: UIViewController ,UITableViewDataSource,UITableViewDelegate{
+import DZNEmptyDataSet
+class PeerAssessmentViewController: UIViewController ,UITableViewDataSource,UITableViewDelegate,DZNEmptyDataSetSource{
     @IBOutlet weak var tableView:UITableView?
     var items = NSArray()
     var id = NSInteger()
@@ -113,21 +114,41 @@ class PeerAssessmentViewController: UIViewController ,UITableViewDataSource,UITa
                 print(json)
                 if(json["retcode"].number != 0){
                     ProgressHUD.showError("请求失败")
+                    dispatch_async(dispatch_get_main_queue(), {
+                        self.items = NSArray()
+                        self.tableView?.mj_header.endRefreshing()
+                        self.tableView?.emptyDataSetSource = self
+                        self.tableView?.reloadData()
+                    })
                 }else{
                     
                     dispatch_async(dispatch_get_main_queue(), {
                         self.items = json["items"].arrayObject! as NSArray
                         self.tableView?.mj_header.endRefreshing()
+                        self.tableView?.emptyDataSetSource = self
                         self.tableView?.reloadData()
             })
                 }
             case .Failure(_):
                 ProgressHUD.showError("请求失败")
+                dispatch_async(dispatch_get_main_queue(), {
+                    self.items = NSArray()
+                    self.tableView?.mj_header.endRefreshing()
+                    self.tableView?.emptyDataSetSource = self
+                    self.tableView?.reloadData()
+                })
             }
         }
     }
     override func viewWillDisappear(animated: Bool) {
       
         ProgressHUD.dismiss()
+    }
+    func titleForEmptyDataSet(scrollView: UIScrollView!) -> NSAttributedString! {
+        let string = "暂无评论信息"
+        let dic = [NSFontAttributeName:UIFont.boldSystemFontOfSize(18.0),
+                   NSForegroundColorAttributeName:UIColor.grayColor()]
+        let attriString = NSMutableAttributedString(string: string, attributes: dic)
+        return attriString
     }
 }

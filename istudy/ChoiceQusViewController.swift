@@ -37,6 +37,8 @@ class ChoiceQusViewController: UIViewController,UIWebViewDelegate,UITableViewDel
   @IBOutlet weak var kindOfQuesLabel:UILabel?
 
     @IBOutlet weak var currentQus:UILabel?
+    @IBOutlet weak var leftBtn:UIButton?
+    @IBOutlet weak var rightBtn:UIButton?
     @IBOutlet weak var gooverBtn:UIButton?
     @IBOutlet weak var resetBtn:UIButton?
     @IBOutlet weak var tableView:UITableView?
@@ -53,10 +55,18 @@ class ChoiceQusViewController: UIViewController,UIWebViewDelegate,UITableViewDel
     override func viewDidLoad() {
         
         super.viewDidLoad()
-    
+        //加左右的按钮
+        leftBtn?.tag = 1
+        rightBtn?.tag = 2
+        rightBtn?.addTarget(self, action: #selector(ChoiceQusViewController.changeIndex(_:)), forControlEvents: .TouchUpInside)
+        leftBtn!.addTarget(self, action: #selector(ChoiceQusViewController.changeIndex(_:)), forControlEvents: .TouchUpInside)
+      //设置左右的按钮
+        leftBtn?.setFAText(prefixText: "", icon: FAType.FAArrowLeft, postfixText: "", size: 25, forState: .Normal)
+        rightBtn?.setFAText(prefixText: "", icon: FAType.FAArrowRight, postfixText: "", size: 25, forState: .Normal)
+        
         //设置阴影效果
         ShowBigImageFactory.topViewEDit(self.topView!)
-        
+  
      
 
         self.tap = UITapGestureRecognizer(target: self, action: #selector(ChoiceQusViewController.webViewShowBig(_:)))
@@ -280,7 +290,7 @@ func showAct(){
             vc.enableClientJudge = self.enableClientJudge
             vc.keyVisible = self.keyVisible
             vc.viewOneWithAnswerKey = self.viewOneWithAnswerKey
-                       self.navigationController?.pushViewController(vc, animated: false)
+        self.navigationController?.pushViewController(vc, animated: false)
         }
         }
         if sender.direction == .Right{
@@ -478,5 +488,53 @@ func showAct(){
     }
     override func viewWillDisappear(animated: Bool) {
         ProgressHUD.dismiss()
+    }
+    //手势的左右滑动来加载题目
+    func changeIndex(sender:UIButton){
+        let temp = index
+        if(sender.tag == 2){
+        if self.index != self.items.count - 1{
+            self.index += 1
+        }
+        else if(self.kindOfQusIndex == self.totalKindOfQus - 1){
+            ProgressHUD.showSuccess("已完成全部试题")
+        }
+        else{
+            
+            let vc = UIStoryboard(name: "Problem", bundle: nil)
+                .instantiateViewControllerWithIdentifier("TranslateVC") as!
+            TranslateViewController
+            vc.kindOfQusIndex = self.kindOfQusIndex + 1
+            vc.title = self.title
+            vc.testid = self.testid
+            vc.endDate = self.endDate
+            vc.enableClientJudge = self.enableClientJudge
+            vc.keyVisible = self.keyVisible
+            vc.viewOneWithAnswerKey = self.viewOneWithAnswerKey
+            self.navigationController?.pushViewController(vc, animated: false)
+        }
+        }
+    if sender.tag == 1{
+    if self.index != 0{
+    (self.index) -= 1
+    }else{
+    
+    let vc = UIStoryboard(name: "Problem", bundle: nil)
+    .instantiateViewControllerWithIdentifier("TranslateVC") as!
+    TranslateViewController
+    vc.title = self.title
+    vc.kindOfQusIndex = self.kindOfQusIndex
+    vc.testid = self.testid
+    vc.endDate = self.endDate
+    vc.enableClientJudge = self.enableClientJudge
+    vc.keyVisible = self.keyVisible
+    vc.viewOneWithAnswerKey = self.viewOneWithAnswerKey
+    self.navigationController?.pushViewController(vc, animated: false)
+    }
+    }
+    //说明发生了滑动 选择题的按钮都要变色
+    if temp != index{
+    self.initView()
+    }
     }
 }

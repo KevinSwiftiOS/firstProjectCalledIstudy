@@ -9,7 +9,8 @@
 import UIKit
 import Alamofire
 import SwiftyJSON
-class OneCourseDesViewController:UIViewController,UICollectionViewDelegateFlowLayout,UICollectionViewDataSource,UICollectionViewDelegate,UITableViewDelegate,UITableViewDataSource,LFLUISegmentedControlDelegate{
+import DZNEmptyDataSet 
+class OneCourseDesViewController:UIViewController,UICollectionViewDelegateFlowLayout,UICollectionViewDataSource,UICollectionViewDelegate,UITableViewDelegate,UITableViewDataSource,LFLUISegmentedControlDelegate,DZNEmptyDataSetSource{
     @IBOutlet weak var courseDataCollectionView:UICollectionView?
     @IBOutlet weak var infoTableView:UITableView?
     @IBOutlet weak var messageView:UIWebView?
@@ -244,17 +245,32 @@ class OneCourseDesViewController:UIViewController,UICollectionViewDelegateFlowLa
                 let json = JSON(value)
                 if(json["retcode"].number != 0){
                     ProgressHUD.showError("请求失败")
+                    dispatch_async(dispatch_get_main_queue(), {
+                        self.items = NSArray()
+                        self.infoTableView?.mj_header.endRefreshing()
+                        self.infoTableView!.emptyDataSetSource = self
+                        self.infoTableView?.reloadData()
+                        
+                    })
                 }else{
                     print(json)
                     dispatch_async(dispatch_get_main_queue(), {
                         self.items = json["items"].arrayObject! as NSArray
                         self.infoTableView?.mj_header.endRefreshing()
+                        self.infoTableView!.emptyDataSetSource = self
                         self.infoTableView?.reloadData()
                         
                     })
                 }
             case .Failure(_):
                 ProgressHUD.showError("请求失败")
+                dispatch_async(dispatch_get_main_queue(), {
+                  self.items = NSArray()
+                    self.infoTableView?.mj_header.endRefreshing()
+                    self.infoTableView!.emptyDataSetSource = self
+                    self.infoTableView?.reloadData()
+
+                })
             }
         }
         }
@@ -272,4 +288,11 @@ class OneCourseDesViewController:UIViewController,UICollectionViewDelegateFlowLa
     override func viewDidDisappear(animated: Bool) {
               ProgressHUD.dismiss()
     }
-      }
+    func titleForEmptyDataSet(scrollView: UIScrollView!) -> NSAttributedString! {
+        let string = "暂无通知信息"
+        let dic = [NSFontAttributeName:UIFont.boldSystemFontOfSize(18.0),
+                   NSForegroundColorAttributeName:UIColor.grayColor()]
+        let attriString = NSMutableAttributedString(string: string, attributes: dic)
+        return attriString
+    }
+}

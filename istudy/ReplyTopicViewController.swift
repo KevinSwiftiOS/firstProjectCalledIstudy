@@ -9,7 +9,9 @@
 import UIKit
 import SwiftyJSON
 import Alamofire
-class ReplyTopicViewController: UIViewController,UITableViewDelegate,UITableViewDataSource {
+import DZNEmptyDataSet
+import Font_Awesome_Swift
+class ReplyTopicViewController: UIViewController,UITableViewDelegate,UITableViewDataSource,DZNEmptyDataSetSource{
  var id = NSInteger()
     var items = NSArray()
     var projectid = NSInteger()
@@ -18,6 +20,9 @@ class ReplyTopicViewController: UIViewController,UITableViewDelegate,UITableView
     //回复的内容
     @IBOutlet weak var writeTextView:JVFloatLabeledTextView?
     @IBOutlet weak var replyListTableView:UITableView?
+    @IBOutlet weak var sendBtn:UIButton!
+    @IBOutlet weak var photoBtn:UIButton!
+    @IBOutlet weak var voiceBtn:UIButton!
     override func viewDidLoad() {
          topView = UIView(frame: CGRectMake(80,0,SCREEN_WIDTH - 80,64))
         self.navigationController?.view.addSubview(topView)
@@ -28,8 +33,9 @@ class ReplyTopicViewController: UIViewController,UITableViewDelegate,UITableView
         
          bubbleView = AYBubbleView(centerPoint: (point), bubleRadius: 15, addToSuperView: topView)
         bubbleView.bubbleColor = UIColor.redColor()
-     
-     
+     sendBtn?.setFAText(prefixText: "", icon: FAType.FASend, postfixText: "", size: 25, forState: .Normal)
+     photoBtn?.setFAText(prefixText: "", icon: FAType.FAImage, postfixText: "", size: 25, forState: .Normal)
+             voiceBtn?.setFAText(prefixText: "", icon: FAType.FAMusic, postfixText: "", size: 25, forState: .Normal)
         
       self.automaticallyAdjustsScrollViewInsets = false
         self.writeTextView?.placeholder = "请输入回复内容"
@@ -92,11 +98,19 @@ self.replyListTableView?.tableFooterView = UIView()
                 let json = JSON(Value)
                 if(json["retcode"].number != 0){
                     ProgressHUD.showError("请求失败")
+                    dispatch_async(dispatch_get_main_queue(), {
+                        self.replyListTableView?.emptyDataSetSource = self
+                        self.items = NSArray()
+                        self.replyListTableView?.mj_header.endRefreshing()
+                        self.replyListTableView?.reloadData()
+                    })
+
                 }else{
                     self.items = json["items"].arrayObject! as NSArray
                     dispatch_async(dispatch_get_main_queue(), {
                        ProgressHUD.dismiss()
                         self.bubbleView.unReadLabel.text = "\(self.items.count)"
+                        self.replyListTableView?.emptyDataSetSource = self
                         self.replyListTableView?.reloadData()
                     })
                     
@@ -104,6 +118,12 @@ self.replyListTableView?.tableFooterView = UIView()
                 }
             case .Failure(_):
                 ProgressHUD.showError("请求失败")
+                dispatch_async(dispatch_get_main_queue(), {
+                    self.replyListTableView?.emptyDataSetSource = self
+                    self.items = NSArray()
+                    self.replyListTableView?.mj_header.endRefreshing()
+                    self.replyListTableView?.reloadData()
+                })
             }
         }
     }
@@ -149,6 +169,7 @@ self.replyListTableView?.tableFooterView = UIView()
                     print(json["retcode"].number)
                 }else{
                     ProgressHUD.showSuccess("发送成功")
+                  //  self.replyListTableView?.mj_header.beginRefreshing()
                 }
             }
         }
@@ -160,6 +181,12 @@ self.replyListTableView?.tableFooterView = UIView()
         topView.removeFromSuperview()
         ProgressHUD.dismiss()
     
-        
+        }
+    func titleForEmptyDataSet(scrollView: UIScrollView!) -> NSAttributedString! {
+        let string = "暂无评论"
+        let dic = [NSFontAttributeName:UIFont.boldSystemFontOfSize(18.0),
+                   NSForegroundColorAttributeName:UIColor.grayColor()]
+        let attriString = NSMutableAttributedString(string: string, attributes: dic)
+        return attriString
     }
 }

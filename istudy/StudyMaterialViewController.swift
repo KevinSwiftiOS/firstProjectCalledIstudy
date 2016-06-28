@@ -9,10 +9,11 @@
 import UIKit
 import Alamofire
 import SwiftyJSON
+import DZNEmptyDataSet
 //这里是一个tableView 随后每次点击这个tableView的时候就会预览文档
 import QuickLook
 class StudyMaterialViewController: UIViewController,UITableViewDelegate,UITableViewDataSource,
-UISearchControllerDelegate,UISearchResultsUpdating{
+UISearchControllerDelegate,UISearchResultsUpdating,DZNEmptyDataSetSource{
     //courseID
     var courseId = NSInteger()
     var filterItems = NSMutableArray()
@@ -178,6 +179,7 @@ UISearchControllerDelegate,UISearchResultsUpdating{
                     dispatch_async(dispatch_get_main_queue(), {
                         self.studyMaterialsTableView?.mj_header.endRefreshing()
                         self.items = NSArray()
+                        self.studyMaterialsTableView?.emptyDataSetSource = self
                         self.studyMaterialsTableView?.reloadData()
                     })
                     print(json["retcode"].numberValue)
@@ -186,6 +188,7 @@ UISearchControllerDelegate,UISearchResultsUpdating{
                         self.studyMaterialsTableView?.mj_header.endRefreshing()
                         self.items = json["items"].arrayObject! as NSArray
                         self.title = "学习资料" + "(共" + "\(self.items.count)" + "个)"
+                        self.studyMaterialsTableView?.emptyDataSetSource = self
                         self.studyMaterialsTableView?.reloadData()
                     })
                 }
@@ -194,6 +197,7 @@ UISearchControllerDelegate,UISearchResultsUpdating{
                 dispatch_async(dispatch_get_main_queue(), {
                     self.studyMaterialsTableView?.mj_header.endRefreshing()
                     self.items = NSArray()
+                    self.studyMaterialsTableView?.emptyDataSetSource = self
                     self.studyMaterialsTableView?.reloadData()
                 })
                 
@@ -230,6 +234,12 @@ UISearchControllerDelegate,UISearchResultsUpdating{
        
         ProgressHUD.dismiss()
     }
-  
+    func titleForEmptyDataSet(scrollView: UIScrollView!) -> NSAttributedString! {
+        let string = "暂无学习资料信息"
+        let dic = [NSFontAttributeName:UIFont.boldSystemFontOfSize(18.0),
+                   NSForegroundColorAttributeName:UIColor.grayColor()]
+        let attriString = NSMutableAttributedString(string: string, attributes: dic)
+        return attriString
+    }
     
 }

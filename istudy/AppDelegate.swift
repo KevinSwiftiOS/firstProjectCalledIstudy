@@ -10,6 +10,7 @@ import UIKit
 import CoreData
 import Alamofire
 import SwiftyJSON
+import Font_Awesome_Swift
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate{
 
@@ -17,6 +18,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate{
 func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         let loginNavigationVC = UIStoryboard(name: "LoginAndReset",bundle: nil).instantiateViewControllerWithIdentifier("LoginNavigationVC") as! UINavigationController
         let mainVC = UIStoryboard(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("tabBarVC") as! UITabBarController
+    mainVC.tabBar.items?.first?.setFAIcon(FAType.FAFolder)
+    let icon = mainVC.tabBar.items![2]
+    icon.setFAIcon(FAType.FAEnvelope)
         self.window?.frame = UIScreen.mainScreen().bounds
         let userDefaults = NSUserDefaults.standardUserDefaults()
         if(userDefaults.valueForKey("userName") == nil){

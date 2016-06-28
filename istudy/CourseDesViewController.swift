@@ -10,9 +10,9 @@
     import Alamofire
     import SwiftyJSON
     import CoreData
-    
+    import DZNEmptyDataSet
     class CourseDesViewController: UIViewController,UITableViewDataSource,UITableViewDelegate,
-    UISearchControllerDelegate,UISearchResultsUpdating{
+    UISearchControllerDelegate,UISearchResultsUpdating,DZNEmptyDataSetSource{
         var managedContext:NSManagedObjectContext?
         var fetchedResults = [PersonalHeadPortrait]()
         var imageHeadData = NSData()
@@ -270,7 +270,7 @@
                                 case .Success(let value):
                                     let json = JSON(value)
                                     if(json["retcode"].number == 0){
-                                       
+                                        self.courseDesTableView?.emptyDataSetSource = self
                                         self.items = json["items"].arrayObject! as NSArray
                                         
                                         for _ in  0 ..< self.items.count{
@@ -285,7 +285,10 @@
                                         ProgressHUD.showError("请求失败")
                                         self.items = NSArray()
                                         dispatch_async(dispatch_get_main_queue(), {
+                                            self.courseDesTableView?.emptyDataSetSource = self
                                             self.courseDesTableView?.mj_header.endRefreshing()
+                                           
+
                                             self.courseDesTableView?.reloadData()
                                         })
                                         
@@ -295,6 +298,8 @@
                                     self.items = NSArray()
                                     dispatch_async(dispatch_get_main_queue(), {
                                         self.courseDesTableView?.mj_header.endRefreshing()
+                                        self.courseDesTableView?.emptyDataSetSource = self
+
                                         self.courseDesTableView?.reloadData()
                                     })
                                     
@@ -306,6 +311,7 @@
                     ProgressHUD.showError("请求失败")
                     self.courseDesTableView?.mj_header.endRefreshing()
                     self.items = NSArray()
+                    self.courseDesTableView?.emptyDataSetSource = self
                     self.courseDesTableView?.reloadData()
  
                 }
@@ -333,6 +339,12 @@
         override func viewWillDisappear(animated: Bool) {
             ProgressHUD.dismiss()
         }
-    
+        func titleForEmptyDataSet(scrollView: UIScrollView!) -> NSAttributedString! {
+            let string = "暂无课程信息"
+            let dic = [NSFontAttributeName:UIFont.boldSystemFontOfSize(18.0),
+                       NSForegroundColorAttributeName:UIColor.grayColor()]
+            let attriString = NSMutableAttributedString(string: string, attributes: dic)
+            return attriString
+        }
     
     }

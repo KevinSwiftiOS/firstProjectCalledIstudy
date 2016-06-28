@@ -10,9 +10,10 @@ import UIKit
 import SwiftyJSON
 import Alamofire
 import Font_Awesome_Swift
+import DZNEmptyDataSet
 //传回联系人
 typealias push_selectedPersons = (idArray:NSMutableArray,items:NSArray) -> Void
-class ContactPersonViewController: UIViewController,UITableViewDelegate,UITableViewDataSource{
+class ContactPersonViewController: UIViewController,UITableViewDelegate,UITableViewDataSource,DZNEmptyDataSetSource{
     @IBOutlet weak var contactPersonTableView:UITableView?
     //控制列表是否被打开
     var selectArr = NSMutableArray()
@@ -21,6 +22,8 @@ class ContactPersonViewController: UIViewController,UITableViewDelegate,UITableV
     //每一个单元格下的数据
     var contacterlistArray = NSArray()
     //选择的人的id
+    //全选的每组
+    var allSelArray = NSMutableArray()
     var selectedPersonIdArray = NSMutableArray()
     var callBack:push_selectedPersons?
     override func viewDidLoad() {
@@ -44,13 +47,13 @@ class ContactPersonViewController: UIViewController,UITableViewDelegate,UITableV
     }
     //实现sectionView的视图
     func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        let view = UIView(frame: CGRectMake(0,0,SCREEN_WIDTH,30))
+        let view = UIView(frame: CGRectMake(0,0,SCREEN_WIDTH - 50,30))
         view.backgroundColor = UIColor.whiteColor()
         
         //组的名称 还有箭头图片 记录人数
         let tempArray = self.items[section].valueForKey("ContacterList") as! NSArray
         
-        let groupNameLabel = UILabel(frame: CGRectMake(40,0,SCREEN_WIDTH - 40,30))
+        let groupNameLabel = UILabel(frame: CGRectMake(40,0,SCREEN_WIDTH - 90,30))
         groupNameLabel.text = (self.items[section].valueForKey("Label") as? String)! + "(" + "\(tempArray.count)" + "人)"
        //箭头的视图
         
@@ -62,8 +65,18 @@ class ContactPersonViewController: UIViewController,UITableViewDelegate,UITableV
             imageView.setFAIconWithName(FAType.FAArrowRight, textColor: UIColor.blueColor())
         }
        
-        let btn = UIButton(frame: CGRectMake(0,0,SCREEN_WIDTH,50))
-        
+        let btn = UIButton(frame: CGRectMake(0,0,SCREEN_WIDTH - 50,50))
+        //全选的按钮
+        let allSelBtn = UIButton(frame: CGRectMake(SCREEN_WIDTH - 50,10,30,30))
+        allSelBtn.layer.cornerRadius = 15
+        allSelBtn.layer.borderWidth = 1.0
+        allSelBtn.layer.masksToBounds = true
+        if(self.allSelArray[section] as! NSObject == 1){
+            allSelBtn.setFAText(prefixText: "", icon: FAType.FACheckCircle, postfixText: "", size: 30, forState: .Normal)
+        }
+        allSelBtn.addTarget(self, action: #selector(ContactPersonViewController.selectedThisGroup(_:)), forControlEvents: .TouchUpInside)
+        allSelBtn.tag = section + 100
+        view.addSubview(allSelBtn)
         btn.tag = section
         btn.addTarget(self, action: #selector(ContactPersonViewController.btnOpenList(_:)), forControlEvents: .TouchUpInside)
         view.addSubview(btn)
@@ -194,6 +207,7 @@ class ContactPersonViewController: UIViewController,UITableViewDelegate,UITableV
                 self.items = NSArray()
                 dispatch_async(dispatch_get_main_queue(), {
                     self.contactPersonTableView?.mj_header.endRefreshing()
+                    self.contactPersonTableView?.emptyDataSetSource = self
                     self.contactPersonTableView?.reloadData()
                 })
 
@@ -206,17 +220,24 @@ class ContactPersonViewController: UIViewController,UITableViewDelegate,UITableV
                    
                     dispatch_async(dispatch_get_main_queue(), {
                         self.contactPersonTableView?.mj_header.endRefreshing()
+                        self.contactPersonTableView?.emptyDataSetSource = self
                         self.contactPersonTableView?.reloadData()
                     })
 
                 }else{
                     self.items = json["items"].arrayObject! as NSArray
+                    for _ in 0 ..< self.items.count{
+                        self.allSelArray.addObject(0)
+                    }
                     //默认都是没有分组的
                     for _ in 0 ..< self.items.count{
                         self.selectArr.addObject(0)
                     }
                     dispatch_async(dispatch_get_main_queue(), {
                         self.contactPersonTableView?.mj_header.endRefreshing()
+                        if(self.items.count == 0){
+                            self.contactPersonTableView?.emptyDataSetSource = self
+                        }
                         self.contactPersonTableView?.reloadData()
                     })
                 }
@@ -225,6 +246,37 @@ class ContactPersonViewController: UIViewController,UITableViewDelegate,UITableV
         }
     override func viewWillDisappear(animated: Bool) {
               ProgressHUD.dismiss()
+    }
+    //全选这组的按钮
+    func selectedThisGroup(sender:UIButton){
+        let trueTag = sender.tag - 100
+        let tempArr = self.items[trueTag].valueForKey("ContacterList") as! NSArray
+
+        if(self.allSelArray[trueTag] as! NSObject == 0){
+            self.allSelArray[trueTag] = 1
+            sender.setFAText(prefixText: "", icon: FAType.FACheckCircle, postfixText: "", size: 25, forState: .Normal)
+            //这一组别全部加进来
+            for i in 0 ..< tempArr.count{
+                self.selectedPersonIdArray.addObject(tempArr[i].valueForKey("Id") as! NSInteger)
+            }
+        }else{
+            sender.setFAText(prefixText: "", icon: nil, postfixText: "", size: 30, forState: .Normal)
+            self.allSelArray[trueTag] = 0
+            for out in 0 ..< self.selectedPersonIdArray.count{
+                for tempIn in 0 ..< tempArr.count{
+                    if(self.selectedPersonIdArray[out] as! NSInteger == tempArr[tempIn].valueForKey("Id") as! NSInteger){
+                        self.selectedPersonIdArray.removeObjectAtIndex(out)
+                    }
+                }
+            }
+        }
+    }
+    func titleForEmptyDataSet(scrollView: UIScrollView!) -> NSAttributedString! {
+        let string = "暂无联系人信息"
+        let dic = [NSFontAttributeName:UIFont.boldSystemFontOfSize(18.0),
+                   NSForegroundColorAttributeName:UIColor.grayColor()]
+        let attriString = NSMutableAttributedString(string: string, attributes: dic)
+        return attriString
     }
     }
 

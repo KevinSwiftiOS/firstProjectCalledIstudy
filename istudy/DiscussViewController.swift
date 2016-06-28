@@ -9,7 +9,8 @@
 import UIKit
 import Alamofire
 import SwiftyJSON
-class DiscussViewController: UIViewController,UITableViewDelegate,UITableViewDataSource{
+import DZNEmptyDataSet
+class DiscussViewController: UIViewController,UITableViewDelegate,UITableViewDataSource,DZNEmptyDataSetSource{
     
     @IBOutlet weak var discussTableView:UITableView?
     //测试数组
@@ -246,16 +247,30 @@ override func viewWillAppear(animated: Bool) {
                 dispatch_async(dispatch_get_main_queue(), {
                     self.totoalDiscussCountLabel?.text  = "\(self.unTopitems.count + self.topitems.count)"
                     self.discussTableView?.mj_header.endRefreshing()
+                    self.discussTableView?.emptyDataSetSource = self
                     self.discussTableView?.reloadData()
                    
                 })
             }
         case .Failure(_):
             ProgressHUD.showError("请求失败")
+            dispatch_async(dispatch_get_main_queue(), {
+                self.totalItems = NSMutableArray()
+                self.discussTableView?.emptyDataSetSource = self
+                self.discussTableView?.mj_header.endRefreshing()
+                self.discussTableView?.reloadData()
+            })
         }
         }
     }
     override func viewWillDisappear(animated: Bool) {
         ProgressHUD.dismiss()
         }
+    func titleForEmptyDataSet(scrollView: UIScrollView!) -> NSAttributedString! {
+        let string = "暂无讨论区信息"
+        let dic = [NSFontAttributeName:UIFont.boldSystemFontOfSize(18.0),
+                   NSForegroundColorAttributeName:UIColor.grayColor()]
+        let attriString = NSMutableAttributedString(string: string, attributes: dic)
+        return attriString
+    }
 }
