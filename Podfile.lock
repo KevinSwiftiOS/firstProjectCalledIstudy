@@ -1,15 +1,18 @@
 PODS:
   - DZNEmptyDataSet (1.7.2)
+  - FDFullscreenPopGesture (1.1)
   - Font-Awesome-Swift (1.4.5)
 
 DEPENDENCIES:
   - DZNEmptyDataSet
+  - FDFullscreenPopGesture (= 1.1)
   - Font-Awesome-Swift
 
 SPEC CHECKSUMS:
   DZNEmptyDataSet: 0ec00bfc230d7450997b60c127afdd0b9f24f3b6
+  FDFullscreenPopGesture: a8a620179e3d9c40e8e00256dcee1c1a27c6d0f0
   Font-Awesome-Swift: 0af30357ab68dbcfa2d211254a5c11a158261112
 
-PODFILE CHECKSUM: 59eba4e5bfed201eca2fded916cfe9bdc8b6a87c
+PODFILE CHECKSUM: 14d4c93fd104633bea1b067f12b35986e5544bf6
 
 COCOAPODS: 1.0.0

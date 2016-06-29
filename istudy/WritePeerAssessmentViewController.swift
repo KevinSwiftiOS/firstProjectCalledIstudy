@@ -18,6 +18,7 @@ class WritePeerAssessmentViewController: UIViewController,UIWebViewDelegate,UIPi
     var aboveCommentTextHeight = CGFloat()
     var commentTextView = JVFloatLabeledTextView()
     //scrollView
+    @IBOutlet weak var btmView:UIView!
     @IBOutlet weak var scrollView:UIScrollView!
     @IBOutlet weak var pickerView:UIPickerView!
     @IBOutlet weak var topView:UIView!
@@ -37,6 +38,7 @@ var questions = NSMutableArray()
     //var callBack:send_index?
     override func viewDidLoad() {
         super.viewDidLoad()
+        ShowBigImageFactory.topViewEDit(self.btmView)
         //加左右的按钮
         leftBtn?.tag = 1
         rightBtn?.tag = 2
@@ -73,6 +75,7 @@ var questions = NSMutableArray()
     
  //提交评论的结果
     @IBAction func savePeer(sender:UIButton){
+        pickerView.hidden = true
      //   self.callBack!(index:self.index)
         //进行保存
         let userDefault = NSUserDefaults.standardUserDefaults()
@@ -101,8 +104,7 @@ var questions = NSMutableArray()
                 ProgressHUD.showError("评论失败")
                 }else{
                     ProgressHUD.showSuccess("评论成功")
-                self.navigationController?.popViewControllerAnimated(true)
-
+          
 }
             case .Failure(_):ProgressHUD.showError("评论失败")
             }
@@ -213,10 +215,20 @@ var questions = NSMutableArray()
             assermentBtn.tag = i
             if((scores[i].valueForKey("score") as? NSNumber) != nil && scores[i].valueForKey("score") as! NSNumber != 0) {
             
-            assermentBtn.setTitle("\(scores[i].valueForKey("score") as! NSNumber)" + "分", forState: .Normal)
+            assermentBtn.setTitle("\(scores[i].valueForKey("score") as! NSNumber)" + " 分", forState: .Normal)
             }else{
-                assermentBtn.setTitle("0分", forState: .Normal)
+                assermentBtn.setTitle("0" + " 分", forState: .Normal)
             }
+            //设置下划线
+            let str1 = NSMutableAttributedString(string: (assermentBtn.titleLabel?.text)!)
+            let range1 = NSRange(location: 0, length: str1.length - 2)
+            let range2 = NSRange(location: str1.length - 1, length: 1)
+            let number = NSNumber(integer: NSUnderlineStyle.StyleSingle.rawValue)
+            str1.addAttribute(NSUnderlineStyleAttributeName, value: number, range: range1)
+            str1.addAttribute(NSForegroundColorAttributeName, value: UIColor.blueColor(), range: range1)
+            str1.addAttribute(NSForegroundColorAttributeName,value:UIColor.blackColor(), range: range2)
+            
+            assermentBtn.setAttributedTitle(str1, forState: .Normal)
            // assermentBtn.backgroundColor = RGB(0, g: 153, b: 255)
             assermentBtn.setTitleColor(UIColor.blackColor(), forState: .Normal)
             assermentBtn.addTarget(self, action: #selector(WritePeerAssessmentViewController.gotoPeer(_:)), forControlEvents: .TouchUpInside)
@@ -268,8 +280,8 @@ var questions = NSMutableArray()
         }
         var totalString = self.items[index].valueForKey("content") as! String + "学生答案:" + "<br>"
         if(self.items[index].valueForKey("answer") as? String != nil && self.items[index].valueForKey("answer") as! String != ""){
-            totalString += self.items[index].valueForKey("answer") as! String
-            totalString = "<pre>" + totalString + "</pre>"
+            totalString += "<pre>" + (self.items[index].valueForKey("answer") as! String)
+            + "</pre>"
         }else{
             totalString += "无学生答案"
         }

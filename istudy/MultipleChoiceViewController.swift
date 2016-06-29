@@ -15,6 +15,7 @@ class MultipleChoiceViewController: UIViewController,UIWebViewDelegate,UITableVi
     @IBOutlet weak var resetBtn:UIButton?
     @IBOutlet weak var saveBtn:UIButton?
     @IBOutlet weak var goOVerBtn:UIButton?
+    @IBOutlet weak var btmView:UIView!
     //阅卷的框
     var resultTextView = JVFloatLabeledTextView()
  //有没有超过规定的期限
@@ -55,6 +56,7 @@ class MultipleChoiceViewController: UIViewController,UIWebViewDelegate,UITableVi
     override func viewDidLoad() {
         
         super.viewDidLoad()
+        ShowBigImageFactory.topViewEDit(self.btmView)
         //加左右的按钮
         //加左右的按钮
         leftBtn?.tag = 1

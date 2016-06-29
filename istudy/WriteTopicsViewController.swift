@@ -9,16 +9,20 @@
 import UIKit
 import Alamofire
 import SwiftyJSON
+import Font_Awesome_Swift
 class WriteTopicsViewController: UIViewController,UICollectionViewDelegate,UICollectionViewDataSource,AJPhotoPickerProtocol,UIImagePickerControllerDelegate,UINavigationControllerDelegate{
     //项目id 也就是prohected
        var projectid = NSInteger()
-   
+    @IBOutlet weak var photoBtn:UIButton!
+    @IBOutlet weak var sendBtn:UIButton!
     @IBOutlet weak var titleTextField: JVFloatLabeledTextField!
     @IBOutlet weak var collectionView:UICollectionView?
     var photos = NSMutableArray()
     @IBOutlet weak var writeTextView: JVFloatLabeledTextView!
     override func viewDidLoad() {
         super.viewDidLoad()
+        photoBtn.setFAText(prefixText: "", icon: FAType.FAImage, postfixText: "", size: 25, forState: .Normal, iconSize: 25)
+        sendBtn.setFAText(prefixText: "", icon: FAType.FASend, postfixText: "", size: 25, forState: .Normal, iconSize: 25)
       self.automaticallyAdjustsScrollViewInsets = false
         // Do any additional setup after loading the view.
         //键盘的遮挡

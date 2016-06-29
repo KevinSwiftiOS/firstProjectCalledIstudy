@@ -11,7 +11,7 @@ import SwiftyJSON
 import Alamofire
 import DZNEmptyDataSet
 import Font_Awesome_Swift
-class ReplyTopicViewController: UIViewController,UITableViewDelegate,UITableViewDataSource,DZNEmptyDataSetSource{
+class ReplyTopicViewController: UIViewController,UITableViewDelegate,UITableViewDataSource,DZNEmptyDataSetSource,DZNEmptyDataSetDelegate{
  var id = NSInteger()
     var items = NSArray()
     var projectid = NSInteger()
@@ -42,9 +42,12 @@ class ReplyTopicViewController: UIViewController,UITableViewDelegate,UITableView
 self.replyListTableView?.dataSource = self
 self.replyListTableView?.delegate = self
 self.replyListTableView?.tableFooterView = UIView()
+        self.replyListTableView?.emptyDataSetDelegate = self
         // Do any additional setup after loading the view.
     }
-
+    func emptyDataSetShouldAllowScroll(scrollView: UIScrollView!) -> Bool {
+        return true
+    }
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.

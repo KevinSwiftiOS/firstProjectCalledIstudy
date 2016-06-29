@@ -10,7 +10,7 @@ import UIKit
 import Alamofire
 import SwiftyJSON
 import DZNEmptyDataSet
-class DetailPeerAssementViewController: UIViewController,UICollectionViewDataSource,UICollectionViewDelegate,UICollectionViewDelegateFlowLayout,DZNEmptyDataSetSource{
+class DetailPeerAssementViewController: UIViewController,UICollectionViewDataSource,UICollectionViewDelegate,UICollectionViewDelegateFlowLayout,DZNEmptyDataSetSource,DZNEmptyDataSetDelegate{
     @IBOutlet weak var collectionView:UICollectionView?
     @IBOutlet weak var TitleLabel:UILabel?
     var titleString = NSString()
@@ -29,8 +29,11 @@ class DetailPeerAssementViewController: UIViewController,UICollectionViewDataSou
         self.collectionView?.dataSource = self
         self.TitleLabel?.text = self.titleString as String
         self.collectionView?.backgroundColor = UIColor.whiteColor()
+        self.collectionView?.emptyDataSetDelegate = self
     }
-    
+    func emptyDataSetShouldAllowScroll(scrollView: UIScrollView!) -> Bool {
+        return true
+    }
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.

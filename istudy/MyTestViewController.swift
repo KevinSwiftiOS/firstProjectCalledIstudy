@@ -11,7 +11,7 @@ import Alamofire
 import SwiftyJSON
 import Font_Awesome_Swift
 import DZNEmptyDataSet
-class MyTestViewController: UIViewController,UITableViewDataSource,UITableViewDelegate,UISearchResultsUpdating,UISearchControllerDelegate,DZNEmptyDataSetSource{
+class MyTestViewController: UIViewController,UITableViewDataSource,UITableViewDelegate,UISearchResultsUpdating,UISearchControllerDelegate,DZNEmptyDataSetSource,DZNEmptyDataSetDelegate{
     @IBOutlet weak var topLayout: NSLayoutConstraint!
     //接受数据信息的数组
     var sc = UISearchController(searchResultsController: nil)
@@ -37,7 +37,7 @@ class MyTestViewController: UIViewController,UITableViewDataSource,UITableViewDe
         sc.searchBar.sizeToFit()
         self.testTableView?.tableHeaderView = sc.searchBar
         sc.delegate = self
-
+self.testTableView?.emptyDataSetDelegate = self
         
     }
     
@@ -211,6 +211,9 @@ class MyTestViewController: UIViewController,UITableViewDataSource,UITableViewDe
                    NSForegroundColorAttributeName:UIColor.grayColor()]
     let attriString = NSMutableAttributedString(string: string, attributes: dic)
         return attriString
+    }
+    func emptyDataSetShouldAllowScroll(scrollView: UIScrollView!) -> Bool {
+        return true
     }
 }
 

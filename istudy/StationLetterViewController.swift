@@ -11,7 +11,7 @@ import SwiftyJSON
 import Alamofire
 import Font_Awesome_Swift
 import DZNEmptyDataSet
-class StationLetterViewController: UIViewController,UITableViewDelegate,UITableViewDataSource,DZNEmptyDataSetSource{
+class StationLetterViewController: UIViewController,UITableViewDelegate,UITableViewDataSource,DZNEmptyDataSetSource,DZNEmptyDataSetDelegate{
     
     @IBOutlet weak var moreChioice: UIBarButtonItem?
     @IBOutlet weak var stationLetterTableViewToSuperViewLeading: NSLayoutConstraint!
@@ -35,6 +35,7 @@ class StationLetterViewController: UIViewController,UITableViewDelegate,UITableV
     var toDeleteLetterArray = NSMutableArray()
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         let userDefault = NSUserDefaults.standardUserDefaults()
         let authtoken = userDefault.valueForKey("authtoken") as! String
         self.inDic = ["authtoken":authtoken,
@@ -60,7 +61,8 @@ class StationLetterViewController: UIViewController,UITableViewDelegate,UITableV
         
         self.sentBox?.addTarget(self, action: #selector(StationLetterViewController.selectedSentBox(_:)), forControlEvents: .TouchUpInside)
         self.inBox?.addTarget(self, action: #selector(StationLetterViewController.selectedInBox(_:)), forControlEvents: .TouchUpInside)
-     
+     self.stationLetterTableView!.emptyDataSetDelegate = self
+        
     }
    override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -223,7 +225,7 @@ class StationLetterViewController: UIViewController,UITableViewDelegate,UITableV
                
             case .Success(let Value):
                 let json = JSON(Value)
-                print(json)
+                
                 if(json["retcode"].number != 0){
                     ProgressHUD.showError("请求失败")
                     self.items = NSArray()
@@ -268,5 +270,8 @@ class StationLetterViewController: UIViewController,UITableViewDelegate,UITableV
                    NSForegroundColorAttributeName:UIColor.grayColor()]
         let attriString = NSMutableAttributedString(string: string, attributes: dic)
         return attriString
+    }
+    func emptyDataSetShouldAllowScroll(scrollView: UIScrollView!) -> Bool {
+        return true
     }
 }

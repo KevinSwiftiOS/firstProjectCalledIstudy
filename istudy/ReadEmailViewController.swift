@@ -82,7 +82,7 @@ self.view.bringSubviewToFront(self.writeBtn)
         writeEmailVC.repleyToOneId = self.senderId
         writeEmailVC.title = "写邮件"
         writeEmailVC.parentcode = self.code
-        writeEmailVC.subject = self.subject
+            writeEmailVC.subject = "回复:" + self.subject
         writeEmailVC.isReply = true
         self.navigationController?.pushViewController(writeEmailVC, animated: true)
         }

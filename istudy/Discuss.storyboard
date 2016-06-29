@@ -146,7 +146,9 @@
                             </collectionView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="JLa-EO-Prj">
                                 <rect key="frame" x="-23" y="-15" width="46" height="30"/>
-                                <state key="normal" image="发送"/>
+                                <state key="normal" title="btn">
+                                    <color key="titleColor" red="0.0" green="0.59999999999999998" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                </state>
                                 <connections>
                                     <action selector="send:" destination="4xt-Xq-Tjr" eventType="touchUpInside" id="sd4-lb-FVt"/>
                                 </connections>
@@ -156,7 +158,9 @@
                                 <constraints>
                                     <constraint firstAttribute="height" constant="30" id="uhP-fB-Rt6"/>
                                 </constraints>
-                                <state key="normal" image="照片"/>
+                                <state key="normal" title="btn">
+                                    <color key="titleColor" red="0.0" green="0.59999999999999998" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                </state>
                                 <variation key="default">
                                     <mask key="constraints">
                                         <exclude reference="uhP-fB-Rt6"/>
@@ -276,6 +280,8 @@
                     <connections>
                         <outlet property="bottomLayout" destination="gva-2P-Trb" id="Wi3-hC-yW1"/>
                         <outlet property="collectionView" destination="Deg-Iv-TdQ" id="5gx-Wn-gsa"/>
+                        <outlet property="photoBtn" destination="WsC-CI-9Cg" id="qdt-r9-x5U"/>
+                        <outlet property="sendBtn" destination="JLa-EO-Prj" id="NfE-qS-w6B"/>
                         <outlet property="titleTextField" destination="MTB-w3-xYT" id="wnI-Hv-Lhz"/>
                         <outlet property="writeTextView" destination="dpO-xj-p0U" id="c5i-wf-45e"/>
                     </connections>
@@ -429,7 +435,8 @@
                                                             <exclude reference="lIG-JM-iTe"/>
                                                         </mask>
                                                     </variation>
-                                                    <variation key="heightClass=regular-widthClass=compact">
+                                                    <variation key="heightClass=regular-widthClass=compact" misplaced="YES">
+                                                        <rect key="frame" x="41" y="0.0" width="199" height="27"/>
                                                         <mask key="constraints">
                                                             <include reference="lIG-JM-iTe"/>
                                                         </mask>
@@ -440,10 +447,16 @@
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
+                                                    <variation key="heightClass=regular-widthClass=compact" misplaced="YES">
+                                                        <rect key="frame" x="41" y="29" width="199" height="27"/>
+                                                    </variation>
                                                 </label>
                                                 <webView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Zx9-9g-XB2">
                                                     <rect key="frame" x="0.0" y="0.0" width="240" height="128"/>
                                                     <color key="backgroundColor" red="0.36078431370000003" green="0.38823529410000002" blue="0.4039215686" alpha="1" colorSpace="deviceRGB"/>
+                                                    <variation key="heightClass=regular-widthClass=compact" misplaced="YES">
+                                                        <rect key="frame" x="0.0" y="56" width="240" height="59"/>
+                                                    </variation>
                                                 </webView>
                                             </subviews>
                                             <constraints>
@@ -619,28 +632,28 @@
                                 <exclude reference="xQ5-yL-ZLF"/>
                             </mask>
                             <mask key="constraints">
+                                <exclude reference="Bh4-YN-Uot"/>
+                                <exclude reference="BhX-UG-dUQ"/>
+                                <exclude reference="z0h-R5-HDH"/>
+                                <exclude reference="N3O-KF-77R"/>
+                                <exclude reference="oMy-6z-Jhf"/>
+                                <exclude reference="J1E-DR-BqG"/>
+                                <exclude reference="RHs-wj-128"/>
+                                <exclude reference="ThY-Ur-zhr"/>
+                                <exclude reference="70W-fu-Ofm"/>
+                                <exclude reference="Iou-Ah-Lsy"/>
+                                <exclude reference="mno-EN-qt2"/>
+                                <exclude reference="Ifq-8v-aBO"/>
+                                <exclude reference="rdR-ht-6F2"/>
                                 <exclude reference="T2A-ua-dm5"/>
                                 <exclude reference="Vgx-tc-PyS"/>
                                 <exclude reference="gvH-cx-ear"/>
-                                <exclude reference="Ifq-8v-aBO"/>
-                                <exclude reference="rdR-ht-6F2"/>
                                 <exclude reference="49b-Km-K4u"/>
                                 <exclude reference="94a-Vj-aif"/>
                                 <exclude reference="GpP-WQ-qNQ"/>
                                 <exclude reference="b87-oc-lEy"/>
                                 <exclude reference="d77-90-qiV"/>
                                 <exclude reference="pJL-09-5L0"/>
-                                <exclude reference="70W-fu-Ofm"/>
-                                <exclude reference="Iou-Ah-Lsy"/>
-                                <exclude reference="mno-EN-qt2"/>
-                                <exclude reference="N3O-KF-77R"/>
-                                <exclude reference="oMy-6z-Jhf"/>
-                                <exclude reference="Bh4-YN-Uot"/>
-                                <exclude reference="BhX-UG-dUQ"/>
-                                <exclude reference="z0h-R5-HDH"/>
-                                <exclude reference="J1E-DR-BqG"/>
-                                <exclude reference="RHs-wj-128"/>
-                                <exclude reference="ThY-Ur-zhr"/>
                             </mask>
                         </variation>
                         <variation key="heightClass=regular-widthClass=compact">
@@ -653,28 +666,28 @@
                                 <include reference="xQ5-yL-ZLF"/>
                             </mask>
                             <mask key="constraints">
+                                <include reference="Bh4-YN-Uot"/>
+                                <include reference="BhX-UG-dUQ"/>
+                                <include reference="z0h-R5-HDH"/>
+                                <include reference="N3O-KF-77R"/>
+                                <include reference="oMy-6z-Jhf"/>
+                                <include reference="J1E-DR-BqG"/>
+                                <include reference="RHs-wj-128"/>
+                                <include reference="ThY-Ur-zhr"/>
+                                <include reference="70W-fu-Ofm"/>
+                                <include reference="Iou-Ah-Lsy"/>
+                                <include reference="mno-EN-qt2"/>
+                                <include reference="Ifq-8v-aBO"/>
+                                <include reference="rdR-ht-6F2"/>
                                 <include reference="T2A-ua-dm5"/>
                                 <include reference="Vgx-tc-PyS"/>
                                 <include reference="gvH-cx-ear"/>
-                                <include reference="Ifq-8v-aBO"/>
-                                <include reference="rdR-ht-6F2"/>
                                 <include reference="49b-Km-K4u"/>
                                 <include reference="94a-Vj-aif"/>
                                 <include reference="GpP-WQ-qNQ"/>
                                 <include reference="b87-oc-lEy"/>
                                 <include reference="d77-90-qiV"/>
                                 <include reference="pJL-09-5L0"/>
-                                <include reference="70W-fu-Ofm"/>
-                                <include reference="Iou-Ah-Lsy"/>
-                                <include reference="mno-EN-qt2"/>
-                                <include reference="N3O-KF-77R"/>
-                                <include reference="oMy-6z-Jhf"/>
-                                <include reference="Bh4-YN-Uot"/>
-                                <include reference="BhX-UG-dUQ"/>
-                                <include reference="z0h-R5-HDH"/>
-                                <include reference="J1E-DR-BqG"/>
-                                <include reference="RHs-wj-128"/>
-                                <include reference="ThY-Ur-zhr"/>
                             </mask>
                         </variation>
                         <connections>
@@ -694,8 +707,4 @@
             <point key="canvasLocation" x="514.5" y="224.25"/>
         </scene>
     </scenes>
-    <resources>
-        <image name="发送" width="25" height="25"/>
-        <image name="照片" width="25" height="25"/>
-    </resources>
 </document>

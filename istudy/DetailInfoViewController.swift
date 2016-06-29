@@ -34,20 +34,22 @@ class DetailInfoViewController: UIViewController,UIWebViewDelegate{
                 }else{
                     dispatch_async(dispatch_get_main_queue(), {
                        
-                       
+                       var totalString = ""
                         self.title = json["info"]["title"].string
-                        self.webView.loadHTMLString(json["info"]["content"].string!,baseURL: nil)
+                        totalString += json["info"]["content"].string! + "</br>"
                         self.webView.delegate = self
                         if(json["info"]["author"].string != nil) {
-                            self.authorLabel.text = "发布人:" + json["info"]["author"].string!
+                            totalString  += "发布人:" + json["info"]["author"].string! + "</br>"
                         }
                         let yearRange = NSMakeRange(0, 4)
                         let monthRange = NSMakeRange(4, 2)
                         let dateRange = NSMakeRange(6, 2)
                         let tempStartDate = json["info"]["date"].string! as NSString
                         let  date = "发布时间:" + tempStartDate.substringWithRange(yearRange) + "-" + tempStartDate.substringWithRange(monthRange) + "-" + tempStartDate.substringWithRange(dateRange)
-                        self.dateLabel.text = date as String
-                        self.viewTimesLabel.text = "访问次数" + "\(json["info"]["viewtimes"].number!)"
+                       totalString += (date as String) + "</br>"
+                        totalString += "访问次数" + "\(json["info"]["viewtimes"].number!)" + "</br>"
+                       
+                        self.webView.loadHTMLString(totalString, baseURL: nil)
                     })
                 }
             case .Failure(_):
@@ -81,23 +83,25 @@ class DetailInfoViewController: UIViewController,UIWebViewDelegate{
        var frame = webView.frame
         frame = CGRectMake(0,0, SCREEN_WIDTH, CGFloat(height! + 5))
         webView.frame = frame
-        var totalHeight = 10 + CGFloat(height!) + 5
-        self.authorLabel.frame = CGRectMake(0, totalHeight, SCREEN_WIDTH, 21)
-        self.authorLabel.textAlignment = .Right
-        totalHeight += 23
-        self.dateLabel.frame = CGRectMake(0, totalHeight, SCREEN_WIDTH, 21)
-        self.dateLabel.textAlignment = .Right
-        totalHeight += 23
-        self.viewTimesLabel.frame = CGRectMake(0, totalHeight, SCREEN_WIDTH, 21)
-        self.viewTimesLabel.textAlignment = .Right
-       // self.view.addSubview(self.titleLabel)
-        self.contentScrollView.addSubview(authorLabel)
-        self.contentScrollView.addSubview(dateLabel)
+        let totalHeight = 10 + CGFloat(height!) + 5
+//        self.authorLabel.frame = CGRectMake(0, totalHeight, SCREEN_WIDTH, 21)
+//        self.authorLabel.textAlignment = .Right
+//        totalHeight += 23
+//        self.dateLabel.frame = CGRectMake(0, totalHeight, SCREEN_WIDTH, 21)
+//        self.dateLabel.textAlignment = .Right
+//        totalHeight += 23
+//        self.viewTimesLabel.frame = CGRectMake(0, totalHeight, SCREEN_WIDTH, 21)
+//        self.viewTimesLabel.textAlignment = .Right
+//       // self.view.addSubview(self.titleLabel)
+//        self.contentScrollView.addSubview(authorLabel)
+//        self.contentScrollView.addSubview(dateLabel)
         self.contentScrollView.addSubview(webView)
-        self.contentScrollView.addSubview(titleLabel)
-        self.contentScrollView.addSubview(viewTimesLabel)
+       // self.contentScrollView.addSubview(titleLabel)
+       // self.contentScrollView.addSubview(viewTimesLabel)
         self.view.addSubview(self.contentScrollView)
-        
+        //竖直方向的不能展示滑动条
+        let scrollView = webView.subviews[0] as! UIScrollView
+        scrollView.showsVerticalScrollIndicator = false
         self.contentScrollView.contentSize = CGSizeMake(SCREEN_WIDTH, totalHeight + 70)
         ProgressHUD.dismiss()
     }

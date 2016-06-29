@@ -10,7 +10,7 @@ import UIKit
 import Alamofire
 import SwiftyJSON
 import DZNEmptyDataSet
-class MyHomeWorkViewController: UIViewController,UITableViewDataSource,UITableViewDelegate,UISearchResultsUpdating,UISearchControllerDelegate,DZNEmptyDataSetSource{
+class MyHomeWorkViewController: UIViewController,UITableViewDataSource,UITableViewDelegate,UISearchResultsUpdating,UISearchControllerDelegate,DZNEmptyDataSetSource,DZNEmptyDataSetDelegate{
     @IBOutlet weak var kindOfQuesLabel:UILabel?
     @IBOutlet weak var topLayout: NSLayoutConstraint!
     var isHomeWork = false
@@ -34,6 +34,8 @@ class MyHomeWorkViewController: UIViewController,UITableViewDataSource,UITableVi
             self.postString = "http://dodo.hznu.edu.cn/api/exprementquery"
         }
         super.viewDidLoad()
+        //支持手势的侧滑返回
+           self.navigationController?.interactivePopGestureRecognizer?.enabled = true
                self.tableView?.delegate = self
         self.tableView?.dataSource = self
         self.tableView?.tableFooterView = UIView()
@@ -49,8 +51,11 @@ class MyHomeWorkViewController: UIViewController,UITableViewDataSource,UITableVi
         sc.searchBar.sizeToFit()
         self.tableView?.tableHeaderView = sc.searchBar
         sc.delegate = self
+        self.tableView?.emptyDataSetDelegate = self
     }
-    
+    func emptyDataSetShouldAllowScroll(scrollView: UIScrollView!) -> Bool {
+        return true
+    }
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -198,6 +203,14 @@ class MyHomeWorkViewController: UIViewController,UITableViewDataSource,UITableVi
         cell.id = self.items[indexPath.row].valueForKey("id") as! NSInteger
         cell.answerQusBtn?.addTarget(self, action: #selector(MyHomeWorkViewController.answerQuestion(_:)), forControlEvents: .TouchUpInside)
         return cell
+    }
+    //tableViewcell的动画
+    func tableView(tableView: UITableView, willDisplayCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {
+        cell.layer.transform = CATransform3DMakeScale(0.1, 0.1, 1.0)
+        UIView.animateWithDuration(0.8) { 
+            cell.layer.transform = CATransform3DMakeScale(1, 1, 1) 
+        }
+        
     }
     //答题
     func answerQuestion(sender:UIButton){

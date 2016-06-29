@@ -262,14 +262,21 @@ class ContactPersonViewController: UIViewController,UITableViewDelegate,UITableV
         }else{
             sender.setFAText(prefixText: "", icon: nil, postfixText: "", size: 30, forState: .Normal)
             self.allSelArray[trueTag] = 0
-            for out in 0 ..< self.selectedPersonIdArray.count{
-                for tempIn in 0 ..< tempArr.count{
-                    if(self.selectedPersonIdArray[out] as! NSInteger == tempArr[tempIn].valueForKey("Id") as! NSInteger){
-                        self.selectedPersonIdArray.removeObjectAtIndex(out)
+            
+            for out in 0 ..< tempArr.count{
+                var cnt = self.selectedPersonIdArray.count
+                var tempIn = 0
+                while tempIn < cnt {
+                    if(tempArr[out].valueForKey("Id") as! NSInteger == self.selectedPersonIdArray[tempIn] as! NSInteger){
+                        self.selectedPersonIdArray.removeObjectAtIndex(tempIn)
+                        cnt -= 1
                     }
+                tempIn += 1
                 }
             }
+ 
         }
+           self.contactPersonTableView?.reloadData()
     }
     func titleForEmptyDataSet(scrollView: UIScrollView!) -> NSAttributedString! {
         let string = "暂无联系人信息"

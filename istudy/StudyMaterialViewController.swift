@@ -10,10 +10,11 @@ import UIKit
 import Alamofire
 import SwiftyJSON
 import DZNEmptyDataSet
+import Font_Awesome_Swift
 //这里是一个tableView 随后每次点击这个tableView的时候就会预览文档
 import QuickLook
 class StudyMaterialViewController: UIViewController,UITableViewDelegate,UITableViewDataSource,
-UISearchControllerDelegate,UISearchResultsUpdating,DZNEmptyDataSetSource{
+UISearchControllerDelegate,UISearchResultsUpdating,DZNEmptyDataSetSource,DZNEmptyDataSetDelegate{
     //courseID
     var courseId = NSInteger()
     var filterItems = NSMutableArray()
@@ -47,7 +48,7 @@ UISearchControllerDelegate,UISearchResultsUpdating,DZNEmptyDataSetSource{
         sc.searchBar.sizeToFit()
         self.studyMaterialsTableView?.tableHeaderView = sc.searchBar
         sc.delegate = self
-        
+        self.studyMaterialsTableView?.emptyDataSetDelegate = self
         
     }
     
@@ -81,15 +82,15 @@ UISearchControllerDelegate,UISearchResultsUpdating,DZNEmptyDataSetSource{
             //文件类型头像的不同
             switch  self.items[indexPath.row].valueForKey("extensions") as! String {
             case "pdf":
-                cell.typeImageView.image = UIImage(named: "pdf")
+                cell.typeImageView.setFAIconWithName(FAType.FAFilePdfO, textColor: UIColor.blackColor(), backgroundColor: UIColor.whiteColor())
             case "ppt","pptx":
-                cell.typeImageView.image = UIImage(named: "ppt")
+                cell.typeImageView.setFAIconWithName(FAType.FAFilePowerpointO, textColor: UIColor.blackColor(), backgroundColor: UIColor.whiteColor())
             case "doc","docx":
-                cell.typeImageView.image = UIImage(named: "word")
+                cell.typeImageView.setFAIconWithName(FAType.FAFileWordO, textColor: UIColor.blackColor(), backgroundColor: UIColor.whiteColor())
             case "xls","xlsx":
-                cell.typeImageView.image = UIImage(named: "Excel")
+                cell.typeImageView.setFAIconWithName(FAType.FAFileExcelO, textColor: UIColor.blackColor(), backgroundColor: UIColor.whiteColor())
             default:
-                cell.typeImageView.image = UIImage(named: "教师头像")
+               cell.typeImageView.setFAIconWithName(FAType.FAFileZipO, textColor: UIColor.blackColor(), backgroundColor: UIColor.whiteColor())
             }
         }else{
             //自定义tableViewCell
@@ -104,16 +105,16 @@ UISearchControllerDelegate,UISearchResultsUpdating,DZNEmptyDataSetSource{
             //文件类型头像的不同
             switch  self.filterItems[indexPath.row].valueForKey("extensions") as! String {
             case "pdf":
-                cell.typeImageView.image = UIImage(named: "pdf")
+                cell.typeImageView.setFAIconWithName(FAType.FAFilePdfO, textColor: UIColor.blackColor(), backgroundColor: UIColor.whiteColor())
             case "ppt","pptx":
-                cell.typeImageView.image = UIImage(named: "ppt")
+                cell.typeImageView.setFAIconWithName(FAType.FAFilePowerpointO, textColor: UIColor.blackColor(), backgroundColor: UIColor.whiteColor())
             case "doc","docx":
-                cell.typeImageView.image = UIImage(named: "word")
+                cell.typeImageView.setFAIconWithName(FAType.FAFileWordO, textColor: UIColor.blackColor(), backgroundColor: UIColor.whiteColor())
             case "xls","xlsx":
-                cell.typeImageView.image = UIImage(named: "Excel")
+                cell.typeImageView.setFAIconWithName(FAType.FAFileExcelO, textColor: UIColor.blackColor(), backgroundColor: UIColor.whiteColor())
             default:
-                cell.typeImageView.image = UIImage(named: "教师头像")
-            }
+                cell.typeImageView.setFAIconWithName(FAType.FAFileZipO, textColor: UIColor.blackColor(), backgroundColor: UIColor.whiteColor())
+        }
         }
         return cell
     }
@@ -129,6 +130,7 @@ UISearchControllerDelegate,UISearchResultsUpdating,DZNEmptyDataSetSource{
             let type = self.items[indexPath.row].valueForKey("extensions") as! String
             if(type == "rar" || type == "DIR" || type == "zip"){
                 ProgressHUD.showError("不能打开该类文件")
+                
                 
             }else{
             self.fileUrl = NSURL(string: (self.items[indexPath.row].valueForKey("url") as? String)!)!
@@ -153,6 +155,23 @@ UISearchControllerDelegate,UISearchResultsUpdating,DZNEmptyDataSetSource{
         }
         }
     }
+    func tableView(tableView: UITableView, willDisplayCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {
+        var rotation = CATransform3DMakeRotation(CGFloat(M_PI_2), 0.0, 0.7, 0.4)
+        //表示透视的效果 1.0/D D越小 透视效果越明显
+        rotation.m34 = 1.0 / 600
+        cell.layer.shadowColor = UIColor.blackColor().CGColor
+        cell.layer.shadowOffset = CGSizeMake(10, 10)
+        cell.alpha = 0.0
+        cell.layer.transform = rotation
+        //设置旋转的中心点 默认是0.5,0.5
+        cell.layer.anchorPoint = CGPointMake(0, 0.5)
+        UIView.animateWithDuration(0.8) { 
+            cell.layer.transform = CATransform3DIdentity
+            cell.alpha = 1
+            cell.layer.shadowOffset = CGSizeMake(0, 0)
+            
+        }
+    }
     //    func numberOfPreviewItemsInPreviewController(controller: QLPreviewController) -> Int {
     //        return 1
     //    }
@@ -172,8 +191,7 @@ UISearchControllerDelegate,UISearchResultsUpdating,DZNEmptyDataSetSource{
             switch response.result{
             case .Success(let Value):
                 let json = JSON(Value)
-                print(json)
-                
+                              
                 if(json["retcode"].number != 0){
                     ProgressHUD.showError("获取失败")
                     dispatch_async(dispatch_get_main_queue(), {
@@ -241,5 +259,7 @@ UISearchControllerDelegate,UISearchResultsUpdating,DZNEmptyDataSetSource{
         let attriString = NSMutableAttributedString(string: string, attributes: dic)
         return attriString
     }
-    
+    func emptyDataSetShouldAllowScroll(scrollView: UIScrollView!) -> Bool {
+        return true
+    }
 }

@@ -42,7 +42,7 @@ class WriteLetterViewController: UIViewController,UICollectionViewDataSource,UIC
         self.collectionView.dataSource = self
         self.collectionView.backgroundColor = UIColor.whiteColor()
         self.writeTextView.placeholder = "请输入内容"
-       self.subjectTextField?.text = self.subject
+       self.subjectTextField?.text =  self.subject
      self.tabBarController?.tabBar.hidden = true
      self.automaticallyAdjustsScrollViewInsets = false
         self.title = "写邮件"

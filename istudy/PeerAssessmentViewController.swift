@@ -10,7 +10,7 @@ import UIKit
 import Alamofire
 import SwiftyJSON
 import DZNEmptyDataSet
-class PeerAssessmentViewController: UIViewController ,UITableViewDataSource,UITableViewDelegate,DZNEmptyDataSetSource{
+class PeerAssessmentViewController: UIViewController ,UITableViewDataSource,UITableViewDelegate,DZNEmptyDataSetSource,DZNEmptyDataSetDelegate{
     @IBOutlet weak var tableView:UITableView?
     var items = NSArray()
     var id = NSInteger()
@@ -32,9 +32,11 @@ class PeerAssessmentViewController: UIViewController ,UITableViewDataSource,UITa
         // Do any additional setup after loading the view.
         segmentController.initButtonWithTitleandImage(btnArray)
         self.view.addSubview(segmentController)
-
+self.tableView?.emptyDataSetDelegate = self
     }
-    
+    func emptyDataSetShouldAllowScroll(scrollView: UIScrollView!) -> Bool {
+        return true
+    }
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.

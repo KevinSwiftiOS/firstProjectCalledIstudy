@@ -53,6 +53,7 @@ class CompletionQusViewController: UIViewController,UITextFieldDelegate,UIWebVie
     @IBOutlet weak var topView:UIView?
     @IBOutlet weak var leftBtn:UIButton?
     @IBOutlet weak var rightBtn:UIButton?
+    @IBOutlet weak var btmView:UIView!
     var standAnswers = NSMutableArray()
     var beforeEditString = ""
     var isSave = Bool()
@@ -63,6 +64,7 @@ class CompletionQusViewController: UIViewController,UITextFieldDelegate,UIWebVie
     var index = 0
     override func viewDidLoad() {
         super.viewDidLoad()
+        ShowBigImageFactory.topViewEDit(self.btmView)
         //加左右的按钮
         leftBtn?.tag = 1
         rightBtn?.tag = 2

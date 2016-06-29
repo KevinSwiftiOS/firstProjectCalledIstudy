@@ -8,25 +8,37 @@
 
 /* Begin PBXBuildFile section */
 		065F009210989310C9BC44CC1B40FE03 /* CoreText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 03400C0CD6ED48B34D5902A1A473F402 /* CoreText.framework */; };
-		1F9A9ED416D2615A931C812EEA9EBBEC /* Pods-istudy-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = F435B18541FAA26A7AB2041B8D048C53 /* Pods-istudy-dummy.m */; };
-		22DC2D74E9117167CD17FD04C327EB9D /* DZNEmptyDataSet-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D5F90F22B6B803278BD3BA3F24BDC2B /* DZNEmptyDataSet-dummy.m */; };
-		336C5FEC4B4BBF89B4DB514889FA78A7 /* Font-Awesome-Swift.bundle in Resources */ = {isa = PBXBuildFile; fileRef = C78B2F7EF506F9F40556F15C5CCC3B11 /* Font-Awesome-Swift.bundle */; };
-		3BC49A2B50306C45D4EBCAA50600EBE7 /* UIScrollView+EmptyDataSet.m in Sources */ = {isa = PBXBuildFile; fileRef = A44D4EA104E07CF095606C0730108108 /* UIScrollView+EmptyDataSet.m */; };
-		422C7168824CA3A050060471BBAA8F8A /* FontAwesome.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 976F947C322C21A39386E80DB395FF5B /* FontAwesome.ttf */; };
+		1AC03FE64F899ED8D68DAFBBD8B9DCE0 /* Pods-istudy-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = F435B18541FAA26A7AB2041B8D048C53 /* Pods-istudy-dummy.m */; };
+		1F29B89227C385D2F7F7B7A852C25F41 /* Pods-istudy-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 423E1D3A9BEED7274878F20B6E21A2C5 /* Pods-istudy-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		22591EF1742109DE0F2EE59315D21C62 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 36AEF61D43D41269BA24FCD70FB8BE98 /* Foundation.framework */; };
+		22DC2D74E9117167CD17FD04C327EB9D /* DZNEmptyDataSet-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F088752B3FBE1710E20FC1FF52B6164 /* DZNEmptyDataSet-dummy.m */; };
+		2C9261F4E04684FEBDD9749112B4E4D6 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 36AEF61D43D41269BA24FCD70FB8BE98 /* Foundation.framework */; };
+		336C5FEC4B4BBF89B4DB514889FA78A7 /* Font-Awesome-Swift.bundle in Resources */ = {isa = PBXBuildFile; fileRef = D06E47A0F4CD9C573AA3B554B1D61B58 /* Font-Awesome-Swift.bundle */; };
+		3BC49A2B50306C45D4EBCAA50600EBE7 /* UIScrollView+EmptyDataSet.m in Sources */ = {isa = PBXBuildFile; fileRef = F9E005397EE2E57DB3A85EDCF205470D /* UIScrollView+EmptyDataSet.m */; };
+		422C7168824CA3A050060471BBAA8F8A /* FontAwesome.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 3BE78450E05FD6D1CD453D9431C5D6A0 /* FontAwesome.ttf */; };
+		4D1E133635C2C164115458B7FE440CB4 /* FDFullscreenPopGesture-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = B3AB05F198C443689A0C4C8617318C42 /* FDFullscreenPopGesture-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		4DA9A631B8217C04FCEF731798E1323F /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 36AEF61D43D41269BA24FCD70FB8BE98 /* Foundation.framework */; };
-		4F758AEFBA807C8BF1C2CDF453C6593F /* FAIcon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E46E70432122E94199FB6DE5B044FB5 /* FAIcon.swift */; };
-		5F0F3AB11ACA57B68DDF05E13632083B /* Font-Awesome-Swift-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 311CA00FBE27A1D3886C928B6490ED16 /* Font-Awesome-Swift-dummy.m */; };
-		76563834F17F8D04B8C3DB575F17A3E0 /* Font-Awesome-Swift-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 2A2076648D3FCBDDE1B7F0413177A349 /* Font-Awesome-Swift-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		4F758AEFBA807C8BF1C2CDF453C6593F /* FAIcon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B3F1745FC1D70366F74AEDD93434EF1 /* FAIcon.swift */; };
+		5F0F3AB11ACA57B68DDF05E13632083B /* Font-Awesome-Swift-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 57E7E95098862960313AD5478A6A917E /* Font-Awesome-Swift-dummy.m */; };
+		76563834F17F8D04B8C3DB575F17A3E0 /* Font-Awesome-Swift-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = E3A142A74941B8D27D8F729B0C484E1E /* Font-Awesome-Swift-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		7F981DEC4D160D6FA5616670316B238F /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 17E08379A0DC830C1B585DFE85C4E677 /* UIKit.framework */; };
 		83DEDC497EBB97D0FFA988AD8C599758 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 17E08379A0DC830C1B585DFE85C4E677 /* UIKit.framework */; };
-		A0941A939805C1283A1E7D4550F48EB0 /* Pods-istudy-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 423E1D3A9BEED7274878F20B6E21A2C5 /* Pods-istudy-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		B116B651388E34E3CE3E9097BC83D47F /* DZNEmptyDataSet-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = AED23B396EDC5EC6549BCBA1C63C2958 /* DZNEmptyDataSet-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		A4F2CBA8B7463C5A2FCEBD035B34AEC7 /* FDFullscreenPopGesture-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 8E63D58C34493FA692235B57E1C759B9 /* FDFullscreenPopGesture-dummy.m */; };
+		B116B651388E34E3CE3E9097BC83D47F /* DZNEmptyDataSet-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 39881A13E4E2545FFD1473BA5044F785 /* DZNEmptyDataSet-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		BE9F89AF424C8FB7D1FB34D4D0DDECFE /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 36AEF61D43D41269BA24FCD70FB8BE98 /* Foundation.framework */; };
-		D1BC442E0E402A6C35F101ECC02A950E /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 36AEF61D43D41269BA24FCD70FB8BE98 /* Foundation.framework */; };
-		E14B01B2BDDA7C86AC2EBC45FCFEF52E /* UIScrollView+EmptyDataSet.h in Headers */ = {isa = PBXBuildFile; fileRef = D25FC730FA0D3B34C9960D850757F1B5 /* UIScrollView+EmptyDataSet.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		E14B01B2BDDA7C86AC2EBC45FCFEF52E /* UIScrollView+EmptyDataSet.h in Headers */ = {isa = PBXBuildFile; fileRef = BA487BF57F4FDC3E8C50BB74F54F6243 /* UIScrollView+EmptyDataSet.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		EA4ECCC3BC1B43CF2865D22871FB1E6C /* UINavigationController+FDFullscreenPopGesture.h in Headers */ = {isa = PBXBuildFile; fileRef = EBB1BBC9D72CB99252362B9B9563AE48 /* UINavigationController+FDFullscreenPopGesture.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FF6DF67463274689CDACC388BB133442 /* UINavigationController+FDFullscreenPopGesture.m in Sources */ = {isa = PBXBuildFile; fileRef = 111CD5F3DFB9335CF16A317E4CC79E3A /* UINavigationController+FDFullscreenPopGesture.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		4A1955FE8E3593E2DAC0AF2E43FCBF99 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D41D8CD98F00B204E9800998ECF8427E /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 16FB872D0D2D4BA0F378AB34D47CF95F;
+			remoteInfo = DZNEmptyDataSet;
+		};
 		7CA5F524F4D1CA6DD6C032B0F5DDE434 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = D41D8CD98F00B204E9800998ECF8427E /* Project object */;
@@ -34,58 +46,67 @@
 			remoteGlobalIDString = 46DFF605EA91D4F2126F82E6AA6397A6;
 			remoteInfo = "Font-Awesome-Swift-Font-Awesome-Swift";
 		};
-		A6A85CE46836DAF93A3F5229940B2A50 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = D41D8CD98F00B204E9800998ECF8427E /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 16FB872D0D2D4BA0F378AB34D47CF95F;
-			remoteInfo = DZNEmptyDataSet;
-		};
-		F842CE17EC3EA4665EA40D3AE03FF26A /* PBXContainerItemProxy */ = {
+		9220E9AC07446EC2345F118074C51EB9 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = D41D8CD98F00B204E9800998ECF8427E /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = DF2853D8E5FEAD2265A458B55D554528;
 			remoteInfo = "Font-Awesome-Swift";
 		};
+		AE35F5761B782E4DBD0992D91A12CCC9 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D41D8CD98F00B204E9800998ECF8427E /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 303B3AC6DD17B1EE7D98EF8BF8898BEB;
+			remoteInfo = FDFullscreenPopGesture;
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		01CA9EF3131001C453705EE648084988 /* Font_Awesome_Swift.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Font_Awesome_Swift.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		01337DFA31D8C621230EB9B225D4F8D2 /* DZNEmptyDataSet-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "DZNEmptyDataSet-prefix.pch"; sourceTree = "<group>"; };
 		03400C0CD6ED48B34D5902A1A473F402 /* CoreText.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreText.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS9.3.sdk/System/Library/Frameworks/CoreText.framework; sourceTree = DEVELOPER_DIR; };
 		088A208A33C1C0D21086D8F423EA8C4A /* Pods-istudy.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = "sourcecode.module-map"; path = "Pods-istudy.modulemap"; sourceTree = "<group>"; };
-		0E46E70432122E94199FB6DE5B044FB5 /* FAIcon.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = FAIcon.swift; path = Source/FAIcon.swift; sourceTree = "<group>"; };
+		0F3B3182AB6406EA545C7EDAE928732B /* Font-Awesome-Swift-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Font-Awesome-Swift-prefix.pch"; sourceTree = "<group>"; };
+		111CD5F3DFB9335CF16A317E4CC79E3A /* UINavigationController+FDFullscreenPopGesture.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = "UINavigationController+FDFullscreenPopGesture.m"; path = "FDFullscreenPopGesture/UINavigationController+FDFullscreenPopGesture.m"; sourceTree = "<group>"; };
 		17E08379A0DC830C1B585DFE85C4E677 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS9.3.sdk/System/Library/Frameworks/UIKit.framework; sourceTree = DEVELOPER_DIR; };
-		22877222A233B204E41A52593CDA49FF /* DZNEmptyDataSet-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "DZNEmptyDataSet-prefix.pch"; sourceTree = "<group>"; };
-		29E27CDA8928D75D2D4B65D93BB98D16 /* Font-Awesome-Swift-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Font-Awesome-Swift-prefix.pch"; sourceTree = "<group>"; };
-		2A2076648D3FCBDDE1B7F0413177A349 /* Font-Awesome-Swift-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Font-Awesome-Swift-umbrella.h"; sourceTree = "<group>"; };
+		1B3F1745FC1D70366F74AEDD93434EF1 /* FAIcon.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = FAIcon.swift; path = Source/FAIcon.swift; sourceTree = "<group>"; };
+		299B49F44B180A54DEA889EDC87F814B /* FDFullscreenPopGesture.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = FDFullscreenPopGesture.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		2DF9DADBE5CB180DB1BBD7C3A348D3D2 /* Pods-istudy.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-istudy.debug.xcconfig"; sourceTree = "<group>"; };
-		30C7A43688985E7362F0235B3D171D95 /* Font-Awesome-Swift.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Font-Awesome-Swift.xcconfig"; sourceTree = "<group>"; };
-		311CA00FBE27A1D3886C928B6490ED16 /* Font-Awesome-Swift-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Font-Awesome-Swift-dummy.m"; sourceTree = "<group>"; };
+		2F58C00E9716162BFC56223A818206F8 /* FDFullscreenPopGesture.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = "sourcecode.module-map"; path = FDFullscreenPopGesture.modulemap; sourceTree = "<group>"; };
 		36AEF61D43D41269BA24FCD70FB8BE98 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS9.3.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
+		39881A13E4E2545FFD1473BA5044F785 /* DZNEmptyDataSet-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "DZNEmptyDataSet-umbrella.h"; sourceTree = "<group>"; };
+		3A37D120B1AF814D30F4F73B3B32DE08 /* FDFullscreenPopGesture.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = FDFullscreenPopGesture.xcconfig; sourceTree = "<group>"; };
+		3BE78450E05FD6D1CD453D9431C5D6A0 /* FontAwesome.ttf */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = file; name = FontAwesome.ttf; path = Source/FontAwesome.ttf; sourceTree = "<group>"; };
 		423E1D3A9BEED7274878F20B6E21A2C5 /* Pods-istudy-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pods-istudy-umbrella.h"; sourceTree = "<group>"; };
+		438CC443E26453FBD6BBF63A38218970 /* DZNEmptyDataSet.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = DZNEmptyDataSet.xcconfig; sourceTree = "<group>"; };
 		44646A0F7DBE81ED4D7B7CD4360B0288 /* Pods-istudy-frameworks.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-istudy-frameworks.sh"; sourceTree = "<group>"; };
-		4912A04C5933C464B4014386FE4FD937 /* DZNEmptyDataSet.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = DZNEmptyDataSet.xcconfig; sourceTree = "<group>"; };
 		559D33F0D935CD2F85DC1829524F55CD /* Pods-istudy.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-istudy.release.xcconfig"; sourceTree = "<group>"; };
-		5D5F90F22B6B803278BD3BA3F24BDC2B /* DZNEmptyDataSet-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "DZNEmptyDataSet-dummy.m"; sourceTree = "<group>"; };
-		6A4A22262FB4ECB6030B8B9BFD3CDCE7 /* ResourceBundle-Font-Awesome-Swift-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "ResourceBundle-Font-Awesome-Swift-Info.plist"; sourceTree = "<group>"; };
-		6AEDD729DADBA4ECBF4B10A24EB00E4A /* Font-Awesome-Swift.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = "sourcecode.module-map"; path = "Font-Awesome-Swift.modulemap"; sourceTree = "<group>"; };
+		57E7E95098862960313AD5478A6A917E /* Font-Awesome-Swift-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Font-Awesome-Swift-dummy.m"; sourceTree = "<group>"; };
+		5F088752B3FBE1710E20FC1FF52B6164 /* DZNEmptyDataSet-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "DZNEmptyDataSet-dummy.m"; sourceTree = "<group>"; };
+		65FBD6DBD00F7ACDB1277A1EA33A037C /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		754F2BE51112AAAD36F116F6F05884E5 /* Pods-istudy-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-istudy-acknowledgements.plist"; sourceTree = "<group>"; };
+		758F8BEF41404FB77C562281B5B44D9F /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		76D192C2B36EC980EEE3026624124D46 /* Pods-istudy-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-istudy-acknowledgements.markdown"; sourceTree = "<group>"; };
-		7B9DAF4C849455484EE61C7E64F276D5 /* DZNEmptyDataSet.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = DZNEmptyDataSet.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		8139B9DF3CE0BCD8CC8F947276DA6DF5 /* DZNEmptyDataSet.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = "sourcecode.module-map"; path = DZNEmptyDataSet.modulemap; sourceTree = "<group>"; };
+		8230808A2F9A1F797761481E7337FF58 /* Font-Awesome-Swift.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = "sourcecode.module-map"; path = "Font-Awesome-Swift.modulemap"; sourceTree = "<group>"; };
+		84B22D711D10D06F19895D1A32850D92 /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		85BAA2011450D1257598ED898581A351 /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		8859E7AF2C407E73F428B9DFD9998E49 /* Pods_istudy.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_istudy.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		8A2665DFC3AA828D0559C19382E8E611 /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		8E63D58C34493FA692235B57E1C759B9 /* FDFullscreenPopGesture-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "FDFullscreenPopGesture-dummy.m"; sourceTree = "<group>"; };
 		93A4A3777CF96A4AAC1D13BA6DCCEA73 /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
-		976F947C322C21A39386E80DB395FF5B /* FontAwesome.ttf */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = file; name = FontAwesome.ttf; path = Source/FontAwesome.ttf; sourceTree = "<group>"; };
-		A44D4EA104E07CF095606C0730108108 /* UIScrollView+EmptyDataSet.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = "UIScrollView+EmptyDataSet.m"; path = "Source/UIScrollView+EmptyDataSet.m"; sourceTree = "<group>"; };
-		AED23B396EDC5EC6549BCBA1C63C2958 /* DZNEmptyDataSet-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "DZNEmptyDataSet-umbrella.h"; sourceTree = "<group>"; };
-		AFEBB6F3F02BF78673EE474DD347EB5A /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		C78B2F7EF506F9F40556F15C5CCC3B11 /* Font-Awesome-Swift.bundle */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Font-Awesome-Swift.bundle"; sourceTree = BUILT_PRODUCTS_DIR; };
+		A3B8A3CC3B622659B35DE6781729CF1B /* Pods_istudy.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_istudy.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		AEA07D5DA42CE0EEA97D3A5F5455E29F /* Font-Awesome-Swift.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Font-Awesome-Swift.xcconfig"; sourceTree = "<group>"; };
+		B3AB05F198C443689A0C4C8617318C42 /* FDFullscreenPopGesture-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "FDFullscreenPopGesture-umbrella.h"; sourceTree = "<group>"; };
+		BA487BF57F4FDC3E8C50BB74F54F6243 /* UIScrollView+EmptyDataSet.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = "UIScrollView+EmptyDataSet.h"; path = "Source/UIScrollView+EmptyDataSet.h"; sourceTree = "<group>"; };
+		BA4BB8CCE72D39F3860490B38DB8F312 /* Font_Awesome_Swift.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Font_Awesome_Swift.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		D06E47A0F4CD9C573AA3B554B1D61B58 /* Font-Awesome-Swift.bundle */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Font-Awesome-Swift.bundle"; sourceTree = BUILT_PRODUCTS_DIR; };
 		D0985DE2C88A44E0941334E6DFBF022B /* Pods-istudy-resources.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-istudy-resources.sh"; sourceTree = "<group>"; };
-		D25FC730FA0D3B34C9960D850757F1B5 /* UIScrollView+EmptyDataSet.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = "UIScrollView+EmptyDataSet.h"; path = "Source/UIScrollView+EmptyDataSet.h"; sourceTree = "<group>"; };
-		E2CB5B7939423D5D8CC70F23F5230A84 /* DZNEmptyDataSet.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = "sourcecode.module-map"; path = DZNEmptyDataSet.modulemap; sourceTree = "<group>"; };
+		D1EF6130165624437F55FEBC56BCC150 /* FDFullscreenPopGesture-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "FDFullscreenPopGesture-prefix.pch"; sourceTree = "<group>"; };
+		D5C2AD56047977C59A66454FBE69691B /* ResourceBundle-Font-Awesome-Swift-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "ResourceBundle-Font-Awesome-Swift-Info.plist"; sourceTree = "<group>"; };
+		E264BC3347E3026581B323D2C953AFB0 /* DZNEmptyDataSet.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = DZNEmptyDataSet.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		E3A142A74941B8D27D8F729B0C484E1E /* Font-Awesome-Swift-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Font-Awesome-Swift-umbrella.h"; sourceTree = "<group>"; };
+		EBB1BBC9D72CB99252362B9B9563AE48 /* UINavigationController+FDFullscreenPopGesture.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = "UINavigationController+FDFullscreenPopGesture.h"; path = "FDFullscreenPopGesture/UINavigationController+FDFullscreenPopGesture.h"; sourceTree = "<group>"; };
 		F435B18541FAA26A7AB2041B8D048C53 /* Pods-istudy-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-istudy-dummy.m"; sourceTree = "<group>"; };
+		F9E005397EE2E57DB3A85EDCF205470D /* UIScrollView+EmptyDataSet.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = "UIScrollView+EmptyDataSet.m"; path = "Source/UIScrollView+EmptyDataSet.m"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -96,6 +117,22 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		67181DA6F1B5BB8EA435210749C5CCF7 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2C9261F4E04684FEBDD9749112B4E4D6 /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		73B7EF8EDFA3A845722C19D4F43FB6B1 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				22591EF1742109DE0F2EE59315D21C62 /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		C4DB996ED33C0ACE6F474B5440A3CB84 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -103,14 +140,6 @@
 				065F009210989310C9BC44CC1B40FE03 /* CoreText.framework in Frameworks */,
 				4DA9A631B8217C04FCEF731798E1323F /* Foundation.framework in Frameworks */,
 				83DEDC497EBB97D0FFA988AD8C599758 /* UIKit.framework in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		C66B8E4343D52B8A327950CA7A3511A2 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				D1BC442E0E402A6C35F101ECC02A950E /* Foundation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -144,57 +173,46 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		14D12761E399CA0C424FA6F29849BD4C /* DZNEmptyDataSet */ = {
+		24465C87714446E040D860635B81EC02 /* Font-Awesome-Swift */ = {
 			isa = PBXGroup;
 			children = (
-				D25FC730FA0D3B34C9960D850757F1B5 /* UIScrollView+EmptyDataSet.h */,
-				A44D4EA104E07CF095606C0730108108 /* UIScrollView+EmptyDataSet.m */,
-				2B9ED1EA95463F321508930D04D0C50E /* Support Files */,
+				1B3F1745FC1D70366F74AEDD93434EF1 /* FAIcon.swift */,
+				7CB3E15FF42BD88010F6EBE9F2DD9856 /* Resources */,
+				EB6FA24368D22C085D47E23E8816E7A9 /* Support Files */,
 			);
-			path = DZNEmptyDataSet;
+			path = "Font-Awesome-Swift";
 			sourceTree = "<group>";
 		};
-		2B9ED1EA95463F321508930D04D0C50E /* Support Files */ = {
+		49F94FA6C025A446FBF9FA3BA68F4091 /* Support Files */ = {
 			isa = PBXGroup;
 			children = (
-				E2CB5B7939423D5D8CC70F23F5230A84 /* DZNEmptyDataSet.modulemap */,
-				4912A04C5933C464B4014386FE4FD937 /* DZNEmptyDataSet.xcconfig */,
-				5D5F90F22B6B803278BD3BA3F24BDC2B /* DZNEmptyDataSet-dummy.m */,
-				22877222A233B204E41A52593CDA49FF /* DZNEmptyDataSet-prefix.pch */,
-				AED23B396EDC5EC6549BCBA1C63C2958 /* DZNEmptyDataSet-umbrella.h */,
-				AFEBB6F3F02BF78673EE474DD347EB5A /* Info.plist */,
+				8139B9DF3CE0BCD8CC8F947276DA6DF5 /* DZNEmptyDataSet.modulemap */,
+				438CC443E26453FBD6BBF63A38218970 /* DZNEmptyDataSet.xcconfig */,
+				5F088752B3FBE1710E20FC1FF52B6164 /* DZNEmptyDataSet-dummy.m */,
+				01337DFA31D8C621230EB9B225D4F8D2 /* DZNEmptyDataSet-prefix.pch */,
+				39881A13E4E2545FFD1473BA5044F785 /* DZNEmptyDataSet-umbrella.h */,
+				758F8BEF41404FB77C562281B5B44D9F /* Info.plist */,
 			);
 			name = "Support Files";
 			path = "../Target Support Files/DZNEmptyDataSet";
 			sourceTree = "<group>";
 		};
-		334961D31BF21B0F87E667A44FC1216E /* Resources */ = {
+		6838FDD774F1DD5DB84EB4CDF4883D21 /* FDFullscreenPopGesture */ = {
 			isa = PBXGroup;
 			children = (
-				976F947C322C21A39386E80DB395FF5B /* FontAwesome.ttf */,
+				EBB1BBC9D72CB99252362B9B9563AE48 /* UINavigationController+FDFullscreenPopGesture.h */,
+				111CD5F3DFB9335CF16A317E4CC79E3A /* UINavigationController+FDFullscreenPopGesture.m */,
+				E6C6B7CCD81844ACC787EB8C592CE838 /* Support Files */,
+			);
+			path = FDFullscreenPopGesture;
+			sourceTree = "<group>";
+		};
+		7CB3E15FF42BD88010F6EBE9F2DD9856 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				3BE78450E05FD6D1CD453D9431C5D6A0 /* FontAwesome.ttf */,
 			);
 			name = Resources;
-			sourceTree = "<group>";
-		};
-		33637A9BBAE256D70F73FBCB3B1E6E66 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				7B9DAF4C849455484EE61C7E64F276D5 /* DZNEmptyDataSet.framework */,
-				C78B2F7EF506F9F40556F15C5CCC3B11 /* Font-Awesome-Swift.bundle */,
-				01CA9EF3131001C453705EE648084988 /* Font_Awesome_Swift.framework */,
-				8859E7AF2C407E73F428B9DFD9998E49 /* Pods_istudy.framework */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
-		7BC65324E72ACB2B77D265AA9C552E8A /* Font-Awesome-Swift */ = {
-			isa = PBXGroup;
-			children = (
-				0E46E70432122E94199FB6DE5B044FB5 /* FAIcon.swift */,
-				334961D31BF21B0F87E667A44FC1216E /* Resources */,
-				BBFBADFDAF4CE5BB3B2C31C4200DBF50 /* Support Files */,
-			);
-			path = "Font-Awesome-Swift";
 			sourceTree = "<group>";
 		};
 		7DB346D0F39D3F0E887471402A8071AB = {
@@ -202,25 +220,32 @@
 			children = (
 				93A4A3777CF96A4AAC1D13BA6DCCEA73 /* Podfile */,
 				122DA2E5084A4393C29BE363C764795C /* Frameworks */,
-				D0628E4A3F7F366ADE20E8C637419E99 /* Pods */,
-				33637A9BBAE256D70F73FBCB3B1E6E66 /* Products */,
+				A8C3841C47EE13C27A4DDAFB773BAB5F /* Pods */,
+				A53E9A42A58E020BDE12C4D961EB33B5 /* Products */,
 				C153DD12E5DBF3988AE968184B3E20FD /* Targets Support Files */,
 			);
 			sourceTree = "<group>";
 		};
-		BBFBADFDAF4CE5BB3B2C31C4200DBF50 /* Support Files */ = {
+		A53E9A42A58E020BDE12C4D961EB33B5 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				6AEDD729DADBA4ECBF4B10A24EB00E4A /* Font-Awesome-Swift.modulemap */,
-				30C7A43688985E7362F0235B3D171D95 /* Font-Awesome-Swift.xcconfig */,
-				311CA00FBE27A1D3886C928B6490ED16 /* Font-Awesome-Swift-dummy.m */,
-				29E27CDA8928D75D2D4B65D93BB98D16 /* Font-Awesome-Swift-prefix.pch */,
-				2A2076648D3FCBDDE1B7F0413177A349 /* Font-Awesome-Swift-umbrella.h */,
-				8A2665DFC3AA828D0559C19382E8E611 /* Info.plist */,
-				6A4A22262FB4ECB6030B8B9BFD3CDCE7 /* ResourceBundle-Font-Awesome-Swift-Info.plist */,
+				E264BC3347E3026581B323D2C953AFB0 /* DZNEmptyDataSet.framework */,
+				299B49F44B180A54DEA889EDC87F814B /* FDFullscreenPopGesture.framework */,
+				D06E47A0F4CD9C573AA3B554B1D61B58 /* Font-Awesome-Swift.bundle */,
+				BA4BB8CCE72D39F3860490B38DB8F312 /* Font_Awesome_Swift.framework */,
+				A3B8A3CC3B622659B35DE6781729CF1B /* Pods_istudy.framework */,
 			);
-			name = "Support Files";
-			path = "../Target Support Files/Font-Awesome-Swift";
+			name = Products;
+			sourceTree = "<group>";
+		};
+		A8C3841C47EE13C27A4DDAFB773BAB5F /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				D1F65BB413E8738AB9F053B7AC117629 /* DZNEmptyDataSet */,
+				6838FDD774F1DD5DB84EB4CDF4883D21 /* FDFullscreenPopGesture */,
+				24465C87714446E040D860635B81EC02 /* Font-Awesome-Swift */,
+			);
+			name = Pods;
 			sourceTree = "<group>";
 		};
 		C153DD12E5DBF3988AE968184B3E20FD /* Targets Support Files */ = {
@@ -231,13 +256,43 @@
 			name = "Targets Support Files";
 			sourceTree = "<group>";
 		};
-		D0628E4A3F7F366ADE20E8C637419E99 /* Pods */ = {
+		D1F65BB413E8738AB9F053B7AC117629 /* DZNEmptyDataSet */ = {
 			isa = PBXGroup;
 			children = (
-				14D12761E399CA0C424FA6F29849BD4C /* DZNEmptyDataSet */,
-				7BC65324E72ACB2B77D265AA9C552E8A /* Font-Awesome-Swift */,
+				BA487BF57F4FDC3E8C50BB74F54F6243 /* UIScrollView+EmptyDataSet.h */,
+				F9E005397EE2E57DB3A85EDCF205470D /* UIScrollView+EmptyDataSet.m */,
+				49F94FA6C025A446FBF9FA3BA68F4091 /* Support Files */,
 			);
-			name = Pods;
+			path = DZNEmptyDataSet;
+			sourceTree = "<group>";
+		};
+		E6C6B7CCD81844ACC787EB8C592CE838 /* Support Files */ = {
+			isa = PBXGroup;
+			children = (
+				2F58C00E9716162BFC56223A818206F8 /* FDFullscreenPopGesture.modulemap */,
+				3A37D120B1AF814D30F4F73B3B32DE08 /* FDFullscreenPopGesture.xcconfig */,
+				8E63D58C34493FA692235B57E1C759B9 /* FDFullscreenPopGesture-dummy.m */,
+				D1EF6130165624437F55FEBC56BCC150 /* FDFullscreenPopGesture-prefix.pch */,
+				B3AB05F198C443689A0C4C8617318C42 /* FDFullscreenPopGesture-umbrella.h */,
+				65FBD6DBD00F7ACDB1277A1EA33A037C /* Info.plist */,
+			);
+			name = "Support Files";
+			path = "../Target Support Files/FDFullscreenPopGesture";
+			sourceTree = "<group>";
+		};
+		EB6FA24368D22C085D47E23E8816E7A9 /* Support Files */ = {
+			isa = PBXGroup;
+			children = (
+				8230808A2F9A1F797761481E7337FF58 /* Font-Awesome-Swift.modulemap */,
+				AEA07D5DA42CE0EEA97D3A5F5455E29F /* Font-Awesome-Swift.xcconfig */,
+				57E7E95098862960313AD5478A6A917E /* Font-Awesome-Swift-dummy.m */,
+				0F3B3182AB6406EA545C7EDAE928732B /* Font-Awesome-Swift-prefix.pch */,
+				E3A142A74941B8D27D8F729B0C484E1E /* Font-Awesome-Swift-umbrella.h */,
+				84B22D711D10D06F19895D1A32850D92 /* Info.plist */,
+				D5C2AD56047977C59A66454FBE69691B /* ResourceBundle-Font-Awesome-Swift-Info.plist */,
+			);
+			name = "Support Files";
+			path = "../Target Support Files/Font-Awesome-Swift";
 			sourceTree = "<group>";
 		};
 		FBF264319BB08CD35A356F755DC88BCE /* Pods-istudy */ = {
@@ -261,6 +316,15 @@
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
+		27A4DC31297A175E5BE33B1B61C19169 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				4D1E133635C2C164115458B7FE440CB4 /* FDFullscreenPopGesture-umbrella.h in Headers */,
+				EA4ECCC3BC1B43CF2865D22871FB1E6C /* UINavigationController+FDFullscreenPopGesture.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		4D9C9A2043A53A3AE91808894C7E05FB /* Headers */ = {
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
@@ -270,11 +334,11 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		6BD148006246D2755ACF082AD8477746 /* Headers */ = {
+		A642E2383EE99ED84541427BF8729241 /* Headers */ = {
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A0941A939805C1283A1E7D4550F48EB0 /* Pods-istudy-umbrella.h in Headers */,
+				1F29B89227C385D2F7F7B7A852C25F41 /* Pods-istudy-umbrella.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -303,26 +367,24 @@
 			);
 			name = DZNEmptyDataSet;
 			productName = DZNEmptyDataSet;
-			productReference = 7B9DAF4C849455484EE61C7E64F276D5 /* DZNEmptyDataSet.framework */;
+			productReference = E264BC3347E3026581B323D2C953AFB0 /* DZNEmptyDataSet.framework */;
 			productType = "com.apple.product-type.framework";
 		};
-		1CE372F924281B4CB0457EBBDFB695EC /* Pods-istudy */ = {
+		303B3AC6DD17B1EE7D98EF8BF8898BEB /* FDFullscreenPopGesture */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = B3A65157F7DF8B6AFAC6B8D3BBEF5132 /* Build configuration list for PBXNativeTarget "Pods-istudy" */;
+			buildConfigurationList = 2A576F445EE4B6BE4686F9B0B7E2A8D6 /* Build configuration list for PBXNativeTarget "FDFullscreenPopGesture" */;
 			buildPhases = (
-				3E133B82BEF1381C0DC9453AFC556A9A /* Sources */,
-				C66B8E4343D52B8A327950CA7A3511A2 /* Frameworks */,
-				6BD148006246D2755ACF082AD8477746 /* Headers */,
+				65E1568C4C4EEA6C88C8BD1D498991DB /* Sources */,
+				67181DA6F1B5BB8EA435210749C5CCF7 /* Frameworks */,
+				27A4DC31297A175E5BE33B1B61C19169 /* Headers */,
 			);
 			buildRules = (
 			);
 			dependencies = (
-				96C0AF6F5C82DF95389DF15C81D2F102 /* PBXTargetDependency */,
-				99B1940C4C3207BDA8B353FD04B5B8BA /* PBXTargetDependency */,
 			);
-			name = "Pods-istudy";
-			productName = "Pods-istudy";
-			productReference = 8859E7AF2C407E73F428B9DFD9998E49 /* Pods_istudy.framework */;
+			name = FDFullscreenPopGesture;
+			productName = FDFullscreenPopGesture;
+			productReference = 299B49F44B180A54DEA889EDC87F814B /* FDFullscreenPopGesture.framework */;
 			productType = "com.apple.product-type.framework";
 		};
 		46DFF605EA91D4F2126F82E6AA6397A6 /* Font-Awesome-Swift-Font-Awesome-Swift */ = {
@@ -339,8 +401,28 @@
 			);
 			name = "Font-Awesome-Swift-Font-Awesome-Swift";
 			productName = "Font-Awesome-Swift-Font-Awesome-Swift";
-			productReference = C78B2F7EF506F9F40556F15C5CCC3B11 /* Font-Awesome-Swift.bundle */;
+			productReference = D06E47A0F4CD9C573AA3B554B1D61B58 /* Font-Awesome-Swift.bundle */;
 			productType = "com.apple.product-type.bundle";
+		};
+		77C6D09D585C078953AA1CA3AEE63DE2 /* Pods-istudy */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 7DEF8A9C2B717BFF539648143BED68BD /* Build configuration list for PBXNativeTarget "Pods-istudy" */;
+			buildPhases = (
+				BFDDCE8861740858F9EF2B9AD487A6CD /* Sources */,
+				73B7EF8EDFA3A845722C19D4F43FB6B1 /* Frameworks */,
+				A642E2383EE99ED84541427BF8729241 /* Headers */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				7C3057BC550AF09DF02F23C5215C1651 /* PBXTargetDependency */,
+				E70B0955D0CDCCC4F564BCEC587987FB /* PBXTargetDependency */,
+				4ABAC08DF37849047A94BD2249FA33E3 /* PBXTargetDependency */,
+			);
+			name = "Pods-istudy";
+			productName = "Pods-istudy";
+			productReference = A3B8A3CC3B622659B35DE6781729CF1B /* Pods_istudy.framework */;
+			productType = "com.apple.product-type.framework";
 		};
 		DF2853D8E5FEAD2265A458B55D554528 /* Font-Awesome-Swift */ = {
 			isa = PBXNativeTarget;
@@ -358,7 +440,7 @@
 			);
 			name = "Font-Awesome-Swift";
 			productName = "Font-Awesome-Swift";
-			productReference = 01CA9EF3131001C453705EE648084988 /* Font_Awesome_Swift.framework */;
+			productReference = BA4BB8CCE72D39F3860490B38DB8F312 /* Font_Awesome_Swift.framework */;
 			productType = "com.apple.product-type.framework";
 		};
 /* End PBXNativeTarget section */
@@ -378,14 +460,15 @@
 				en,
 			);
 			mainGroup = 7DB346D0F39D3F0E887471402A8071AB;
-			productRefGroup = 33637A9BBAE256D70F73FBCB3B1E6E66 /* Products */;
+			productRefGroup = A53E9A42A58E020BDE12C4D961EB33B5 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
 				16FB872D0D2D4BA0F378AB34D47CF95F /* DZNEmptyDataSet */,
+				303B3AC6DD17B1EE7D98EF8BF8898BEB /* FDFullscreenPopGesture */,
 				DF2853D8E5FEAD2265A458B55D554528 /* Font-Awesome-Swift */,
 				46DFF605EA91D4F2126F82E6AA6397A6 /* Font-Awesome-Swift-Font-Awesome-Swift */,
-				1CE372F924281B4CB0457EBBDFB695EC /* Pods-istudy */,
+				77C6D09D585C078953AA1CA3AEE63DE2 /* Pods-istudy */,
 			);
 		};
 /* End PBXProject section */
@@ -417,20 +500,29 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		3E133B82BEF1381C0DC9453AFC556A9A /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				1F9A9ED416D2615A931C812EEA9EBBEC /* Pods-istudy-dummy.m in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		3EC23B5C4C2C89426AAB6FD00550AF2E /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 				4F758AEFBA807C8BF1C2CDF453C6593F /* FAIcon.swift in Sources */,
 				5F0F3AB11ACA57B68DDF05E13632083B /* Font-Awesome-Swift-dummy.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		65E1568C4C4EEA6C88C8BD1D498991DB /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A4F2CBA8B7463C5A2FCEBD035B34AEC7 /* FDFullscreenPopGesture-dummy.m in Sources */,
+				FF6DF67463274689CDACC388BB133442 /* UINavigationController+FDFullscreenPopGesture.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		BFDDCE8861740858F9EF2B9AD487A6CD /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				1AC03FE64F899ED8D68DAFBBD8B9DCE0 /* Pods-istudy-dummy.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -446,30 +538,36 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		4ABAC08DF37849047A94BD2249FA33E3 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "Font-Awesome-Swift";
+			target = DF2853D8E5FEAD2265A458B55D554528 /* Font-Awesome-Swift */;
+			targetProxy = 9220E9AC07446EC2345F118074C51EB9 /* PBXContainerItemProxy */;
+		};
 		793DE912A6196484797E9213D02211E9 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = "Font-Awesome-Swift-Font-Awesome-Swift";
 			target = 46DFF605EA91D4F2126F82E6AA6397A6 /* Font-Awesome-Swift-Font-Awesome-Swift */;
 			targetProxy = 7CA5F524F4D1CA6DD6C032B0F5DDE434 /* PBXContainerItemProxy */;
 		};
-		96C0AF6F5C82DF95389DF15C81D2F102 /* PBXTargetDependency */ = {
+		7C3057BC550AF09DF02F23C5215C1651 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = DZNEmptyDataSet;
 			target = 16FB872D0D2D4BA0F378AB34D47CF95F /* DZNEmptyDataSet */;
-			targetProxy = A6A85CE46836DAF93A3F5229940B2A50 /* PBXContainerItemProxy */;
+			targetProxy = 4A1955FE8E3593E2DAC0AF2E43FCBF99 /* PBXContainerItemProxy */;
 		};
-		99B1940C4C3207BDA8B353FD04B5B8BA /* PBXTargetDependency */ = {
+		E70B0955D0CDCCC4F564BCEC587987FB /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			name = "Font-Awesome-Swift";
-			target = DF2853D8E5FEAD2265A458B55D554528 /* Font-Awesome-Swift */;
-			targetProxy = F842CE17EC3EA4665EA40D3AE03FF26A /* PBXContainerItemProxy */;
+			name = FDFullscreenPopGesture;
+			target = 303B3AC6DD17B1EE7D98EF8BF8898BEB /* FDFullscreenPopGesture */;
+			targetProxy = AE35F5761B782E4DBD0992D91A12CCC9 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		04FB4510C2018683F968EEF6B470615C /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 30C7A43688985E7362F0235B3D171D95 /* Font-Awesome-Swift.xcconfig */;
+			baseConfigurationReference = AEA07D5DA42CE0EEA97D3A5F5455E29F /* Font-Awesome-Swift.xcconfig */;
 			buildSettings = {
 				CONFIGURATION_BUILD_DIR = "$(BUILD_DIR)/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)/Font-Awesome-Swift";
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -484,9 +582,67 @@
 			};
 			name = Debug;
 		};
+		0CBFFC51B769EA2EECBDD812D5640913 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 3A37D120B1AF814D30F4F73B3B32DE08 /* FDFullscreenPopGesture.xcconfig */;
+			buildSettings = {
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_PREFIX_HEADER = "Target Support Files/FDFullscreenPopGesture/FDFullscreenPopGesture-prefix.pch";
+				INFOPLIST_FILE = "Target Support Files/FDFullscreenPopGesture/Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MODULEMAP_FILE = "Target Support Files/FDFullscreenPopGesture/FDFullscreenPopGesture.modulemap";
+				MTL_ENABLE_DEBUG_INFO = NO;
+				PRODUCT_NAME = FDFullscreenPopGesture;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Release;
+		};
+		19C14948D4F902646C1D5A7B5D39651E /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 3A37D120B1AF814D30F4F73B3B32DE08 /* FDFullscreenPopGesture.xcconfig */;
+			buildSettings = {
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_PREFIX_HEADER = "Target Support Files/FDFullscreenPopGesture/FDFullscreenPopGesture-prefix.pch";
+				INFOPLIST_FILE = "Target Support Files/FDFullscreenPopGesture/Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MODULEMAP_FILE = "Target Support Files/FDFullscreenPopGesture/FDFullscreenPopGesture.modulemap";
+				MTL_ENABLE_DEBUG_INFO = YES;
+				PRODUCT_NAME = FDFullscreenPopGesture;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Debug;
+		};
 		2D70797F4D691FBA8793F14AF4CDCC15 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 4912A04C5933C464B4014386FE4FD937 /* DZNEmptyDataSet.xcconfig */;
+			baseConfigurationReference = 438CC443E26453FBD6BBF63A38218970 /* DZNEmptyDataSet.xcconfig */;
 			buildSettings = {
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CURRENT_PROJECT_VERSION = 1;
@@ -515,7 +671,7 @@
 		};
 		401181344D9E4A1081ADD0D967E37A19 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 4912A04C5933C464B4014386FE4FD937 /* DZNEmptyDataSet.xcconfig */;
+			baseConfigurationReference = 438CC443E26453FBD6BBF63A38218970 /* DZNEmptyDataSet.xcconfig */;
 			buildSettings = {
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CURRENT_PROJECT_VERSION = 1;
@@ -584,7 +740,41 @@
 			};
 			name = Debug;
 		};
-		6BA4B11544CB2B04D52CF5BC1A6FC5E5 /* Release */ = {
+		748B117FB2435A2204E8661DF355A3F8 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 2DF9DADBE5CB180DB1BBD7C3A348D3D2 /* Pods-istudy.debug.xcconfig */;
+			buildSettings = {
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				INFOPLIST_FILE = "Target Support Files/Pods-istudy/Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MACH_O_TYPE = staticlib;
+				MODULEMAP_FILE = "Target Support Files/Pods-istudy/Pods-istudy.modulemap";
+				MTL_ENABLE_DEBUG_INFO = YES;
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PODS_ROOT = "$(SRCROOT)";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
+				PRODUCT_NAME = Pods_istudy;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Debug;
+		};
+		85BBD803C6839568F33EA6A5DC5660E7 /* Release */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 559D33F0D935CD2F85DC1829524F55CD /* Pods-istudy.release.xcconfig */;
 			buildSettings = {
@@ -619,7 +809,7 @@
 		};
 		86563E610FFF73C231BC4F1609C32558 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 30C7A43688985E7362F0235B3D171D95 /* Font-Awesome-Swift.xcconfig */;
+			baseConfigurationReference = AEA07D5DA42CE0EEA97D3A5F5455E29F /* Font-Awesome-Swift.xcconfig */;
 			buildSettings = {
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CURRENT_PROJECT_VERSION = 1;
@@ -649,7 +839,7 @@
 		};
 		9E30AD16A6CA1E4E2DCEE8AA0E87864B /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 30C7A43688985E7362F0235B3D171D95 /* Font-Awesome-Swift.xcconfig */;
+			baseConfigurationReference = AEA07D5DA42CE0EEA97D3A5F5455E29F /* Font-Awesome-Swift.xcconfig */;
 			buildSettings = {
 				CONFIGURATION_BUILD_DIR = "$(BUILD_DIR)/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)/Font-Awesome-Swift";
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -704,7 +894,7 @@
 		};
 		F1F1D440B378A86F791A155E682534D8 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 30C7A43688985E7362F0235B3D171D95 /* Font-Awesome-Swift.xcconfig */;
+			baseConfigurationReference = AEA07D5DA42CE0EEA97D3A5F5455E29F /* Font-Awesome-Swift.xcconfig */;
 			buildSettings = {
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CURRENT_PROJECT_VERSION = 1;
@@ -731,43 +921,18 @@
 			};
 			name = Release;
 		};
-		FADFE41C615908191630DF8E2B64CBDB /* Debug */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 2DF9DADBE5CB180DB1BBD7C3A348D3D2 /* Pods-istudy.debug.xcconfig */;
-			buildSettings = {
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CURRENT_PROJECT_VERSION = 1;
-				DEBUG_INFORMATION_FORMAT = dwarf;
-				DEFINES_MODULE = YES;
-				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
-				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				GCC_NO_COMMON_BLOCKS = YES;
-				INFOPLIST_FILE = "Target Support Files/Pods-istudy/Info.plist";
-				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				MACH_O_TYPE = staticlib;
-				MODULEMAP_FILE = "Target Support Files/Pods-istudy/Pods-istudy.modulemap";
-				MTL_ENABLE_DEBUG_INFO = YES;
-				OTHER_LDFLAGS = "";
-				OTHER_LIBTOOLFLAGS = "";
-				PODS_ROOT = "$(SRCROOT)";
-				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
-				PRODUCT_NAME = Pods_istudy;
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				TARGETED_DEVICE_FAMILY = "1,2";
-				VERSIONING_SYSTEM = "apple-generic";
-				VERSION_INFO_PREFIX = "";
-			};
-			name = Debug;
-		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		2A576F445EE4B6BE4686F9B0B7E2A8D6 /* Build configuration list for PBXNativeTarget "FDFullscreenPopGesture" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				19C14948D4F902646C1D5A7B5D39651E /* Debug */,
+				0CBFFC51B769EA2EECBDD812D5640913 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		2D8E8EC45A3A1A1D94AE762CB5028504 /* Build configuration list for PBXProject "Pods" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
@@ -804,11 +969,11 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		B3A65157F7DF8B6AFAC6B8D3BBEF5132 /* Build configuration list for PBXNativeTarget "Pods-istudy" */ = {
+		7DEF8A9C2B717BFF539648143BED68BD /* Build configuration list for PBXNativeTarget "Pods-istudy" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				FADFE41C615908191630DF8E2B64CBDB /* Debug */,
-				6BA4B11544CB2B04D52CF5BC1A6FC5E5 /* Release */,
+				748B117FB2435A2204E8661DF355A3F8 /* Debug */,
+				85BBD803C6839568F33EA6A5DC5660E7 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

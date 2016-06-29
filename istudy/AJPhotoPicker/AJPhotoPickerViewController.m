@@ -92,7 +92,8 @@
 - (void)setupNavBar {
     //界面组件
     UIView *navBar = [[UIView alloc] init];
-    navBar.backgroundColor = [UIColor colorWithRed:236.0/255.0 green:66.0/255.0 blue:67.0/255.0 alpha:1.0];
+    
+    navBar.backgroundColor = [UIColor colorWithRed:0/255.0 green:153/255.0 blue:255/255.0 alpha:1.0];
     [self.view addSubview:navBar];
     [navBar mas_makeConstraints:^(MASConstraintMaker *make) {
         make.height.mas_equalTo(@64);

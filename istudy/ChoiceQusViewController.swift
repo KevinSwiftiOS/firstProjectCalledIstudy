@@ -43,6 +43,7 @@ class ChoiceQusViewController: UIViewController,UIWebViewDelegate,UITableViewDel
     @IBOutlet weak var resetBtn:UIButton?
     @IBOutlet weak var tableView:UITableView?
     @IBOutlet weak var topView:UIView?
+    @IBOutlet weak var btmView:UIView!
     //总共有几题的collectionView
     var answers = NSMutableArray()
     var index = 0
@@ -55,6 +56,7 @@ class ChoiceQusViewController: UIViewController,UIWebViewDelegate,UITableViewDel
     override func viewDidLoad() {
         
         super.viewDidLoad()
+        ShowBigImageFactory.topViewEDit(self.btmView)
         //加左右的按钮
         leftBtn?.tag = 1
         rightBtn?.tag = 2

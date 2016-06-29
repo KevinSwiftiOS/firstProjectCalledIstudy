@@ -37,6 +37,7 @@ class ComplexQusViewController: UIViewController,UITableViewDelegate,UITableView
     //阅卷的记录文字的数组
     var disPlayMarkTextArray = NSMutableArray()
     var resultTextView = JVFloatLabeledTextView()
+    @IBOutlet weak var btmView:UIView!
     //题目描述的webView
     @IBOutlet weak var qusDesWebView:UIWebView?
     //承载小题的题目描述和每个小题的内容
@@ -77,6 +78,7 @@ class ComplexQusViewController: UIViewController,UITableViewDelegate,UITableView
     var oneSubFillBlankSelfAnswerArray = NSMutableArray()
     override func viewDidLoad() {
         super.viewDidLoad()
+        ShowBigImageFactory.topViewEDit(self.btmView)
         //加左右的按钮
         leftBtn?.tag = 1
         rightBtn?.tag = 2
@@ -714,13 +716,12 @@ class ComplexQusViewController: UIViewController,UITableViewDelegate,UITableView
         if(self.cellHeights[cell.Custag] as! CGFloat != cell.cellHeight){
             //   var frame = self.tableView.frame
             
-            self.subTableViewToTop.constant = -400
+            self.subTableViewToTop.constant = -100
             if(cell.Custag == self.cellHeights.count - 1){
                 self.subTableViewToTop.constant = 3
                 let y = 64 + 21 + 4 + SCREEN_HEIGHT * 0.4 + 21 + 5 + 21 + 21
                 self.tableView.frame = CGRectMake(0, y, SCREEN_WIDTH, SCREEN_HEIGHT - 40 - y)
-          print(self.tableView.frame)
-                //是否已经阅过卷
+                    //是否已经阅过卷
                 if(!isOver){
                     if(self.disPlayMarkTextArray[subIndex] as! String != ""){
                         self.Over()
@@ -768,8 +769,9 @@ class ComplexQusViewController: UIViewController,UITableViewDelegate,UITableView
         //    let rect = XKeyBoard.returnKeyBoardWindow(notifacition)
         //  let total = rect.height + totalTableViewHeight + 3
         UIView.animateWithDuration(0.3) {
-            
-            self.subTableViewToTop.constant = -1 * SCREEN_HEIGHT * 0.4 + 21
+            self.tableView.frame = CGRectMake(0, 64, SCREEN_WIDTH, SCREEN_HEIGHT * 0.6 - 64 - 42 - 4 )
+           self.subTableViewToTop.constant = -1 * (SCREEN_HEIGHT * 0.4 + 21)
+            self.view.bringSubviewToFront(self.tableView)
             self.view.setNeedsLayout()
         }
     }
@@ -1076,6 +1078,13 @@ class ComplexQusViewController: UIViewController,UITableViewDelegate,UITableView
                 self.initSubView()
                 
             }
+        }
+}
+    //底部的tableView出现时候的动画
+    func tableView(tableView: UITableView, willDisplayCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {
+        cell.layer.transform = CATransform3DMakeScale(0.1, 0.1, 1.0)
+        UIView.animateWithDuration(0.8) {
+            cell.layer.transform = CATransform3DMakeScale(1, 1, 1)
         }
 
     }

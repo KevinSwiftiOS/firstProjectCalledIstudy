@@ -13,6 +13,9 @@ import SwiftyJSON
 //每个界面的过渡界面 从选择题到填空题时的过渡界面
 
 class TranslateViewController: UIViewController{
+    @IBOutlet weak var leftBtn:UIButton?
+    @IBOutlet weak var rightBtn:UIButton?
+    @IBOutlet weak var bottomView:UIView?
     //记录date和阅卷是否开启 和阅卷的时候答案是否可见等等
     var endDate = NSDate()
     //是否可以阅卷
@@ -29,7 +32,18 @@ class TranslateViewController: UIViewController{
     @IBOutlet weak var kindOfQusLabel:UILabel?
     override func viewDidLoad() {
         super.viewDidLoad()
-   
+   //左右按钮
+       
+        ShowBigImageFactory.topViewEDit(self.bottomView!)
+       
+        leftBtn?.tag = 1
+        rightBtn?.tag = 2
+        leftBtn?.setFAText(prefixText: "", icon: FAType.FAArrowLeft, postfixText: "", size: 25, forState: .Normal, iconSize: 25)
+        rightBtn?.setFAText(prefixText: "", icon: FAType.FAArrowRight, postfixText: "", size: 25, forState: .Normal, iconSize: 25)
+        leftBtn?.setTitleColor(UIColor.blueColor(), forState: .Normal)
+        rightBtn?.setTitleColor(UIColor.blueColor(), forState: .Normal)
+        leftBtn?.addTarget(self, action: #selector(TranslateViewController.changeIndex(_:)), forControlEvents: .TouchUpInside)
+        rightBtn?.addTarget(self, action: #selector(TranslateViewController.changeIndex(_:)), forControlEvents: .TouchUpInside)
         let backBtn = UIButton(frame: CGRectMake(0,0,43,43))
         backBtn.contentHorizontalAlignment = .Left
         backBtn.setFAText(prefixText: "", icon: FAType.FAArrowLeft, postfixText: "", size: 25, forState: .Normal)
@@ -281,6 +295,8 @@ class TranslateViewController: UIViewController{
         }
    }
     override func viewWillAppear(animated: Bool) {
+        leftBtn?.enabled = false
+        rightBtn?.enabled = false
                   ProgressHUD.show("请稍候")
           self.kindOfQusLabel?.text = ""
             let userDefault = NSUserDefaults.standardUserDefaults()
@@ -308,6 +324,8 @@ class TranslateViewController: UIViewController{
                             rightSwipe.direction = .Right
                             self.view.addGestureRecognizer(leftSwipe)
                             self.view.addGestureRecognizer(rightSwipe)
+                            self.self.leftBtn?.enabled = true
+                            self.rightBtn?.enabled = true
                            
                         })
                     }
@@ -321,5 +339,232 @@ class TranslateViewController: UIViewController{
     }
     deinit{
         print("TranslateDeinit")
+    }
+    func changeIndex(sender:UIButton){
+        //先判断手势
+        
+        if(sender.tag == 1){
+            if(self.kindOfQusIndex == 0){
+                
+                ProgressHUD.showError("开头")
+            }else{
+                
+                self.kindOfQusIndex -= 1
+                switch self.totalItems[kindOfQusIndex].valueForKey("type") as! String {
+                    
+                case "JUDGE","SINGLE_CHIOCE":
+                    //是否可以阅卷 截止日期等
+                    
+                    let vc = UIStoryboard(name: "Problem", bundle: nil).instantiateViewControllerWithIdentifier("ChoiceQusVC") as! ChoiceQusViewController
+                    vc.testid = self.testid
+                    vc.totalKindOfQus = self.totalItems.count
+                    vc.totalItems = self.totalItems
+                    vc.title = self.title
+                    
+                    vc.items = self.totalItems[kindOfQusIndex].valueForKey("questions") as! NSArray
+                    vc.index = vc.items.count - 1
+                    vc.kindOfQusIndex = self.kindOfQusIndex
+                    vc.endDate = self.endDate
+                    vc.enableClientJudge = self.enableClientJudge
+                    vc.keyVisible = self.keyVisible
+                    vc.endDate = self.endDate
+                    vc.viewOneWithAnswerKey = self.viewOneWithAnswerKey
+                    self.navigationController?.pushViewController(vc, animated: false)
+                case "MULIT_CHIOCE":
+                    let vc = UIStoryboard(name: "Problem", bundle: nil).instantiateViewControllerWithIdentifier("MultipleChoiceVC") as! MultipleChoiceViewController
+                    vc.items = self.totalItems[kindOfQusIndex].valueForKey("questions") as! NSArray
+                    vc.index = vc.items.count - 1
+                    vc.totalitems = self.totalItems
+                    vc.testid = self.testid
+                    vc.title = self.title
+                    
+                    
+                    vc.kindOfQusIndex = self.kindOfQusIndex
+                    vc.totalKindOfQus = self.totalItems.count
+                    vc.enableClientJudge = self.enableClientJudge
+                    vc.keyVisible = self.keyVisible
+                    vc.endDate = self.endDate
+                    vc.viewOneWithAnswerKey = self.viewOneWithAnswerKey
+                    self.navigationController?.pushViewController(vc, animated: false)
+                case "FILL_BLANK","PROGRAM_FILL_BLANK":
+                    let vc = UIStoryboard(name: "Problem", bundle: nil).instantiateViewControllerWithIdentifier("CompletionQusVC") as! CompletionQusViewController
+                    vc.testid = self.testid
+                    vc.totalKindOfQus = self.totalItems.count
+                    vc.items = self.totalItems[kindOfQusIndex].valueForKey("questions") as! NSArray
+                    vc.index = vc.items.count - 1
+                    vc.title = self.title
+                    vc.type = self.totalItems[kindOfQusIndex].valueForKey("type") as! String
+                    vc.totalitems = self.totalItems
+                    
+                    vc.kindOfQusIndex = self.kindOfQusIndex
+                    vc.enableClientJudge = self.enableClientJudge
+                    vc.keyVisible = self.keyVisible
+                    vc.viewOneWithAnswerKey = self.viewOneWithAnswerKey
+                    vc.endDate = self.endDate
+                    self.navigationController?.pushViewController(vc, animated: false)
+                case "COMPLEX":
+                    let vc = UIStoryboard(name: "Problem", bundle: nil).instantiateViewControllerWithIdentifier("ComplexQusVC") as!
+                    ComplexQusViewController
+                    vc.items = self.totalItems[kindOfQusIndex].valueForKey("questions") as! NSArray
+                    vc.title = self.title
+                    vc.testid = self.testid
+                    vc.totalItems = self.totalItems
+                    vc.index = vc.items.count - 1
+                    
+                    vc.kindOfQusIndex = self.kindOfQusIndex
+                    vc.enableClientJudge = self.enableClientJudge
+                    vc.keyVisible = self.keyVisible
+                    vc.endDate = self.endDate
+                    vc.viewOneWithAnswerKey = self.viewOneWithAnswerKey
+                    self.navigationController?.pushViewController(vc, animated: false)
+                // 程序设计题的时候 不过相信也没人在手机上打代码
+                case "PROGRAM_DESIGN","PROGRAM_CORRECT":
+                    let vc = UIStoryboard(name: "Problem", bundle: nil).instantiateViewControllerWithIdentifier("ProgramDesignVC") as!
+                    ProgramDesignViewController
+                    vc.items = self.totalItems[kindOfQusIndex].valueForKey("questions") as! NSArray
+                    vc.index = vc.items.count - 1
+                    vc.totalitems = self.totalItems
+                    
+                    vc.title = self.title
+                    vc.type = self.totalItems[kindOfQusIndex].valueForKey("type") as! String
+                    vc.testid = self.testid
+                    vc.kindOfQusIndex = self.kindOfQusIndex
+                    vc.totalKindOfQus = self.totalItems.count
+                    vc.enableClientJudge = self.enableClientJudge
+                    vc.keyVisible = self.keyVisible
+                    vc.viewOneWithAnswerKey = self.viewOneWithAnswerKey
+                    vc.endDate = self.endDate
+                    self.navigationController?.pushViewController(vc, animated: false)
+                case "DESIGN":
+                    let vc = UIStoryboard(name: "Problem", bundle: nil).instantiateViewControllerWithIdentifier("SubjectiveQusVC") as!
+                    SubjectiveQusViewController
+                    vc.items = self.totalItems[kindOfQusIndex].valueForKey("questions") as! NSArray
+                    vc.totalItems = self.totalItems
+                    
+                    vc.testid = self.testid
+                    vc.title = self.title
+                    vc.isFromOtherKindQus = false
+                    vc.kindOfQusIndex = self.kindOfQusIndex
+                    vc.totalKindOfQus = self.totalItems.count
+                    vc.index = vc.items.count - 1
+                    vc.enableClientJudge = self.enableClientJudge
+                    vc.keyVisible = self.keyVisible
+                    vc.endDate = self.endDate
+                    vc.viewOneWithAnswerKey = self.viewOneWithAnswerKey
+                    self.navigationController?.pushViewController(vc, animated: false)
+                default:
+                    break
+                    
+                }
+            }
+        }
+        if(sender.tag == 2){
+            
+            switch self.totalItems[kindOfQusIndex].valueForKey("type") as! String {
+                
+            case "JUDGE","SINGLE_CHIOCE":
+                let vc = UIStoryboard(name: "Problem", bundle: nil).instantiateViewControllerWithIdentifier("ChoiceQusVC") as! ChoiceQusViewController
+                vc.testid = self.testid
+                
+                
+                
+                vc.totalKindOfQus = self.totalItems.count
+                vc.totalItems = self.totalItems
+                vc.title = self.title
+                vc.index = 0
+                vc.items = self.totalItems[kindOfQusIndex].valueForKey("questions") as! NSArray
+                
+                vc.kindOfQusIndex = self.kindOfQusIndex
+                vc.enableClientJudge = self.enableClientJudge
+                vc.keyVisible = self.keyVisible
+                vc.endDate = self.endDate
+                vc.viewOneWithAnswerKey = self.viewOneWithAnswerKey
+                self.navigationController?.pushViewController(vc, animated: false)
+            case "MULIT_CHIOCE":
+                let vc = UIStoryboard(name: "Problem", bundle: nil).instantiateViewControllerWithIdentifier("MultipleChoiceVC") as! MultipleChoiceViewController
+                vc.items = self.totalItems[kindOfQusIndex].valueForKey("questions") as! NSArray
+                vc.totalitems = self.totalItems
+                vc.testid = self.testid
+                vc.title = self.title
+                
+                
+                vc.kindOfQusIndex = self.kindOfQusIndex
+                vc.totalKindOfQus = self.totalItems.count
+                vc.enableClientJudge = self.enableClientJudge
+                vc.keyVisible = self.keyVisible
+                vc.endDate = self.endDate
+                vc.viewOneWithAnswerKey = self.viewOneWithAnswerKey
+                self.navigationController?.pushViewController(vc, animated: false)
+            case "FILL_BLANK","PROGRAM_FILL_BLANK":
+                let vc = UIStoryboard(name: "Problem", bundle: nil).instantiateViewControllerWithIdentifier("CompletionQusVC") as! CompletionQusViewController
+                vc.testid = self.testid
+                vc.index = 0
+                vc.type = self.totalItems[kindOfQusIndex].valueForKey("type") as! String
+                vc.title = self.title
+                
+                vc.totalKindOfQus = self.totalItems.count
+                vc.items = self.totalItems[kindOfQusIndex].valueForKey("questions") as! NSArray
+                vc.totalitems = self.totalItems
+                vc.endDate = self.endDate
+                vc.kindOfQusIndex = self.kindOfQusIndex
+                vc.enableClientJudge = self.enableClientJudge
+                vc.keyVisible = self.keyVisible
+                vc.viewOneWithAnswerKey = self.viewOneWithAnswerKey
+                self.navigationController?.pushViewController(vc, animated: false)
+            case "COMPLEX":
+                let vc = UIStoryboard(name: "Problem", bundle: nil).instantiateViewControllerWithIdentifier("ComplexQusVC") as!
+                ComplexQusViewController
+                vc.items = self.totalItems[kindOfQusIndex].valueForKey("questions") as! NSArray
+                vc.totalItems = self.totalItems
+                vc.index = 0
+                vc.testid = self.testid
+                vc.title = self.title
+                vc.endDate = self.endDate
+                vc.kindOfQusIndex = self.kindOfQusIndex
+                vc.enableClientJudge = self.enableClientJudge
+                vc.keyVisible = self.keyVisible
+                vc.viewOneWithAnswerKey = self.viewOneWithAnswerKey
+                self.navigationController?.pushViewController(vc, animated: false)
+            // 程序设计题的时候 不过相信也没人在手机上打代码
+            case "PROGRAM_DESIGN","PROGRAM_CORRECT":
+                let vc = UIStoryboard(name: "Problem", bundle: nil).instantiateViewControllerWithIdentifier("ProgramDesignVC") as!
+                ProgramDesignViewController
+                vc.items = self.totalItems[kindOfQusIndex].valueForKey("questions") as! NSArray
+                vc.totalitems = self.totalItems
+                
+                vc.testid = self.testid
+                vc.index = 0
+                vc.title = self.title!
+                vc.type = self.totalItems[kindOfQusIndex].valueForKey("type") as! String
+                vc.kindOfQusIndex = self.kindOfQusIndex
+                vc.totalKindOfQus = self.totalItems.count
+                vc.enableClientJudge = self.enableClientJudge
+                vc.keyVisible = self.keyVisible
+                vc.endDate = self.endDate
+                vc.viewOneWithAnswerKey = self.viewOneWithAnswerKey
+                self.navigationController?.pushViewController(vc, animated: false)
+            case "DESIGN":
+                let vc = UIStoryboard(name: "Problem", bundle: nil).instantiateViewControllerWithIdentifier("SubjectiveQusVC") as!
+                SubjectiveQusViewController
+                vc.items = self.totalItems[kindOfQusIndex].valueForKey("questions") as! NSArray
+                vc.totalItems = self.totalItems
+                
+                vc.testid = self.testid
+                vc.index = 0
+                vc.title = self.title
+                vc.isFromOtherKindQus = false
+                vc.kindOfQusIndex = self.kindOfQusIndex
+                vc.totalKindOfQus = self.totalItems.count
+                vc.enableClientJudge = self.enableClientJudge
+                vc.keyVisible = self.keyVisible
+                vc.endDate = self.endDate
+                vc.viewOneWithAnswerKey = self.viewOneWithAnswerKey
+                self.navigationController?.pushViewController(vc, animated: false)
+            default:
+                break
+                //设计题
+                
+            }
+        }
     }
 }

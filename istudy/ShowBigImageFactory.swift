@@ -27,6 +27,7 @@ class ShowBigImageFactory: NSObject {
             view.layer.shadowColor = UIColor.blueColor().CGColor
            view.layer.shadowOpacity = 0.5
   }
-    
+   //底部阴影的设置效果
+  
     
 }

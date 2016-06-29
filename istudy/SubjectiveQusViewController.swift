@@ -40,6 +40,7 @@ class SubjectiveQusViewController: UIViewController,AJPhotoPickerProtocol,UINavi
     @IBOutlet weak var rightBtn:UIButton!
     @IBOutlet weak var contentScrollView:UIScrollView?
     @IBOutlet weak var currentQus:UILabel?
+    @IBOutlet weak var btmView:UIView?
   var qusDes = UIWebView()
  var answerWebView = UIWebView()
  var answerTextView = JVFloatLabeledTextView()
@@ -57,6 +58,7 @@ class SubjectiveQusViewController: UIViewController,AJPhotoPickerProtocol,UINavi
     var selfAnswers = NSMutableArray()
     override func viewDidLoad() {
         super.viewDidLoad()
+        ShowBigImageFactory.topViewEDit(self.btmView!)
        //加左右的按钮
         leftBtn?.tag = 1
         rightBtn?.tag = 2

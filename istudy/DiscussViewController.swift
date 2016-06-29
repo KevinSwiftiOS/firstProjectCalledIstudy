@@ -10,7 +10,8 @@ import UIKit
 import Alamofire
 import SwiftyJSON
 import DZNEmptyDataSet
-class DiscussViewController: UIViewController,UITableViewDelegate,UITableViewDataSource,DZNEmptyDataSetSource{
+import Font_Awesome_Swift
+class DiscussViewController: UIViewController,UITableViewDelegate,UITableViewDataSource,DZNEmptyDataSetSource,DZNEmptyDataSetDelegate{
     
     @IBOutlet weak var discussTableView:UITableView?
     //测试数组
@@ -18,6 +19,9 @@ class DiscussViewController: UIViewController,UITableViewDelegate,UITableViewDat
     @IBOutlet weak var courseNameLabel:UILabel?
     @IBOutlet weak var classLabel:UILabel?
     @IBOutlet weak var totoalDiscussCountLabel:UILabel?
+    @IBOutlet weak var writeBtn:UIButton?
+    @IBOutlet weak var refreshBtn:UIButton?
+    @IBOutlet weak var typeBtn:UIButton?
     var pop:PopoverView?
     var rgbArray = NSArray()
     var courseNameString = String()
@@ -40,6 +44,12 @@ class DiscussViewController: UIViewController,UITableViewDelegate,UITableViewDat
         self.classLabel?.layer.masksToBounds = true
         self.discussTableView?.dataSource = self
         self.discussTableView?.delegate = self
+        writeBtn?.setFAText(prefixText: "", icon: FAType.FAEdit, postfixText: "", size: 25, forState: .Normal, iconSize: 25)
+        writeBtn?.setFATitleColor(UIColor.blueColor())
+        refreshBtn?.setFAText(prefixText: "", icon: FAType.FARefresh, postfixText: "", size: 25, forState: .Normal, iconSize: 25)
+                refreshBtn?.setFATitleColor(UIColor.blueColor())
+        typeBtn?.setFAText(prefixText: "", icon: FAType.FAEllipsisH, postfixText: "", size: 25, forState: .Normal, iconSize: 25)
+                typeBtn?.setFATitleColor(UIColor.blueColor())
       
         //设置阴影效果
        ShowBigImageFactory.topViewEDit(self.topView!)
@@ -59,9 +69,12 @@ class DiscussViewController: UIViewController,UITableViewDelegate,UITableViewDat
         self.discussTableView?.tableFooterView?.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(DiscussViewController.resignPop)))
                //开始刷新
         self.discussTableView?.mj_header.beginRefreshing()
+        self.discussTableView?.emptyDataSetDelegate = self
         // Do any additional setup after loading the view.
     }
-
+    func emptyDataSetShouldAllowScroll(scrollView: UIScrollView!) -> Bool {
+        return true
+    }
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -245,7 +258,7 @@ override func viewWillAppear(animated: Bool) {
                 }
                 //跟新界面
                 dispatch_async(dispatch_get_main_queue(), {
-                    self.totoalDiscussCountLabel?.text  = "\(self.unTopitems.count + self.topitems.count)"
+                    self.totoalDiscussCountLabel?.text  = "总帖数:" + "\(self.unTopitems.count + self.topitems.count)"
                     self.discussTableView?.mj_header.endRefreshing()
                     self.discussTableView?.emptyDataSetSource = self
                     self.discussTableView?.reloadData()

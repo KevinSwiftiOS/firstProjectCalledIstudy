@@ -10,7 +10,7 @@ import UIKit
 import Alamofire
 import SwiftyJSON
 import DZNEmptyDataSet 
-class OneCourseDesViewController:UIViewController,UICollectionViewDelegateFlowLayout,UICollectionViewDataSource,UICollectionViewDelegate,UITableViewDelegate,UITableViewDataSource,LFLUISegmentedControlDelegate,DZNEmptyDataSetSource{
+class OneCourseDesViewController:UIViewController,UICollectionViewDelegateFlowLayout,UICollectionViewDataSource,UICollectionViewDelegate,UITableViewDelegate,UITableViewDataSource,LFLUISegmentedControlDelegate,DZNEmptyDataSetSource,DZNEmptyDataSetDelegate{
     @IBOutlet weak var courseDataCollectionView:UICollectionView?
     @IBOutlet weak var infoTableView:UITableView?
     @IBOutlet weak var messageView:UIWebView?
@@ -34,6 +34,7 @@ class OneCourseDesViewController:UIViewController,UICollectionViewDelegateFlowLa
         self.automaticallyAdjustsScrollViewInsets = false
         self.courseDataCollectionView!.delegate = self
         self.courseDataCollectionView!.dataSource = self
+        self.infoTableView?.emptyDataSetDelegate = self
         self.courseDataCollectionView!.backgroundColor = UIColor.whiteColor()
 //        self.courseDataCollectionView?.frame = CGRectMake(0, 111, SCREEN_WIDTH, SCREEN_HEIGHT)
 //        self.messageView?.frame = CGRectMake(SCREEN_WIDTH, 111, SCREEN_WIDTH, SCREEN_HEIGHT)
@@ -46,7 +47,9 @@ class OneCourseDesViewController:UIViewController,UICollectionViewDelegateFlowLa
         self.infoTableView!.mj_header = MJRefreshNormalHeader(refreshingTarget: self, refreshingAction: #selector(OneCourseDesViewController.headerRefresh))
         self.infoTableView!.tableFooterView = UIView()
         self.infoTableView!.hidden = true
-       
+        if(self.courseDesString == ""){
+            self.courseDesString = "<html><head><style>P{text-align:center;vertical-align: middle;}</style></head><body><p>无课程信息</p></body></html>"
+        }
         self.messageView!.loadHTMLString(self.courseDesString as String, baseURL: nil)
         self.courseDataCollectionView?.hidden = false
         self.messageView?.hidden = true
@@ -74,9 +77,12 @@ class OneCourseDesViewController:UIViewController,UICollectionViewDelegateFlowLa
         segmentController!.hidden = true
         self.view.addSubview(segmentController!)
         self.segmentController?.addTarget(self, action: #selector(OneCourseDesViewController.changeInfo(_:)), forControlEvents: .ValueChanged)
-
+self.courseDataCollectionView!.emptyDataSetDelegate = self
+        
     }
-    
+    func emptyDataSetShouldAllowScroll(scrollView: UIScrollView!) -> Bool {
+        return true
+    }
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -214,6 +220,8 @@ class OneCourseDesViewController:UIViewController,UICollectionViewDelegateFlowLa
                     dispatch_async(dispatch_get_main_queue(), {
                         self.items = json["items"].arrayObject! as NSArray
                         self.infoTableView?.mj_header.endRefreshing()
+                        self.infoTableView?.emptyDataSetSource = self
+
                         self.infoTableView!.reloadData()
                     })
                 }else{
@@ -221,6 +229,7 @@ class OneCourseDesViewController:UIViewController,UICollectionViewDelegateFlowLa
                     self.items = NSArray()
                     dispatch_async(dispatch_get_main_queue(), {
                         self.infoTableView?.mj_header.endRefreshing()
+                        self.infoTableView?.emptyDataSetSource = self
                         self.infoTableView?.reloadData()
                     })
 
@@ -230,6 +239,8 @@ class OneCourseDesViewController:UIViewController,UICollectionViewDelegateFlowLa
                 self.items = NSArray()
                 dispatch_async(dispatch_get_main_queue(), {
                     self.infoTableView?.mj_header.endRefreshing()
+                    self.infoTableView?.emptyDataSetSource = self
+
                     self.infoTableView?.reloadData()
                 })
 
@@ -295,4 +306,5 @@ class OneCourseDesViewController:UIViewController,UICollectionViewDelegateFlowLa
         let attriString = NSMutableAttributedString(string: string, attributes: dic)
         return attriString
     }
+  
 }

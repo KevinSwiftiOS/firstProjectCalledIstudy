@@ -29,6 +29,7 @@
 #import "ImageAndTitleVerticalButton.h"
 #import "HZQUserResizableView.h"
 #import "DZNEmptyDataSet/UIScrollView+EmptyDataSet.h"
+#import "FDFullscreenPopGesture/UINavigationController+FDFullscreenPopGesture.h"
 
 
 

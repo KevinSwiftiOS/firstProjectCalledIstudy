@@ -24,7 +24,7 @@ class ProgramDesignViewController: UIViewController,UIWebViewDelegate,UIGestureR
     var viewOneWithAnswerKey = Bool()
     var isOver = Bool()
     //问题
-    
+    @IBOutlet weak var btmView:UIView!
     @IBOutlet weak var contentScrollView:UIScrollView?
     @IBOutlet weak var kindOfQusLabel:UILabel?
     @IBOutlet weak var currentQusLabel:UILabel?
@@ -51,6 +51,7 @@ class ProgramDesignViewController: UIViewController,UIWebViewDelegate,UIGestureR
     var index = 0
     override func viewDidLoad() {
         super.viewDidLoad()
+        ShowBigImageFactory.topViewEDit(self.btmView)
         //加左右的按钮
         leftBtn?.tag = 1
         rightBtn?.tag = 2
