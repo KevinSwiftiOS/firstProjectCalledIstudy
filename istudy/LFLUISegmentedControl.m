@@ -35,7 +35,7 @@
             buttonDown=[[UIView alloc]initWithFrame:CGRectMake(i*widthFloat, self.bounds.size.height-2, widthFloat, 2)];
             
 #pragma mark -----buttonDown 设置下划线颜色
-            [buttonDown setBackgroundColor:[UIColor yellowColor]];
+            [buttonDown setBackgroundColor:[UIColor colorWithRed:0 / 255.0 green:153 / 255.0 blue:255 / 255.0 alpha:1.0]];
             [self addSubview:buttonDown];
         }
         [self addSubview:button];
@@ -70,7 +70,7 @@
     self=[super initWithFrame:CGRectMake(frame.origin.x, frame.origin.y, frame.size.width, 34)];
     self.LFLBackGroundColor = [UIColor whiteColor];
     self.titleColor = [UIColor blackColor];
-    self.selectColor=[UIColor blackColor];
+    self.selectColor = [UIColor colorWithRed:0 / 255.0 green:153 / 255.0 blue:255 / 255.0 alpha:1.0];
     //    整体背景颜色
     self.backgroundColor = [UIColor whiteColor];
     return self;

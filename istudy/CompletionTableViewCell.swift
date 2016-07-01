@@ -27,7 +27,7 @@ class CompletionTableViewCell: UITableViewCell,UITextFieldDelegate,UIWebViewDele
         
         textField = UITextField(frame:CGRectMake(10, self.cellHeight,SCREEN_WIDTH - 20, 30))
         self.contentView.addSubview(textField!)
-    }
+          }
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
@@ -62,12 +62,19 @@ class CompletionTableViewCell: UITableViewCell,UITextFieldDelegate,UIWebViewDele
         self.contentView.setNeedsDisplay()
         self.contentView.addSubview(webView)
         self.contentView.addSubview(textField!)
+        textField?.layer.borderColor = UIColor.grayColor().CGColor
         if(self.selfAnswer == ""){
+            
             textField?.placeholder = "请输入答案"
+        textField!.setValue(UIFont.boldSystemFontOfSize(15), forKeyPath: "_placeholderLabel.font")
+        
+                  //设置placeHolder的字体大小
+      
         }else{
+            
             textField?.text = self.selfAnswer
         }
-        textField?.layer.borderWidth = 1.0
+        textField?.layer.borderWidth = 0.3
         textField?.enabled = canEdit
   
         //发送通知
@@ -78,4 +85,5 @@ class CompletionTableViewCell: UITableViewCell,UITextFieldDelegate,UIWebViewDele
         //发送通知
         NSNotificationCenter.defaultCenter().postNotificationName("CompletionAnswer", object: self, userInfo: nil)
     }
+    
 }

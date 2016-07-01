@@ -10,8 +10,8 @@ import UIKit
 import Alamofire
 import SwiftyJSON
 import DZNEmptyDataSet
-class DetailPeerAssementViewController: UIViewController,UICollectionViewDataSource,UICollectionViewDelegate,UICollectionViewDelegateFlowLayout,DZNEmptyDataSetSource,DZNEmptyDataSetDelegate{
-    @IBOutlet weak var collectionView:UICollectionView?
+class DetailPeerAssementViewController: UIViewController,UITableViewDelegate,UITableViewDataSource,DZNEmptyDataSetSource,DZNEmptyDataSetDelegate{
+    @IBOutlet weak var tableView:UITableView?
     @IBOutlet weak var TitleLabel:UILabel?
     var titleString = NSString()
     var items = NSArray()
@@ -21,15 +21,25 @@ class DetailPeerAssementViewController: UIViewController,UICollectionViewDataSou
     var count = 0
     var progress = Float()
     //根据客户端和服务器传过来的值 看这条有没有评论过 现在是测试
-    var isPeer = [0,0,0,0,0]
-    override func viewDidLoad() {
+      override func viewDidLoad() {
         self.automaticallyAdjustsScrollViewInsets = false
         super.viewDidLoad()
-        self.collectionView?.delegate = self
-        self.collectionView?.dataSource = self
+        self.tableView?.delegate = self
+        self.tableView?.dataSource = self
         self.TitleLabel?.text = self.titleString as String
-        self.collectionView?.backgroundColor = UIColor.whiteColor()
-        self.collectionView?.emptyDataSetDelegate = self
+        self.tableView?.mj_header = MJRefreshNormalHeader(refreshingTarget: self, refreshingAction: #selector(DetailPeerAssementViewController.headerRefresh))
+    self.tableView?.mj_header.beginRefreshing()
+        self.tableView?.tableFooterView = UIView()
+        let segmentController = AKSegmentedControl(frame: CGRectMake(20,21 + 64,SCREEN_WIDTH - 40, 37))
+        self.tableView?.frame = CGRectMake(0, 21 + 50 + 64, SCREEN_WIDTH, SCREEN_HEIGHT - 37 - 50 - 64)
+        let btnArray =  [["image":"默认头像","title":"序号"],
+                         ["image":"默认头像","title":"得分"],
+                         ["image":"默认头像","title":"是否评分"],
+                         ["image":"默认头像","title":"操作"]]
+        // Do any additional setup after loading the view.
+        segmentController.initButtonWithTitleandImage(btnArray)
+        view.addSubview(segmentController)
+
     }
     func emptyDataSetShouldAllowScroll(scrollView: UIScrollView!) -> Bool {
         return true
@@ -38,54 +48,45 @@ class DetailPeerAssementViewController: UIViewController,UICollectionViewDataSou
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-    func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
+    func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         return 1
-    }
-    //返回总共要评论的数量为多少个 暂时未5个
-    func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+    }    //返回总共要评论的数量为多少个 暂时未5个
+    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return self.items.count
     }
+    //头部的视图
+
     //返回每个单元格的具体内容
-    func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCellWithReuseIdentifier("PeerAssementListCollectionCell", forIndexPath: indexPath) as! PeerAssementListCollectionViewCell
-        if(indexPath.row < self.items.count){
-        cell.changePeerBtn?.setTitle("修改", forState: .Normal)
-      if(self.items[indexPath.row].valueForKey("hupingtime") as? String != nil &&
-            self.items[indexPath.row].valueForKey("hupingtime") as! String != ""){
-            cell.isPeerBtn?.setTitle("已评", forState: .Normal)
-            cell.changePeerBtn?.hidden = false
-            cell.isPeerBtn?.enabled = false
-        if(self.items[indexPath.row].valueForKey("score") as? NSNumber != nil){
-         cell.isPeerBtn?.setTitle("\(self.items[indexPath.row].valueForKey("score") as! NSNumber )", forState: .Normal)
-        }
-        }else{
-            cell.isPeerBtn?.setTitle("未评", forState: .Normal)
-            cell.isPeerBtn?.enabled = true
-            cell.changePeerBtn?.hidden = true
+    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         
+        let cell = tableView.dequeueReusableCellWithIdentifier("PeerCell") as! PeerTableViewCell
+        
+        if(indexPath.row < self.items.count){
+        cell.peerBtn?.setTitle("评分", forState: .Normal)
+            cell.YorNLabel.text = "否"
+cell.numLabel.text = "\(indexPath.row + 1)"
+if(self.items[indexPath.row].valueForKey("hupingtime") as? String != nil &&
+            self.items[indexPath.row].valueForKey("hupingtime") as! String != ""){
+            cell.peerBtn?.setTitle("修改", forState: .Normal)
+        cell.YorNLabel.text = "是"
             }
-        cell.isPeerBtn?.tag = indexPath.row
-        cell.changePeerBtn?.tag = indexPath.row
-        //这里两个按钮的动作要根据有没有进行过评论 而进行修改
-        cell.isPeerBtn?.addTarget(self, action: #selector(DetailPeerAssementViewController.goToPeer(_:)), forControlEvents: .TouchUpInside)
-        cell.changePeerBtn?.addTarget(self, action: #selector(DetailPeerAssementViewController.goToPeer(_:)), forControlEvents: .TouchUpInside)
-        cell.currentLabel?.text = "\(indexPath.row + 1)"
-        cell.layer.borderWidth = 1.0
+        if(self.items[indexPath.row].valueForKey("score") as? NSNumber != nil
+            && self.items[indexPath.row].valueForKey("score") as! NSNumber != 0){
+           cell.scoreLabel.text = "\(self.items[indexPath.row].valueForKey("score") as! NSNumber)"
+            
         }
+        else{
+        cell.scoreLabel.text = "0"
+            }
+      
+        cell.peerBtn?.addTarget(self, action: #selector(DetailPeerAssementViewController.goToPeer(_:)), forControlEvents: .TouchUpInside)
+            cell.peerBtn.layer.cornerRadius = 6.0
+            cell.peerBtn.layer.masksToBounds = true
+        }
+        cell.selectionStyle = .None
         return cell
     }
-    //返回每个cell是否可以选择
-    func collectionView(collectionView: UICollectionView, shouldSelectItemAtIndexPath indexPath: NSIndexPath) -> Bool {
-        return false
-    }
-    //定义每个cell的边框大小
-    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAtIndex section: Int) -> UIEdgeInsets {
-        return UIEdgeInsetsMake(5, 5, 5, 5)
-    }
-    //返回每个cell的大小
-    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
-        return CGSize(width: SCREEN_WIDTH / 4 - 15, height: SCREEN_HEIGHT / 5)
-    }
+ 
     //进行详细评论的界面
     func goToPeer(sender:UIButton){
         let writePeerAssessmentVC = UIStoryboard(name: "PeerAssessment", bundle: nil).instantiateViewControllerWithIdentifier("WritePeerAssessmentVC") as! WritePeerAssessmentViewController
@@ -101,7 +102,7 @@ class DetailPeerAssementViewController: UIViewController,UICollectionViewDataSou
         
         self.navigationController?.pushViewController(writePeerAssessmentVC, animated: true)
     }
-    override func viewWillAppear(animated: Bool) {
+ func headerRefresh() {
        ProgressHUD.show("请稍候")
        let userDefault = NSUserDefaults.standardUserDefaults()
         let authtoken = userDefault.valueForKey("authtoken") as! String
@@ -115,8 +116,9 @@ class DetailPeerAssementViewController: UIViewController,UICollectionViewDataSou
               ProgressHUD.showError("请求失败")
                 dispatch_async(dispatch_get_main_queue(), {
                     self.items = NSArray()
-                    self.collectionView?.emptyDataSetSource = self
-                    self.collectionView?.reloadData()
+                    self.tableView?.mj_header.endRefreshing()
+                    self.tableView?.emptyDataSetSource = self
+                    self.tableView?.reloadData()
                 })
             case .Success(let Value):
                 let json = JSON(Value)
@@ -126,15 +128,17 @@ class DetailPeerAssementViewController: UIViewController,UICollectionViewDataSou
                     ProgressHUD.showError("请求失败")
                     dispatch_async(dispatch_get_main_queue(), {
                         self.items = NSArray()
-                        self.collectionView?.emptyDataSetSource = self
-                        self.collectionView?.reloadData()
+                        self.tableView?.mj_header.endRefreshing()
+                        self.tableView?.emptyDataSetSource = self
+                        self.tableView?.reloadData()
                     })
                 }else{
                     dispatch_async(dispatch_get_main_queue(), {
                         ProgressHUD.dismiss()
                         self.items = json["items"].arrayObject! as NSArray
-                       self.collectionView?.emptyDataSetSource = self
-                        self.collectionView?.reloadData()
+                        self.tableView?.mj_header.endRefreshing()
+                        self.tableView?.emptyDataSetSource = self
+                        self.tableView?.reloadData()
                        // print(self.items)
                     })
                 }

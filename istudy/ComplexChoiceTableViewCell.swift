@@ -28,7 +28,7 @@ class ComplexChoiceTableViewCell: UITableViewCell,UIWebViewDelegate{
         for view in self.contentView.subviews{
             view.removeFromSuperview()
         }
-        btn?.layer.borderWidth = 1.0
+              btn?.layer.borderWidth = 1.0
         btn?.layer.cornerRadius = 15
         self.optionWebView = UIWebView(frame:CGRectMake(30, 0, SCREEN_WIDTH - 30, 1))
         self.optionWebView?.delegate = self
@@ -74,6 +74,7 @@ let height = NSInteger(webView.stringByEvaluatingJavaScriptFromString("document.
         self.contentView.addSubview(view!)
         self.contentView.bringSubviewToFront(view!)
         view!.userInteractionEnabled = canTap
+        
         //发送通知
         NSNotificationCenter.defaultCenter().postNotificationName("ComplexChoicewebViewHeight", object: self, userInfo: nil)
     }
@@ -87,7 +88,8 @@ let height = NSInteger(webView.stringByEvaluatingJavaScriptFromString("document.
         if(urlToSave != ""){
             self.url = urlToSave
         NSNotificationCenter.defaultCenter().postNotificationName("ComplexShowBigImage", object: self, userInfo: nil)
-        }
+        
+    }
     
       //发送点击的通知
             NSNotificationCenter.defaultCenter().postNotificationName("ComplexTapBtn", object: self, userInfo: nil)

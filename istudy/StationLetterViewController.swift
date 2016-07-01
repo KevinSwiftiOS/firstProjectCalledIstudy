@@ -76,7 +76,8 @@ class StationLetterViewController: UIViewController,UITableViewDelegate,UITableV
     }
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier("stationLetterCell") as! StationLetterCellTableViewCell
-        cell.kingOfLetterImageView!.setFAIconWithName(FAType.FAEnvelope, textColor: UIColor.blueColor())
+        cell.kingOfLetterImageView!.setFAIconWithName(FAType.FAEnvelope, textColor: UIColor.grayColor())
+        
         //看接收到的人里面拿出来 随后循环遍历 自己相等 随后判断 赋不同的值
         if(isIn){
        cell.isRead = self.items[indexPath.row].valueForKey("isread") as! NSInteger

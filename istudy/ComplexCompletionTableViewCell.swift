@@ -65,10 +65,12 @@ class ComplexCompletionTableViewCell: UITableViewCell,UITextFieldDelegate,UIWebV
         self.contentView.addSubview(textField!)
         if(self.selfAnswer == ""){
             textField?.placeholder = "请输入答案"
+            textField!.setValue(UIFont.boldSystemFontOfSize(15), forKeyPath: "_placeholderLabel.font")
+
         }else{
             textField?.text = self.selfAnswer
         }
-        textField?.layer.borderWidth = 1.0
+        textField?.layer.borderWidth = 0.3
         textField?.enabled = canEdit
             //发送通知
         NSNotificationCenter.defaultCenter().postNotificationName("ComplexCompletionwebViewHeight", object: self, userInfo: nil)

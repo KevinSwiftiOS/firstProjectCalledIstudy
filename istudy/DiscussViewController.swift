@@ -101,12 +101,10 @@ class DiscussViewController: UIViewController,UITableViewDelegate,UITableViewDat
         
             cell.teacherAndDateLabel?.text = (item.valueForKey("author") as! String + date)
             if(item.valueForKey("avatar_url") as? String != nil && item.valueForKey("avatar_url") as! String != ""){
-                cell.headImageView?.sd_setImageWithURL(NSURL(string: item.valueForKey("avatar_url") as! String), placeholderImage: UIImage(named: "默认头像"))
+            cell.headImageView?.image = UIImage(named: "置顶")
             }else{
                 cell.headImageView?.image = UIImage(named: "默认头像")
             }
-            cell.contentView.layer.borderWidth = 1.0
-            cell.contentView.layer.borderColor = UIColor.blueColor().CGColor
             cell.contentView.layer.cornerRadius = 5.0
             cell.contentView.layer.masksToBounds = true
             return cell
@@ -120,8 +118,8 @@ class DiscussViewController: UIViewController,UITableViewDelegate,UITableViewDat
            
             cell.contentView.layer.cornerRadius = 5.0
             cell.contentView.layer.masksToBounds = true
-            cell.contentView.layer.borderWidth = 1.0
-            cell.contentView.layer.borderColor = UIColor.blueColor().CGColor
+            cell.contentView.layer.borderWidth = 0.3
+            cell.contentView.layer.borderColor = UIColor.grayColor().CGColor
 
         return cell
     }

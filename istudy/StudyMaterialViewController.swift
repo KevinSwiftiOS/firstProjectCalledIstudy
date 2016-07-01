@@ -82,15 +82,15 @@ UISearchControllerDelegate,UISearchResultsUpdating,DZNEmptyDataSetSource,DZNEmpt
             //文件类型头像的不同
             switch  self.items[indexPath.row].valueForKey("extensions") as! String {
             case "pdf":
-                cell.typeImageView.setFAIconWithName(FAType.FAFilePdfO, textColor: UIColor.blackColor(), backgroundColor: UIColor.whiteColor())
+                cell.typeImageView.image = UIImage(named: "pdf")
             case "ppt","pptx":
-                cell.typeImageView.setFAIconWithName(FAType.FAFilePowerpointO, textColor: UIColor.blackColor(), backgroundColor: UIColor.whiteColor())
+                cell.typeImageView.image = UIImage(named: "ppt")
             case "doc","docx":
-                cell.typeImageView.setFAIconWithName(FAType.FAFileWordO, textColor: UIColor.blackColor(), backgroundColor: UIColor.whiteColor())
+                cell.typeImageView.image = UIImage(named: "word")
             case "xls","xlsx":
-                cell.typeImageView.setFAIconWithName(FAType.FAFileExcelO, textColor: UIColor.blackColor(), backgroundColor: UIColor.whiteColor())
+                cell.typeImageView.image = UIImage(named: "Excel")
             default:
-               cell.typeImageView.setFAIconWithName(FAType.FAFileZipO, textColor: UIColor.blackColor(), backgroundColor: UIColor.whiteColor())
+                cell.typeImageView.image = UIImage(named: "zip")
             }
         }else{
             //自定义tableViewCell
@@ -105,15 +105,15 @@ UISearchControllerDelegate,UISearchResultsUpdating,DZNEmptyDataSetSource,DZNEmpt
             //文件类型头像的不同
             switch  self.filterItems[indexPath.row].valueForKey("extensions") as! String {
             case "pdf":
-                cell.typeImageView.setFAIconWithName(FAType.FAFilePdfO, textColor: UIColor.blackColor(), backgroundColor: UIColor.whiteColor())
+                cell.typeImageView.image = UIImage(named: "pdf")
             case "ppt","pptx":
-                cell.typeImageView.setFAIconWithName(FAType.FAFilePowerpointO, textColor: UIColor.blackColor(), backgroundColor: UIColor.whiteColor())
+                cell.typeImageView.image = UIImage(named: "ppt")
             case "doc","docx":
-                cell.typeImageView.setFAIconWithName(FAType.FAFileWordO, textColor: UIColor.blackColor(), backgroundColor: UIColor.whiteColor())
+                cell.typeImageView.image = UIImage(named: "word")
             case "xls","xlsx":
-                cell.typeImageView.setFAIconWithName(FAType.FAFileExcelO, textColor: UIColor.blackColor(), backgroundColor: UIColor.whiteColor())
+                cell.typeImageView.image = UIImage(named: "Excel")
             default:
-                cell.typeImageView.setFAIconWithName(FAType.FAFileZipO, textColor: UIColor.blackColor(), backgroundColor: UIColor.whiteColor())
+             cell.typeImageView.image = UIImage(named: "zip")
         }
         }
         return cell
@@ -155,24 +155,7 @@ UISearchControllerDelegate,UISearchResultsUpdating,DZNEmptyDataSetSource,DZNEmpt
         }
         }
     }
-    func tableView(tableView: UITableView, willDisplayCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {
-        var rotation = CATransform3DMakeRotation(CGFloat(M_PI_2), 0.0, 0.7, 0.4)
-        //表示透视的效果 1.0/D D越小 透视效果越明显
-        rotation.m34 = 1.0 / 600
-        cell.layer.shadowColor = UIColor.blackColor().CGColor
-        cell.layer.shadowOffset = CGSizeMake(10, 10)
-        cell.alpha = 0.0
-        cell.layer.transform = rotation
-        //设置旋转的中心点 默认是0.5,0.5
-        cell.layer.anchorPoint = CGPointMake(0, 0.5)
-        UIView.animateWithDuration(0.8) { 
-            cell.layer.transform = CATransform3DIdentity
-            cell.alpha = 1
-            cell.layer.shadowOffset = CGSizeMake(0, 0)
-            
-        }
-    }
-    //    func numberOfPreviewItemsInPreviewController(controller: QLPreviewController) -> Int {
+        //    func numberOfPreviewItemsInPreviewController(controller: QLPreviewController) -> Int {
     //        return 1
     //    }
     //    func previewController(controller: QLPreviewController, previewItemAtIndex index: Int) -> QLPreviewItem {

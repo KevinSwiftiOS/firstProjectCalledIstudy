@@ -157,27 +157,7 @@
         func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
             return self.cellHeight[indexPath.row] as! CGFloat
         }
-        //给tableView设置动画
-        func tableView(tableView: UITableView, willDisplayCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {
-            let array = tableView.indexPathsForVisibleRows
-            let firstIndexPath = array![0] 
-            //设置anchorPoint
-            cell.layer.anchorPoint = CGPointMake(0, 0.5)
-            //为了防止cell视图的移动 重新把cell放回原来的位置
-            cell.layer.position = CGPointMake(0, cell.layer.position.y)
-            //设置cell按照z轴旋转90度 注意是弧度
-            if(firstIndexPath.row < indexPath.row){
-                cell.layer.transform = CATransform3DMakeRotation(CGFloat(M_PI_2), 0, 0, 1.0)
-            }else{
-              cell.layer.transform = CATransform3DMakeRotation(-1 * CGFloat(M_PI_2), 0, 0, 1.0)
-            }
-            cell.alpha = 0.0
-            UIView.animateWithDuration(1) { 
-                cell.layer.transform = CATransform3DIdentity
-                cell.alpha = 1.0
-            }
-        }
-           //当点击立即学习的时候
+        //当点击立即学习的时候
         func pushNewVC(sender:UIButton){
             //都是推入到相同的立即学习的界面
             let oneCureseVC = UIStoryboard(name: "MyCourse", bundle: nil).instantiateViewControllerWithIdentifier("oneCourse") as! OneCourseDesViewController

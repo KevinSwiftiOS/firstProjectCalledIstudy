@@ -189,6 +189,7 @@
 		38F456A11CC9D0570093DE11 /* CustomContactSelectBtn.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38F456A01CC9D0570093DE11 /* CustomContactSelectBtn.swift */; };
 		38F4E8F81C92632A004AF629 /* ImageCropperView.m in Sources */ = {isa = PBXBuildFile; fileRef = 38F4E8F51C92632A004AF629 /* ImageCropperView.m */; };
 		38F4E8F91C92632A004AF629 /* UIImage+Rotation.m in Sources */ = {isa = PBXBuildFile; fileRef = 38F4E8F71C92632A004AF629 /* UIImage+Rotation.m */; };
+		38FB35C51D264D5300264B47 /* PeerTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38FB35C41D264D5300264B47 /* PeerTableViewCell.swift */; };
 		38FBFC8A1CAD498D00D245EF /* ASProgressPopUpView.m in Sources */ = {isa = PBXBuildFile; fileRef = 38FBFC891CAD498D00D245EF /* ASProgressPopUpView.m */; };
 		38FBFC8D1CAD49A400D245EF /* ASPopUpView.m in Sources */ = {isa = PBXBuildFile; fileRef = 38FBFC8C1CAD49A400D245EF /* ASPopUpView.m */; };
 		38FC6FA11CE9F98F0063E36B /* MKAnnotationView+WebCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 38FC6F811CE9F98F0063E36B /* MKAnnotationView+WebCache.m */; };
@@ -669,6 +670,7 @@
 		38F4E8F51C92632A004AF629 /* ImageCropperView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImageCropperView.m; sourceTree = "<group>"; };
 		38F4E8F61C92632A004AF629 /* UIImage+Rotation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+Rotation.h"; sourceTree = "<group>"; };
 		38F4E8F71C92632A004AF629 /* UIImage+Rotation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+Rotation.m"; sourceTree = "<group>"; };
+		38FB35C41D264D5300264B47 /* PeerTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PeerTableViewCell.swift; sourceTree = "<group>"; };
 		38FBFC881CAD498D00D245EF /* ASProgressPopUpView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ASProgressPopUpView.h; sourceTree = "<group>"; };
 		38FBFC891CAD498D00D245EF /* ASProgressPopUpView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ASProgressPopUpView.m; sourceTree = "<group>"; };
 		38FBFC8B1CAD49A400D245EF /* ASPopUpView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ASPopUpView.h; sourceTree = "<group>"; };
@@ -1182,6 +1184,7 @@
 				38219B3A1CA15780005839C5 /* PeerAssessment.storyboard */,
 				38219B461CA162C8005839C5 /* PeerAssementListCollectionViewCell.swift */,
 				38219B241CA151CD005839C5 /* PeerAssessmentTableViewCell.swift */,
+				38FB35C41D264D5300264B47 /* PeerTableViewCell.swift */,
 			);
 			name = PeerAssement;
 			sourceTree = "<group>";
@@ -2363,6 +2366,7 @@
 				387C25D21CB52C6B00531AE4 /* DetailTopicViewController.swift in Sources */,
 				38680BEA1CDE129C00EA6A5A /* TGRImageViewController.m in Sources */,
 				380D8BA91CA0338B00430E71 /* AJPhotoTapDetectingImageView.m in Sources */,
+				38FB35C51D264D5300264B47 /* PeerTableViewCell.swift in Sources */,
 				38BB13751CA95159009BF00C /* CourseInfoTableViewCell.swift in Sources */,
 				38FC6FAE1CE9F98F0063E36B /* UIImageView+HighlightedWebCache.m in Sources */,
 				38BD7C111CA6D2BA001F44B2 /* MJRefreshComponent.m in Sources */,

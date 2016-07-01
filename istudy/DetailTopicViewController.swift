@@ -7,9 +7,11 @@
 //
 
 import UIKit
-
-class DetailTopicViewController: UIViewController,UIWebViewDelegate{
+import Font_Awesome_Swift
+class DetailTopicViewController: UIViewController,UIWebViewDelegate,UIGestureRecognizerDelegate{
     //webView来加载字符串
+    //添加手势放大
+    var tap = UITapGestureRecognizer()
     @IBOutlet weak var replyBtn:UIButton!
     @IBOutlet weak var webView:UIWebView?
    var detailString = ""
@@ -18,11 +20,17 @@ class DetailTopicViewController: UIViewController,UIWebViewDelegate{
     var id = NSInteger()
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.webView?.frame = CGRectMake(0, 0, SCREEN_WIDTH, 1)
+    
         self.webView?.delegate = self
-self.webView?.loadHTMLString(detailString, baseURL: nil)
+        tap = UITapGestureRecognizer(target: self, action: #selector(DetailTopicViewController.showBig(_:)))
+        self.view.userInteractionEnabled = true
+        self.view.multipleTouchEnabled = true
+        self.webView?.userInteractionEnabled = true
+        self.webView?.multipleTouchEnabled = true
+        self.webView?.loadHTMLString(detailString, baseURL: nil)
        self.automaticallyAdjustsScrollViewInsets = false
-        
+        replyBtn.setFAText(prefixText: "", icon: FAType.FAReply, postfixText: "", size: 25, forState: .Normal, iconSize: 25)
+        replyBtn.setTitleColor(UIColor.whiteColor(), forState: .Normal)
         // Do any additional setup after loading the view.
     }
 
@@ -45,15 +53,40 @@ self.webView?.loadHTMLString(detailString, baseURL: nil)
         self.view.bringSubviewToFront(self.replyBtn)
     }
     func webViewDidFinishLoad(webView: UIWebView) {
+        print(333)
     ProgressHUD.dismiss()
         let height = NSInteger(webView.stringByEvaluatingJavaScriptFromString("document.body.offsetHeight")!)
         var frame = webView.frame
         frame.size.height = CGFloat(height!)
         webView.frame = frame
-        self.view.bringSubviewToFront(self.replyBtn)
+    
+        self.webView!.addGestureRecognizer(tap)
+        self.webView!.userInteractionEnabled = true
+        let scrollView = webView.subviews[0] as! UIScrollView
+        let width = NSInteger(webView.stringByEvaluatingJavaScriptFromString("document.body.scrollWidth")!)
+        
+        scrollView.contentSize = CGSizeMake(CGFloat(width!), 0)
+        scrollView.showsVerticalScrollIndicator = false
+      
+    }
+    func gestureRecognizerShouldBegin(gestureRecognizer: UIGestureRecognizer) -> Bool {
+        
+        return true
+        
+    }
+    func gestureRecognizer(gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWithGestureRecognizer otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+        if(gestureRecognizer == self.tap){
+            return true
+        }else{
+            return false
+        }
     }
     override func viewWillDisappear(animated: Bool) {
         ProgressHUD.dismiss()
-        self.view.bringSubviewToFront(self.replyBtn)
+       // self.view.bringSubviewToFront(self.replyBtn)
+    }
+    func showBig(sender:UITapGestureRecognizer){
+        print(222)
+        ShowBigImageFactory.showBigImage(self, webView: webView!, sender: sender)
     }
 }

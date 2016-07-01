@@ -38,6 +38,9 @@ var questions = NSMutableArray()
     //var callBack:send_index?
     override func viewDidLoad() {
         super.viewDidLoad()
+        let diveseView = UIView(frame: CGRectMake(0,SCREEN_HEIGHT * 0.8 - 30,SCREEN_WIDTH,1))
+        diveseView.layer.borderWidth = 1.0
+        self.view.addSubview(diveseView)
         ShowBigImageFactory.topViewEDit(self.btmView)
         //加左右的按钮
         leftBtn?.tag = 1
@@ -215,22 +218,22 @@ var questions = NSMutableArray()
             assermentBtn.tag = i
             if((scores[i].valueForKey("score") as? NSNumber) != nil && scores[i].valueForKey("score") as! NSNumber != 0) {
             
-            assermentBtn.setTitle("\(scores[i].valueForKey("score") as! NSNumber)" + " 分", forState: .Normal)
+            assermentBtn.setTitle("__"  + "\(scores[i].valueForKey("score") as! NSNumber)" + "__分", forState: .Normal)
             }else{
-                assermentBtn.setTitle("0" + " 分", forState: .Normal)
+                assermentBtn.setTitle("__" + "0" + "__分", forState: .Normal)
             }
             //设置下划线
             let str1 = NSMutableAttributedString(string: (assermentBtn.titleLabel?.text)!)
-            let range1 = NSRange(location: 0, length: str1.length - 2)
+            let range1 = NSRange(location: 0, length: str1.length - 1)
             let range2 = NSRange(location: str1.length - 1, length: 1)
             let number = NSNumber(integer: NSUnderlineStyle.StyleSingle.rawValue)
             str1.addAttribute(NSUnderlineStyleAttributeName, value: number, range: range1)
-            str1.addAttribute(NSForegroundColorAttributeName, value: UIColor.blueColor(), range: range1)
+            str1.addAttribute(NSForegroundColorAttributeName, value: UIColor.redColor(), range: range1)
             str1.addAttribute(NSForegroundColorAttributeName,value:UIColor.blackColor(), range: range2)
             
             assermentBtn.setAttributedTitle(str1, forState: .Normal)
            // assermentBtn.backgroundColor = RGB(0, g: 153, b: 255)
-            assermentBtn.setTitleColor(UIColor.blackColor(), forState: .Normal)
+          
             assermentBtn.addTarget(self, action: #selector(WritePeerAssessmentViewController.gotoPeer(_:)), forControlEvents: .TouchUpInside)
             self.scrollView.addSubview(assermentBtn)
             self.totalHeight += 22
@@ -252,6 +255,8 @@ var questions = NSMutableArray()
         commentTextView.keyboardDismissMode = .OnDrag
         self.totalHeight += 100
         self.scrollView.addSubview(commentTextView)
+   
+      
         self.scrollView.contentSize = CGSizeMake(SCREEN_WIDTH, self.totalHeight)
     }
     //加载新题目
@@ -323,7 +328,16 @@ var questions = NSMutableArray()
             if view.isKindOfClass(UIButton.classForCoder()){
                 if(view.tag == tag){
         let btn =  view as! UIButton
-          btn.setTitle("\(row)" + "分", forState: .Normal)
+       let  str1 = NSMutableAttributedString(string:"__" + "\(row)" + "__分")
+                    let range1 = NSRange(location: 0, length: str1.length - 1)
+                    let range2 = NSRange(location: str1.length - 1, length: 1)
+                    let number = NSNumber(integer: NSUnderlineStyle.StyleSingle.rawValue)
+                    str1.addAttribute(NSUnderlineStyleAttributeName, value: number, range: range1)
+                    str1.addAttribute(NSForegroundColorAttributeName, value: UIColor.redColor(), range: range1)
+                    str1.addAttribute(NSForegroundColorAttributeName,value:UIColor.blackColor(), range: range2)
+                    
+                    btn.setAttributedTitle(str1, forState: .Normal)
+
             let arr1 = self.questions[index].valueForKey("rules") as! NSMutableArray
                       let dic1 = arr1[tag] as! NSMutableDictionary
                     dic1.setObject(row, forKey: "score")

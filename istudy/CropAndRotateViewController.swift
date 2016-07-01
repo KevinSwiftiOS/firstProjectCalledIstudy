@@ -11,6 +11,8 @@ typealias pushBack = (image:UIImage) -> Void
 class CropAndRotateViewController: UIViewController {
     var image = UIImage()
     var callBack:pushBack?
+    @IBOutlet weak var saveBtn:UIButton!
+    @IBOutlet weak var resetBtn:UIButton!
     @IBOutlet weak var cropAndRotateView:ImageCropperView?
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -23,6 +25,10 @@ class CropAndRotateViewController: UIViewController {
         cropAndRotateView?.contentMode = .ScaleAspectFill
         cropAndRotateView?.inputView?.contentMode = .ScaleAspectFill
         cropAndRotateView!.image = image
+        saveBtn.layer.cornerRadius = 6.0
+        resetBtn.layer.cornerRadius = 6.0
+        saveBtn.layer.masksToBounds = true
+        resetBtn.layer.masksToBounds = true
       
         // Do any additional setup after loading the view.
     }
