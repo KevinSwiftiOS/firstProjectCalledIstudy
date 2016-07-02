@@ -153,7 +153,7 @@
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="21" id="T3S-IK-2wZ"/>
                                                     </constraints>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="10"/>
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                     <variation key="default">
@@ -176,12 +176,16 @@
                                                     <variation key="heightClass=regular-widthClass=compact" constant="22"/>
                                                 </constraint>
                                                 <constraint firstItem="J6x-9n-epi" firstAttribute="width" secondItem="Taf-YZ-axn" secondAttribute="width" multiplier="0.3" id="Xpr-4S-1X2"/>
-                                                <constraint firstItem="yA4-3L-bLZ" firstAttribute="leading" secondItem="Taf-YZ-axn" secondAttribute="leading" id="ZRP-QB-tcE"/>
+                                                <constraint firstItem="yA4-3L-bLZ" firstAttribute="leading" secondItem="Taf-YZ-axn" secondAttribute="leading" id="ZRP-QB-tcE">
+                                                    <variation key="heightClass=regular-widthClass=compact" constant="10"/>
+                                                </constraint>
                                                 <constraint firstItem="yA4-3L-bLZ" firstAttribute="top" secondItem="Taf-YZ-axn" secondAttribute="top" id="e0K-kR-ChB"/>
                                                 <constraint firstAttribute="bottom" secondItem="QLk-kw-waL" secondAttribute="bottom" constant="27" id="oYp-1K-b3W">
                                                     <variation key="heightClass=regular-widthClass=compact" constant="9"/>
                                                 </constraint>
-                                                <constraint firstItem="QLk-kw-waL" firstAttribute="leading" secondItem="Taf-YZ-axn" secondAttribute="leading" id="vaZ-3c-gv7"/>
+                                                <constraint firstItem="QLk-kw-waL" firstAttribute="leading" secondItem="Taf-YZ-axn" secondAttribute="leading" id="vaZ-3c-gv7">
+                                                    <variation key="heightClass=regular-widthClass=compact" constant="10"/>
+                                                </constraint>
                                             </constraints>
                                             <variation key="default">
                                                 <mask key="subviews">

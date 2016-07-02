@@ -174,6 +174,8 @@
 		38D110431CD5F41B005000F1 /* ComplexQusViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38D110421CD5F41B005000F1 /* ComplexQusViewController.swift */; };
 		38D1105B1CD6164E005000F1 /* ComplexChoiceTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38D1105A1CD6164E005000F1 /* ComplexChoiceTableViewCell.swift */; };
 		38D35FDF1CEDD6BB00F657FC /* BasicInformationTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38D35FDE1CEDD6BB00F657FC /* BasicInformationTableViewCell.swift */; };
+		38D729B41D2799230073DEDF /* JudgeQusViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38D729B31D2799230073DEDF /* JudgeQusViewController.swift */; };
+		38D729CA1D279CB60073DEDF /* JudgeQusTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38D729C91D279CB60073DEDF /* JudgeQusTableViewCell.swift */; };
 		38D8E60F1CFE789E0092C458 /* ShowBigImageFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38D8E60E1CFE789E0092C458 /* ShowBigImageFactory.swift */; };
 		38DE95951C9040FC002E31F8 /* writeEmialOrMobilePhoneViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38DE95941C9040FC002E31F8 /* writeEmialOrMobilePhoneViewController.swift */; };
 		38DF99521C8C14E200BBE15E /* SendIdentifyCodeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38DF99511C8C14E200BBE15E /* SendIdentifyCodeViewController.swift */; };
@@ -653,6 +655,8 @@
 		38D110421CD5F41B005000F1 /* ComplexQusViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComplexQusViewController.swift; sourceTree = "<group>"; };
 		38D1105A1CD6164E005000F1 /* ComplexChoiceTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComplexChoiceTableViewCell.swift; sourceTree = "<group>"; };
 		38D35FDE1CEDD6BB00F657FC /* BasicInformationTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BasicInformationTableViewCell.swift; sourceTree = "<group>"; };
+		38D729B31D2799230073DEDF /* JudgeQusViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JudgeQusViewController.swift; sourceTree = "<group>"; };
+		38D729C91D279CB60073DEDF /* JudgeQusTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JudgeQusTableViewCell.swift; sourceTree = "<group>"; };
 		38D8E60E1CFE789E0092C458 /* ShowBigImageFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShowBigImageFactory.swift; sourceTree = "<group>"; };
 		38DE95941C9040FC002E31F8 /* writeEmialOrMobilePhoneViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = writeEmialOrMobilePhoneViewController.swift; sourceTree = "<group>"; };
 		38DF99511C8C14E200BBE15E /* SendIdentifyCodeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SendIdentifyCodeViewController.swift; sourceTree = "<group>"; };
@@ -1125,9 +1129,10 @@
 				38C367B71CCCE4C2009A5E00 /* ProgramDesignViewController.swift */,
 				38870C021C997A91007528C6 /* CompletionQusViewController.swift */,
 				ABB35C6C1CA01E3E008D0B6C /* previewPhotoViewController.swift */,
-				38870C001C997A61007528C6 /* ChoiceQusViewController.swift */,
 				38D110421CD5F41B005000F1 /* ComplexQusViewController.swift */,
 				389051C01CFDC5E200E6D57F /* ImageShowBigViewController.swift */,
+				38870C001C997A61007528C6 /* ChoiceQusViewController.swift */,
+				38D729B31D2799230073DEDF /* JudgeQusViewController.swift */,
 			);
 			name = MyHomeWork;
 			sourceTree = "<group>";
@@ -1174,6 +1179,7 @@
 				381176951CDF0760003BF7B4 /* ChoiceTableViewCell.swift */,
 				381176AB1CDF076A003BF7B4 /* CompletionTableViewCell.swift */,
 				382589111CE4932E0049EF5A /* PhotoWaterfallCollectionViewCell.swift */,
+				38D729C91D279CB60073DEDF /* JudgeQusTableViewCell.swift */,
 			);
 			name = MyHomeWork;
 			sourceTree = "<group>";
@@ -2388,6 +2394,7 @@
 				388741721C8AFF30008B665A /* PeerAssessmentViewController.swift in Sources */,
 				380D8BAE1CA0338B00430E71 /* MASConstraintMaker.m in Sources */,
 				38FBFC8D1CAD49A400D245EF /* ASPopUpView.m in Sources */,
+				38D729CA1D279CB60073DEDF /* JudgeQusTableViewCell.swift in Sources */,
 				38AA52951CD4A486005D60F4 /* CropAndRotateViewController.swift in Sources */,
 				382CBCE41CB15C24003FE2DE /* JCFlipPageView.m in Sources */,
 				38BD7C311CA6D332001F44B2 /* MJRefreshGifHeader.m in Sources */,
@@ -2404,6 +2411,7 @@
 				38FBFC8A1CAD498D00D245EF /* ASProgressPopUpView.m in Sources */,
 				38870C011C997A61007528C6 /* ChoiceQusViewController.swift in Sources */,
 				380D9AB81CB3D83E003E459A /* NSString+TextDirectionality.m in Sources */,
+				38D729B41D2799230073DEDF /* JudgeQusViewController.swift in Sources */,
 				380D8BA61CA0338B00430E71 /* AJPhotoPickerViewController.m in Sources */,
 				38870C031C997A91007528C6 /* CompletionQusViewController.swift in Sources */,
 				3800EF241CBE3F6800FDBCAB /* MultipleChoiceViewController.swift in Sources */,

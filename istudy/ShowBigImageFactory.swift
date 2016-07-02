@@ -24,8 +24,8 @@ class ShowBigImageFactory: NSObject {
      static func topViewEDit(view:UIView) {
             //设置阴影效果
           view.layer.shadowOffset = CGSizeMake(2.0, 1.0)
-            view.layer.shadowColor = UIColor.blueColor().CGColor
-           view.layer.shadowOpacity = 0.5
+            view.layer.shadowColor = UIColor.blackColor().CGColor
+           view.layer.shadowOpacity = 0.8
   }
    //底部阴影的设置效果
   

@@ -75,7 +75,23 @@ class AchViewController: UIViewController,UICollectionViewDelegate,UICollectionV
     let type = self.totalItems[indexPath.section].valueForKey("type") as! String
             switch type{
           
-            case "JUDGE","SINGLE_CHIOCE":
+            case "JUDGE":
+                let vc = UIStoryboard(name: "Problem", bundle: nil).instantiateViewControllerWithIdentifier("JudgeQusVC") as! JudgeQueViewController
+                
+                vc.testid = self.testid
+                vc.totalKindOfQus = self.totalItems.count
+                vc.totalItems = self.totalItems
+                vc.title = self.title
+                vc.index = indexPath.row
+                vc.items = self.totalItems[indexPath.section].valueForKey("questions") as! NSArray
+                vc.endDate = self.endDate
+                vc.kindOfQusIndex = indexPath.section
+                vc.enableClientJudge = self.enableClientJudge
+                vc.keyVisible = self.keyVisible
+                vc.viewOneWithAnswerKey = self.viewOneWithAnswerKey
+                self.navigationController?.pushViewController(vc, animated: true)
+
+            case "SINGLE_CHIOCE":
                 let vc = UIStoryboard(name: "Problem", bundle: nil).instantiateViewControllerWithIdentifier("ChoiceQusVC") as! ChoiceQusViewController
                 vc.testid = self.testid
                 vc.totalKindOfQus = self.totalItems.count

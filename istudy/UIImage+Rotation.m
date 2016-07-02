@@ -7,7 +7,7 @@
 //
 
 #import "UIImage+Rotation.h"
-
+//弧度制之间的转换
 CGFloat DegreesToRadians(CGFloat degrees) {return degrees * M_PI / 180;};
 CGFloat RadiansToDegrees(CGFloat radians) {return radians * 180/M_PI;};
 

@@ -27,20 +27,8 @@ class DetailPeerAssementViewController: UIViewController,UITableViewDelegate,UIT
         self.tableView?.delegate = self
         self.tableView?.dataSource = self
         self.TitleLabel?.text = self.titleString as String
-        self.tableView?.mj_header = MJRefreshNormalHeader(refreshingTarget: self, refreshingAction: #selector(DetailPeerAssementViewController.headerRefresh))
-    self.tableView?.mj_header.beginRefreshing()
         self.tableView?.tableFooterView = UIView()
-        let segmentController = AKSegmentedControl(frame: CGRectMake(20,21 + 64,SCREEN_WIDTH - 40, 37))
-        self.tableView?.frame = CGRectMake(0, 21 + 50 + 64, SCREEN_WIDTH, SCREEN_HEIGHT - 37 - 50 - 64)
-        let btnArray =  [["image":"默认头像","title":"序号"],
-                         ["image":"默认头像","title":"得分"],
-                         ["image":"默认头像","title":"是否评分"],
-                         ["image":"默认头像","title":"操作"]]
-        // Do any additional setup after loading the view.
-        segmentController.initButtonWithTitleandImage(btnArray)
-        view.addSubview(segmentController)
-
-    }
+       }
     func emptyDataSetShouldAllowScroll(scrollView: UIScrollView!) -> Bool {
         return true
     }
@@ -50,7 +38,23 @@ class DetailPeerAssementViewController: UIViewController,UITableViewDelegate,UIT
     }
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         return 1
-    }    //返回总共要评论的数量为多少个 暂时未5个
+    }
+    //返回总共要评论的数量为多少个 暂时未5个
+    func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        
+    let segmentController = AKSegmentedControl(frame: CGRectMake(20,0,SCREEN_WIDTH - 40, 37))
+    self.tableView?.frame = CGRectMake(0, 21 + 50 + 64, SCREEN_WIDTH, SCREEN_HEIGHT - 37 - 50 - 64)
+    let btnArray =  [["image":"默认头像","title":"序号"],
+                     ["image":"默认头像","title":"得分"],
+                     ["image":"默认头像","title":"是否评分"],
+                     ["image":"默认头像","title":"操作"]]
+    // Do any additional setup after loading the view.
+    segmentController.initButtonWithTitleandImage(btnArray)
+        return segmentController
+    }
+    func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return 40
+    }
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return self.items.count
     }
@@ -86,7 +90,9 @@ if(self.items[indexPath.row].valueForKey("hupingtime") as? String != nil &&
         cell.selectionStyle = .None
         return cell
     }
- 
+    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+        return 50
+    }
     //进行详细评论的界面
     func goToPeer(sender:UIButton){
         let writePeerAssessmentVC = UIStoryboard(name: "PeerAssessment", bundle: nil).instantiateViewControllerWithIdentifier("WritePeerAssessmentVC") as! WritePeerAssessmentViewController
@@ -102,7 +108,7 @@ if(self.items[indexPath.row].valueForKey("hupingtime") as? String != nil &&
         
         self.navigationController?.pushViewController(writePeerAssessmentVC, animated: true)
     }
- func headerRefresh() {
+    override  func viewWillAppear(animated: Bool) {
        ProgressHUD.show("请稍候")
        let userDefault = NSUserDefaults.standardUserDefaults()
         let authtoken = userDefault.valueForKey("authtoken") as! String
@@ -116,10 +122,11 @@ if(self.items[indexPath.row].valueForKey("hupingtime") as? String != nil &&
               ProgressHUD.showError("请求失败")
                 dispatch_async(dispatch_get_main_queue(), {
                     self.items = NSArray()
-                    self.tableView?.mj_header.endRefreshing()
-                    self.tableView?.emptyDataSetSource = self
+                self.tableView?.emptyDataSetSource = self
+                  
+
                     self.tableView?.reloadData()
-                })
+                                  })
             case .Success(let Value):
                 let json = JSON(Value)
                 print(json)
@@ -128,19 +135,20 @@ if(self.items[indexPath.row].valueForKey("hupingtime") as? String != nil &&
                     ProgressHUD.showError("请求失败")
                     dispatch_async(dispatch_get_main_queue(), {
                         self.items = NSArray()
-                        self.tableView?.mj_header.endRefreshing()
-                        self.tableView?.emptyDataSetSource = self
+                                                self.tableView?.emptyDataSetSource = self
+                        
                         self.tableView?.reloadData()
                     })
                 }else{
                     dispatch_async(dispatch_get_main_queue(), {
                         ProgressHUD.dismiss()
                         self.items = json["items"].arrayObject! as NSArray
-                        self.tableView?.mj_header.endRefreshing()
+                       
                         self.tableView?.emptyDataSetSource = self
+                      
+
                         self.tableView?.reloadData()
-                       // print(self.items)
-                    })
+                     })
                 }
             }
         }

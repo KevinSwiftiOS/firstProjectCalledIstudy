@@ -23,16 +23,7 @@ class PeerAssessmentViewController: UIViewController ,UITableViewDataSource,UITa
         self.tableView?.mj_header.beginRefreshing()
         self.automaticallyAdjustsScrollViewInsets = false
         // Do any additional setup after loading the view.
-        let segmentController = AKSegmentedControl(frame: CGRectMake(20,64 + 10,SCREEN_WIDTH - 40, 37))
-        let btnArray =  [["image":"箭头","title":"名称"],
-                         ["image":"箭头","title":"老师"],
-                         ["image":"箭头","title":"开始时间"],
-                         ["image":"箭头","title":"截止时间"],
-                         ]
-        // Do any additional setup after loading the view.
-        segmentController.initButtonWithTitleandImage(btnArray)
-        self.view.addSubview(segmentController)
-self.tableView?.emptyDataSetDelegate = self
+        self.tableView?.emptyDataSetDelegate = self
     }
     func emptyDataSetShouldAllowScroll(scrollView: UIScrollView!) -> Bool {
         return true
@@ -44,6 +35,21 @@ self.tableView?.emptyDataSetDelegate = self
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         return 1
         
+    }
+    //头部视图
+    func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        let segmentController = AKSegmentedControl(frame: CGRectMake(20,0,SCREEN_WIDTH - 40, 37))
+        let btnArray =  [["image":"箭头","title":"名称"],
+                         ["image":"箭头","title":"老师"],
+                         ["image":"箭头","title":"开始时间"],
+                         ["image":"箭头","title":"截止时间"],
+                         ]
+        // Do any additional setup after loading the view.
+        segmentController.initButtonWithTitleandImage(btnArray)
+       return segmentController
+    }
+    func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return 40
     }
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return self.items.count
@@ -92,6 +98,8 @@ self.tableView?.emptyDataSetDelegate = self
         }
         cell.peerBtn?.addTarget(self, action: #selector(PeerAssessmentViewController.goToPeer(_:)), forControlEvents: .TouchUpInside)
         cell.peerBtn?.tag = indexPath.row
+        cell.peerBtn?.layer.cornerRadius = 5.0
+        cell.peerBtn?.layer.masksToBounds = true
         return cell
     }
     //随后评论的界面

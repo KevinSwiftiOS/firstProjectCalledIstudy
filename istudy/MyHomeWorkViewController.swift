@@ -202,6 +202,8 @@ class MyHomeWorkViewController: UIViewController,UITableViewDataSource,UITableVi
                 cell.answerQusBtn?.tag = indexPath.row
         cell.id = self.items[indexPath.row].valueForKey("id") as! NSInteger
         cell.answerQusBtn?.addTarget(self, action: #selector(MyHomeWorkViewController.answerQuestion(_:)), forControlEvents: .TouchUpInside)
+        cell.answerQusBtn?.layer.cornerRadius = 5.0
+        cell.answerQusBtn?.layer.masksToBounds = true
         return cell
     }
     //tableViewcell的动画

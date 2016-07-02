@@ -380,7 +380,23 @@ class TranslateViewController: UIViewController{
                 self.kindOfQusIndex -= 1
                 switch self.totalItems[kindOfQusIndex].valueForKey("type") as! String {
                     
-                case "JUDGE","SINGLE_CHIOCE":
+                case "JUDGE":
+                    let vc = UIStoryboard(name: "Problem", bundle: nil).instantiateViewControllerWithIdentifier("JudgeQusVC") as! JudgeQueViewController
+                    vc.testid = self.testid
+                    vc.totalKindOfQus = self.totalItems.count
+                    vc.totalItems = self.totalItems
+                    vc.title = self.title
+                    
+                    vc.items = self.totalItems[kindOfQusIndex].valueForKey("questions") as! NSArray
+                    vc.index = vc.items.count - 1
+                    vc.kindOfQusIndex = self.kindOfQusIndex
+                    vc.endDate = self.endDate
+                    vc.enableClientJudge = self.enableClientJudge
+                    vc.keyVisible = self.keyVisible
+                    vc.endDate = self.endDate
+                    vc.viewOneWithAnswerKey = self.viewOneWithAnswerKey
+                    self.navigationController?.pushViewController(vc, animated: false)
+                case "SINGLE_CHIOCE":
                     //是否可以阅卷 截止日期等
                     
                     let vc = UIStoryboard(name: "Problem", bundle: nil).instantiateViewControllerWithIdentifier("ChoiceQusVC") as! ChoiceQusViewController
@@ -490,7 +506,24 @@ class TranslateViewController: UIViewController{
             
             switch self.totalItems[kindOfQusIndex].valueForKey("type") as! String {
                 
-            case "JUDGE","SINGLE_CHIOCE":
+            case "JUDGE":
+                let vc = UIStoryboard(name: "Problem", bundle: nil).instantiateViewControllerWithIdentifier("JudgeQusVC") as! JudgeQueViewController
+                vc.testid = self.testid
+                vc.totalKindOfQus = self.totalItems.count
+                vc.totalItems = self.totalItems
+                vc.title = self.title
+                
+                vc.items = self.totalItems[kindOfQusIndex].valueForKey("questions") as! NSArray
+                vc.index = 0
+                vc.kindOfQusIndex = self.kindOfQusIndex
+                vc.endDate = self.endDate
+                vc.enableClientJudge = self.enableClientJudge
+                vc.keyVisible = self.keyVisible
+                vc.endDate = self.endDate
+                vc.viewOneWithAnswerKey = self.viewOneWithAnswerKey
+                self.navigationController?.pushViewController(vc, animated: false)
+
+            case "SINGLE_CHIOCE":
                 let vc = UIStoryboard(name: "Problem", bundle: nil).instantiateViewControllerWithIdentifier("ChoiceQusVC") as! ChoiceQusViewController
                 vc.testid = self.testid
                 
