@@ -51,6 +51,7 @@ class SubjectiveQusViewController: UIViewController,AJPhotoPickerProtocol,UINavi
     @IBOutlet weak var topView:UIView?
     @IBOutlet weak var btmView:UIView!
     var menu:BlurEffectMenu!
+  let  cameraPicker = UIImagePickerController()
     var longTap = UILongPressGestureRecognizer()
     //记录当前在第几页和总共的页数
     var index:NSInteger = 0
@@ -124,7 +125,7 @@ class SubjectiveQusViewController: UIViewController,AJPhotoPickerProtocol,UINavi
         
         self.initView()
         backBtn.setFAIcon(FAType.FAArrowLeft, iconSize: 25, forState: .Normal)
-        actBtn.setFAIcon(FAType.FABookmark, iconSize: 25, forState: .Normal)
+        actBtn.setFAIcon(FAType.FABook, iconSize: 25, forState: .Normal)
         
     }
     func showAct(){
@@ -357,7 +358,7 @@ class SubjectiveQusViewController: UIViewController,AJPhotoPickerProtocol,UINavi
     }
     //当点击了照相机的时候
     func photoPickerTapCameraAction(picker: AJPhotoPickerViewController!) {
-        let cameraPicker = UIImagePickerController()
+        
         if (UIImagePickerController.availableMediaTypesForSourceType(.Camera) != nil){
             cameraPicker.sourceType = .Camera
             cameraPicker.delegate = self
@@ -404,20 +405,22 @@ class SubjectiveQusViewController: UIViewController,AJPhotoPickerProtocol,UINavi
         
     }
     //图片放大的效果
-    func showBig(sender:UITapGestureRecognizer){
-        
-        let previewPhotoVC = UIStoryboard(name: "Problem", bundle: nil).instantiateViewControllerWithIdentifier("previewPhotoVC") as! previewPhotoViewController
-        previewPhotoVC.toShowBigImageArray = self.answerPhotos
-        previewPhotoVC.contentOffsetX = CGFloat((sender.view?.tag)!)
-        self.navigationController?.pushViewController(previewPhotoVC, animated: true)
-    }
+
     //图片编辑
-    func editPhoto(sender:UILongPressGestureRecognizer){
+    func editOrShow(sender:UIButton){
+        
         let alert = UIAlertController(title: nil, message: nil, preferredStyle: UIAlertControllerStyle.ActionSheet)
+        let showAction = UIAlertAction(title: "预览", style: UIAlertActionStyle.Default) { (UIAlertAction) -> Void in
+            
+            let previewPhotoVC = UIStoryboard(name: "Problem", bundle: nil).instantiateViewControllerWithIdentifier("previewPhotoVC") as! previewPhotoViewController
+            previewPhotoVC.toShowBigImageArray = self.answerPhotos
+            previewPhotoVC.contentOffsetX = CGFloat((sender.tag))
+            self.navigationController?.pushViewController(previewPhotoVC, animated: true)
+        }
         let deleteAction = UIAlertAction(title: "删除", style: UIAlertActionStyle.Default) { (UIAlertAction) -> Void in
             
-            let deleteIndex = sender.view?.tag
-            self.answerPhotos.removeObjectAtIndex(deleteIndex!)
+            let deleteIndex = sender.tag
+            self.answerPhotos.removeObjectAtIndex(deleteIndex)
             alert.dismissViewControllerAnimated(true, completion: nil)
             self.collectionView?.reloadData()
         }
@@ -425,28 +428,31 @@ class SubjectiveQusViewController: UIViewController,AJPhotoPickerProtocol,UINavi
         let cropAction = UIAlertAction(title: "编辑", style: UIAlertActionStyle.Default) { (UIAlertAction) -> Void in
             
             let cropVC = UIStoryboard(name: "Problem", bundle: nil).instantiateViewControllerWithIdentifier("cropVC") as! CropAndRotateViewController
-            cropVC.image = (self.answerPhotos[(sender.view?.tag)!] as! UIImage)
+            cropVC.image = (self.answerPhotos[(sender.tag)] as! UIImage)
             alert.dismissViewControllerAnimated(true, completion: nil)
             self.navigationController?.pushViewController(cropVC, animated: true)
             cropVC.callBack = {(image:UIImage) -> Void in
                 weak var wself = self
                 
-                wself?.answerPhotos.replaceObjectAtIndex((sender.view?.tag)!, withObject: image)
+                wself?.answerPhotos.replaceObjectAtIndex((sender.tag), withObject: image)
                 wself?.collectionView?.reloadData()
             }
         }
         let cancelAction = UIAlertAction(title: "取消", style: UIAlertActionStyle.Destructive) { (UIAlertAction) in
             alert.dismissViewControllerAnimated(true, completion: nil)
         }
+        alert.addAction(showAction)
         alert.addAction(deleteAction)
         alert.addAction(cropAction)
         alert.addAction(cancelAction)
-        if(alert.accessibilityFrame == CGRect()){
+      //  if(alert.accessibilityFrame == CGRect()){
+        menu.dismissViewControllerAnimated(true, completion: nil)
+        cameraPicker.dismissViewControllerAnimated(true, completion: nil)
+        imagePicker.dismissViewControllerAnimated(true, completion: nil)
             self.presentViewController(alert, animated: true, completion: nil)
-        }
-        
-    }
-    
+        // }
+         }
+   
     func addNewQus(sender:UISwipeGestureRecognizer) {
         let temp = index
         //加载下一道题目
@@ -524,7 +530,7 @@ class SubjectiveQusViewController: UIViewController,AJPhotoPickerProtocol,UINavi
         }
     }
     func webViewShowBig(sender:UITapGestureRecognizer){
-        
+     
         ShowBigImageFactory.showBigImage(self, webView: sender.view as! UIWebView, sender: sender)
     }
     //图片显示区域的CollectionView的实现
@@ -537,29 +543,18 @@ class SubjectiveQusViewController: UIViewController,AJPhotoPickerProtocol,UINavi
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCellWithReuseIdentifier("PhotoCell", forIndexPath: indexPath) as! PhotoWaterfallCollectionViewCell
         if(indexPath.row < self.answerPhotos.count){
-            cell.imageView?.contentMode = .ScaleToFill
-            cell.imageView?.image = self.answerPhotos[indexPath.row] as? UIImage
-            //加点击预览的手势和长按编辑的手势
-            cell.imageView?.userInteractionEnabled = true
-            cell.imageView!.addGestureRecognizer(UILongPressGestureRecognizer(target: self, action: #selector(SubjectiveQusViewController.editPhoto(_:))))
-            cell.imageView!.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(SubjectiveQusViewController.showBig(_:))))
-            
-            cell.sizeToFit()
-            cell.imageView?.sizeToFit()
-            cell.imageView?.tag = indexPath.row
-            
+
+            cell.btn.setBackgroundImage(self.answerPhotos[indexPath.row] as? UIImage, forState: .Normal)
             //每个imagView都加手势 点击预览 长按编辑
+            cell.btn.tag = indexPath.row
+      
+            cell.btn.addTarget(self, action: #selector(SubjectiveQusViewController.editOrShow(_:)), forControlEvents: .TouchUpInside)
             
         }
         return cell
     }
-    //定义每个cell的边框大小
-    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAtIndex section: Int) -> UIEdgeInsets {
-        return UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
-    }
-    //定义每个cell的大小
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
-        return CGSize(width: SCREEN_WIDTH / 3 - 10, height: SCREEN_HEIGHT / 5)
+        return CGSizeMake(SCREEN_WIDTH / 5, SCREEN_HEIGHT / 8)
     }
     //题目描述的代理 当开始加载和已经加载完
     func webViewDidStartLoad(webView: UIWebView) {
@@ -595,7 +590,7 @@ self.rightBtn.addTarget(self, action: #selector(SubjectiveQusViewController.chan
         self.answerWebView.addGestureRecognizer(tap1)
         self.answerWebView.tag = 1
         self.answerWebView.userInteractionEnabled = true
-        self.answerWebView.frame = CGRectMake(0, totalHeight, SCREEN_WIDTH, 50)
+        self.answerWebView.frame = CGRectMake(0, totalHeight, SCREEN_WIDTH, 150)
         
         self.contentScrollView?.addSubview(self.answerWebView)
         
@@ -609,18 +604,18 @@ self.rightBtn.addTarget(self, action: #selector(SubjectiveQusViewController.chan
             //加载textView 和 collectionView
             self.answerTextView.frame = CGRectMake(0, totalHeight, SCREEN_WIDTH, 100)
             totalHeight += 110
-            self.collectionView.frame = CGRectMake(0, totalHeight, SCREEN_WIDTH, 100)
+            self.collectionView.frame = CGRectMake(0, totalHeight, SCREEN_WIDTH, 200)
             self.answerTextView.hidden = true
             self.collectionView.hidden = true
             self.contentScrollView?.addSubview(collectionView)
             self.answerTextView.keyboardDismissMode = .OnDrag
-            totalHeight += 110
+            totalHeight += 210
             self.contentScrollView?.addSubview(answerTextView)
             self.resetBtn.addTarget(self, action: #selector(SubjectiveQusViewController.resetAnswer(_:)), forControlEvents: .TouchUpInside)
             self.addBtn.addTarget(self, action: #selector(SubjectiveQusViewController.selectAnswerType(_:)), forControlEvents: .TouchUpInside)
             self.saveBtn.addTarget(self, action: #selector(SubjectiveQusViewController.save(_:)), forControlEvents: .TouchUpInside)
         }else{
-            totalHeight += 55
+            totalHeight += 155
             //加载评论的
             let commetLabel = UILabel(frame: CGRectMake(0,totalHeight,SCREEN_WIDTH,21))
             commetLabel.text = "评语:"

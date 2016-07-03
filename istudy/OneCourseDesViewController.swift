@@ -100,6 +100,9 @@ self.courseDataCollectionView!.emptyDataSetDelegate = self
         }
         cell.name?.text = everyCellName[indexPath.row]
         cell.btn?.tag = indexPath.row
+        cell.btn?.layer.cornerRadius = 5.0
+         cell.btn?.layer.masksToBounds = true
+        
         cell.btn?.addTarget(self, action: #selector(OneCourseDesViewController.pushNewVC(_:)), forControlEvents: .TouchUpInside)
         //还有图片的数组
         let image = UIImage(named: self.everyCellName[indexPath.row])
@@ -107,17 +110,19 @@ self.courseDataCollectionView!.emptyDataSetDelegate = self
         
         return cell
     }
-    //返回每个cell是否可以被选择
-    func collectionView(collectionView: UICollectionView, shouldSelectItemAtIndexPath indexPath: NSIndexPath) -> Bool {
-        return false
-    }
+//    //返回每个cell是否可以被选择
+//    func collectionView(collectionView: UICollectionView, shouldSelectItemAtIndexPath indexPath: NSIndexPath) -> Bool {
+//        return false
+//    }
+    
     //定义每个cell的边框大小
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAtIndex section: Int) -> UIEdgeInsets {
-        return UIEdgeInsets(top: 5, left: 5, bottom: 5, right: 5)
+        return UIEdgeInsets(top: 0, left: 2, bottom: 0, right: 2)
+       
     }
     //定义每个cell的大小
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
-        return CGSize(width: SCREEN_WIDTH / 3 - 10, height: SCREEN_HEIGHT / 5)
+        return CGSize(width: SCREEN_WIDTH / 3 - 12, height: SCREEN_HEIGHT / 5 + 20)
     }
     //tableView的一些协议
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
@@ -148,6 +153,8 @@ self.courseDataCollectionView!.emptyDataSetDelegate = self
               self.navigationController?.pushViewController(vc, animated: true)
     }
     func pushNewVC(sender:UIButton){
+
+        
             let oneCourseSB = UIStoryboard(name: "OneCourse", bundle: nil)
         switch sender.tag {
         case 0: let VC = oneCourseSB.instantiateViewControllerWithIdentifier("StudyMaterialVC")  as! StudyMaterialViewController

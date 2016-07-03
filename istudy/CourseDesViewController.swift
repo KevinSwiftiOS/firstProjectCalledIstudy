@@ -104,7 +104,11 @@
             
             }
                 }
-            cell.contentView.addSubview(webView)
+                let imag = UIImageView()
+                let l = UILabel()
+                l.textAlignment = .Center
+                imag.contentMode = .ScaleToFill
+                    cell.contentView.addSubview(webView)
             cell.studyCourse?.layer.cornerRadius = 5.0
             cell.studyCourse?.layer.masksToBounds = true
             cell.studyCourse?.tag = indexPath.row
@@ -140,6 +144,8 @@
                     //cell.courseImageBtn?.tintColor = UIColor.whiteColor()
                 }
                 }
+                let imageV = UIImageView()
+                imageV.contentMode = .ScaleToFill
                 cell.contentView.addSubview(webView)
                 cell.studyCourse?.layer.cornerRadius = 5.0
                 cell.studyCourse?.layer.masksToBounds = true

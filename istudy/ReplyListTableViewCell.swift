@@ -16,6 +16,7 @@ class ReplyListTableViewCell: UITableViewCell,UIWebViewDelegate {
     var tap = UITapGestureRecognizer()
     var cellHeight  = CGFloat()
     var cellTag = NSInteger()
+    var url = ""
     override func awakeFromNib() {
         super.awakeFromNib()
         self.contectWebView?.delegate = self
@@ -42,37 +43,32 @@ class ReplyListTableViewCell: UITableViewCell,UIWebViewDelegate {
         var frame = webView.frame
         frame.size.height = CGFloat(height!) + 4
         webView.frame = frame
-       self.cellHeight = 10 + 21 + 10 + 21 + 12 + frame.size.height
+       self.cellHeight = 10 + 21 + 10 + 21 + 15 + frame.size.height
         NSNotificationCenter.defaultCenter().postNotificationName("replyListContentWebViewHeight", object: self, userInfo: nil)
      tap = UITapGestureRecognizer(target: self, action: #selector(ReplyListTableViewCell.showBig(_:)))
-        self.contectWebView?.addGestureRecognizer(tap)
-        self.contectWebView?.userInteractionEnabled = true
-        self.contectWebView?.multipleTouchEnabled = true
+      
+       
+      let   view = UIView(frame: CGRectMake(0,self.cellHeight - CGFloat(height!),SCREEN_WIDTH,CGFloat(height!)))
+        view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(ReplyListTableViewCell.showBig(_:))))
+        self.contentView.addSubview(view)
+        self.contentView.bringSubviewToFront(view)
+        view.userInteractionEnabled = true
     }
  //图片的放大也发送通知
-    
+
+
     func showBig(sender:UITapGestureRecognizer){
-        NSNotificationCenter.defaultCenter().postNotificationName("replyListShowBig", object: self, userInfo: nil)
-    }
+        var pt = CGPoint()
+        var urlToSave = ""
+        
+        pt = sender.locationInView(self.contectWebView)
+        let imgUrl = String(format: "document.elementFromPoint(%f, %f).src",pt.x, pt.y);
+        urlToSave = self.contectWebView!.stringByEvaluatingJavaScriptFromString(imgUrl)!
+        if(urlToSave != ""){
+            //发送通知 来进行预览
+            url = urlToSave
+            NSNotificationCenter.defaultCenter().postNotificationName("replyListShowBig", object: self, userInfo: nil)
+        }
 
 }
-extension UIImage{
-    func circleImage() -> UIImage {
-        UIGraphicsBeginImageContextWithOptions(self.size, false, 0.0)
-        //获得图形上下文
-        let ctx = UIGraphicsGetCurrentContext()
-        //设置一个范围
-        let rect = CGRectMake(0,0, self.size.width, self.size.height)
-        //根据一个rect创建一个椭圆
-        CGContextAddEllipseInRect(ctx, rect)
-        //裁剪
-        CGContextClip(ctx)
-        //将原照片画到图形上下文
-        self.drawInRect(rect)
-        //从上下文获得裁剪后的照片
-        let newImage = UIGraphicsGetImageFromCurrentImageContext()
-        //关闭上下文
-        UIGraphicsEndImageContext()
-        return newImage
     }
-}

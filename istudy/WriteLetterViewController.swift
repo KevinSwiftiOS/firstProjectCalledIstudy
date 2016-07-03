@@ -10,7 +10,7 @@ import UIKit
 import Alamofire
 import Font_Awesome_Swift
 import SwiftyJSON
-class WriteLetterViewController: UIViewController,UICollectionViewDataSource,UICollectionViewDelegate,AJPhotoPickerProtocol,UIImagePickerControllerDelegate,UINavigationControllerDelegate{
+class WriteLetterViewController: UIViewController,UICollectionViewDataSource,UICollectionViewDelegate,AJPhotoPickerProtocol,UIImagePickerControllerDelegate,UINavigationControllerDelegate,UICollectionViewDelegateFlowLayout{
  //收件人的添加
     var parentcode  = ""
     //主题
@@ -26,6 +26,7 @@ class WriteLetterViewController: UIViewController,UICollectionViewDataSource,UIC
     @IBOutlet weak var subjectTextField:UITextField?
     @IBOutlet weak var writeTextView: JVFloatLabeledTextView!
     @IBOutlet weak var collectionView:UICollectionView!
+    @IBOutlet weak var btmView:UIView!
   var selectedPersonIdArray = NSMutableArray()
    var selectedPersonNameArray = NSMutableArray()
     var items = NSArray()
@@ -35,6 +36,7 @@ class WriteLetterViewController: UIViewController,UICollectionViewDataSource,UIC
     @IBOutlet weak var sendBtn:UIButton!
     override func viewDidLoad() {
         super.viewDidLoad()
+        ShowBigImageFactory.topViewEDit(self.btmView)
         photoBtn.setFAText(prefixText: "", icon: FAType.FAImage, postfixText: "", size: 25, forState: .Normal)
         sendBtn.setFAText(prefixText: "", icon: FAType.FASend, postfixText: "", size: 25, forState: .Normal)
         self.subjectTextField?.enabled = !isReply
@@ -244,15 +246,19 @@ Alamofire.request(.POST, "http://dodo.hznu.edu.cn/api/messagesend", parameters: 
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCellWithReuseIdentifier("photoCell", forIndexPath: indexPath) as! PhotoWaterfallCollectionViewCell
         if(indexPath.row < self.photos.count){
-            cell.imageView?.image = self.photos[indexPath.row] as? UIImage
-            cell.imageView?.tag = indexPath.row
+           cell.btn.setBackgroundImage(self.photos[indexPath.row] as? UIImage, forState: .Normal)
+            cell.btn.tag = indexPath.row
+            cell.btn.addTarget(self, action: #selector(WriteLetterViewController.collectionsPhotosShowBig(_:)), forControlEvents: .TouchUpInside)
         }
         return cell
     }
-    func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
+    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
+        return CGSizeMake(SCREEN_WIDTH / 5, SCREEN_HEIGHT / 8)
+    }
+    func collectionsPhotosShowBig(sender:UIButton){
         let previewPhotoVC = UIStoryboard(name: "Problem", bundle: nil).instantiateViewControllerWithIdentifier("previewPhotoVC") as! previewPhotoViewController
         previewPhotoVC.toShowBigImageArray = self.photos
-        previewPhotoVC.contentOffsetX = CGFloat(indexPath.row)
+        previewPhotoVC.contentOffsetX = CGFloat(sender.tag)
         self.navigationController?.pushViewController(previewPhotoVC, animated: true)
         }
     //选取照片的一些代理

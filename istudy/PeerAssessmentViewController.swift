@@ -38,18 +38,22 @@ class PeerAssessmentViewController: UIViewController ,UITableViewDataSource,UITa
     }
     //头部视图
     func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        let segmentController = AKSegmentedControl(frame: CGRectMake(20,0,SCREEN_WIDTH - 40, 37))
-        let btnArray =  [["image":"箭头","title":"名称"],
-                         ["image":"箭头","title":"老师"],
-                         ["image":"箭头","title":"开始时间"],
-                         ["image":"箭头","title":"截止时间"],
+        let view = UIView(frame: CGRectMake(0,5,SCREEN_WIDTH,37))
+        let segmentController = AKSegmentedControl(frame: CGRectMake(10,5,SCREEN_WIDTH - 20, 37))
+        let btnArray =  [["image":"默认头像","title":"名称"],
+                         ["image":"默认头像","title":"老师"],
+                         ["image":"默认头像","title":"开始时间"],
+                         ["image":"默认头像","title":"截止时间"],
                          ]
         // Do any additional setup after loading the view.
         segmentController.initButtonWithTitleandImage(btnArray)
-       return segmentController
+        view.addSubview(segmentController)
+        segmentController.contentMode = .Center
+  
+       return view
     }
     func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return 40
+        return 45
     }
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return self.items.count

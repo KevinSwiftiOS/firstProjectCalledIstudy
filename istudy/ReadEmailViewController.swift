@@ -10,15 +10,17 @@ import UIKit
 import Alamofire
 import SwiftyJSON
 import Font_Awesome_Swift
-class ReadEmailViewController: UIViewController {
+class ReadEmailViewController: UIViewController,UIGestureRecognizerDelegate {
     //webView用来加载
    //下面的两个按钮 
+    var tap = UITapGestureRecognizer()
     @IBOutlet weak var writeBtn:UIButton!
     //是发件箱的话 下面回复所有和回复的键消失
     var isOut = false
      var tempReceiveArray = NSArray()
     @IBOutlet weak var webView:UIWebView?
     @IBOutlet weak var subjectLabel:UILabel?
+    @IBOutlet weak var btmView:UIView!
     var textView = UITextView()
     var trushBtn = UIButton()
     //邮件的题目
@@ -45,6 +47,7 @@ class ReadEmailViewController: UIViewController {
    
     override func viewDidLoad() {
         super.viewDidLoad()
+        ShowBigImageFactory.topViewEDit(self.btmView)
         //加载数组
           //当有navigationBar的时候 不设置向下移动64个单位 textView和tableView都是scrollView，因此当有navigationBar的时候 都会自动的往下移
         // Do any additional setup after loading the view.
@@ -56,10 +59,24 @@ self.view.bringSubviewToFront(self.writeBtn)
     self.tabBarController?.tabBar.hidden = true
         self.subjectLabel?.text = self.subject
         self.webView?.loadHTMLString(string, baseURL: nil)
-        
-
+        //加载图片放大的效果
+        tap = UITapGestureRecognizer(target: self, action: #selector(ReadEmailViewController.showBig(_:)))
+        self.webView?.userInteractionEnabled = true
+        self.webView?.addGestureRecognizer(tap)
+        self.tap.delegate = self
+     
+    }
+    func gestureRecognizer(gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWithGestureRecognizer otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+        if(gestureRecognizer == self.tap){
+            return true
+        }else{
+            return false
+        }
     }
 
+    func showBig(sender:UITapGestureRecognizer){
+        ShowBigImageFactory.showBigImage(self, webView: self.webView!, sender: sender)
+    }
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         

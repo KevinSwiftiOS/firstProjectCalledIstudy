@@ -75,6 +75,9 @@
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
+                                                    <variation key="heightClass=regular-widthClass=compact" misplaced="YES">
+                                                        <rect key="frame" x="189" y="11" width="42" height="21"/>
+                                                    </variation>
                                                 </label>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="p4V-MZ-LfJ">
                                                     <rect key="frame" x="-23" y="-15" width="46" height="30"/>
@@ -90,7 +93,8 @@
                                                             <exclude reference="caJ-Lp-6BL"/>
                                                         </mask>
                                                     </variation>
-                                                    <variation key="heightClass=regular-widthClass=compact">
+                                                    <variation key="heightClass=regular-widthClass=compact" misplaced="YES">
+                                                        <rect key="frame" x="239" y="5" width="46" height="30"/>
                                                         <mask key="constraints">
                                                             <include reference="caJ-Lp-6BL"/>
                                                         </mask>
@@ -331,7 +335,7 @@
                                         <constraints>
                                             <constraint firstAttribute="height" constant="30" id="KBv-HL-bcx"/>
                                         </constraints>
-                                        <state key="normal" title="Button"/>
+                                        <state key="normal" title="."/>
                                         <variation key="default">
                                             <mask key="constraints">
                                                 <exclude reference="KBv-HL-bcx"/>
@@ -348,7 +352,7 @@
                                         <constraints>
                                             <constraint firstAttribute="height" constant="30" id="JBy-X0-UOV"/>
                                         </constraints>
-                                        <state key="normal" title="Button"/>
+                                        <state key="normal" title="."/>
                                         <variation key="default">
                                             <mask key="constraints">
                                                 <exclude reference="JBy-X0-UOV"/>
@@ -365,7 +369,7 @@
                                         <constraints>
                                             <constraint firstAttribute="height" constant="30" id="eky-h4-W7z"/>
                                         </constraints>
-                                        <state key="normal" title="Button"/>
+                                        <state key="normal" title="."/>
                                         <variation key="default">
                                             <mask key="constraints">
                                                 <exclude reference="eky-h4-W7z"/>

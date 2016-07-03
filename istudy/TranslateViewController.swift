@@ -38,7 +38,7 @@ class TranslateViewController: UIViewController{
    //左右按钮
        
         ShowBigImageFactory.topViewEDit(self.bottomView!)
-       
+        ShowBigImageFactory.addBorderSubView(self.view)
         leftBtn?.tag = 1
         rightBtn?.tag = 2
         leftBtn?.setFAText(prefixText: "", icon: FAType.FAArrowLeft, postfixText: "", size: 25, forState: .Normal, iconSize: 25)

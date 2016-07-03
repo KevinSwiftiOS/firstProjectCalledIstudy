@@ -15,6 +15,8 @@ import DZNEmptyDataSet
 typealias push_selectedPersons = (idArray:NSMutableArray,items:NSArray) -> Void
 class ContactPersonViewController: UIViewController,UITableViewDelegate,UITableViewDataSource,DZNEmptyDataSetSource{
     @IBOutlet weak var contactPersonTableView:UITableView?
+    @IBOutlet weak var btmView:UIView!
+    @IBOutlet weak var saveBtn:UIButton!
     //控制列表是否被打开
     var selectArr = NSMutableArray()
     //总共的数据
@@ -29,13 +31,16 @@ class ContactPersonViewController: UIViewController,UITableViewDelegate,UITableV
     override func viewDidLoad() {
         super.viewDidLoad()
         //加载name数组
-       
+        self.saveBtn.setFAText(prefixText: "", icon: FAType.FASave, postfixText: "", size: 25, forState: .Normal)
+        self.saveBtn.backgroundColor = RGB(0, g: 153, b: 255)
+        self.saveBtn.tintColor = UIColor.whiteColor()
+       ShowBigImageFactory.topViewEDit(self.btmView)
         self.contactPersonTableView?.delegate = self
         self.contactPersonTableView?.dataSource = self
         self.contactPersonTableView?.separatorStyle = .SingleLine
       
         self.contactPersonTableView?.tableFooterView = UIView()
-        
+    
     self.contactPersonTableView?.mj_header = MJRefreshNormalHeader(refreshingTarget: self, refreshingAction: #selector(ContactPersonViewController.headerRefresh))
         self.contactPersonTableView?.mj_header.beginRefreshing()
         // Do any additional setup after loading the view.
@@ -67,7 +72,7 @@ class ContactPersonViewController: UIViewController,UITableViewDelegate,UITableV
        
         let btn = UIButton(frame: CGRectMake(0,0,SCREEN_WIDTH - 50,50))
         //全选的按钮
-        let allSelBtn = UIButton(frame: CGRectMake(SCREEN_WIDTH - 50,10,30,30))
+        let allSelBtn = UIButton(frame: CGRectMake(SCREEN_WIDTH - 50,5,30,30))
         allSelBtn.layer.cornerRadius = 15
         allSelBtn.layer.borderWidth = 1.0
         allSelBtn.layer.masksToBounds = true
@@ -213,7 +218,7 @@ class ContactPersonViewController: UIViewController,UITableViewDelegate,UITableV
 
                            case .Success(let Value):
                 let json = JSON(Value)
-              print(json)
+             
                 if(json["retcode"].number != 0){
                     self.items = NSArray()
                     ProgressHUD.showError("请求失败")

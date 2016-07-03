@@ -11,7 +11,7 @@ import SwiftyJSON
 import Alamofire
 import DZNEmptyDataSet
 import Font_Awesome_Swift
-class ReplyTopicViewController: UIViewController,UITableViewDelegate,UITableViewDataSource,DZNEmptyDataSetSource,DZNEmptyDataSetDelegate,UICollectionViewDelegate,UICollectionViewDataSource,AJPhotoPickerProtocol,UINavigationControllerDelegate,UIImagePickerControllerDelegate{
+class ReplyTopicViewController: UIViewController,UITableViewDelegate,UITableViewDataSource,DZNEmptyDataSetSource,DZNEmptyDataSetDelegate,UICollectionViewDelegate,UICollectionViewDataSource,AJPhotoPickerProtocol,UINavigationControllerDelegate,UIImagePickerControllerDelegate,UICollectionViewDelegateFlowLayout{
     @IBOutlet weak var topLayout: NSLayoutConstraint!
  var id = NSInteger()
     var items = NSArray()
@@ -61,7 +61,8 @@ self.replyListTableView?.tableFooterView = UIView()
         //注册webView加载完的通知
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ReplyTopicViewController.reloadHeight(_:)), name: "replyListContentWebViewHeight", object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ReplyTopicViewController.replyImageShowBig(_:)), name: "replyListShowBig", object: nil)
-        
+        self.updateView()
+
         // Do any additional setup after loading the view.
     }
     func emptyDataSetShouldAllowScroll(scrollView: UIScrollView!) -> Bool {
@@ -114,6 +115,7 @@ self.replyListTableView?.tableFooterView = UIView()
         return cell
     }
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        writeTextView?.resignFirstResponder()
         tableView.deselectRowAtIndexPath(indexPath, animated: true)
     }
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
@@ -128,9 +130,6 @@ self.replyListTableView?.tableFooterView = UIView()
         
     }
 
-    override func viewWillAppear(animated: Bool) {
-        ProgressHUD.show("请稍候")
-            }
     
     //回复的按钮
     @IBAction func reply(sender:UIButton){
@@ -180,6 +179,7 @@ self.replyListTableView?.tableFooterView = UIView()
                 }else{
                     ProgressHUD.showSuccess("发送成功")
                     self.replyListTableView?.mj_header.beginRefreshing()
+                    self.updateView()
                 }
             }
         }
@@ -223,7 +223,7 @@ self.replyListTableView?.tableFooterView = UIView()
                 }else{
                     self.items = json["items"].arrayObject! as NSArray
                     for _ in 0 ..< self.items.count{
-                        self.cellHeight.addObject(10 + 21 + 10 + 21 + 12)
+                        self.cellHeight.addObject(10 + 21 + 10 + 21 + 15)
                     }
                     dispatch_async(dispatch_get_main_queue(), {
                         self.replyListTableView?.mj_header.endRefreshing()
@@ -231,6 +231,7 @@ self.replyListTableView?.tableFooterView = UIView()
                         self.bubbleView.unReadLabel.text = "\(self.items.count)"
                         self.replyListTableView?.emptyDataSetSource = self
                         self.replyListTableView?.reloadData()
+                        self.updateView()
                     })
                     
                     
@@ -257,7 +258,10 @@ self.replyListTableView?.tableFooterView = UIView()
     }
     func replyImageShowBig(sender:NSNotification){
         let cell = sender.object as! ReplyListTableViewCell
-        ShowBigImageFactory.showBigImage(self, webView: cell.contectWebView!, sender: cell.tap)
+        
+        let vc = UIStoryboard(name: "Problem", bundle: nil).instantiateViewControllerWithIdentifier("showBigVC") as! ImageShowBigViewController
+        vc.url = cell.url
+        self.navigationController?.pushViewController(vc, animated: true)
     }
     //选择相册的代理
     @IBAction func addPhoto(sender:UIButton){
@@ -285,35 +289,49 @@ self.replyListTableView?.tableFooterView = UIView()
     func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
         return 1
     }
+    //定义每个cell的大小
+    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
+        return CGSizeMake(SCREEN_WIDTH / 5, SCREEN_HEIGHT / 8)
+    }
+
     func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return self.photos.count
+    }
+    func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
+        writeTextView?.resignFirstResponder()
     }
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCellWithReuseIdentifier("photoCell", forIndexPath: indexPath) as! PhotoWaterfallCollectionViewCell
         if(indexPath.row < self.photos.count){
-            cell.imageView?.image = self.photos[indexPath.row] as? UIImage
-            cell.imageView?.tag = indexPath.row
-            
+          cell.btn.setBackgroundImage(self.photos[indexPath.row] as? UIImage, forState: .Normal)
+            cell.btn.addTarget(self, action: #selector(ReplyTopicViewController.collectionPhotosShowBig(_:)), forControlEvents: .TouchUpInside)
+            cell.btn.tag = indexPath.row
         }
         return cell
     }
-    func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
+    func collectionPhotosShowBig(sender:UIButton) {
         let previewPhotoVC = UIStoryboard(name: "Problem", bundle: nil).instantiateViewControllerWithIdentifier("previewPhotoVC") as! previewPhotoViewController
         previewPhotoVC.toShowBigImageArray = self.photos
-        previewPhotoVC.contentOffsetX = CGFloat(indexPath.row)
+        previewPhotoVC.contentOffsetX = CGFloat(sender.tag)
         self.navigationController?.pushViewController(previewPhotoVC, animated: true)
     }
     //选取照片的一些代理
     //当选择超过最大比重时
     func photoPickerDidMaximum(picker: AJPhotoPickerViewController!) {
+        
+
         ProgressHUD.showError("已超过最大选择数")
     }
     //当点击取消按钮时
     func photoPickerDidCancel(picker: AJPhotoPickerViewController!) {
+        self.updateView()
+
         picker.dismissViewControllerAnimated(true, completion: nil)
     }
     //当点击了照相机的时候
     func photoPickerTapCameraAction(picker: AJPhotoPickerViewController!) {
+        self.updateView()
+
         let cameraPicker = UIImagePickerController()
         if (UIImagePickerController.availableMediaTypesForSourceType(.Camera) != nil){
             cameraPicker.sourceType = .Camera
@@ -332,12 +350,15 @@ self.replyListTableView?.tableFooterView = UIView()
       self.topLayout.constant = (self.collectionView?.frame.height)! + 10
         self.view.setNeedsLayout()
         picker.dismissViewControllerAnimated(true, completion: nil)
+        self.updateView()
+
         self.collectionView?.reloadData()
     }
     //退出照相机的时候
     func imagePickerControllerDidCancel(picker: UIImagePickerController) {
         picker.dismissViewControllerAnimated(true, completion: nil)
-        
+        self.updateView()
+
     }
     //当选择好相册后
     func photoPicker(picker: AJPhotoPickerViewController!, didSelectAssets assets: [AnyObject]!) {
@@ -348,15 +369,19 @@ self.replyListTableView?.tableFooterView = UIView()
         }
         picker.dismissViewControllerAnimated(true, completion: nil)
         
-      self.topLayout.constant = SCREEN_HEIGHT * 0.3 + 10
-        var frame1 = self.replyListTableView?.frame
+  
         ProgressHUD.dismiss()
-        frame1?.size.height = SCREEN_HEIGHT * 0.4 - 30 - 64
-        self.replyListTableView?.frame = frame1!
-        self.view.setNeedsLayout()
-        self.replyListTableView?.reloadData()
+       self.updateView()
+               self.replyListTableView?.reloadData()
         self.collectionView?.reloadData()
     }
-
+    func updateView() {
+        if(self.photos.count > 0){
+            self.collectionView?.frame = CGRectMake(0, 64 + SCREEN_HEIGHT * 0.15 + 5, SCREEN_WIDTH,SCREEN_HEIGHT * 0.2)
+            self.replyListTableView?.frame = CGRectMake(0, 64 + SCREEN_HEIGHT * 0.35 + 10, SCREEN_WIDTH, SCREEN_HEIGHT - 32 - 64 - SCREEN_HEIGHT * 0.35  - 10)
+        }else{
+            self.replyListTableView?.frame = CGRectMake(0, 64 + SCREEN_HEIGHT * 0.15, SCREEN_WIDTH, SCREEN_HEIGHT - 64 - 32 - SCREEN_HEIGHT * 0.15)
+        }
+    }
     
 }

@@ -41,8 +41,9 @@ class DetailPeerAssementViewController: UIViewController,UITableViewDelegate,UIT
     }
     //返回总共要评论的数量为多少个 暂时未5个
     func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        
-    let segmentController = AKSegmentedControl(frame: CGRectMake(20,0,SCREEN_WIDTH - 40, 37))
+        let view = UIView(frame: CGRectMake(0,5,SCREEN_WIDTH,37))
+        let segmentController = AKSegmentedControl(frame: CGRectMake(10,5,SCREEN_WIDTH - 20, 37))
+
     self.tableView?.frame = CGRectMake(0, 21 + 50 + 64, SCREEN_WIDTH, SCREEN_HEIGHT - 37 - 50 - 64)
     let btnArray =  [["image":"默认头像","title":"序号"],
                      ["image":"默认头像","title":"得分"],
@@ -50,7 +51,8 @@ class DetailPeerAssementViewController: UIViewController,UITableViewDelegate,UIT
                      ["image":"默认头像","title":"操作"]]
     // Do any additional setup after loading the view.
     segmentController.initButtonWithTitleandImage(btnArray)
-        return segmentController
+        view.addSubview(segmentController)
+        return view
     }
     func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         return 40

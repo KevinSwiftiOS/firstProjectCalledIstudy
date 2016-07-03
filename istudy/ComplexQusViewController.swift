@@ -170,7 +170,7 @@ class ComplexQusViewController: UIViewController,UITableViewDelegate,UITableView
         self.automaticallyAdjustsScrollViewInsets = false
         self.initView()
         backBtn.setFAIcon(FAType.FAArrowLeft, iconSize: 25, forState: .Normal)
-        actBtn.setFAIcon(FAType.FABookmark, iconSize: 25, forState: .Normal)
+        actBtn.setFAIcon(FAType.FABook, iconSize: 25, forState: .Normal)
         goOVerBtn?.setFATitleColor(UIColor.blackColor())
         goOVerBtn?.setFAText(prefixText: "", icon: FAType.FAPencil, postfixText: "", size: 25, forState: .Normal)
         saveBtn?.setFAIcon(FAType.FASave, iconSize: 25, forState: .Normal)

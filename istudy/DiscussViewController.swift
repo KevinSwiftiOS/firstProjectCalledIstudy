@@ -22,6 +22,7 @@ class DiscussViewController: UIViewController,UITableViewDelegate,UITableViewDat
     @IBOutlet weak var writeBtn:UIButton?
     @IBOutlet weak var refreshBtn:UIButton?
     @IBOutlet weak var typeBtn:UIButton?
+   
     var pop:PopoverView?
     var rgbArray = NSArray()
     var courseNameString = String()
@@ -34,6 +35,7 @@ class DiscussViewController: UIViewController,UITableViewDelegate,UITableViewDat
     var id =  NSInteger()
     override func viewDidLoad() {
         super.viewDidLoad()
+      
         self.automaticallyAdjustsScrollViewInsets = false
         //顶部topView赋值
         self.courseNameLabel?.text = self.courseNameString

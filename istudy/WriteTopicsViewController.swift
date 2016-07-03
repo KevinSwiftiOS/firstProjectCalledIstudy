@@ -10,7 +10,7 @@ import UIKit
 import Alamofire
 import SwiftyJSON
 import Font_Awesome_Swift
-class WriteTopicsViewController: UIViewController,UICollectionViewDelegate,UICollectionViewDataSource,AJPhotoPickerProtocol,UIImagePickerControllerDelegate,UINavigationControllerDelegate{
+class WriteTopicsViewController: UIViewController,UICollectionViewDelegate,UICollectionViewDataSource,AJPhotoPickerProtocol,UIImagePickerControllerDelegate,UINavigationControllerDelegate,UICollectionViewDelegateFlowLayout{
     //项目id 也就是prohected
        var projectid = NSInteger()
     @IBOutlet weak var photoBtn:UIButton!
@@ -19,8 +19,10 @@ class WriteTopicsViewController: UIViewController,UICollectionViewDelegate,UICol
     @IBOutlet weak var collectionView:UICollectionView?
     var photos = NSMutableArray()
     @IBOutlet weak var writeTextView: JVFloatLabeledTextView!
+    @IBOutlet weak var btmView:UIView!
     override func viewDidLoad() {
         super.viewDidLoad()
+        ShowBigImageFactory.topViewEDit(self.btmView)
         photoBtn.setFAText(prefixText: "", icon: FAType.FAImage, postfixText: "", size: 25, forState: .Normal, iconSize: 25)
         sendBtn.setFAText(prefixText: "", icon: FAType.FASend, postfixText: "", size: 25, forState: .Normal, iconSize: 25)
       self.automaticallyAdjustsScrollViewInsets = false
@@ -157,18 +159,28 @@ class WriteTopicsViewController: UIViewController,UICollectionViewDelegate,UICol
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCellWithReuseIdentifier("photoCell", forIndexPath: indexPath) as! PhotoWaterfallCollectionViewCell
         if(indexPath.row < self.photos.count){
-            cell.imageView?.image = self.photos[indexPath.row] as? UIImage
-           cell.imageView?.tag = indexPath.row
+            cell.btn.tag = indexPath.row
+           cell.btn.setBackgroundImage(self.photos[indexPath.row] as? UIImage, forState: .Normal)
+        cell.btn.addTarget(self, action: #selector(WriteTopicsViewController.collectionsPhotosShowBig(_:)), forControlEvents: .TouchUpInside)
         }
     return cell
     }
-    func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
-        let previewPhotoVC = UIStoryboard(name: "Problem", bundle: nil).instantiateViewControllerWithIdentifier("previewPhotoVC") as! previewPhotoViewController
-        previewPhotoVC.toShowBigImageArray = self.photos
-        previewPhotoVC.contentOffsetX = CGFloat(indexPath.row)
-        self.navigationController?.pushViewController(previewPhotoVC, animated: true)
+
+    //定义每个cell的大小
+    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
+           return CGSizeMake(SCREEN_WIDTH / 5, SCREEN_HEIGHT / 8)
     }
 
+    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAtIndex section: Int) -> CGFloat {
+        return 5.0
+    }
+    func collectionsPhotosShowBig(sender:UIButton){
+        let previewPhotoVC = UIStoryboard(name: "Problem", bundle: nil).instantiateViewControllerWithIdentifier("previewPhotoVC") as! previewPhotoViewController
+        previewPhotoVC.toShowBigImageArray = self.photos
+        previewPhotoVC.contentOffsetX = CGFloat(sender.tag)
+        self.navigationController?.pushViewController(previewPhotoVC, animated: true)
+    }
+  
     //选取照片的一些代理
     //当选择超过最大比重时
     func photoPickerDidMaximum(picker: AJPhotoPickerViewController!) {
@@ -192,7 +204,7 @@ class WriteTopicsViewController: UIViewController,UICollectionViewDelegate,UICol
     //当相机拍完了照片后
     func imagePickerController(picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : AnyObject]) {
         let image = info[UIImagePickerControllerOriginalImage] as! UIImage
-        
+      
         
         self.photos.addObject(image)
         picker.dismissViewControllerAnimated(true, completion: nil)
@@ -205,13 +217,15 @@ class WriteTopicsViewController: UIViewController,UICollectionViewDelegate,UICol
     }
     //当选择好相册后
     func photoPicker(picker: AJPhotoPickerViewController!, didSelectAssets assets: [AnyObject]!) {
+      
+
         for i in 0 ..< assets.count {
             let asset = assets[i]
             let tempImage = UIImage(CGImage: asset.defaultRepresentation().fullScreenImage().takeUnretainedValue())
             self.photos.addObject(tempImage)
         }
         picker.dismissViewControllerAnimated(true, completion: nil)
-       
+         
         self.collectionView?.reloadData()
         }
     override func viewWillDisappear(animated: Bool) {

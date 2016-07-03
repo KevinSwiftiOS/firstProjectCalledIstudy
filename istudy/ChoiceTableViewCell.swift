@@ -23,7 +23,7 @@ class ChoiceTableViewCell: UITableViewCell,UIWebViewDelegate {
     }
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        btn = UIButton(frame: CGRectMake(10,2,30,30))
+        btn = UIButton(frame: CGRectMake(10,5,30,30))
         for view in self.contentView.subviews{
             view.removeFromSuperview()
         }

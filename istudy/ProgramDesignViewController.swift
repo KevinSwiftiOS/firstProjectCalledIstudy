@@ -121,7 +121,7 @@ class ProgramDesignViewController: UIViewController,UIWebViewDelegate,UIGestureR
         
         self.initView()
         backBtn.setFAIcon(FAType.FAArrowLeft, iconSize: 25, forState: .Normal)
-        actBtn.setFAIcon(FAType.FABookmark, iconSize: 25, forState: .Normal)
+        actBtn.setFAIcon(FAType.FABook, iconSize: 25, forState: .Normal)
         gooverBtn?.setFAText(prefixText: "", icon: FAType.FAPencil, postfixText: "", size: 25, forState: .Normal)
         saveBtn?.setFAText(prefixText: "", icon: FAType.FASave, postfixText: "", size: 25, forState: .Normal)
         resetBtn?.setFAText(prefixText: "", icon: FAType.FAMinusSquare, postfixText: "", size: 25, forState: .Normal)

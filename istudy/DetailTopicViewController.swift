@@ -14,15 +14,17 @@ class DetailTopicViewController: UIViewController,UIWebViewDelegate,UIGestureRec
     var tap = UITapGestureRecognizer()
     @IBOutlet weak var replyBtn:UIButton!
     @IBOutlet weak var webView:UIWebView?
+    @IBOutlet weak var btmView:UIView!
    var detailString = ""
     var projectid = NSInteger()
     //帖子的id
     var id = NSInteger()
     override func viewDidLoad() {
         super.viewDidLoad()
-    
+    ShowBigImageFactory.topViewEDit(self.btmView)
         self.webView?.delegate = self
         tap = UITapGestureRecognizer(target: self, action: #selector(DetailTopicViewController.showBig(_:)))
+    
         self.view.userInteractionEnabled = true
         self.view.multipleTouchEnabled = true
         self.webView?.userInteractionEnabled = true
@@ -53,7 +55,7 @@ class DetailTopicViewController: UIViewController,UIWebViewDelegate,UIGestureRec
         self.view.bringSubviewToFront(self.replyBtn)
     }
     func webViewDidFinishLoad(webView: UIWebView) {
-        print(333)
+        
     ProgressHUD.dismiss()
         let height = NSInteger(webView.stringByEvaluatingJavaScriptFromString("document.body.offsetHeight")!)
         var frame = webView.frame
@@ -64,7 +66,7 @@ class DetailTopicViewController: UIViewController,UIWebViewDelegate,UIGestureRec
         self.webView!.userInteractionEnabled = true
         let scrollView = webView.subviews[0] as! UIScrollView
         let width = NSInteger(webView.stringByEvaluatingJavaScriptFromString("document.body.scrollWidth")!)
-        
+        self.tap.delegate = self
         scrollView.contentSize = CGSizeMake(CGFloat(width!), 0)
         scrollView.showsVerticalScrollIndicator = false
       
@@ -86,7 +88,7 @@ class DetailTopicViewController: UIViewController,UIWebViewDelegate,UIGestureRec
        // self.view.bringSubviewToFront(self.replyBtn)
     }
     func showBig(sender:UITapGestureRecognizer){
-        print(222)
+       
         ShowBigImageFactory.showBigImage(self, webView: webView!, sender: sender)
     }
 }

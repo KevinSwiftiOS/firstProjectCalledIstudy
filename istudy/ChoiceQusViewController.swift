@@ -111,7 +111,7 @@ class ChoiceQusViewController: UIViewController,UIWebViewDelegate,UITableViewDel
         self.queDes.delegate = self
             self.automaticallyAdjustsScrollViewInsets = false
         backBtn.setFAIcon(FAType.FAArrowLeft, iconSize: 25, forState: .Normal)
-        actBtn.setFAIcon(FAType.FABookmark, iconSize: 25, forState: .Normal)
+        actBtn.setFAIcon(FAType.FABook, iconSize: 25, forState: .Normal)
              gooverBtn?.setFATitleColor(UIColor.blackColor())
        gooverBtn?.setFAText(prefixText: "", icon: FAType.FAPencil, postfixText: "", size: 25, forState: .Normal)
    
