@@ -171,7 +171,8 @@ class SubjectiveQusViewController: UIViewController,AJPhotoPickerProtocol,UINavi
         for view in (self.contentScrollView?.subviews)!{
             view.removeFromSuperview()
         }
-        self.qusDes.loadHTMLString(self.items[index].valueForKey("content") as! String, baseURL: nil)
+        let contenString = cssDesString + (self.items[index].valueForKey("content") as! String)
+        self.qusDes.loadHTMLString(contenString, baseURL: nil)
         self.qusDes.delegate = self
         self.qusKind?.text = self.totalItems[kindOfQusIndex].valueForKey("title") as! String +  "(" +
             "\(self.items[index].valueForKey("totalscore") as! NSNumber)" + "分/题)"
@@ -593,8 +594,8 @@ self.rightBtn.addTarget(self, action: #selector(SubjectiveQusViewController.chan
         self.answerWebView.frame = CGRectMake(0, totalHeight, SCREEN_WIDTH, 150)
         
         self.contentScrollView?.addSubview(self.answerWebView)
-        
-        self.answerWebView.loadHTMLString(self.selfAnswers[index] as! String, baseURL: nil)
+        let answerWebString = cssDesString + (self.selfAnswers[index] as! String) 
+        self.answerWebView.loadHTMLString(answerWebString, baseURL: nil)
         
         let currentDate = NSDate()
         let result:NSComparisonResult = currentDate.compare(endDate)
@@ -697,5 +698,12 @@ self.rightBtn.addTarget(self, action: #selector(SubjectiveQusViewController.chan
             self.collectionView?.reloadData()
         }
 
+    }
+    
+    //响应者连函数
+    override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
+        print(222)
+        self.nextResponder()?.touchesBegan(touches, withEvent: event)
+        super.touchesBegan(touches, withEvent: event)
     }
 }

@@ -26,7 +26,7 @@
         @IBOutlet weak var courseDesTableView:mainTableView?
         override func viewDidLoad() {
             super.viewDidLoad()
-            self.navigationController?.navigationBar.barTintColor = RGB(0, g: 153, b: 255)
+                             self.navigationController?.navigationBar.barTintColor = RGB(0, g: 153, b: 255)
             self.navigationController?.navigationBar.tintColor = UIColor.blackColor()
             
             self.courseDesTableView?.dataSource = self
@@ -75,12 +75,16 @@
                 //判断有没有题目描述
             if(self.items[indexPath.row].valueForKey("memo") as? String != nil &&
                 self.items[indexPath.row].valueForKey("memo") as! String != ""){
-            webView.loadHTMLString(self.items[indexPath.row].valueForKey("memo")
-                as! String, baseURL: nil)
+                var memoString = self.items[indexPath.row].valueForKey("memo") as! String
+                memoString = "<head><style>p{text-indent: 2em; font-size: 15px;font-family: " + "\"" + "宋体" + "\"" +  "}" + "</style></head>" +  "" +  "<p>" + memoString + "</p>"
+      webView.loadHTMLString(memoString, baseURL: nil)
                 }
             cell.courseImageBtn?.addTarget(self, action: #selector(CourseDesViewController.click(_:)),
                                            forControlEvents: .TouchUpInside)
             cell.courseImageBtn?.tag = indexPath.row
+            //设置圆角
+                cell.courseImageBtn?.layer.cornerRadius = 6.0
+                cell.courseImageBtn?.layer.masksToBounds = true
             cell.courseName?.text = self.items[indexPath.row].valueForKey("title") as? String
             cell.courseTea?.text = self.items[indexPath.row].valueForKey("teacher") as? String
             cell.contentView.userInteractionEnabled = true

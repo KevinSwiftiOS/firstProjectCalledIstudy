@@ -183,7 +183,7 @@ class ChangeHeadPortraitViewController: UIViewController,UITableViewDelegate,UIT
             switch response.result{
             case .Success(let Value):
                 let json = JSON(Value)
-                print(json)
+           
                 if(json["retcode"].number == 0){
                     ProgressHUD.showSuccess("保存成功")
                     self.navigationController?.popViewControllerAnimated(true)

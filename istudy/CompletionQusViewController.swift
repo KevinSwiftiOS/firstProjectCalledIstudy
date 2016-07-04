@@ -21,7 +21,7 @@ class CompletionQusViewController: UIViewController,UITextFieldDelegate,UIWebVie
     @IBOutlet weak var saveBtn:UIButton?
     @IBOutlet weak var goOVerBtn:UIButton?
     //阅卷的结果
-    var resultTextView = JVFloatLabeledTextView()
+    var resultTextView = UITextView()
     //记录tableViewheader的高度在键盘出现的时候会用到
     var tableHeaderWebViewHeight:CGFloat = 0.0
     //记录date和阅卷是否开启 和阅卷的时候答案是否可见等等
@@ -318,12 +318,17 @@ class CompletionQusViewController: UIViewController,UITextFieldDelegate,UIWebVie
                             }
    
                         }
-                self.resultTextView = JVFloatLabeledTextView(frame: CGRectMake(0, 0, SCREEN_WIDTH, 200))
+                self.resultTextView = UITextView(frame: CGRectMake(10, 0, SCREEN_WIDTH - 20, 200))
+                        let length = totalAttriString.length
+                        let totalRange = NSMakeRange(0, length)
+                        totalAttriString.addAttribute(NSFontAttributeName, value: UIFont.systemFontOfSize(15), range: totalRange)
+                        
+
                         self.resultTextView.attributedText = totalAttriString
                         self.tableView?.tableFooterView = self.resultTextView
                         //阅卷的界面不可点击
                         self.resultTextView.editable = false
-
+  
                         self.displayMarkingArray.replaceObjectAtIndex(self.index, withObject: 1)
                         self.goOVerBtn?.enabled = false
                         self.saveBtn?.enabled = false
@@ -374,7 +379,7 @@ class CompletionQusViewController: UIViewController,UITextFieldDelegate,UIWebVie
                 vc.enableClientJudge = self.enableClientJudge
                 vc.keyVisible = self.keyVisible
                 vc.viewOneWithAnswerKey = self.viewOneWithAnswerKey
-                self.navigationController?.pushViewController(vc, animated: true)
+                self.navigationController?.pushViewController(vc, animated: false)
             }
         }
         if sender.direction == .Right{
@@ -406,8 +411,8 @@ class CompletionQusViewController: UIViewController,UITextFieldDelegate,UIWebVie
         self.tableHeaderWebViewHeight = 0
         self.currentQus?.text = "\(self.index + 1)" + "/" + "\(self.items.count)"
         self.qusScore?.text = self.totalitems[kindOfQusIndex].valueForKey("title") as! String + "(" + "\(self.items[index].valueForKey("totalscore") as! NSNumber)" + "分/题)"
-     
-        self.queDes.loadHTMLString(self.items[index].valueForKey("content") as! String,
+     let contentString = cssDesString + (self.items[index].valueForKey("content") as! String)
+        self.queDes.loadHTMLString(contentString,
                                    baseURL: nil)
         self.queDes.delegate = self
         //总共有几个答案 分割字符串
@@ -530,7 +535,8 @@ class CompletionQusViewController: UIViewController,UITextFieldDelegate,UIWebVie
             //加载有没有提醒 就是blank
             let key = "blank" + "\(indexPath.row + 1)"
             if(self.items[index].valueForKey(key) as? String != nil && self.items[index].valueForKey(key) as! String != ""){
-                cell.webView?.loadHTMLString(self.items[index].valueForKey(key) as! String, baseURL: nil)
+                let optionContentString = cssOptionString + (self.items[index].valueForKey(key) as! String)
+                cell.webView?.loadHTMLString(optionContentString, baseURL: nil)
             }else{
                 cell.webView?.loadHTMLString("", baseURL: nil)
             }

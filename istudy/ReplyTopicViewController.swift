@@ -14,6 +14,7 @@ import Font_Awesome_Swift
 class ReplyTopicViewController: UIViewController,UITableViewDelegate,UITableViewDataSource,DZNEmptyDataSetSource,DZNEmptyDataSetDelegate,UICollectionViewDelegate,UICollectionViewDataSource,AJPhotoPickerProtocol,UINavigationControllerDelegate,UIImagePickerControllerDelegate,UICollectionViewDelegateFlowLayout{
     @IBOutlet weak var topLayout: NSLayoutConstraint!
  var id = NSInteger()
+    @IBOutlet weak var replyTopToWriteBtm: NSLayoutConstraint!
     var items = NSArray()
     @IBOutlet weak var collectionView:UICollectionView?
      var projectid = NSInteger()
@@ -25,7 +26,7 @@ class ReplyTopicViewController: UIViewController,UITableViewDelegate,UITableView
     var ajPicker = AJPhotoPickerViewController()
     //回复的内容
     @IBOutlet weak var writeTextView:JVFloatLabeledTextView?
-    @IBOutlet weak var replyListTableView:UITableView?
+    @IBOutlet weak var replyListTableView:mainTableView?
     @IBOutlet weak var sendBtn:UIButton!
     @IBOutlet weak var photoBtn:UIButton!
     @IBOutlet weak var voiceBtn:UIButton!
@@ -34,11 +35,13 @@ class ReplyTopicViewController: UIViewController,UITableViewDelegate,UITableView
          topView = UIView(frame: CGRectMake(80,0,SCREEN_WIDTH - 80,64))
         self.navigationController?.view.addSubview(topView)
         super.viewDidLoad()
+        self.replyListTableView?.emptyDataSetDelegate = self
         self.automaticallyAdjustsScrollViewInsets = false
         self.collectionView?.dataSource = self
         self.collectionView?.delegate = self
         ShowBigImageFactory.topViewEDit(btmView)
-    
+     self.replyListTableView?.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(ReplyTopicViewController.TableViewResign)))
+        self.collectionView?.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(ReplyTopicViewController.TableViewResign)))
         self.collectionView?.backgroundColor = UIColor.whiteColor()
         //气泡的效果
         var point = topView.center
@@ -56,14 +59,13 @@ self.replyListTableView?.dataSource = self
 self.replyListTableView?.delegate = self
 self.replyListTableView?.tableFooterView = UIView()
         self.replyListTableView?.mj_header = MJRefreshNormalHeader(refreshingTarget: self, refreshingAction: #selector(ReplyTopicViewController.headerRefresh))
-        self.replyListTableView?.mj_header.beginRefreshing()
+      
         self.replyListTableView?.emptyDataSetDelegate = self
         //注册webView加载完的通知
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ReplyTopicViewController.reloadHeight(_:)), name: "replyListContentWebViewHeight", object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ReplyTopicViewController.replyImageShowBig(_:)), name: "replyListShowBig", object: nil)
-        self.updateView()
-
-        // Do any additional setup after loading the view.
+        self.replyListTableView?.mj_header.beginRefreshing()
+               // Do any additional setup after loading the view.
     }
     func emptyDataSetShouldAllowScroll(scrollView: UIScrollView!) -> Bool {
         return true
@@ -178,8 +180,10 @@ self.replyListTableView?.tableFooterView = UIView()
                     print(json["retcode"].number)
                 }else{
                     ProgressHUD.showSuccess("发送成功")
+                    dispatch_async(dispatch_get_main_queue(), {
+                        
                     self.replyListTableView?.mj_header.beginRefreshing()
-                    self.updateView()
+                    })
                 }
             }
         }
@@ -187,19 +191,15 @@ self.replyListTableView?.tableFooterView = UIView()
     @IBAction func resign(sender: UIControl) {
         self.writeTextView?.resignFirstResponder()
     }
+    func TableViewResign() {
+        self.writeTextView?.resignFirstResponder()
+    }
     override func viewWillDisappear(animated: Bool) {
         topView.removeFromSuperview()
         ProgressHUD.dismiss()
     
         }
-    func titleForEmptyDataSet(scrollView: UIScrollView!) -> NSAttributedString! {
-        let string = "暂无评论"
-        let dic = [NSFontAttributeName:UIFont.boldSystemFontOfSize(18.0),
-                   NSForegroundColorAttributeName:UIColor.grayColor()]
-        let attriString = NSMutableAttributedString(string: string, attributes: dic)
-        return attriString
-    }
-    func headerRefresh() {
+      func headerRefresh() {
         //查询论坛的主题回复
         let userDefault = NSUserDefaults.standardUserDefaults()
         let authtoken = userDefault.valueForKey("authtoken") as! String
@@ -217,21 +217,21 @@ self.replyListTableView?.tableFooterView = UIView()
                     self.replyListTableView?.emptyDataSetSource = self
                         self.items = NSArray()
                         self.replyListTableView?.mj_header.endRefreshing()
-                        self.replyListTableView?.reloadData()
+                      self.updateView()
                     })
                     
                 }else{
                     self.items = json["items"].arrayObject! as NSArray
                     for _ in 0 ..< self.items.count{
-                        self.cellHeight.addObject(10 + 21 + 10 + 21 + 15)
+                        self.cellHeight.addObject(10 + 21 + 10 + 21 + 30)
                     }
                     dispatch_async(dispatch_get_main_queue(), {
                         self.replyListTableView?.mj_header.endRefreshing()
                         ProgressHUD.dismiss()
                         self.bubbleView.unReadLabel.text = "\(self.items.count)"
                         self.replyListTableView?.emptyDataSetSource = self
-                        self.replyListTableView?.reloadData()
-                        self.updateView()
+                          self.updateView()
+                        
                     })
                     
                     
@@ -242,8 +242,7 @@ self.replyListTableView?.tableFooterView = UIView()
                     self.replyListTableView?.emptyDataSetSource = self
                     self.items = NSArray()
                     self.replyListTableView?.mj_header.endRefreshing()
-                    self.replyListTableView?.reloadData()
-                })
+                   self.updateView()                })
             }
         }
 
@@ -372,16 +371,35 @@ self.replyListTableView?.tableFooterView = UIView()
   
         ProgressHUD.dismiss()
        self.updateView()
-               self.replyListTableView?.reloadData()
+        self.replyListTableView?.reloadData()
         self.collectionView?.reloadData()
     }
     func updateView() {
         if(self.photos.count > 0){
-            self.collectionView?.frame = CGRectMake(0, 64 + SCREEN_HEIGHT * 0.15 + 5, SCREEN_WIDTH,SCREEN_HEIGHT * 0.2)
-            self.replyListTableView?.frame = CGRectMake(0, 64 + SCREEN_HEIGHT * 0.35 + 10, SCREEN_WIDTH, SCREEN_HEIGHT - 32 - 64 - SCREEN_HEIGHT * 0.35  - 10)
+            self.collectionView?.frame = CGRectMake(0, 64 + SCREEN_HEIGHT * 0.15 + 5, SCREEN_WIDTH,SCREEN_HEIGHT * 0.15)
+            self.replyTopToWriteBtm?.constant = SCREEN_HEIGHT * 0.3 + 5
         }else{
-            self.replyListTableView?.frame = CGRectMake(0, 64 + SCREEN_HEIGHT * 0.15, SCREEN_WIDTH, SCREEN_HEIGHT - 64 - 32 - SCREEN_HEIGHT * 0.15)
+             self.replyTopToWriteBtm?.constant =  8
         }
+        self.replyListTableView?.emptyDataSetDelegate = self
+        self.replyListTableView?.emptyDataSetSource = self
+        self.replyListTableView?.reloadData()
+        self.collectionView?.reloadData()
+        self.view.bringSubviewToFront(self.replyListTableView!)
+       
+        self.view.setNeedsLayout()
+        self.view.setNeedsDisplay()
+     
+    }
+    func titleForEmptyDataSet(scrollView: UIScrollView!) -> NSAttributedString! {
+        let string = "暂无评论"
+        let dic = [NSFontAttributeName:UIFont.boldSystemFontOfSize(18.0),
+                   NSForegroundColorAttributeName:UIColor.grayColor()]
+        let attriString = NSMutableAttributedString(string: string, attributes: dic)
+        return attriString
     }
     
+    deinit {
+        print("replyTableDeinit")
+    }
 }

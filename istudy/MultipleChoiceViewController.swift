@@ -17,7 +17,7 @@ class MultipleChoiceViewController: UIViewController,UIWebViewDelegate,UITableVi
     @IBOutlet weak var goOVerBtn:UIButton?
     @IBOutlet weak var btmView:UIView!
     //阅卷的框
-    var resultTextView = JVFloatLabeledTextView()
+    var resultTextView = UITextView()
  //有没有超过规定的期限
     var isOver = false
     //记录date和阅卷是否开启 和阅卷的时候答案是否可见等等
@@ -307,7 +307,7 @@ class MultipleChoiceViewController: UIViewController,UIWebViewDelegate,UITableVi
                         if(judgeItems[0].valueForKey("Message") as? String != nil && judgeItems[0].valueForKey("Message") as! String != "") {
                             totalString += "信息:" + (judgeItems[0].valueForKey("Message") as! String)
                         }
-                        self.resultTextView = JVFloatLabeledTextView(frame: CGRectMake(0, 0, SCREEN_WIDTH, 200))
+                        self.resultTextView = UITextView(frame: CGRectMake(10, 0, SCREEN_WIDTH - 20, 200))
                         //设置字体
                         let totalAttriString = NSMutableAttributedString(string: totalString)
                         let range = NSMakeRange(3, 2)
@@ -316,6 +316,11 @@ class MultipleChoiceViewController: UIViewController,UIWebViewDelegate,UITableVi
                         }else{
                             totalAttriString.addAttribute(NSForegroundColorAttributeName, value: UIColor.redColor(), range: range)
                         }
+                        let length = totalAttriString.length
+                        let totalRange = NSMakeRange(0, length)
+                        totalAttriString.addAttribute(NSFontAttributeName, value: UIFont.systemFontOfSize(15), range: totalRange)
+                        
+
                         self.resultTextView.attributedText = totalAttriString
                         self.goOVerBtn?.enabled = false
                         self.saveBtn?.enabled = false
@@ -383,7 +388,8 @@ class MultipleChoiceViewController: UIViewController,UIWebViewDelegate,UITableVi
         //除了按钮外的ABCDlabel选项和每个选项的内容进行加载 根据option某是否存在而进行加载
         
         self.qusDesWebView = UIWebView(frame: CGRectMake(0,0,SCREEN_WIDTH,1))
-        self.qusDesWebView.loadHTMLString(self.items[index].valueForKey("content") as! String, baseURL: nil)
+        let contentString = cssDesString + (self.items[index].valueForKey("content") as! String)
+        self.qusDesWebView.loadHTMLString(contentString, baseURL: nil)
         self.qusDesWebView.delegate = self
         self.cellHeights.removeAllObjects()
         for i in 0 ..< 8{
@@ -492,14 +498,15 @@ class MultipleChoiceViewController: UIViewController,UIWebViewDelegate,UITableVi
         let cell = ChoiceTableViewCell(style: .Default, reuseIdentifier: "ChoiceTableViewCell")
         if(indexPath.row < cellHeights.count){
             let key = "option" + tempArray[indexPath.row]
-            cell.optionWebView?.loadHTMLString(self.items[index].valueForKey(key) as! String, baseURL: nil)
+            let optionContentString = cssOptionString + (self.items[index].valueForKey(key) as! String)
+            cell.optionWebView?.loadHTMLString(optionContentString, baseURL: nil)
             cell.selectionStyle = .None
             cell.contentView.userInteractionEnabled = true
             cell.Custag = indexPath.row
-            cell.btn?.setTitle(tempArray[indexPath.row].uppercaseString, forState: .Normal)
+            let optionString = tempArray[indexPath.row].uppercaseString + "."
+            cell.btn?.setTitle(optionString, forState: .Normal)
             let oneSelfAnswer = self.totalAnswers[index] as! String
-            cell.btn?.backgroundColor = UIColor.whiteColor()
-            cell.btn?.setTitleColor(UIColor.blueColor(), forState: .Normal)
+            cell.btn?.setTitleColor(UIColor.blackColor(), forState: .Normal)
             cell.view?.userInteractionEnabled = true
             cell.canTap = true
             if(self.displayMarkingArray[index] as! NSObject != 0){
@@ -507,9 +514,9 @@ class MultipleChoiceViewController: UIViewController,UIWebViewDelegate,UITableVi
             }
             //多选题 如果包含这个字符就变色
             if(oneSelfAnswer.containsString(tempArray[indexPath.row].uppercaseString)){
-                cell.btn?.backgroundColor = RGB(0, g: 153, b: 255)
+               
                 
-                cell.btn?.setTitleColor(UIColor.whiteColor(), forState: .Normal)
+                cell.btn?.setTitleColor(RGB(0, g: 153, b: 255), forState: .Normal)
             }
             
         }

@@ -149,7 +149,7 @@ self.testTableView?.emptyDataSetDelegate = self
                 ProgressHUD.showError("请求失败")
             case .Success(let Value):
                 let json = JSON(Value)
-                print(json)
+         
                 if(json["retcode"].number != 0){
                     dispatch_async(dispatch_get_main_queue(), {
                         self.testDataArray = NSArray()

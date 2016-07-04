@@ -101,8 +101,7 @@ var questions = NSMutableArray()
             switch response.result{
             case .Success(let Value):
                 let json = JSON(Value)
-                print(json)
-                              if(json["retcode"].number != 0){
+                                              if(json["retcode"].number != 0){
                     print(json["retcode"].number)
                 ProgressHUD.showError("评论失败")
                 }else{
@@ -134,7 +133,7 @@ var questions = NSMutableArray()
                     ProgressHUD.showError("请求失败")
                     
                 }else{
-                    print(json)
+                    
                     dispatch_async(dispatch_get_main_queue(), {
                         ProgressHUD.dismiss()
                         self.items = json["items"].arrayObject! as NSArray

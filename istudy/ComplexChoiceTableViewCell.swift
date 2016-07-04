@@ -24,15 +24,13 @@ class ComplexChoiceTableViewCell: UITableViewCell,UIWebViewDelegate{
     }
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        btn = UIButton(frame: CGRectMake(10,2,30,30))
+        btn = UIButton(frame: CGRectMake(10,10,30,30))
         for view in self.contentView.subviews{
             view.removeFromSuperview()
         }
-              btn?.layer.borderWidth = 1.0
-        btn?.layer.cornerRadius = 15
         self.optionWebView = UIWebView(frame:CGRectMake(30, 0, SCREEN_WIDTH - 30, 1))
         self.optionWebView?.delegate = self
-        btn?.layer.borderColor = UIColor.blueColor().CGColor
+      
         self.contentView.addSubview(btn!)
       self.tap = UITapGestureRecognizer(target: self, action: #selector(ComplexChoiceTableViewCell.tap(_:)))
     }

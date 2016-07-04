@@ -28,7 +28,7 @@ class JudgeQueViewController: UIViewController,UIWebViewDelegate,UITableViewDele
     //显示批阅的textView
     //每次增加的高度
     var totalItems = NSArray()
-    var resultTextView = JVFloatLabeledTextView()
+    var resultTextView = UITextView()
     var displayMarkingArray = NSMutableArray()
     var tempArray = ["a","b","c","d","e","f","g","h","i","j"]
     var queDes = UIWebView()
@@ -222,7 +222,7 @@ class JudgeQueViewController: UIViewController,UIWebViewDelegate,UITableViewDele
                         if(judgeItems[0].valueForKey("Message") as? String != nil && judgeItems[0].valueForKey("Message") as! String != "") {
                             totalString += "信息:" + (judgeItems[0].valueForKey("Message") as! String)
                         }
-                        self.resultTextView = JVFloatLabeledTextView(frame: CGRectMake(0, 0, SCREEN_WIDTH, 200))
+                        self.resultTextView = UITextView(frame: CGRectMake(10, 0, SCREEN_WIDTH - 20, 200))
                         //设置字体
                         let totalAttriString = NSMutableAttributedString(string: totalString)
                         let range = NSMakeRange(3, 2)
@@ -231,6 +231,11 @@ class JudgeQueViewController: UIViewController,UIWebViewDelegate,UITableViewDele
                         }else{
                             totalAttriString.addAttribute(NSForegroundColorAttributeName, value: UIColor.redColor(), range: range)
                         }
+                        let length = totalAttriString.length
+                        let totalRange = NSMakeRange(0, length)
+                        totalAttriString.addAttribute(NSFontAttributeName, value: UIFont.systemFontOfSize(15), range: totalRange)
+                        
+
                         self.resultTextView.attributedText = totalAttriString
                         self.gooverBtn?.enabled = false
                         self.tableView?.tableFooterView = self.resultTextView
@@ -315,7 +320,8 @@ class JudgeQueViewController: UIViewController,UIWebViewDelegate,UITableViewDele
     func initView() {
         self.kindOfQuesLabel?.text = self.totalItems[kindOfQusIndex].valueForKey("title") as! String + "(" + "\(self.items[index].valueForKey("totalscore") as! NSNumber)" + "分/题)"
         self.currentQus?.text = "\(index + 1)" + "/" + "\(self.items.count)"
-        queDes.loadHTMLString(self.items[index].valueForKey("content") as! String, baseURL: nil)
+        let contentString = cssDesString + (self.items[index].valueForKey("content") as! String)
+        queDes.loadHTMLString(contentString, baseURL: nil)
         self.queDes.delegate = self
       
         for i in 0 ..< 8 {
@@ -430,18 +436,15 @@ class JudgeQueViewController: UIViewController,UIWebViewDelegate,UITableViewDele
             else{
                 cell.TFLabel.text = "错"
             }
+            let optionString = self.tempArray[indexPath.row].uppercaseString + "."
             cell.contentView.userInteractionEnabled = true
-            cell.optionLabel.text = self.tempArray[indexPath.row].uppercaseString
+            cell.optionLabel.text = optionString
             cell.optionLabel.textAlignment = .Center
-            cell.optionLabel.layer.cornerRadius = 15
-            cell.optionLabel.layer.borderWidth = 0.7
-            cell.optionLabel.layer.masksToBounds = true
-            cell.optionLabel.backgroundColor = UIColor.whiteColor()
-            cell.optionLabel.textColor = UIColor.blueColor()
+            cell.optionLabel.textColor = UIColor.blackColor()
             let oneSelfAnswer = self.answers[index] as! String
             if(oneSelfAnswer == self.tempArray[indexPath.row].uppercaseString){
-            cell.optionLabel.backgroundColor = RGB(0, g: 153, b: 255)
-            cell.optionLabel.textColor = UIColor.whiteColor()
+            cell.optionLabel.textColor = RGB(0, g: 153, b: 255)
+
             }
         }
         return cell

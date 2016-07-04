@@ -14,7 +14,7 @@ class ProgramDesignViewController: UIViewController,UIWebViewDelegate,UIGestureR
     var kindOfQusIndex = NSInteger()
     var totalKindOfQus = NSInteger()
     //阅卷后的结果界面
-    var resultTextView = JVFloatLabeledTextView()
+    var resultTextView = UITextView()
     //记录date和阅卷是否开启 和阅卷的时候答案是否可见等等
     var endDate = NSDate()
     var tap = UITapGestureRecognizer()
@@ -220,7 +220,8 @@ class ProgramDesignViewController: UIViewController,UIWebViewDelegate,UIGestureR
         print(self.items[index].valueForKey("defaultanswer"))
         self.kindOfQusLabel?.text = self.totalitems[kindOfQusIndex].valueForKey("title") as! String + "(" + "\(self.items[index].valueForKey("totalscore") as! NSNumber)" + "分/题)"
         self.currentQusLabel?.text = "\(self.index + 1)" + "/" + "\(self.items.count)"
-        self.qusDesWebView.loadHTMLString(self.items[index].valueForKey("content") as! String, baseURL: nil)
+        let contentString = cssDesString + (self.items[index].valueForKey("content") as! String)
+        self.qusDesWebView.loadHTMLString(contentString, baseURL: nil)
 
     }
     @IBAction func goOver(sender:UIButton){
@@ -237,7 +238,6 @@ class ProgramDesignViewController: UIViewController,UIWebViewDelegate,UIGestureR
         }
     }
     func save(){
-        print(self.items[index].valueForKey("id"))
         let text = self.answerTextView?.text
         self.selfAnswers.replaceObjectAtIndex(index, withObject: text!)
         self.postAnswer()
@@ -290,7 +290,7 @@ class ProgramDesignViewController: UIViewController,UIWebViewDelegate,UIGestureR
                         if(judgeItems[0].valueForKey("Message") as? String != nil && judgeItems[0].valueForKey("Message") as! String != "") {
                             totalString += "信息:" + (judgeItems[0].valueForKey("Message") as! String)
                         }
-                        self.resultTextView = JVFloatLabeledTextView(frame: CGRectMake(0, self.webViewHeight + 110, SCREEN_WIDTH, 200))
+                        self.resultTextView = UITextView(frame: CGRectMake(10, self.webViewHeight + 110, SCREEN_WIDTH - 20, 200))
                         //设置字体
                         let totalAttriString = NSMutableAttributedString(string: totalString)
                         let range = NSMakeRange(3, 2)
@@ -299,6 +299,11 @@ class ProgramDesignViewController: UIViewController,UIWebViewDelegate,UIGestureR
                         }else{
                             totalAttriString.addAttribute(NSForegroundColorAttributeName, value: UIColor.redColor(), range: range)
                         }
+                        let length = totalAttriString.length
+                        let totalRange = NSMakeRange(0, length)
+                        totalAttriString.addAttribute(NSFontAttributeName, value: UIFont.systemFontOfSize(15), range: totalRange)
+                        
+
                         self.resultTextView.attributedText = totalAttriString
                         self.contentScrollView?.addSubview(self.resultTextView)
                         self.contentScrollView?.contentSize = CGSizeMake(SCREEN_WIDTH, self.webViewHeight + 320)
@@ -419,7 +424,7 @@ class ProgramDesignViewController: UIViewController,UIWebViewDelegate,UIGestureR
         }
         if(self.items[index].valueForKey("defaultanswer") as? String != nil && self.items[index].valueForKey("defaultanswer") as! String != ""){
             var defaultAnswerString = self.items[index].valueForKey("defaultanswer") as! String
-            print(defaultAnswerString)
+         
             defaultAnswerString = defaultAnswerString.stringByReplacingOccurrencesOfString("[E]", withString: " ")
             defaultAnswerString = defaultAnswerString.stringByReplacingOccurrencesOfString("[/E]", withString:" ")
             self.answerTextView?.text = defaultAnswerString

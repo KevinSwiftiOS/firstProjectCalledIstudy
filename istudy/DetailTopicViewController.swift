@@ -91,4 +91,7 @@ class DetailTopicViewController: UIViewController,UIWebViewDelegate,UIGestureRec
        
         ShowBigImageFactory.showBigImage(self, webView: webView!, sender: sender)
     }
+    deinit {
+        print("detailTopicReadDeinit")
+    }
 }

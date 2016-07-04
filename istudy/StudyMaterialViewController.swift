@@ -174,7 +174,7 @@ UISearchControllerDelegate,UISearchResultsUpdating,DZNEmptyDataSetSource,DZNEmpt
             switch response.result{
             case .Success(let Value):
                 let json = JSON(Value)
-                              
+                 print(json)
                 if(json["retcode"].number != 0){
                     ProgressHUD.showError("获取失败")
                     dispatch_async(dispatch_get_main_queue(), {

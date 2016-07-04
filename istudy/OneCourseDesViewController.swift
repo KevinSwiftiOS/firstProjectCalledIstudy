@@ -48,7 +48,9 @@ class OneCourseDesViewController:UIViewController,UICollectionViewDelegateFlowLa
         self.infoTableView!.tableFooterView = UIView()
         self.infoTableView!.hidden = true
         if(self.courseDesString == ""){
-            self.courseDesString = "<html><head><style>P{text-align:center;vertical-align: middle;}</style></head><body><p>无课程信息</p></body></html>"
+            self.courseDesString = "<html><head><style>P{text-align:center;vertical-align: middle;font-size: 15px;font-family: " + "\"" + "宋体" + "\"" +  "}</style></head><body><p>无课程信息</p></body></html>"
+        }else{
+            self.courseDesString = cssDesString + (self.courseDesString as String) + "</p>"
         }
         self.messageView!.loadHTMLString(self.courseDesString as String, baseURL: nil)
         self.courseDataCollectionView?.hidden = false
@@ -74,6 +76,8 @@ class OneCourseDesViewController:UIViewController,UICollectionViewDelegateFlowLa
                          ]
         segmentController!.initButtonWithTitleandImage(btnArray)
         segmentController!.hidden = true
+        segmentController!.setSelectedIndex(0)
+
         self.view.addSubview(segmentController!)
         self.segmentController?.addTarget(self, action: #selector(OneCourseDesViewController.changeInfo(_:)), forControlEvents: .ValueChanged)
 self.courseDataCollectionView!.emptyDataSetDelegate = self
@@ -117,12 +121,12 @@ self.courseDataCollectionView!.emptyDataSetDelegate = self
     
     //定义每个cell的边框大小
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAtIndex section: Int) -> UIEdgeInsets {
-        return UIEdgeInsets(top: 0, left: 2, bottom: 0, right: 2)
+        return UIEdgeInsets(top: 15, left: 15, bottom: 15, right: 15)
        
     }
     //定义每个cell的大小
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
-        return CGSize(width: SCREEN_WIDTH / 3 - 12, height: SCREEN_HEIGHT / 5 + 20)
+        return CGSize(width: SCREEN_WIDTH / 4 - 5, height: SCREEN_HEIGHT / 5 - 15)
     }
     //tableView的一些协议
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
@@ -270,8 +274,7 @@ self.courseDataCollectionView!.emptyDataSetDelegate = self
                         
                     })
                 }else{
-                    print(json)
-                    dispatch_async(dispatch_get_main_queue(), {
+                        dispatch_async(dispatch_get_main_queue(), {
                         self.items = json["items"].arrayObject! as NSArray
                         self.infoTableView?.mj_header.endRefreshing()
                         self.infoTableView!.emptyDataSetSource = self

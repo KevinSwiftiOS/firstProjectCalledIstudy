@@ -22,7 +22,8 @@ class DiscussViewController: UIViewController,UITableViewDelegate,UITableViewDat
     @IBOutlet weak var writeBtn:UIButton?
     @IBOutlet weak var refreshBtn:UIButton?
     @IBOutlet weak var typeBtn:UIButton?
-   
+   var url = ""
+    var paramDic = [String:AnyObject]()
     var pop:PopoverView?
     var rgbArray = NSArray()
     var courseNameString = String()
@@ -31,16 +32,24 @@ class DiscussViewController: UIViewController,UITableViewDelegate,UITableViewDat
     var teacherName = NSMutableArray()
     //总共的items
     var totalItems = NSMutableArray()
+    var authtoken = ""
     //记录课程号的
     var id =  NSInteger()
     override func viewDidLoad() {
         super.viewDidLoad()
-      
+        let userDefault = NSUserDefaults.standardUserDefaults()
+        authtoken = userDefault.valueForKey("authtoken") as! String
+        self.paramDic = ["authtoken":authtoken,"count":"100",
+                                                          "page":"1",
+                                                          "projectid":"\(self.id)",
+                                                          "mode":"2"]
+        self.url =  "http://dodo.hznu.edu.cn/api/forumquery"
+
         self.automaticallyAdjustsScrollViewInsets = false
         //顶部topView赋值
         self.courseNameLabel?.text = self.courseNameString
         self.classLabel?.backgroundColor = RGB(Float(rgbArray[0] as! NSNumber), g:Float(rgbArray[1] as! NSNumber), b: Float(rgbArray[2] as! NSNumber))
-        let userDefault = NSUserDefaults.standardUserDefaults()
+      
         self.classLabel?.text = userDefault.valueForKey("cls") as? String
         self.classLabel?.layer.cornerRadius = 5.0
         self.classLabel?.layer.masksToBounds = true
@@ -175,6 +184,28 @@ override func viewWillAppear(animated: Bool) {
     self.topView?.alpha = 0.5
  
             pop?.selectRowAtIndex = {(index:NSInteger) -> Void in
+                switch index {
+                case 0:
+                    self.paramDic = ["authtoken":self.authtoken,"count":"100",
+                                     "page":"1",
+                                     "courseId":"\(self.id)",
+                                     "type":"2"]
+                   self.url = "http://dodo.hznu.edu.cn/api/forumreplythread"
+                case 1:
+                    self.paramDic = ["authtoken":self.authtoken,"count":"100",
+                                     "page":"1",
+                                     "courseId":"\(self.id)",
+                                     "type":"1"]
+                    self.url = "http://dodo.hznu.edu.cn/api/forumreplythread"
+                case 2:
+                    self.paramDic = ["authtoken":self.authtoken,"count":"100",
+                                     "page":"1",
+                                     "projectid":"\(self.id)",
+                                     "mode":"1"]
+                    self.url = "http://dodo.hznu.edu.cn/api/forumquery"
+                default:
+                    break
+                }
                 self.discussTableView?.mj_header.beginRefreshing()
                 self.discussTableView?.alpha = 1.0
                 self.isShow = false
@@ -221,15 +252,8 @@ override func viewWillAppear(animated: Bool) {
     }
    //刷新
     func headRefresh() {
-       let userDefault = NSUserDefaults.standardUserDefaults()
-       let ahthtoken = userDefault.valueForKey("authtoken") as! String
-        let dic:[String:AnyObject] = ["authtoken":ahthtoken,
-                                   "count":"100",
-                                   "page":"1",
-                                   "projectid":"\(self.id)",
-                                   "mode":"2"]
-      
-      Alamofire.request(.POST, "http://dodo.hznu.edu.cn/api/forumquery", parameters: dic, encoding: ParameterEncoding.URL, headers: nil).responseJSON { (response) in
+        
+      Alamofire.request(.POST, url, parameters: self.paramDic, encoding: ParameterEncoding.URL, headers: nil).responseJSON { (response) in
         switch response.result{
         case .Success(let Value):
             let json = JSON(Value)
@@ -288,5 +312,8 @@ override func viewWillAppear(animated: Bool) {
                    NSForegroundColorAttributeName:UIColor.grayColor()]
         let attriString = NSMutableAttributedString(string: string, attributes: dic)
         return attriString
+    }
+    deinit{
+        print("discussVCDeinit")
     }
 }

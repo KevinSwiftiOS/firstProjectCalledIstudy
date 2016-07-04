@@ -37,7 +37,7 @@ class ResetPasswordViewController: UIViewController {
             case .Success(let Value):
                 let json = JSON(Value)
                 if(json["retcode"].number == 0){
-                    print(json)
+                
                     ProgressHUD.showSuccess("重置成功")
                     let userDefault = NSUserDefaults.standardUserDefaults()
                     userDefault.setValue(json["info"]["username"].string, forKey: "userName")

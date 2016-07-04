@@ -41,9 +41,9 @@ class ReplyListTableViewCell: UITableViewCell,UIWebViewDelegate {
         scrollView.contentSize = CGSizeMake(CGFloat(width!), 0)
         scrollView.showsVerticalScrollIndicator = false
         var frame = webView.frame
-        frame.size.height = CGFloat(height!) + 4
+        frame.size.height = CGFloat(height!) + 8
         webView.frame = frame
-       self.cellHeight = 10 + 21 + 10 + 21 + 15 + frame.size.height
+       self.cellHeight = 10 + 21 + 10 + 21 + frame.size.height
         NSNotificationCenter.defaultCenter().postNotificationName("replyListContentWebViewHeight", object: self, userInfo: nil)
      tap = UITapGestureRecognizer(target: self, action: #selector(ReplyListTableViewCell.showBig(_:)))
       

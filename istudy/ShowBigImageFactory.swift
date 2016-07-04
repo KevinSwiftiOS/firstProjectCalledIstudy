@@ -35,7 +35,7 @@ class ShowBigImageFactory: NSObject {
       //  view.layer.shadowRadius
         static func addBorderSubView(targetView:UIView){
             let borderView = UIView(frame: CGRectMake(0,SCREEN_HEIGHT - 30 - 1,SCREEN_WIDTH,1))
-            borderView.layer.borderWidth = 0.7
+            borderView.layer.borderWidth = 1.0
             borderView.layer.borderColor =  RGB(249, g: 249, b: 249).CGColor
             targetView.addSubview(borderView)
         }

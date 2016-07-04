@@ -231,5 +231,7 @@ class WriteTopicsViewController: UIViewController,UICollectionViewDelegate,UICol
     override func viewWillDisappear(animated: Bool) {
         ProgressHUD.dismiss()
     }
- 
+    deinit {
+        print("writeTopicDeinit")
+    }
 }

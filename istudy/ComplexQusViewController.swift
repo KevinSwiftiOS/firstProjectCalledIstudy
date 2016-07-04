@@ -36,7 +36,7 @@ class ComplexQusViewController: UIViewController,UITableViewDelegate,UITableView
     var totalKindOfQus = 0
     //阅卷的记录文字的数组
     var disPlayMarkTextArray = NSMutableArray()
-    var resultTextView = JVFloatLabeledTextView()
+    var resultTextView = UITextView()
     @IBOutlet weak var btmView:UIView!
     //题目描述的webView
     @IBOutlet weak var qusDesWebView:UIWebView?
@@ -221,7 +221,8 @@ class ComplexQusViewController: UIViewController,UITableViewDelegate,UITableView
     
     func initView() {
         //初始化界面
-        self.qusDesWebView?.loadHTMLString(self.items[index].valueForKey("content") as! String, baseURL: nil)
+        let contentString = cssDesString + (self.items[index].valueForKey("content") as! String)
+        self.qusDesWebView?.loadHTMLString(contentString, baseURL: nil)
         self.subQusStandAnswer.removeAllObjects()
         
         //小题目的初始化
@@ -501,21 +502,23 @@ class ComplexQusViewController: UIViewController,UITableViewDelegate,UITableView
                 let key = "option" + tempOptionArray[indexPath.row]
                 if(self.subQusItems[subIndex].valueForKey(key) as? String != nil &&
                     self.subQusItems[subIndex].valueForKey(key) as! String != ""){
-                    cell.optionWebView?.loadHTMLString(self.subQusItems[subIndex].valueForKey(key) as! String, baseURL: nil)
+                    let optionContentString = cssOptionString + (self.subQusItems[subIndex].valueForKey(key) as! String)
+                    cell.optionWebView?.loadHTMLString(optionContentString, baseURL: nil)
                     cell.Custag = indexPath.row
-                    cell.btn?.setTitle(tempOptionArray[indexPath.row].uppercaseString, forState: .Normal)
+                    let optionString = tempOptionArray[indexPath.row].uppercaseString + "."
+                    cell.btn?.setTitle(optionString, forState: .Normal)
                     
                     //随后拿出自己的答案 无论是多选题 还是单选题 只要有这个字符 就设置背景色
                     let oneSubQusSelfAnswer = self.oneQusSubSelfAnswers[subIndex] as! String
-                    cell.btn?.backgroundColor = UIColor.whiteColor()
-                    cell.btn?.setTitleColor(UIColor.blueColor(), forState: .Normal)
+                 
+                    cell.btn?.setTitleColor(UIColor.blackColor(), forState: .Normal)
                     for i in 0 ..< oneSubQusSelfAnswer.characters.count{
                         let adv = oneSubQusSelfAnswer.startIndex.advancedBy(i)
                         var compareString = ""
                         compareString.append(oneSubQusSelfAnswer[adv])
                         if(compareString == tempOptionArray[indexPath.row].uppercaseString){
-                            cell.btn?.backgroundColor = RGB(0, g: 153, b: 255)
-                            cell.btn?.setTitleColor(UIColor.whiteColor(), forState: .Normal)                        }
+                           
+                            cell.btn?.setTitleColor(RGB(0, g: 153, b: 255), forState: .Normal)                        }
                     }
                 }
                 cell.canTap = true
@@ -535,7 +538,8 @@ class ComplexQusViewController: UIViewController,UITableViewDelegate,UITableView
                 //加载有没有提醒 就是blank
                 let key = "blank" + "\(indexPath.row + 1)"
                 if(self.subQusItems[subIndex].valueForKey(key) as? String != nil && self.subQusItems[subIndex].valueForKey(key) as! String != ""){
-                    cell.webView?.loadHTMLString(self.subQusItems[subIndex].valueForKey(key) as! String, baseURL: nil)
+                    let optionContentString = cssOptionString + (self.subQusItems[subIndex].valueForKey(key) as! String)
+                    cell.webView?.loadHTMLString(optionContentString, baseURL: nil)
                 }else{
                     cell.webView?.loadHTMLString("", baseURL: nil)
                 }
@@ -917,7 +921,7 @@ class ComplexQusViewController: UIViewController,UITableViewDelegate,UITableView
                         if(judgeItems[startRange].valueForKey("Message") as? String != nil && judgeItems[startRange].valueForKey("Message") as! String != "") {
                             totalString += "信息:" + (judgeItems[startRange].valueForKey("Message") as! String)
                         }
-                        self.resultTextView = JVFloatLabeledTextView(frame: CGRectMake(0, 0, SCREEN_WIDTH, 200))
+                        self.resultTextView = UITextView(frame: CGRectMake(10, 0, SCREEN_WIDTH - 20, 200))
                         //设置字体
                         let totalAttriString = NSMutableAttributedString(string: totalString)
                         let range = NSMakeRange(3, 2)
@@ -926,6 +930,11 @@ class ComplexQusViewController: UIViewController,UITableViewDelegate,UITableView
                         }else{
                             totalAttriString.addAttribute(NSForegroundColorAttributeName, value: UIColor.redColor(), range: range)
                         }
+                        let length = totalAttriString.length
+                        let totalRange = NSMakeRange(0, length)
+                        totalAttriString.addAttribute(NSFontAttributeName, value: UIFont.systemFontOfSize(15), range: totalRange)
+                        
+
                         self.resultTextView.attributedText = totalAttriString
                         self.goOVerBtn?.enabled = false
                         self.saveBtn?.enabled = false
@@ -1008,7 +1017,12 @@ class ComplexQusViewController: UIViewController,UITableViewDelegate,UITableView
                             }
                             
                         }
-                        self.resultTextView = JVFloatLabeledTextView(frame: CGRectMake(0, 0, SCREEN_WIDTH, 200))
+                        self.resultTextView = UITextView(frame: CGRectMake(10, 0, SCREEN_WIDTH - 20, 200))
+                        let length = totalAttriString.length
+                        let totalRange = NSMakeRange(0, length)
+                        totalAttriString.addAttribute(NSFontAttributeName, value: UIFont.systemFontOfSize(15), range: totalRange)
+                        
+
                         self.resultTextView.attributedText = totalAttriString
                         self.tableView?.tableFooterView = self.resultTextView
                         //阅卷的界面不可点击

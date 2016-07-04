@@ -54,7 +54,7 @@ class SecuritySettingsViewController: UIViewController {
                 switch response.result{
                 case .Success(let Value):
                     let json = JSON(Value)
-                    print(json)
+                 
                     if(json["retcode"].number == 0){
                         ProgressHUD.showSuccess("设置成功")
                         userDefault.setValue(self.newPassWord?.text, forKey: "passWord")

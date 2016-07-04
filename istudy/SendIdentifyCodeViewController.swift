@@ -50,7 +50,7 @@ class SendIdentifyCodeViewController: UIViewController {
         switch response.result{
         case .Success(let Value):
             let json = JSON(Value)
-              print(json)
+          
             if(json["retcode"].number == 0){
               
                 ProgressHUD.showSuccess("验证成功")

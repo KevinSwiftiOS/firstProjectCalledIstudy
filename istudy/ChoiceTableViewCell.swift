@@ -27,11 +27,9 @@ class ChoiceTableViewCell: UITableViewCell,UIWebViewDelegate {
         for view in self.contentView.subviews{
             view.removeFromSuperview()
         }
-        btn?.layer.borderWidth = 1.0
-        btn?.layer.cornerRadius = 15
         self.optionWebView = UIWebView(frame:CGRectMake(30, 0, SCREEN_WIDTH - 30, 1))
         self.optionWebView?.delegate = self
-        btn?.layer.borderColor = UIColor.blueColor().CGColor
+        btn?.backgroundColor = UIColor.whiteColor()
         self.contentView.addSubview(btn!)
     }
     

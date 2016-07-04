@@ -30,7 +30,7 @@ class ChoiceQusViewController: UIViewController,UIWebViewDelegate,UITableViewDel
     //显示批阅的textView
     //每次增加的高度
     var totalItems = NSArray()
-    var resultTextView = JVFloatLabeledTextView()
+    var resultTextView = UITextView()
     var displayMarkingArray = NSMutableArray()
      var tempArray = ["a","b","c","d","e","f","g","h","i","j"]
       var queDes = UIWebView()
@@ -229,7 +229,7 @@ func showAct(){
                             if(judgeItems[0].valueForKey("Message") as? String != nil && judgeItems[0].valueForKey("Message") as! String != "") {
                                 totalString += "信息:" + (judgeItems[0].valueForKey("Message") as! String)
                             }
-                            self.resultTextView = JVFloatLabeledTextView(frame: CGRectMake(0, 0, SCREEN_WIDTH, 200))
+                            self.resultTextView = UITextView(frame: CGRectMake(10, 0, SCREEN_WIDTH - 20, 200))
                             //设置字体
                             let totalAttriString = NSMutableAttributedString(string: totalString)
                             let range = NSMakeRange(3, 2)
@@ -238,6 +238,11 @@ func showAct(){
                             }else{
                                 totalAttriString.addAttribute(NSForegroundColorAttributeName, value: UIColor.redColor(), range: range)
                             }
+                            //设置字体
+                            let length = totalAttriString.length
+                            let totalRange = NSMakeRange(0, length)
+                          totalAttriString.addAttribute(NSFontAttributeName, value: UIFont.systemFontOfSize(15), range: totalRange)
+                           
                             self.resultTextView.attributedText = totalAttriString
                             self.gooverBtn?.enabled = false
                         self.tableView?.tableFooterView = self.resultTextView
@@ -322,7 +327,10 @@ func showAct(){
     func initView() {
     self.kindOfQuesLabel?.text = self.totalItems[kindOfQusIndex].valueForKey("title") as! String + "(" + "\(self.items[index].valueForKey("totalscore") as! NSNumber)" + "分/题)"
         self.currentQus?.text = "\(index + 1)" + "/" + "\(self.items.count)"
-     queDes.loadHTMLString(self.items[index].valueForKey("content") as! String, baseURL: nil)
+        var contentString = self.items[index].valueForKey("content") as! String
+        contentString = cssDesString + contentString + "</p>"
+
+     queDes.loadHTMLString(contentString, baseURL: nil)
        self.queDes.delegate = self
              self.cellHeight.removeAllObjects()
             for i in 0 ..< 8 {
@@ -442,23 +450,24 @@ func showAct(){
         let cell = ChoiceTableViewCell(style: .Default, reuseIdentifier: "ChoiceTableViewCell")
         if(indexPath.row < cellHeight.count){
             let key = "option" + tempArray[indexPath.row]
-            cell.optionWebView?.loadHTMLString(self.items[index].valueForKey(key) as! String, baseURL: nil)
+            let optionContentString = cssOptionString + (self.items[index].valueForKey(key) as! String)
+            cell.optionWebView?.loadHTMLString(optionContentString, baseURL: nil)
             cell.selectionStyle = .None
             cell.contentView.userInteractionEnabled = true
             cell.Custag = indexPath.row
-            cell.btn?.setTitle(tempArray[indexPath.row].uppercaseString, forState: .Normal)
+            let optionString = tempArray[indexPath.row].uppercaseString + "."
+            cell.btn?.setTitle(optionString, forState: .Normal)
             let oneSelfAnswer = self.answers[index] as! String
             cell.btn?.backgroundColor = UIColor.whiteColor()
-            cell.btn?.setTitleColor(UIColor.blueColor(), forState: .Normal)
+            cell.btn?.setTitleColor(UIColor.blackColor(), forState: .Normal)
             cell.view?.userInteractionEnabled = true
             cell.canTap = true
             if(self.displayMarkingArray[index] as! NSObject != 0){
                 cell.canTap = false
             }
             if(oneSelfAnswer == tempArray[indexPath.row].uppercaseString){
-                cell.btn?.backgroundColor = RGB(0, g: 153, b: 255)
                
-                cell.btn?.setTitleColor(UIColor.whiteColor(), forState: .Normal)
+                cell.btn?.setTitleColor(RGB(0, g: 153, b: 255), forState: .Normal)
             }
             
             }
