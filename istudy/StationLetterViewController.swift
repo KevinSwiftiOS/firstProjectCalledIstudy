@@ -31,7 +31,7 @@ class StationLetterViewController: UIViewController,UITableViewDelegate,UITableV
     var isOut = false
     var inDic = [String:AnyObject]()
     var outDic = [String:AnyObject]()
-    var items = NSArray()
+    var items = NSMutableArray()
     var toDeleteLetterArray = NSMutableArray()
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -76,15 +76,20 @@ class StationLetterViewController: UIViewController,UITableViewDelegate,UITableV
     }
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier("stationLetterCell") as! StationLetterCellTableViewCell
-        cell.kingOfLetterImageView!.setFAIconWithName(FAType.FAEnvelope, textColor: UIColor.grayColor())
-        
+        cell.kingOfLetterImageView!.image = UIImage(named: "已读")
+
         //看接收到的人里面拿出来 随后循环遍历 自己相等 随后判断 赋不同的值
         if(isIn){
-       cell.isRead = self.items[indexPath.row].valueForKey("isread") as! NSInteger
-        
+            if  cell.isFirstTimeToAssign  == false {
+                
+            cell.isRead = self.items[indexPath.row].valueForKey("isread") as! NSInteger
+            }
         //定义cell的属性
         if(cell.isRead == 0){
+            cell.kingOfLetterImageView!.image = UIImage(named: "未读")
+
             }else{
+             cell.kingOfLetterImageView!.image = UIImage(named: "已读")
             
         }
         }
@@ -129,10 +134,15 @@ class StationLetterViewController: UIViewController,UITableViewDelegate,UITableV
         if(isOut){
             readEmailVC.isOut = true
         }
+        cell.kingOfLetterImageView!.image = UIImage(named: "已读")
+        //如果是收件箱的话，就有未读和已读，推进去了就表示已读，就要把未读的标签设为1
+        if(isIn){
+       
+cell.isFirstTimeToAssign = true
+          cell.isRead = 1
+        }
         self.navigationController?.pushViewController(readEmailVC, animated: true)
-        
-        tableView.reloadData()
-    }
+           }
 
 //跟换tableView的内容
     var isShow = false
@@ -201,6 +211,8 @@ class StationLetterViewController: UIViewController,UITableViewDelegate,UITableV
     }
     //头部刷新
     func headerRefresh() {
+        //左半边按钮不可点击
+        self.navigationItem.leftBarButtonItem?.enabled = false
         self.toDeleteLetterArray = [0,0,0,0,0]
         //参数的数组
         var paramDic = [String:AnyObject]()
@@ -213,10 +225,12 @@ class StationLetterViewController: UIViewController,UITableViewDelegate,UITableV
          url = "http://dodo.hznu.edu.cn/api/messagesendquery"
         }
         Alamofire.request(.POST, url, parameters: paramDic, encoding: ParameterEncoding.URL, headers: nil).responseJSON { (response) in
+               self.navigationItem.leftBarButtonItem?.enabled = true
             switch response.result{
-            case .Failure(_):
+              case .Failure(_):
                 ProgressHUD.showError("请求失败")
-                self.items = NSArray()
+            
+                self.items = NSMutableArray()
                dispatch_async(dispatch_get_main_queue(), {
                 self.stationLetterTableView!.emptyDataSetSource = self
 
@@ -229,7 +243,7 @@ class StationLetterViewController: UIViewController,UITableViewDelegate,UITableV
                 
                 if(json["retcode"].number != 0){
                     ProgressHUD.showError("请求失败")
-                    self.items = NSArray()
+                    self.items = NSMutableArray()
                     dispatch_async(dispatch_get_main_queue(), {
                         self.stationLetterTableView!.emptyDataSetSource = self
 
@@ -238,7 +252,8 @@ class StationLetterViewController: UIViewController,UITableViewDelegate,UITableV
                     })
 
                 }else{
-                    self.items = json["items"].arrayObject! as NSArray
+                    let jsonItems =  json["items"].arrayObject! as NSArray
+                    self.items = NSMutableArray(array: jsonItems)
                     dispatch_async(dispatch_get_main_queue(), {
                         self.stationLetterTableView?.mj_header.endRefreshing()
                         if(self.items.count == 0){

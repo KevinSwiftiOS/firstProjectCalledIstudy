@@ -108,11 +108,7 @@
             
             }
                 }
-                let imag = UIImageView()
-                let l = UILabel()
-                l.textAlignment = .Center
-                imag.contentMode = .ScaleToFill
-                    cell.contentView.addSubview(webView)
+            cell.contentView.addSubview(webView)
             cell.studyCourse?.layer.cornerRadius = 5.0
             cell.studyCourse?.layer.masksToBounds = true
             cell.studyCourse?.tag = indexPath.row

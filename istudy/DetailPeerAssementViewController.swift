@@ -44,7 +44,7 @@ class DetailPeerAssementViewController: UIViewController,UITableViewDelegate,UIT
         let view = UIView(frame: CGRectMake(0,5,SCREEN_WIDTH,37))
         let segmentController = AKSegmentedControl(frame: CGRectMake(10,5,SCREEN_WIDTH - 20, 37))
 
-    self.tableView?.frame = CGRectMake(0, 21 + 50 + 64, SCREEN_WIDTH, SCREEN_HEIGHT - 37 - 50 - 64)
+   
     let btnArray =  [["image":"默认头像","title":"序号"],
                      ["image":"默认头像","title":"得分"],
                      ["image":"默认头像","title":"是否评分"],

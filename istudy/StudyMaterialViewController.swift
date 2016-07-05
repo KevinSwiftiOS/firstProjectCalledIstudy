@@ -14,30 +14,26 @@ import Font_Awesome_Swift
 //这里是一个tableView 随后每次点击这个tableView的时候就会预览文档
 import QuickLook
 class StudyMaterialViewController: UIViewController,UITableViewDelegate,UITableViewDataSource,
-UISearchControllerDelegate,UISearchResultsUpdating,DZNEmptyDataSetSource,DZNEmptyDataSetDelegate{
+UISearchControllerDelegate,UISearchResultsUpdating,DZNEmptyDataSetSource,DZNEmptyDataSetDelegate,QLPreviewControllerDataSource,QLPreviewControllerDelegate{
     //courseID
+    var filePath = ""
     var courseId = NSInteger()
     var filterItems = NSMutableArray()
     var sc = UISearchController(searchResultsController: nil)
     
     @IBOutlet weak var studyMaterialsTableView:UITableView?
     //应该接受到一个url 和每份资料的标题等
-    var items = NSArray()
-    var fileUrl = NSURL()
+    var items = NSMutableArray()
+    let qlVC = QLPreviewController()
     override func viewDidLoad() {
         super.viewDidLoad()
+        qlVC.delegate = self
+        qlVC.dataSource = self
         self.automaticallyAdjustsScrollViewInsets = false
         self.studyMaterialsTableView?.delegate = self
         self.studyMaterialsTableView?.dataSource = self
         self.studyMaterialsTableView?.tableFooterView = UIView()
         self.studyMaterialsTableView?.mj_header = MJRefreshNormalHeader(refreshingTarget: self, refreshingAction: #selector(StudyMaterialViewController.headerRefresh))
-        //        let segmentController = AKSegmentedControl(frame: CGRectMake(20,64,SCREEN_WIDTH - 40, 37))
-        //        let btnArray =  [["image":"箭头","title":"名称"],
-        //                         ["image":"箭头","title":"创建时间"],
-        //                                                 ]
-        //        // Do any additional setup after loading the view.
-        //        segmentController.initButtonWithTitleandImage(btnArray)
-        //        self.view.addSubview(segmentController)
         self.studyMaterialsTableView?.mj_header.beginRefreshing()
         //搜索条的配置
         sc.searchResultsUpdater = self
@@ -113,55 +109,75 @@ UISearchControllerDelegate,UISearchResultsUpdating,DZNEmptyDataSetSource,DZNEmpt
             case "xls","xlsx":
                 cell.typeImageView.image = UIImage(named: "Excel")
             default:
-             cell.typeImageView.image = UIImage(named: "zip")
-        }
+                cell.typeImageView.image = UIImage(named: "zip")
+            }
         }
         return cell
     }
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        //当选择每个cell的时候 预览每个文件 访问到一个url即可
-        //        let previewVC = QLPreviewController()
-        //        previewVC.dataSource = self
         
-        //随后改变url 然后推进preViewVC即可
-      tableView.deselectRowAtIndexPath(indexPath, animated: true)
+        tableView.deselectRowAtIndexPath(indexPath, animated: true)
+        let doc = NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true)
         if(!sc.active){
+            //判断是否存在这个文件
             //不能打开rar还有DIR文件
-            let type = self.items[indexPath.row].valueForKey("extensions") as! String
-            if(type == "rar" || type == "DIR" || type == "zip"){
-                ProgressHUD.showError("不能打开该类文件")
+            filePath = doc[0] + "/" + diviseFileUrl((self.items[indexPath.row].valueForKey("url") as? String)!)
+            if(fileExist(filePath)){
                 
-                
-            }else{
-            self.fileUrl = NSURL(string: (self.items[indexPath.row].valueForKey("url") as? String)!)!
-            let preViewVC = UIStoryboard(name: "OneCourse", bundle: nil).instantiateViewControllerWithIdentifier("StudyResourcePreviewVC") as! StudyResourcePreviewViewController
-            preViewVC.url = self.fileUrl
-            preViewVC.title = self.items[indexPath.row].valueForKey("filename") as? String
-              
-            self.navigationController?.pushViewController(preViewVC, animated: true)
+                self.navigationController?.pushViewController(qlVC, animated: true)
             }
-        }else{
-            let type = self.filterItems[indexPath.row].valueForKey("extensions") as! String
-            if(type == "rar" || type == "DIR" || type == "zip"){
-                ProgressHUD.showError("不能打开该类文件")
-            }else{
-            self.fileUrl = NSURL(string: (self.filterItems[indexPath.row].valueForKey("url") as? String)!)!
-            let preViewVC = UIStoryboard(name: "OneCourse", bundle: nil).instantiateViewControllerWithIdentifier("StudyResourcePreviewVC") as! StudyResourcePreviewViewController
-            preViewVC.url = self.fileUrl
-            preViewVC.title = self.items[indexPath.row].valueForKey("filename") as? String
-                sc.active = false
-                
-            self.navigationController?.pushViewController(preViewVC, animated: true)
+            else{
+                let destination = Alamofire.Request.suggestedDownloadDestination(directory: .DocumentDirectory, domain: .UserDomainMask)
+                Alamofire.download(.GET, NSURL(string: self.items[indexPath.row].valueForKey("url") as! String)!, destination: destination).progress { (bytesRead, totalBytesRead, totalBytesExpectedToRead) in
+                    }.response { (request, response, _, error) in
+                        if(error == nil){
+                            ProgressHUD.showSuccess("下载成功")
+                            self.filePath = doc[0] + "/" + diviseFileUrl((self.items[indexPath.row].valueForKey("url") as? String)!)
+                            self.navigationController?.pushViewController(self.qlVC, animated: true)
+                            
+                        }else{
+                            ProgressHUD.showError("下载失败")
+                        }
+                }
+            }
         }
+        else{
+            //要把搜索条拿掉
+            
+            filePath = doc[0] + "/" + diviseFileUrl((self.filterItems[indexPath.row].valueForKey("url") as? String)!)
+            if(fileExist(filePath)){
+                self.sc.active = false
+                self.navigationController?.pushViewController(qlVC, animated: true)
+            }
+            else{
+                let destination = Alamofire.Request.suggestedDownloadDestination(directory: .DocumentDirectory, domain: .UserDomainMask)
+                Alamofire.download(.GET, NSURL(string: self.filterItems[indexPath.row].valueForKey("url") as! String)!, destination: destination).progress { (bytesRead, totalBytesRead, totalBytesExpectedToRead) in
+                    }.response { (request, response, _, error) in
+                        if(error == nil){
+                            ProgressHUD.showSuccess("下载成功")
+                            self.filePath = doc[0] + "/" + diviseFileUrl((self.filterItems[indexPath.row].valueForKey("url") as? String)!)
+                            self.sc.active = false
+                            self.navigationController?.pushViewController(self.qlVC, animated: true)
+                            
+                            
+                        }else{
+                            ProgressHUD.showError("下载失败")
+                        }
+                }
+            }
         }
     }
-        //    func numberOfPreviewItemsInPreviewController(controller: QLPreviewController) -> Int {
-    //        return 1
-    //    }
-    //    func previewController(controller: QLPreviewController, previewItemAtIndex index: Int) -> QLPreviewItem {
-    //        print(self.fileUrl)
-    //        return self.fileUrl
-    //    }
+    func numberOfPreviewItemsInPreviewController(controller: QLPreviewController) -> Int {
+        return 1
+    }
+    func previewController(controller: QLPreviewController, previewItemAtIndex index: Int) -> QLPreviewItem {
+        let fileUrl = NSURL(fileURLWithPath: self.filePath)
+        return fileUrl
+    }
+    func previewController(controller: QLPreviewController, shouldOpenURL url: NSURL, forPreviewItem item: QLPreviewItem) -> Bool {
+        return true
+    }
+    
     func headerRefresh() {
         let userDefault = NSUserDefaults.standardUserDefaults()
         let authtoken = userDefault.valueForKey("authtoken") as! String
@@ -169,17 +185,17 @@ UISearchControllerDelegate,UISearchResultsUpdating,DZNEmptyDataSetSource,DZNEmpt
         
         let request = NSMutableURLRequest(URL: NSURL(string: url)!)
         request.timeoutInterval = 10
-        request.HTTPMethod = "GET"
+        request.HTTPMethod = "POST"
         Alamofire.request(request).responseJSON { (response) in
             switch response.result{
             case .Success(let Value):
                 let json = JSON(Value)
-                 print(json)
+                
                 if(json["retcode"].number != 0){
                     ProgressHUD.showError("获取失败")
                     dispatch_async(dispatch_get_main_queue(), {
                         self.studyMaterialsTableView?.mj_header.endRefreshing()
-                        self.items = NSArray()
+                        self.items = NSMutableArray()
                         self.studyMaterialsTableView?.emptyDataSetSource = self
                         self.studyMaterialsTableView?.reloadData()
                     })
@@ -187,7 +203,12 @@ UISearchControllerDelegate,UISearchResultsUpdating,DZNEmptyDataSetSource,DZNEmpt
                 }else{
                     dispatch_async(dispatch_get_main_queue(), {
                         self.studyMaterialsTableView?.mj_header.endRefreshing()
-                        self.items = json["items"].arrayObject! as NSArray
+                        let jsonItems = json["items"].arrayObject! as NSArray
+                        for i in 0 ..< jsonItems.count{
+                            if(jsonItems[i].valueForKey("extensions") as! String != "DIR"){
+                                self.items.addObject(jsonItems[i])
+                            }
+                        }
                         self.title = "学习资料" + "(共" + "\(self.items.count)" + "个)"
                         self.studyMaterialsTableView?.emptyDataSetSource = self
                         self.studyMaterialsTableView?.reloadData()
@@ -197,7 +218,7 @@ UISearchControllerDelegate,UISearchResultsUpdating,DZNEmptyDataSetSource,DZNEmpt
                 ProgressHUD.showError("获取失败")
                 dispatch_async(dispatch_get_main_queue(), {
                     self.studyMaterialsTableView?.mj_header.endRefreshing()
-                    self.items = NSArray()
+                    self.items = NSMutableArray()
                     self.studyMaterialsTableView?.emptyDataSetSource = self
                     self.studyMaterialsTableView?.reloadData()
                 })
@@ -220,19 +241,15 @@ UISearchControllerDelegate,UISearchResultsUpdating,DZNEmptyDataSetSource,DZNEmpt
     }
     func willDismissSearchController(searchController: UISearchController) {
         self.studyMaterialsTableView?.mj_header.hidden = false
-        }
-//    override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
-//        self.sc.active = false
-//        self.sc.searchBar.text = ""
-//       
-//        }
+    }
+    
     deinit{
         print("StudyMaterialDeinit")
         self.sc.view.removeFromSuperview()
     }
     //当该界面消失的时候 应该progress.dismiss
     override func viewWillDisappear(animated: Bool) {
-       
+        
         ProgressHUD.dismiss()
     }
     func titleForEmptyDataSet(scrollView: UIScrollView!) -> NSAttributedString! {
@@ -244,5 +261,13 @@ UISearchControllerDelegate,UISearchResultsUpdating,DZNEmptyDataSetSource,DZNEmpt
     }
     func emptyDataSetShouldAllowScroll(scrollView: UIScrollView!) -> Bool {
         return true
+    }
+    //判断文件是否存在
+    func fileExist(fileUrl:String) -> Bool{
+        let fileManager = NSFileManager.defaultManager()
+        if(fileManager.fileExistsAtPath(fileUrl)){
+            return true
+        }
+        return false
     }
 }

@@ -16,3 +16,27 @@ let cssOptionString = "<head><style>p{font-size: 15px;font-family: " + "\"" + "�
 func RGB(r:Float,g:Float,b:Float) -> UIColor{
     return UIColor(colorLiteralRed: r / 255.0, green: g / 255.0, blue: b / 255.0, alpha: 1.0)
 }
+//分割文件的字符串
+//记录字符串 随后进行截取
+func diviseFileUrl(urlString:String) -> String{
+    var tempString = ""
+var cnt = 0
+var i = 0
+while i < urlString.characters.count{
+    let index = urlString.startIndex.advancedBy(i)
+    if(urlString[index] == "/"){
+        cnt += 1
+    }
+    if(cnt == 6){
+        break
+        
+    }
+    i += 1
+}
+for j in i + 1 ..< urlString.characters.count{
+    let index = urlString.startIndex.advancedBy(j)
+    tempString.append(urlString[index])
+}
+   return tempString
+}
+

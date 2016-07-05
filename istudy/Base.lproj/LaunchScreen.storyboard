@@ -3,6 +3,7 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
+        <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
     </dependencies>
     <scenes>
         <!--View Controller-->
@@ -16,14 +17,79 @@
                     <view key="view" contentMode="scaleToFill" id="Ze5-6b-2t3">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="logo" translatesAutoresizingMaskIntoConstraints="NO" id="bnP-gi-JwX">
+                                <rect key="frame" x="0.0" y="0.0" width="240" height="128"/>
+                            </imageView>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" text="一个集作业、练习、测评、考务、题库管理于一体的在线实践平台" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ifh-qe-UnK">
+                                <rect key="frame" x="0.0" y="0.0" width="240" height="128"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <fontDescription key="fontDescription" type="italicSystem" pointSize="19"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                            </textView>
+                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="Ifh-qe-UnK" firstAttribute="height" secondItem="bnP-gi-JwX" secondAttribute="height" id="AVV-0V-yqc"/>
+                            <constraint firstItem="bnP-gi-JwX" firstAttribute="leading" secondItem="Ze5-6b-2t3" secondAttribute="leading" id="BMY-1Z-ABN"/>
+                            <constraint firstAttribute="trailing" secondItem="bnP-gi-JwX" secondAttribute="trailing" constant="5" id="LTD-4O-Mup"/>
+                            <constraint firstAttribute="trailing" secondItem="bnP-gi-JwX" secondAttribute="trailing" constant="5" id="Sv2-bz-l4V"/>
+                            <constraint firstItem="bnP-gi-JwX" firstAttribute="leading" secondItem="Ze5-6b-2t3" secondAttribute="leading" constant="5" id="ZUV-YS-Uci"/>
+                            <constraint firstItem="Ifh-qe-UnK" firstAttribute="top" secondItem="bnP-gi-JwX" secondAttribute="bottom" constant="2" id="Zpg-Hv-RmV"/>
+                            <constraint firstItem="Ifh-qe-UnK" firstAttribute="leading" secondItem="Ze5-6b-2t3" secondAttribute="leading" constant="5" id="j63-F9-rJr"/>
+                            <constraint firstItem="bnP-gi-JwX" firstAttribute="height" secondItem="Ze5-6b-2t3" secondAttribute="height" multiplier="0.4" id="kGF-9R-ubv"/>
+                            <constraint firstAttribute="trailing" secondItem="Ifh-qe-UnK" secondAttribute="trailing" constant="5" id="qeB-7F-F28"/>
+                            <constraint firstItem="bnP-gi-JwX" firstAttribute="top" secondItem="Llm-lL-Icb" secondAttribute="bottom" constant="40" id="rp5-cN-GIw"/>
+                            <constraint firstItem="bnP-gi-JwX" firstAttribute="leading" secondItem="Ze5-6b-2t3" secondAttribute="leading" constant="5" id="sRF-v4-1pP"/>
+                        </constraints>
+                        <variation key="default">
+                            <mask key="subviews">
+                                <exclude reference="bnP-gi-JwX"/>
+                                <exclude reference="Ifh-qe-UnK"/>
+                            </mask>
+                            <mask key="constraints">
+                                <exclude reference="BMY-1Z-ABN"/>
+                                <exclude reference="LTD-4O-Mup"/>
+                                <exclude reference="Sv2-bz-l4V"/>
+                                <exclude reference="ZUV-YS-Uci"/>
+                                <exclude reference="kGF-9R-ubv"/>
+                                <exclude reference="rp5-cN-GIw"/>
+                                <exclude reference="sRF-v4-1pP"/>
+                                <exclude reference="AVV-0V-yqc"/>
+                                <exclude reference="Zpg-Hv-RmV"/>
+                                <exclude reference="j63-F9-rJr"/>
+                                <exclude reference="qeB-7F-F28"/>
+                            </mask>
+                        </variation>
+                        <variation key="heightClass=regular-widthClass=compact">
+                            <mask key="subviews">
+                                <include reference="bnP-gi-JwX"/>
+                                <include reference="Ifh-qe-UnK"/>
+                            </mask>
+                            <mask key="constraints">
+                                <exclude reference="BMY-1Z-ABN"/>
+                                <include reference="LTD-4O-Mup"/>
+                                <exclude reference="Sv2-bz-l4V"/>
+                                <exclude reference="ZUV-YS-Uci"/>
+                                <include reference="kGF-9R-ubv"/>
+                                <include reference="rp5-cN-GIw"/>
+                                <include reference="sRF-v4-1pP"/>
+                                <include reference="AVV-0V-yqc"/>
+                                <include reference="Zpg-Hv-RmV"/>
+                                <include reference="j63-F9-rJr"/>
+                                <include reference="qeB-7F-F28"/>
+                            </mask>
+                        </variation>
                     </view>
                     <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
                     <size key="freeformSize" width="414" height="736"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="iYj-Kq-Ea1" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="53" y="375"/>
+            <point key="canvasLocation" x="52.5" y="375"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="logo" width="195" height="60"/>
+    </resources>
 </document>

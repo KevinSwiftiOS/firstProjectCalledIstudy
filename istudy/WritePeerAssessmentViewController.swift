@@ -187,8 +187,12 @@ var questions = NSMutableArray()
         tap.delegate = self
         tap.addTarget(self, action: #selector(WritePeerAssessmentViewController.showBig(_:)))
         webView.addGestureRecognizer(tap)
-        let peerAssermentLabel = UILabel(frame: CGRectMake(0,totalHeight,SCREEN_WIDTH,21))
-        peerAssermentLabel.text = "我的评论:"
+        let peerAssermentLabel = UILabel(frame: CGRectMake(5,totalHeight,SCREEN_WIDTH - 10,21))
+        let firTitle = NSMutableAttributedString(string: "我的评论:")
+        //设置为蓝色
+        let range = NSMakeRange(0, firTitle.length)
+        firTitle.addAttribute(NSForegroundColorAttributeName, value: UIColor.blueColor(), range: range)
+        peerAssermentLabel.attributedText = firTitle
         peerAssermentLabel.tag = 100000
         self.scrollView.addSubview(peerAssermentLabel)
         self.totalHeight += 22
@@ -196,11 +200,11 @@ var questions = NSMutableArray()
         //循环加载rules
         let scores = self.questions[index].valueForKey("rules") as! NSMutableArray
         for i in 0 ..< rules.count{
-            let ruleContentLabel = UILabel(frame: CGRectMake(0,self.totalHeight,SCREEN_WIDTH,1))
+            let ruleContentLabel = UILabel(frame: CGRectMake(5,self.totalHeight,SCREEN_WIDTH - 10,1))
             ruleContentLabel.text = rules[i].valueForKey("contents") as? String
             ruleContentLabel.numberOfLines = 0
             ruleContentLabel.lineBreakMode = .ByWordWrapping
-            let size = ruleContentLabel.sizeThatFits(CGSizeMake(SCREEN_WIDTH, 100))
+            let size = ruleContentLabel.sizeThatFits(CGSizeMake(SCREEN_WIDTH - 10, 100))
             var ruleContentLabelSize = ruleContentLabel.frame
             ruleContentLabelSize.size = size
             ruleContentLabel.frame = ruleContentLabelSize
@@ -209,42 +213,67 @@ var questions = NSMutableArray()
             //评论的分数显示
             ruleContentLabel.tag = 1000000
             
-            let assermentLabel = UILabel(frame: CGRectMake(0,self.totalHeight,100,21))
+            let assermentLabel = UILabel(frame: CGRectMake(5,self.totalHeight,80,21))
             assermentLabel.text = "评论分数:"
             //assermentLabel.tag = i
             self.scrollView.addSubview(assermentLabel)
-            let assermentBtn = UIButton(frame: CGRectMake(50,self.totalHeight,100,21))
+            let assermentBtn = UIButton(frame: CGRectMake(90,self.totalHeight,50,21))
             assermentBtn.tag = i
             if((scores[i].valueForKey("score") as? NSNumber) != nil && scores[i].valueForKey("score") as! NSNumber != 0) {
-            
-            assermentBtn.setTitle("__"  + "\(scores[i].valueForKey("score") as! NSNumber)" + "__分", forState: .Normal)
+//            let underLineString = NSMutableAttributedString(string: "  ")
+//                let underLineRange = NSMakeRange(0, underLineString.length)
+//                let number = NSNumber(integer: NSUnderlineStyle.StyleSingle.rawValue)
+//     underLineString.addAttribute(NSForegroundColorAttributeName, value: UIColor.redColor(), range: underLineRange)
+//                  underLineString.addAttribute(NSUnderlineStyleAttributeName, value: number, range: underLineRange)
+        let scoreString = NSMutableAttributedString(string: " \(scores[i].valueForKey("score") as! NSNumber)")
+                let scoreStringRange = NSMakeRange(0, scoreString.length)
+                scoreString.addAttribute(NSForegroundColorAttributeName, value: UIColor.redColor(), range: scoreStringRange)
+//            scoreString.addAttribute(NSUnderlineStyleAttributeName, value: number, range: scoreStringRange)
+//                let totalString = NSMutableAttributedString()
+//                totalString.appendAttributedString(underLineString)
+//                totalString.appendAttributedString(scoreString)
+//                totalString.appendAttributedString(underLineString)
+//       assermentBtn.setAttributedTitle(totalString, forState: .Normal)
+            assermentBtn.setAttributedTitle(scoreString, forState: .Normal)
             }else{
-                assermentBtn.setTitle("__" + "0" + "__分", forState: .Normal)
+                let scoreString = NSMutableAttributedString(string: "0")
+                let scoreStringRange = NSMakeRange(0, scoreString.length)
+                scoreString.addAttribute(NSForegroundColorAttributeName, value: UIColor.redColor(), range: scoreStringRange)
+                assermentBtn.setAttributedTitle(scoreString, forState: .Normal)
             }
+            assermentBtn.layer.borderWidth = 1.0
+            assermentBtn.layer.borderColor = UIColor.redColor().CGColor
+            let afterAssermentBtnLabel = UILabel(frame: CGRectMake(142,self.totalHeight,20,21))
+            afterAssermentBtnLabel.text = "分"
             //设置下划线
-            let str1 = NSMutableAttributedString(string: (assermentBtn.titleLabel?.text)!)
-            let range1 = NSRange(location: 0, length: str1.length - 1)
-            let range2 = NSRange(location: str1.length - 1, length: 1)
-            let number = NSNumber(integer: NSUnderlineStyle.StyleSingle.rawValue)
-            str1.addAttribute(NSUnderlineStyleAttributeName, value: number, range: range1)
-            str1.addAttribute(NSForegroundColorAttributeName, value: UIColor.redColor(), range: range1)
-            str1.addAttribute(NSForegroundColorAttributeName,value:UIColor.blackColor(), range: range2)
             
-            assermentBtn.setAttributedTitle(str1, forState: .Normal)
+//            let str1 = NSMutableAttributedString(string: (assermentBtn.titleLabel?.text)!)
+//            let range1 = NSRange(location: 0, length: str1.length - 1)
+//            let range2 = NSRange(location: str1.length - 1, length: 1)
+//            let number = NSNumber(integer: NSUnderlineStyle.StyleSingle.rawValue)
+//            str1.addAttribute(NSUnderlineStyleAttributeName, value: number, range: range1)
+//            str1.addAttribute(NSForegroundColorAttributeName, value: UIColor.redColor(), range: range1)
+//            str1.addAttribute(NSForegroundColorAttributeName,value:UIColor.blackColor(), range: range2)
+//            
+//            assermentBtn.setAttributedTitle(str1, forState: .Normal)
            // assermentBtn.backgroundColor = RGB(0, g: 153, b: 255)
           
             assermentBtn.addTarget(self, action: #selector(WritePeerAssessmentViewController.gotoPeer(_:)), forControlEvents: .TouchUpInside)
+            self.scrollView.addSubview(afterAssermentBtnLabel)
             self.scrollView.addSubview(assermentBtn)
             self.totalHeight += 22
         }
         aboveCommentTextHeight = self.totalHeight
-        let commentTextLabel = UILabel(frame: CGRectMake(0,self.totalHeight,SCREEN_WIDTH,21))
+        let commentTextLabel = UILabel(frame: CGRectMake(5,self.totalHeight,SCREEN_WIDTH - 10,21))
         commentTextLabel.tag = 10000000
-        commentTextLabel.text = "评论区:"
+        let comentTitleString = NSMutableAttributedString(string: "评论区:")
+        let comnetRange = NSMakeRange(0, comentTitleString.length)
+        comentTitleString.addAttribute(NSForegroundColorAttributeName, value: UIColor.blueColor(), range: comnetRange)
+        commentTextLabel.attributedText = comentTitleString
         self.scrollView.addSubview(commentTextLabel)
         self.totalHeight += 22
         //加评论的文本框
-         commentTextView = JVFloatLabeledTextView(frame: CGRectMake(0,self.totalHeight,SCREEN_WIDTH,100))
+         commentTextView = JVFloatLabeledTextView(frame: CGRectMake(5,self.totalHeight,SCREEN_WIDTH - 10,100))
         if(self.questions[index].valueForKey("comments") as? String != nil && self.questions[index].valueForKey("comments") as! String != ""){
             commentTextView.text = self.questions[index].valueForKey("comments") as! String
         }else{
@@ -327,15 +356,17 @@ var questions = NSMutableArray()
             if view.isKindOfClass(UIButton.classForCoder()){
                 if(view.tag == tag){
         let btn =  view as! UIButton
-       let  str1 = NSMutableAttributedString(string:"__" + "\(row)" + "__分")
-                    let range1 = NSRange(location: 0, length: str1.length - 1)
-                    let range2 = NSRange(location: str1.length - 1, length: 1)
-                    let number = NSNumber(integer: NSUnderlineStyle.StyleSingle.rawValue)
-                    str1.addAttribute(NSUnderlineStyleAttributeName, value: number, range: range1)
-                    str1.addAttribute(NSForegroundColorAttributeName, value: UIColor.redColor(), range: range1)
-                    str1.addAttribute(NSForegroundColorAttributeName,value:UIColor.blackColor(), range: range2)
-                    
-                    btn.setAttributedTitle(str1, forState: .Normal)
+//       let  str1 = NSMutableAttributedString(string:"__" + "\(row)" + "__分")
+//                    let range1 = NSRange(location: 0, length: str1.length - 1)
+//                    let range2 = NSRange(location: str1.length - 1, length: 1)
+//                    let number = NSNumber(integer: NSUnderlineStyle.StyleSingle.rawValue)
+//                    str1.addAttribute(NSUnderlineStyleAttributeName, value: number, range: range1)
+//                    str1.addAttribute(NSForegroundColorAttributeName, value: UIColor.redColor(), range: range1)
+//                    str1.addAttribute(NSForegroundColorAttributeName,value:UIColor.blackColor(), range: range2)
+                    let scoreString = NSMutableAttributedString(string: "\(row)")
+                    let scoreStringRange = NSMakeRange(0, scoreString.length)
+                    scoreString.addAttribute(NSForegroundColorAttributeName, value: UIColor.redColor(), range: scoreStringRange)
+                    btn.setAttributedTitle(scoreString, forState: .Normal)
 
             let arr1 = self.questions[index].valueForKey("rules") as! NSMutableArray
                       let dic1 = arr1[tag] as! NSMutableDictionary

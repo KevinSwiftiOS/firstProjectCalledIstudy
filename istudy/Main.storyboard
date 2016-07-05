@@ -37,7 +37,7 @@
                                     <constraint firstAttribute="width" constant="79" id="1fH-rh-SJG"/>
                                     <constraint firstAttribute="height" constant="23" id="f8G-7p-xgQ"/>
                                 </constraints>
-                                <state key="normal" title="收信箱" image="站内信选中">
+                                <state key="normal" title="收信箱" image="站内信">
                                     <color key="titleColor" red="0.2901960784" green="0.6705882353" blue="0.96862745100000003" alpha="1" colorSpace="calibratedRGB"/>
                                 </state>
                                 <variation key="default">
@@ -67,7 +67,7 @@
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="2f3-Sc-hos">
                                                     <rect key="frame" x="0.0" y="0.0" width="240" height="128"/>
                                                     <constraints>
-                                                        <constraint firstAttribute="width" constant="70" id="USo-XR-Rw6"/>
+                                                        <constraint firstAttribute="width" constant="55" id="USo-XR-Rw6"/>
                                                         <constraint firstAttribute="height" constant="60" id="arM-k9-AX1"/>
                                                     </constraints>
                                                     <variation key="default">
@@ -790,6 +790,10 @@
                                                     <exclude reference="mih-DK-l9M"/>
                                                 </mask>
                                                 <mask key="constraints">
+                                                    <exclude reference="Aak-Pp-Bds"/>
+                                                    <exclude reference="BVQ-de-QQF"/>
+                                                    <exclude reference="oY3-8P-RJV"/>
+                                                    <exclude reference="wfs-yh-NaL"/>
                                                     <exclude reference="Fh0-DX-bbs"/>
                                                     <exclude reference="rsg-JA-whg"/>
                                                     <exclude reference="07J-LZ-tFe"/>
@@ -798,10 +802,6 @@
                                                     <exclude reference="Ik9-oR-M4b"/>
                                                     <exclude reference="LS4-8T-GCN"/>
                                                     <exclude reference="jjb-s3-3rp"/>
-                                                    <exclude reference="Aak-Pp-Bds"/>
-                                                    <exclude reference="BVQ-de-QQF"/>
-                                                    <exclude reference="oY3-8P-RJV"/>
-                                                    <exclude reference="wfs-yh-NaL"/>
                                                 </mask>
                                             </variation>
                                             <variation key="heightClass=regular-widthClass=compact">
@@ -812,6 +812,10 @@
                                                     <include reference="mih-DK-l9M"/>
                                                 </mask>
                                                 <mask key="constraints">
+                                                    <include reference="Aak-Pp-Bds"/>
+                                                    <include reference="BVQ-de-QQF"/>
+                                                    <include reference="oY3-8P-RJV"/>
+                                                    <include reference="wfs-yh-NaL"/>
                                                     <include reference="Fh0-DX-bbs"/>
                                                     <include reference="rsg-JA-whg"/>
                                                     <include reference="07J-LZ-tFe"/>
@@ -820,10 +824,6 @@
                                                     <include reference="Ik9-oR-M4b"/>
                                                     <include reference="LS4-8T-GCN"/>
                                                     <include reference="jjb-s3-3rp"/>
-                                                    <include reference="Aak-Pp-Bds"/>
-                                                    <include reference="BVQ-de-QQF"/>
-                                                    <include reference="oY3-8P-RJV"/>
-                                                    <include reference="wfs-yh-NaL"/>
                                                 </mask>
                                             </variation>
                                         </tableViewCellContentView>
@@ -900,7 +900,7 @@
         <scene sceneID="XSd-Hq-fIw">
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="3oS-EI-gzF" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="我的课程" image="我的课程未选中" id="IPE-Xf-icA"/>
+                    <tabBarItem key="tabBarItem" title="我的课程" image="我的课程" id="IPE-Xf-icA"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="KAh-D8-M4W">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
@@ -919,7 +919,7 @@
         <scene sceneID="GK7-Ng-kD6">
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="jy3-4s-l6W" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="我的考试" image="我的考试未选中" selectedImage="我的考试选中" id="Jrz-At-NWt"/>
+                    <tabBarItem key="tabBarItem" title="我的考试" image="我的考试未选中" id="Jrz-At-NWt"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="pen-tn-S88">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
@@ -938,7 +938,7 @@
         <scene sceneID="bv8-T7-xGj">
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="RhW-Q3-g7Y" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="个人信息" image="个人信息未选中" selectedImage="个人信息选中" id="lsa-1X-mEW">
+                    <tabBarItem key="tabBarItem" title="个人信息" image="个人信息" selectedImage="个人信息" id="lsa-1X-mEW">
                         <offsetWrapper key="titlePositionAdjustment" horizontal="0.0" vertical="1"/>
                     </tabBarItem>
                     <toolbarItems/>
@@ -959,7 +959,7 @@
         <scene sceneID="Ss1-wm-2x4">
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="OYY-kX-OSO" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="站内信" image="站内信未选中" id="fTz-Fx-gir"/>
+                    <tabBarItem key="tabBarItem" title="站内信" image="发件箱未选中" id="fTz-Fx-gir"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="GoB-fW-KjD">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
@@ -976,14 +976,11 @@
         </scene>
     </scenes>
     <resources>
-        <image name="个人信息未选中" width="32" height="32"/>
-        <image name="个人信息选中" width="32" height="32"/>
+        <image name="个人信息" width="32" height="32"/>
         <image name="发件箱未选中" width="25" height="25"/>
         <image name="我的考试未选中" width="28" height="28"/>
-        <image name="我的考试选中" width="28" height="28"/>
-        <image name="我的课程未选中" width="24" height="23"/>
+        <image name="我的课程" width="32" height="32"/>
         <image name="更多未选择" width="20" height="20"/>
-        <image name="站内信未选中" width="25" height="23"/>
-        <image name="站内信选中" width="25" height="23"/>
+        <image name="站内信" width="19" height="19"/>
     </resources>
 </document>

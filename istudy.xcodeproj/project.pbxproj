@@ -99,6 +99,8 @@
 		388741701C8AFF0C008B665A /* MyHomeWorkViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3887416F1C8AFF0C008B665A /* MyHomeWorkViewController.swift */; };
 		388741721C8AFF30008B665A /* PeerAssessmentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 388741711C8AFF30008B665A /* PeerAssessmentViewController.swift */; };
 		388741781C8AFF88008B665A /* DiscussViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 388741771C8AFF88008B665A /* DiscussViewController.swift */; };
+		388852781D2BB11F005D065F /* LaunchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 388852771D2BB11F005D065F /* LaunchViewController.swift */; };
+		3888527C1D2BDB8E005D065F /* AppLogo.png in Resources */ = {isa = PBXBuildFile; fileRef = 3888527B1D2BDB8E005D065F /* AppLogo.png */; };
 		388B3E4D1CF5F010000DD1F4 /* RXRotateButtonOverlayView.m in Sources */ = {isa = PBXBuildFile; fileRef = 388B3E4A1CF5F010000DD1F4 /* RXRotateButtonOverlayView.m */; };
 		388B3E4E1CF5F011000DD1F4 /* ImageAndTitleVerticalButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 388B3E4C1CF5F010000DD1F4 /* ImageAndTitleVerticalButton.m */; };
 		388B3E501CF5F017000DD1F4 /* rotateView.gif in Resources */ = {isa = PBXBuildFile; fileRef = 388B3E4F1CF5F017000DD1F4 /* rotateView.gif */; };
@@ -184,7 +186,6 @@
 		38DF995A1C8C69EC00BBE15E /* SixSameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38DF99591C8C69EC00BBE15E /* SixSameViewController.swift */; };
 		38DF995C1C8C6A6000BBE15E /* ChangeSexViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38DF995B1C8C6A6000BBE15E /* ChangeSexViewController.swift */; };
 		38DF995E1C8C6A9100BBE15E /* AdressViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38DF995D1C8C6A9100BBE15E /* AdressViewController.swift */; };
-		38DFCF141CF350ED0037992F /* StudyResourcePreviewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38DFCF131CF350ED0037992F /* StudyResourcePreviewViewController.swift */; };
 		38E1C61A1CA2D8B700F0FA91 /* ContactPersonTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38E1C6191CA2D8B700F0FA91 /* ContactPersonTableViewCell.swift */; };
 		38E1C61C1CA2DA1800F0FA91 /* ContactPersonViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38E1C61B1CA2DA1800F0FA91 /* ContactPersonViewController.swift */; };
 		38F351061CC719C1001BFD3A /* ComplexButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38F351051CC719C1001BFD3A /* ComplexButton.swift */; };
@@ -556,6 +557,8 @@
 		3887416F1C8AFF0C008B665A /* MyHomeWorkViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyHomeWorkViewController.swift; sourceTree = "<group>"; };
 		388741711C8AFF30008B665A /* PeerAssessmentViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PeerAssessmentViewController.swift; sourceTree = "<group>"; };
 		388741771C8AFF88008B665A /* DiscussViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DiscussViewController.swift; sourceTree = "<group>"; };
+		388852771D2BB11F005D065F /* LaunchViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LaunchViewController.swift; sourceTree = "<group>"; };
+		3888527B1D2BDB8E005D065F /* AppLogo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = AppLogo.png; sourceTree = "<group>"; };
 		388B3E491CF5F010000DD1F4 /* RXRotateButtonOverlayView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RXRotateButtonOverlayView.h; sourceTree = "<group>"; };
 		388B3E4A1CF5F010000DD1F4 /* RXRotateButtonOverlayView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RXRotateButtonOverlayView.m; sourceTree = "<group>"; };
 		388B3E4B1CF5F010000DD1F4 /* ImageAndTitleVerticalButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageAndTitleVerticalButton.h; sourceTree = "<group>"; };
@@ -665,7 +668,6 @@
 		38DF99591C8C69EC00BBE15E /* SixSameViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SixSameViewController.swift; sourceTree = "<group>"; };
 		38DF995B1C8C6A6000BBE15E /* ChangeSexViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChangeSexViewController.swift; sourceTree = "<group>"; };
 		38DF995D1C8C6A9100BBE15E /* AdressViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AdressViewController.swift; sourceTree = "<group>"; };
-		38DFCF131CF350ED0037992F /* StudyResourcePreviewViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StudyResourcePreviewViewController.swift; sourceTree = "<group>"; };
 		38E1C6191CA2D8B700F0FA91 /* ContactPersonTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactPersonTableViewCell.swift; sourceTree = "<group>"; };
 		38E1C61B1CA2DA1800F0FA91 /* ContactPersonViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactPersonViewController.swift; sourceTree = "<group>"; };
 		38F351051CC719C1001BFD3A /* ComplexButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComplexButton.swift; sourceTree = "<group>"; };
@@ -973,9 +975,11 @@
 				3811F5AD1C8842C900BCC841 /* LoginAndReset */,
 				3811F57A1C883CD000BCC841 /* AppDelegate.swift */,
 				3811F5841C883CD000BCC841 /* Assets.xcassets */,
+				388852771D2BB11F005D065F /* LaunchViewController.swift */,
 				3811F5D91C88679B00BCC841 /* istudy-Bridging-Header.h */,
 				3811F5861C883CD000BCC841 /* LaunchScreen.storyboard */,
 				38C146901C899E6300CBAFFB /* config.swift */,
+				3888527B1D2BDB8E005D065F /* AppLogo.png */,
 				3811F5891C883CD000BCC841 /* Info.plist */,
 				3811F5811C883CD000BCC841 /* istudy.xcdatamodeld */,
 				38CCBF6E1C93B8A2002BEA6B /* PersonalInformation+CoreDataProperties.swift */,
@@ -1112,7 +1116,6 @@
 			isa = PBXGroup;
 			children = (
 				388741671C8AFD25008B665A /* StudyMaterialViewController.swift */,
-				38DFCF131CF350ED0037992F /* StudyResourcePreviewViewController.swift */,
 			);
 			name = StudyMaterials;
 			sourceTree = "<group>";
@@ -2278,6 +2281,7 @@
 				3811F5AC1C883D5800BCC841 /* LoginAndReset.storyboard in Resources */,
 				38AED7F31CA8044C009ADC44 /* segmented-separator.png in Resources */,
 				388B3E501CF5F017000DD1F4 /* rotateView.gif in Resources */,
+				3888527C1D2BDB8E005D065F /* AppLogo.png in Resources */,
 				38AED7FA1CA8044C009ADC44 /* star-icon@2x.png in Resources */,
 				3811F5B01C8842FB00BCC841 /* Main.storyboard in Resources */,
 				382C14B91CA1390400AB420A /* OneCourse.storyboard in Resources */,
@@ -2419,7 +2423,6 @@
 				38BD7C1E1CA6D303001F44B2 /* MJRefreshAutoNormalFooter.m in Sources */,
 				38CCBF711C93B8A2002BEA6B /* PersonalInformation.swift in Sources */,
 				38BD7C1D1CA6D303001F44B2 /* MJRefreshAutoGifFooter.m in Sources */,
-				38DFCF141CF350ED0037992F /* StudyResourcePreviewViewController.swift in Sources */,
 				38F4E8F81C92632A004AF629 /* ImageCropperView.m in Sources */,
 				380D8BB01CA0338B00430E71 /* MASViewAttribute.m in Sources */,
 				38CCBF701C93B8A2002BEA6B /* PersonalInformation+CoreDataProperties.swift in Sources */,
@@ -2445,6 +2448,7 @@
 				38FC6FAA1CE9F98F0063E36B /* UIButton+WebCache.m in Sources */,
 				380D8BAC1CA0338B00430E71 /* MASCompositeConstraint.m in Sources */,
 				387C25EA1CB53CB400531AE4 /* ReplyListTableViewCell.swift in Sources */,
+				388852781D2BB11F005D065F /* LaunchViewController.swift in Sources */,
 				3811F5B91C8853C700BCC841 /* OneCourseDesViewController.swift in Sources */,
 				38FC6FA91CE9F98F0063E36B /* SDWebImagePrefetcher.m in Sources */,
 				38BD7C1F1CA6D303001F44B2 /* MJRefreshAutoStateFooter.m in Sources */,

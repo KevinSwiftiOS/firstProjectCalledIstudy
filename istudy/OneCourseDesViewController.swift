@@ -121,12 +121,12 @@ self.courseDataCollectionView!.emptyDataSetDelegate = self
     
     //定义每个cell的边框大小
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAtIndex section: Int) -> UIEdgeInsets {
-        return UIEdgeInsets(top: 15, left: 15, bottom: 15, right: 15)
+        return UIEdgeInsets(top: 10, left: 12, bottom: 10, right: 12)
        
     }
     //定义每个cell的大小
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
-        return CGSize(width: SCREEN_WIDTH / 4 - 5, height: SCREEN_HEIGHT / 5 - 15)
+        return CGSize(width: SCREEN_WIDTH / 4 - 5, height: SCREEN_HEIGHT / 5 - 20)
     }
     //tableView的一些协议
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {

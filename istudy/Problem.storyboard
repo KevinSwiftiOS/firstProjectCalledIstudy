@@ -1063,7 +1063,7 @@
                                     </mask>
                                 </variation>
                             </label>
-                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="r5k-i5-1T5">
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="r5k-i5-1T5">
                                 <rect key="frame" x="0.0" y="0.0" width="240" height="128"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
@@ -1080,7 +1080,7 @@
                             <constraint firstItem="r5k-i5-1T5" firstAttribute="leading" secondItem="LXd-An-zIJ" secondAttribute="leading" constant="26" id="LSH-g2-qz6"/>
                             <constraint firstAttribute="trailing" secondItem="Jad-E9-9ww" secondAttribute="trailing" constant="26" id="hVu-0c-asy"/>
                             <constraint firstItem="Jad-E9-9ww" firstAttribute="leading" secondItem="LXd-An-zIJ" secondAttribute="leading" constant="30" id="hdO-G2-Wfp"/>
-                            <constraint firstItem="r5k-i5-1T5" firstAttribute="height" secondItem="LXd-An-zIJ" secondAttribute="height" multiplier="0.4" id="ioi-u1-S2C"/>
+                            <constraint firstItem="r5k-i5-1T5" firstAttribute="height" secondItem="LXd-An-zIJ" secondAttribute="height" multiplier="0.3" id="ioi-u1-S2C"/>
                             <constraint firstItem="r5k-i5-1T5" firstAttribute="top" secondItem="Jad-E9-9ww" secondAttribute="bottom" constant="2" id="tMj-FM-0i5"/>
                         </constraints>
                         <variation key="default">
