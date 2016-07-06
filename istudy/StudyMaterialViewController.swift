@@ -222,6 +222,7 @@ UISearchControllerDelegate,UISearchResultsUpdating,DZNEmptyDataSetSource,DZNEmpt
                     dispatch_async(dispatch_get_main_queue(), {
                         self.studyMaterialsTableView?.mj_header.endRefreshing()
                         let jsonItems = json["items"].arrayObject! as NSArray
+                        self.items = NSMutableArray()
                         for i in 0 ..< jsonItems.count{
                             if(jsonItems[i].valueForKey("extensions") as! String != "DIR"){
                                 self.items.addObject(jsonItems[i])
