@@ -57,7 +57,7 @@ class ChoiceTableViewCell: UITableViewCell,UIWebViewDelegate {
         var frame = webView.frame
         frame.size.height = CGFloat(height!) + 5
         webView.frame = frame
-        self.cellHeight = CGFloat(height!) + 15
+        self.cellHeight = CGFloat(height!) + 10
         webView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(ComplexChoiceTableViewCell.tap(_:))))
         //小于按钮的高度
        

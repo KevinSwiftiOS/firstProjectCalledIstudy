@@ -48,7 +48,7 @@ class OneCourseDesViewController:UIViewController,UICollectionViewDelegateFlowLa
         self.infoTableView!.tableFooterView = UIView()
         self.infoTableView!.hidden = true
         if(self.courseDesString == ""){
-            self.courseDesString = "<html><head><style>P{text-align:center;vertical-align: middle;font-size: 15px;font-family: " + "\"" + "宋体" + "\"" +  "}</style></head><body><p>无课程信息</p></body></html>"
+            self.courseDesString = "<html><head><style>P{text-align:center;vertical-align: middle;font-size: 17px;font-family: " + "\"" + "宋体" + "\"" +  "}</style></head><body><p>无课程信息</p></body></html>"
         }else{
             self.courseDesString = cssDesString + (self.courseDesString as String) + "</p>"
         }

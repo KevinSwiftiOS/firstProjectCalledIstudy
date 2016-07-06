@@ -24,12 +24,9 @@ UISearchControllerDelegate,UISearchResultsUpdating,DZNEmptyDataSetSource,DZNEmpt
     @IBOutlet weak var studyMaterialsTableView:UITableView?
     //应该接受到一个url 和每份资料的标题等
     var items = NSMutableArray()
-    let qlVC = QLPreviewController()
-    override func viewDidLoad() {
+       override func viewDidLoad() {
         super.viewDidLoad()
-        qlVC.delegate = self
-        qlVC.dataSource = self
-        self.automaticallyAdjustsScrollViewInsets = false
+               self.automaticallyAdjustsScrollViewInsets = false
         self.studyMaterialsTableView?.delegate = self
         self.studyMaterialsTableView?.dataSource = self
         self.studyMaterialsTableView?.tableFooterView = UIView()
@@ -123,19 +120,32 @@ UISearchControllerDelegate,UISearchResultsUpdating,DZNEmptyDataSetSource,DZNEmpt
             //不能打开rar还有DIR文件
             filePath = doc[0] + "/" + diviseFileUrl((self.items[indexPath.row].valueForKey("url") as? String)!)
             if(fileExist(filePath)){
-                
+                let qlVC = QLPreviewController()
+                qlVC.delegate = self
+                qlVC.dataSource = self
+
                 self.navigationController?.pushViewController(qlVC, animated: true)
             }
             else{
+                   ProgressHUD.show("正在下载中")
+                //tableView不可点击 并且有提示框提示下载多少
+            tableView.userInteractionEnabled = false
                 let destination = Alamofire.Request.suggestedDownloadDestination(directory: .DocumentDirectory, domain: .UserDomainMask)
                 Alamofire.download(.GET, NSURL(string: self.items[indexPath.row].valueForKey("url") as! String)!, destination: destination).progress { (bytesRead, totalBytesRead, totalBytesExpectedToRead) in
+                 
                     }.response { (request, response, _, error) in
                         if(error == nil){
+                            let qlVC = QLPreviewController()
+                            qlVC.delegate = self
+                            qlVC.dataSource = self
+
                             ProgressHUD.showSuccess("下载成功")
+                            tableView.userInteractionEnabled = true
                             self.filePath = doc[0] + "/" + diviseFileUrl((self.items[indexPath.row].valueForKey("url") as? String)!)
-                            self.navigationController?.pushViewController(self.qlVC, animated: true)
+                            self.navigationController?.pushViewController(qlVC, animated: true)
                             
                         }else{
+                               tableView.userInteractionEnabled = true
                             ProgressHUD.showError("下载失败")
                         }
                 }
@@ -147,6 +157,10 @@ UISearchControllerDelegate,UISearchResultsUpdating,DZNEmptyDataSetSource,DZNEmpt
             filePath = doc[0] + "/" + diviseFileUrl((self.filterItems[indexPath.row].valueForKey("url") as? String)!)
             if(fileExist(filePath)){
                 self.sc.active = false
+                let qlVC = QLPreviewController()
+                qlVC.delegate = self
+                qlVC.dataSource = self
+
                 self.navigationController?.pushViewController(qlVC, animated: true)
             }
             else{
@@ -157,7 +171,11 @@ UISearchControllerDelegate,UISearchResultsUpdating,DZNEmptyDataSetSource,DZNEmpt
                             ProgressHUD.showSuccess("下载成功")
                             self.filePath = doc[0] + "/" + diviseFileUrl((self.filterItems[indexPath.row].valueForKey("url") as? String)!)
                             self.sc.active = false
-                            self.navigationController?.pushViewController(self.qlVC, animated: true)
+                            let qlVC = QLPreviewController()
+                            qlVC.delegate = self
+                            qlVC.dataSource = self
+
+                            self.navigationController?.pushViewController(qlVC, animated: true)
                             
                             
                         }else{

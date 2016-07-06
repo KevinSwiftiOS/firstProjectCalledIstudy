@@ -337,7 +337,7 @@ func showAct(){
                    let dic = self.items[index]
                 let tempKey = "option" + (tempArray[i])
                 if ((dic.valueForKey(tempKey) as? String) != nil && dic.valueForKey(tempKey) as? String != ""){
-                       cellHeight.addObject(50)
+                       cellHeight.addObject(40)
                 }
             }
     }

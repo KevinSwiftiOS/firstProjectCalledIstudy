@@ -223,7 +223,7 @@
                             <constraint firstItem="NoI-DG-zv7" firstAttribute="height" secondItem="ZUL-DO-7J7" secondAttribute="height" multiplier="0.45" id="Ql1-nP-FcM"/>
                             <constraint firstItem="uOQ-Lw-MXT" firstAttribute="top" secondItem="EVg-XD-Ief" secondAttribute="bottom" id="R64-bX-K6V"/>
                             <constraint firstItem="EVg-XD-Ief" firstAttribute="leading" secondItem="8fj-w1-uEf" secondAttribute="trailing" constant="-1" id="RtG-SZ-JNK"/>
-                            <constraint firstItem="uOQ-Lw-MXT" firstAttribute="top" secondItem="EVg-XD-Ief" secondAttribute="bottom" constant="-12" id="SA0-hW-KK9">
+                            <constraint firstItem="uOQ-Lw-MXT" firstAttribute="top" secondItem="EVg-XD-Ief" secondAttribute="bottom" id="SA0-hW-KK9">
                                 <variation key="heightClass=regular-widthClass=compact" constant="0.0"/>
                             </constraint>
                             <constraint firstItem="EIm-i4-JW2" firstAttribute="leading" secondItem="ZUL-DO-7J7" secondAttribute="leading" id="UGe-kH-1zt">
@@ -366,7 +366,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lxz-iu-U77">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lxz-iu-U77">
                                 <rect key="frame" x="-42" y="-21" width="42" height="21"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="21" id="xW6-ao-5Nf"/>
@@ -622,7 +622,7 @@
                                                         </mask>
                                                     </variation>
                                                 </imageView>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tmG-12-T3Z">
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tmG-12-T3Z">
                                                     <rect key="frame" x="-42" y="-21" width="42" height="21"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="21" id="b9z-1y-jnp"/>
@@ -635,7 +635,8 @@
                                                             <exclude reference="b9z-1y-jnp"/>
                                                         </mask>
                                                     </variation>
-                                                    <variation key="heightClass=regular-widthClass=compact">
+                                                    <variation key="heightClass=regular-widthClass=compact" misplaced="YES">
+                                                        <rect key="frame" x="70" y="29" width="134" height="21"/>
                                                         <mask key="constraints">
                                                             <include reference="b9z-1y-jnp"/>
                                                         </mask>
@@ -653,7 +654,8 @@
                                                             <exclude reference="sSZ-Xn-Be2"/>
                                                         </mask>
                                                     </variation>
-                                                    <variation key="heightClass=regular-widthClass=compact">
+                                                    <variation key="heightClass=regular-widthClass=compact" misplaced="YES">
+                                                        <rect key="frame" x="207" y="25" width="25" height="30"/>
                                                         <mask key="constraints">
                                                             <include reference="8if-Vj-07V"/>
                                                             <include reference="sSZ-Xn-Be2"/>

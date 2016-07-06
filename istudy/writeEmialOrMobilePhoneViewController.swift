@@ -60,9 +60,8 @@ class writeEmialOrMobilePhoneViewController: UIViewController {
             matcher = try RegexHelper(mailPattern)
             var emailText = self.writeTextField?.text
             emailText = emailText!.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceCharacterSet())
-            if matcher.match(emailText!){
+            if (matcher.match(emailText!)) == true{
               //发送验证码
-              let emailText = self.writeTextField?.text
                 
                 let urlString = "http://dodo.hznu.edu.cn/api/sendvalidcode" + "?email=" + (emailText)!
                 

@@ -64,10 +64,10 @@ class ContactPersonViewController: UIViewController,UITableViewDelegate,UITableV
         
         let imageView = UIImageView(frame: CGRectMake(0, 0, 40, 30))
         if(self.selectArr[section] as! NSObject == 1){
-            imageView.setFAIconWithName(FAType.FAArrowDown, textColor: UIColor.blueColor())
+            imageView.setFAIconWithName(FAType.FAAngleDown, textColor: UIColor.blueColor())
 
         }else{
-            imageView.setFAIconWithName(FAType.FAArrowRight, textColor: UIColor.blueColor())
+            imageView.setFAIconWithName(FAType.FAAngleRight, textColor: UIColor.blueColor())
         }
        
         let btn = UIButton(frame: CGRectMake(0,0,SCREEN_WIDTH - 50,50))

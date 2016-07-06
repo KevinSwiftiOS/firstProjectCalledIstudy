@@ -12,8 +12,7 @@ import SwiftyJSON
 import Font_Awesome_Swift
 import DZNEmptyDataSet
 class MyTestViewController: UIViewController,UITableViewDataSource,UITableViewDelegate,UISearchResultsUpdating,UISearchControllerDelegate,DZNEmptyDataSetSource,DZNEmptyDataSetDelegate{
-    @IBOutlet weak var topLayout: NSLayoutConstraint!
-    //接受数据信息的数组
+      //接受数据信息的数组
     var sc = UISearchController(searchResultsController: nil)
     var testDataArray = NSArray()
     var trueArray = NSMutableArray()
@@ -95,8 +94,10 @@ self.testTableView?.emptyDataSetDelegate = self
         cell.testCourseAdress?.text = adress
         cell.selectionStyle = .None
         //cell赋值
-       cell.fontAdressLabel.setFAIcon(FAType.FAMapMarker, iconSize: 25)
+        cell.fontAdressLabel.setFAIcon(FAType.FAMapMarker, iconSize: 25)
         cell.fontTimeLabel.setFAIcon(FAType.FAClockO, iconSize: 25)
+        cell.testCourseTea?.layer.cornerRadius = 6.0
+        cell.testCourseTea?.layer.masksToBounds = true
       
               return cell
     }

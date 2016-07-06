@@ -384,7 +384,15 @@ class JudgeQueViewController: UIViewController,UIWebViewDelegate,UITableViewDele
         let width = NSInteger(webView.stringByEvaluatingJavaScriptFromString("document.body.scrollWidth")!)
         scrollView.contentSize = CGSizeMake(CGFloat(width!), 0)
         scrollView.showsVerticalScrollIndicator = false
-        self.tableView?.tableHeaderView = self.queDes
+        let tableHeaderView = UIView(frame:CGRectMake(0,0,SCREEN_WIDTH,frame.size.height + 1))
+        let borderView = UIView(frame: CGRectMake(0,frame.size.height,SCREEN_WIDTH,1))
+        borderView.layer.borderWidth = 1.0
+        tableHeaderView.addSubview(webView)
+        tableHeaderView.addSubview(borderView)
+        webView.addGestureRecognizer(tap)
+        self.tableView?.tableHeaderView = tableHeaderView
+
+        //加一条线
         
         webView.addGestureRecognizer(tap)
         //比较日期 若是已经过了期限 就把阅卷的结果拿出来
@@ -421,7 +429,7 @@ class JudgeQueViewController: UIViewController,UIWebViewDelegate,UITableViewDele
         return 2
     }
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-        return 50
+        return 40
     }
        func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier("JudgeCell") as! JudgeQusTableViewCell

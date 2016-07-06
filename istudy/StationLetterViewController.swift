@@ -12,16 +12,10 @@ import Alamofire
 import Font_Awesome_Swift
 import DZNEmptyDataSet
 class StationLetterViewController: UIViewController,UITableViewDelegate,UITableViewDataSource,DZNEmptyDataSetSource,DZNEmptyDataSetDelegate{
-    
-    @IBOutlet weak var moreChioice: UIBarButtonItem?
-    @IBOutlet weak var stationLetterTableViewToSuperViewLeading: NSLayoutConstraint!
-    //三个信箱
-    @IBOutlet weak var inBox:UIButton?
-    @IBOutlet weak var sentBox:UIButton?
+       
     @IBOutlet weak var stationLetterTableView:UITableView?
 
-     //顶部的View
-    @IBOutlet weak var topView:UIView?
+ 
    
     //该选择哪条url来发送请求
     var url = ""
@@ -35,6 +29,7 @@ class StationLetterViewController: UIViewController,UITableViewDelegate,UITableV
     var toDeleteLetterArray = NSMutableArray()
     override func viewDidLoad() {
         super.viewDidLoad()
+      
         
         let userDefault = NSUserDefaults.standardUserDefaults()
         let authtoken = userDefault.valueForKey("authtoken") as! String
@@ -47,21 +42,15 @@ class StationLetterViewController: UIViewController,UITableViewDelegate,UITableV
                         "page":"1"]
         self.navigationController?.navigationBar.barTintColor = RGB(0, g: 153, b: 255)
         self.navigationController?.navigationBar.tintColor = UIColor.blackColor()
-        self.topView?.layer.borderColor = UIColor.blueColor().CGColor
-        self.topView?.layer.borderWidth = 1.0
-        self.inBox?.setImage(UIImage(named: "收件箱选中"), forState: .Normal)
-        self.inBox?.setTitleColor(UIColor.blueColor(), forState: .Normal)
+        
         self.stationLetterTableView?.dataSource = self
         self.stationLetterTableView?.delegate = self
         self.stationLetterTableView?.tableFooterView = UIView()
         self.stationLetterTableView?.mj_header = MJRefreshNormalHeader(refreshingTarget: self, refreshingAction: #selector(StationLetterViewController.headerRefresh))
         self.stationLetterTableView?.mj_header.beginRefreshing()
-        self.topView?.alpha = 0.0
-        //这个依据情况而定
+             //这个依据情况而定
         
-        self.sentBox?.addTarget(self, action: #selector(StationLetterViewController.selectedSentBox(_:)), forControlEvents: .TouchUpInside)
-        self.inBox?.addTarget(self, action: #selector(StationLetterViewController.selectedInBox(_:)), forControlEvents: .TouchUpInside)
-     self.stationLetterTableView!.emptyDataSetDelegate = self
+            self.stationLetterTableView!.emptyDataSetDelegate = self
         
     }
    override func didReceiveMemoryWarning() {
@@ -138,37 +127,12 @@ class StationLetterViewController: UIViewController,UITableViewDelegate,UITableV
         //如果是收件箱的话，就有未读和已读，推进去了就表示已读，就要把未读的标签设为1
         if(isIn){
        
-cell.isFirstTimeToAssign = true
+      cell.isFirstTimeToAssign = true
           cell.isRead = 1
         }
         self.navigationController?.pushViewController(readEmailVC, animated: true)
            }
 
-//跟换tableView的内容
-    var isShow = false
-    @IBAction func selectDifferentStation(sender:UIBarButtonItem) {
-        //跟新tableView的界面
-       
-        if(!isShow){
-            isShow = true
-        UIView.animateWithDuration(0.3, animations: {
-           self.stationLetterTableView?.frame.origin.x += 100
-            }, completion: { (Bool) in
-                 sender.image = UIImage(named: "更多选择")
-                
-        })
-        }else{
-            isShow = false
-            UIView.animateWithDuration(0.3, animations: {
-                self.stationLetterTableView?.frame.origin.x = 0
-                }, completion: { (Bool) in
-                    sender.image = UIImage(named: "更多选择")
-                    
-            })
-        }
-        self.stationLetterTableView?.userInteractionEnabled = !isShow
-        
-    }
     @IBAction func reFresh(sender:UIBarButtonItem) {
         //刷新界面 根据获取到的值多少
         self.stationLetterTableView?.mj_header.beginRefreshing()
@@ -180,39 +144,14 @@ cell.isFirstTimeToAssign = true
         writeLetterVC.title = "写邮件"
         self.navigationController?.pushViewController(writeLetterVC, animated: true)
     }
-        //三个按钮选择的状态
-    func selectedSentBox(sender:UIButton){
-        isOut = true
-        isIn = false
-       isShow = false
-      self.stationLetterTableView?.userInteractionEnabled = !isShow
-      self.stationLetterTableView?.mj_header.beginRefreshing()
-      
-        //跟新是发件箱将stationArray改掉 随后跟新tableView,将其他按钮变为黑色 自己变为蓝色
-        self.inBox?.setImage(UIImage(named: "收件箱未选中"), forState: .Normal)
-        self.inBox?.setTitleColor(UIColor.blackColor(), forState: .Normal)
-        sender.setImage(UIImage(named: "发件箱选中"), forState: .Normal)
-        sender.setTitleColor(UIColor.blueColor(), forState: .Normal)
-    }
-    func selectedInBox(sender:UIButton){
-        isOut = false
-        isIn = true
-        isShow = false
-        self.stationLetterTableView?.userInteractionEnabled = !isShow
-        self.stationLetterTableView?.mj_header.beginRefreshing()
-     
-        //跟新是发件箱将stationArray改掉 随后跟新tableView,将其他按钮变为黑色 自己变为蓝色
-       
-        self.sentBox?.setImage(UIImage(named: "收件箱未选中"), forState: .Normal)
-        self.sentBox?.setTitleColor(UIColor.blackColor(), forState: .Normal)
-        
-        sender.setImage(UIImage(named: "收件箱选中"), forState: .Normal)
-        sender.setTitleColor(UIColor.blueColor(), forState: .Normal)
-    }
+ 
     //头部刷新
     func headerRefresh() {
         //左半边按钮不可点击
-        self.navigationItem.leftBarButtonItem?.enabled = false
+     //slide按钮的左半边不可点击性
+        let delegate = UIApplication.sharedApplication().delegate as! AppDelegate
+        
+        delegate.MyletterSlide.leftBtn.enabled = false
         self.toDeleteLetterArray = [0,0,0,0,0]
         //参数的数组
         var paramDic = [String:AnyObject]()
@@ -225,11 +164,12 @@ cell.isFirstTimeToAssign = true
          url = "http://dodo.hznu.edu.cn/api/messagesendquery"
         }
         Alamofire.request(.POST, url, parameters: paramDic, encoding: ParameterEncoding.URL, headers: nil).responseJSON { (response) in
-               self.navigationItem.leftBarButtonItem?.enabled = true
+            delegate.MyletterSlide.leftBtn.enabled = true
+
             switch response.result{
               case .Failure(_):
                 ProgressHUD.showError("请求失败")
-            
+               
                 self.items = NSMutableArray()
                dispatch_async(dispatch_get_main_queue(), {
                 self.stationLetterTableView!.emptyDataSetSource = self
@@ -269,14 +209,10 @@ cell.isFirstTimeToAssign = true
     }
     override func viewWillAppear(animated: Bool) {
       
-        self.isShow = false
-          self.stationLetterTableView?.userInteractionEnabled = !isShow
+     
     }
     override func viewWillDisappear(animated: Bool) {
-        self.isShow = false
-        self.stationLetterTableView?.userInteractionEnabled = !isShow
-        self.stationLetterTableViewToSuperViewLeading.constant = 0
-       
+               
         ProgressHUD.dismiss()
    self.view.setNeedsLayout()
     }
@@ -290,4 +226,4 @@ cell.isFirstTimeToAssign = true
     func emptyDataSetShouldAllowScroll(scrollView: UIScrollView!) -> Bool {
         return true
     }
-}
+ }

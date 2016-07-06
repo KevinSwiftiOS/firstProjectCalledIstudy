@@ -591,21 +591,31 @@ self.rightBtn.addTarget(self, action: #selector(SubjectiveQusViewController.chan
         self.answerWebView.addGestureRecognizer(tap1)
         self.answerWebView.tag = 1
         self.answerWebView.userInteractionEnabled = true
-        self.answerWebView.frame = CGRectMake(0, totalHeight, SCREEN_WIDTH, 150)
+     
         
         self.contentScrollView?.addSubview(self.answerWebView)
-        let answerWebString = cssDesString + (self.selfAnswers[index] as! String) 
+        //有没有答案的选择
+        var tempAnswerString = (self.selfAnswers[index] as! String)
+        if(tempAnswerString) == ""{
+           tempAnswerString = "<html><head><style>P{text-align:center;vertical-align: middle;font-size: 17px;font-family: " + "\"" + "宋体" + "\"" +  "}</style></head><body><p>无作业信息</p></body></html>"
+            self.answerWebView.frame = CGRectMake(5, totalHeight, SCREEN_WIDTH - 10, 30)
+              self.answerWebView.loadHTMLString(tempAnswerString, baseURL: nil)
+             totalHeight += 35
+        }else{
+              self.answerWebView.frame = CGRectMake(5, totalHeight, SCREEN_WIDTH - 10, 100)
+        let answerWebString = cssDesString + (self.selfAnswers[index] as! String)
         self.answerWebView.loadHTMLString(answerWebString, baseURL: nil)
-        
+            totalHeight += 105
+        }
         let currentDate = NSDate()
         let result:NSComparisonResult = currentDate.compare(endDate)
         
         self.answerWebView.hidden = false
         if result == .OrderedAscending{
             //加载textView 和 collectionView
-            self.answerTextView.frame = CGRectMake(0, totalHeight, SCREEN_WIDTH, 100)
+            self.answerTextView.frame = CGRectMake(5, totalHeight, SCREEN_WIDTH - 10, 100)
             totalHeight += 110
-            self.collectionView.frame = CGRectMake(0, totalHeight, SCREEN_WIDTH, 200)
+            self.collectionView.frame = CGRectMake(5, totalHeight, SCREEN_WIDTH - 10, 200)
             self.answerTextView.hidden = true
             self.collectionView.hidden = true
             self.contentScrollView?.addSubview(collectionView)
@@ -616,13 +626,13 @@ self.rightBtn.addTarget(self, action: #selector(SubjectiveQusViewController.chan
             self.addBtn.addTarget(self, action: #selector(SubjectiveQusViewController.selectAnswerType(_:)), forControlEvents: .TouchUpInside)
             self.saveBtn.addTarget(self, action: #selector(SubjectiveQusViewController.save(_:)), forControlEvents: .TouchUpInside)
         }else{
-            totalHeight += 155
+           // totalHeight += 155
             //加载评论的
-            let commetLabel = UILabel(frame: CGRectMake(0,totalHeight,SCREEN_WIDTH,21))
+            let commetLabel = UILabel(frame: CGRectMake(5,totalHeight,SCREEN_WIDTH - 10,21))
             commetLabel.text = "评语:"
             totalHeight += 23
             self.contentScrollView?.addSubview(commetLabel)
-            let commetTextView = UITextView(frame: CGRectMake(0, totalHeight, SCREEN_WIDTH, 50))
+            let commetTextView = UITextView(frame: CGRectMake(5, totalHeight, SCREEN_WIDTH - 10, 50))
             totalHeight += 55
             if(self.items[index].valueForKey("comments") as? String != nil &&
                 self.items[index].valueForKey("comments") as! String != ""){
@@ -631,11 +641,11 @@ self.rightBtn.addTarget(self, action: #selector(SubjectiveQusViewController.chan
                 commetTextView.text = "无评语"
             }
             self.contentScrollView?.addSubview(commetTextView)
-            let standAnswerLabel = UILabel(frame: CGRectMake(0,totalHeight,SCREEN_WIDTH,21))
+            let standAnswerLabel = UILabel(frame: CGRectMake(5,totalHeight,SCREEN_WIDTH - 10,21))
             standAnswerLabel.text = "标准答案:"
             totalHeight += 23
             self.contentScrollView?.addSubview(standAnswerLabel)
-            let standAnswerWebView = UIWebView(frame: CGRectMake(0,totalHeight,SCREEN_WIDTH,100))
+            let standAnswerWebView = UIWebView(frame: CGRectMake(5,totalHeight,SCREEN_WIDTH - 10,100))
             standAnswerWebView.loadHTMLString(self.items[index].valueForKey("strandanswer") as! String, baseURL: nil)
             totalHeight += 120
             self.contentScrollView?.addSubview(standAnswerWebView)

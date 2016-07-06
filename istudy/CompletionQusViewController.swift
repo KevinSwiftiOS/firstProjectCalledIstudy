@@ -244,7 +244,7 @@ class CompletionQusViewController: UIViewController,UITextFieldDelegate,UIWebVie
         let resetAction = UIAlertAction(title: "确定", style: UIAlertActionStyle.Default) { (UIAlertAction) in
             
         self.totalAnswerArray.replaceObjectAtIndex(self.index, withObject: "")
-       
+       self.initView()
        
     self.displayMarkingArray.replaceObjectAtIndex(self.index, withObject: 0)
             self.tableView?.tableFooterView = UIView()
@@ -659,7 +659,7 @@ class CompletionQusViewController: UIViewController,UITextFieldDelegate,UIWebVie
     vc.enableClientJudge = self.enableClientJudge
     vc.keyVisible = self.keyVisible
     vc.viewOneWithAnswerKey = self.viewOneWithAnswerKey
-    self.navigationController?.pushViewController(vc, animated: true)
+    self.navigationController?.pushViewController(vc, animated: false)
     }
     }
     if sender.tag == 1{

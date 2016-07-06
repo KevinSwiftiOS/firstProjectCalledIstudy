@@ -395,7 +395,7 @@ class MultipleChoiceViewController: UIViewController,UIWebViewDelegate,UITableVi
         for i in 0 ..< 8{
             let key = "option" + tempArray[i]
             if(self.items[index].valueForKey(key) as? String != nil && self.items[index].valueForKey(key) as! String != ""){
-                cellHeights.addObject(30)
+                cellHeights.addObject(40)
             }
         }
         }
@@ -443,7 +443,14 @@ class MultipleChoiceViewController: UIViewController,UIWebViewDelegate,UITableVi
         webView.addGestureRecognizer(tap)
         scrollView.contentSize = CGSizeMake(CGFloat(width!), 0)
         scrollView.showsVerticalScrollIndicator = false
-        self.tableView?.tableHeaderView = self.qusDesWebView
+        let tableHeaderView = UIView(frame:CGRectMake(0,0,SCREEN_WIDTH,frame.size.height + 1))
+        let borderView = UIView(frame: CGRectMake(0,frame.size.height,SCREEN_WIDTH,1))
+        borderView.layer.borderWidth = 1.0
+        tableHeaderView.addSubview(webView)
+        tableHeaderView.addSubview(borderView)
+        webView.addGestureRecognizer(tap)
+        self.tableView?.tableHeaderView = tableHeaderView
+
         //比较日期 若是已经过了期限 就把阅卷的结果拿出来
         //进行比较
         let currentDate = NSDate()
