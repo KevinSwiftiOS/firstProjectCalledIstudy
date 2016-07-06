@@ -150,8 +150,10 @@ class StationLetterViewController: UIViewController,UITableViewDelegate,UITableV
         //左半边按钮不可点击
      //slide按钮的左半边不可点击性
         let delegate = UIApplication.sharedApplication().delegate as! AppDelegate
-        
+    
         delegate.MyletterSlide.leftBtn.enabled = false
+         delegate.MyletterSlide.leftViewShowWidth = 0
+
         self.toDeleteLetterArray = [0,0,0,0,0]
         //参数的数组
         var paramDic = [String:AnyObject]()
@@ -165,7 +167,7 @@ class StationLetterViewController: UIViewController,UITableViewDelegate,UITableV
         }
         Alamofire.request(.POST, url, parameters: paramDic, encoding: ParameterEncoding.URL, headers: nil).responseJSON { (response) in
             delegate.MyletterSlide.leftBtn.enabled = true
-
+            delegate.MyletterSlide.leftViewShowWidth = 200
             switch response.result{
               case .Failure(_):
                 ProgressHUD.showError("请求失败")
