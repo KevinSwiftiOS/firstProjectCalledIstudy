@@ -28,7 +28,7 @@ func application(application: UIApplication, didFinishLaunchingWithOptions launc
     
     self.window?.rootViewController?.navigationController?.navigationBar.barTintColor = RGB(0, g: 153, b: 255)
     //设置lauchImage设置时长
-   // NSThread.sleepForTimeInterval(5.0)
+    NSThread.sleepForTimeInterval(3.0)
     let userDefaults = NSUserDefaults.standardUserDefaults()
     if(userDefaults.valueForKey("userName") == nil){
         self.window?.rootViewController = loginNavigationVC
