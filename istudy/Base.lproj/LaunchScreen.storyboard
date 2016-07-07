@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10117" systemVersion="15F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" launchScreen="YES" useTraitCollections="YES" initialViewController="01J-lp-oVM">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10117" systemVersion="15F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="01J-lp-oVM">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
@@ -16,40 +16,7 @@
                     <view key="view" contentMode="scaleToFill" id="Ze5-6b-2t3">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="进入页面" translatesAutoresizingMaskIntoConstraints="NO" id="bpH-l2-kXV">
-                                <rect key="frame" x="0.0" y="0.0" width="240" height="128"/>
-                            </imageView>
-                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
-                        <constraints>
-                            <constraint firstItem="bpH-l2-kXV" firstAttribute="top" secondItem="Llm-lL-Icb" secondAttribute="bottom" id="86w-yR-GkE"/>
-                            <constraint firstItem="bpH-l2-kXV" firstAttribute="leading" secondItem="Ze5-6b-2t3" secondAttribute="leading" id="HMb-wE-Pxj"/>
-                            <constraint firstItem="xb3-aO-Qok" firstAttribute="top" secondItem="bpH-l2-kXV" secondAttribute="bottom" id="K13-Yc-TAd"/>
-                            <constraint firstAttribute="trailing" secondItem="bpH-l2-kXV" secondAttribute="trailing" id="jPV-qB-TNj"/>
-                        </constraints>
-                        <variation key="default">
-                            <mask key="subviews">
-                                <exclude reference="bpH-l2-kXV"/>
-                            </mask>
-                            <mask key="constraints">
-                                <exclude reference="K13-Yc-TAd"/>
-                                <exclude reference="86w-yR-GkE"/>
-                                <exclude reference="HMb-wE-Pxj"/>
-                                <exclude reference="jPV-qB-TNj"/>
-                            </mask>
-                        </variation>
-                        <variation key="heightClass=regular-widthClass=compact">
-                            <mask key="subviews">
-                                <include reference="bpH-l2-kXV"/>
-                            </mask>
-                            <mask key="constraints">
-                                <include reference="K13-Yc-TAd"/>
-                                <include reference="86w-yR-GkE"/>
-                                <include reference="HMb-wE-Pxj"/>
-                                <include reference="jPV-qB-TNj"/>
-                            </mask>
-                        </variation>
                     </view>
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
                 </viewController>
@@ -58,7 +25,4 @@
             <point key="canvasLocation" x="52.5" y="367.5"/>
         </scene>
     </scenes>
-    <resources>
-        <image name="进入页面" width="320" height="568"/>
-    </resources>
 </document>

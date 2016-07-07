@@ -10,7 +10,7 @@ import UIKit
 import Alamofire
 import SwiftyJSON
 import Font_Awesome_Swift
-class ReadEmailViewController: UIViewController,UIGestureRecognizerDelegate {
+class ReadEmailViewController: UIViewController,UIGestureRecognizerDelegate{
     //webView用来加载
    //下面的两个按钮 
     var tap = UITapGestureRecognizer()

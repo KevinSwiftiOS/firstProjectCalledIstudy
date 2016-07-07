@@ -250,11 +250,11 @@
                                 <exclude reference="Zgl-AC-XoL"/>
                             </mask>
                             <mask key="constraints">
-                                <exclude reference="XOG-6R-JbK"/>
-                                <exclude reference="mpU-fr-QLa"/>
                                 <exclude reference="6Vp-63-ExS"/>
                                 <exclude reference="Eon-FH-hb8"/>
                                 <exclude reference="IZq-gL-qJh"/>
+                                <exclude reference="XOG-6R-JbK"/>
+                                <exclude reference="mpU-fr-QLa"/>
                                 <exclude reference="sGK-qF-1h4"/>
                                 <exclude reference="uPo-fb-U62"/>
                                 <exclude reference="6bS-rG-2qa"/>
@@ -287,11 +287,11 @@
                                 <include reference="Zgl-AC-XoL"/>
                             </mask>
                             <mask key="constraints">
-                                <include reference="XOG-6R-JbK"/>
-                                <include reference="mpU-fr-QLa"/>
                                 <include reference="6Vp-63-ExS"/>
                                 <include reference="Eon-FH-hb8"/>
                                 <include reference="IZq-gL-qJh"/>
+                                <include reference="XOG-6R-JbK"/>
+                                <include reference="mpU-fr-QLa"/>
                                 <include reference="sGK-qF-1h4"/>
                                 <include reference="uPo-fb-U62"/>
                                 <exclude reference="6bS-rG-2qa"/>

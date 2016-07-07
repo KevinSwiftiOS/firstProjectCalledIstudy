@@ -13,52 +13,29 @@ import SwiftyJSON
 import Font_Awesome_Swift
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate{
-  let MyletterSlide = YRSideViewController()
-    var MyLetter = StationLetterViewController()
+ 
+    
     var window: UIWindow?
 func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         let loginNavigationVC = UIStoryboard(name: "LoginAndReset",bundle: nil).instantiateViewControllerWithIdentifier("LoginNavigationVC") as! UINavigationController
-//        let mainVC = UIStoryboard(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("tabBarVC") as! UITabBarController
-//我的课程
-    let myCourse = UIStoryboard(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("myCourse") as! CourseDesViewController
-    let myTest = UIStoryboard(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("myTest") as! MyTestViewController
-    //站内信的滑动按钮
-  
- MyLetter = UIStoryboard(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("MyLetter") as! StationLetterViewController
-    //左边按钮
-    let leftMenuController = UIStoryboard(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("leftMenu") as! LeftMenuViewController
-    let personal = UIStoryboard(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("personal") as! PersonalViewController
+        let mainVC = UIStoryboard(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("tabBarVC") as! UITabBarController
+//    //注册slideMenu
+//    let leftMenuVC = UIStoryboard(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("LeftMenuVC") as! LeftMenuViewController
+//    //leftMenuVC.view.backgroundColor = UIColor.lightGrayColor()
+//    let slideNav = UIStoryboard(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("SlideNav") as! SlideNavigationController
+//   // slideNav.shouldAutorotate() = true
+//    SlideNavigationController.sharedInstance().leftMenu = leftMenuVC
     
-    MyletterSlide.rootViewController = MyLetter
-    MyletterSlide.title = "站内信"
-    MyletterSlide.leftViewController = leftMenuController
-    MyletterSlide.leftViewShowWidth = 200
-    MyletterSlide.needSwipeShowMenu = true
-    //创建四个navigation
-    let myCourseNav = UINavigationController(rootViewController: myCourse)
-    let myTestNav = UINavigationController(rootViewController: myTest)
-    let stationLetterNav = UINavigationController(rootViewController: MyletterSlide)
-    let mypersonalNav = UINavigationController(rootViewController: personal)
-    let mainVC = UITabBarController()
-    mainVC.viewControllers = [myCourseNav,myTestNav,stationLetterNav,mypersonalNav]
-    //设置按钮
-    let tabitem1 = UITabBarItem(title: "我的课程", image:UIImage(named: "我的课程"),selectedImage: UIImage(named: "我的课程"))
-    let tabitem2 = UITabBarItem(title: "我的考试", image: UIImage(named: "我的考试未选中"),selectedImage: UIImage(named: "我的考试未选中"))
-    let tabitem3 = UITabBarItem(title: "站内信", image: UIImage(named: "收件箱选中"),selectedImage: UIImage(named: "收件箱选中"))
-    let tabitem4 = UITabBarItem(title: "个人中心", image:UIImage(named: "个人信息"),selectedImage: UIImage(named: "个人信息"))
-
-    myCourseNav.tabBarItem = tabitem1
-    myTestNav.tabBarItem = tabitem2
-    stationLetterNav.tabBarItem = tabitem3
-    mypersonalNav.tabBarItem = tabitem4
-self.window?.frame = UIScreen.mainScreen().bounds
-        let userDefaults = NSUserDefaults.standardUserDefaults()
-        if(userDefaults.valueForKey("userName") == nil){
-        self.window?.rootViewController = loginNavigationVC
-        }else{
-          self.window?.rootViewController = mainVC
-    }
     self.window?.rootViewController?.navigationController?.navigationBar.barTintColor = RGB(0, g: 153, b: 255)
+    //设置lauchImage设置时长
+   // NSThread.sleepForTimeInterval(5.0)
+    let userDefaults = NSUserDefaults.standardUserDefaults()
+    if(userDefaults.valueForKey("userName") == nil){
+        self.window?.rootViewController = loginNavigationVC
+        
+    }else{
+        self.window?.rootViewController = mainVC
+    }
         self.window?.makeKeyAndVisible()
         return true
     }

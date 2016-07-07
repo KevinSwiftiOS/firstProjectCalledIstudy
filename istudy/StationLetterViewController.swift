@@ -12,11 +12,17 @@ import Alamofire
 import Font_Awesome_Swift
 import DZNEmptyDataSet
 class StationLetterViewController: UIViewController,UITableViewDelegate,UITableViewDataSource,DZNEmptyDataSetSource,DZNEmptyDataSetDelegate{
-       
+    
+    @IBOutlet weak var moreChioice: UIBarButtonItem?
+    @IBOutlet weak var stationLetterTableViewToSuperViewLeading: NSLayoutConstraint!
+    //三个信箱
+    @IBOutlet weak var inBox:UIButton?
+    @IBOutlet weak var sentBox:UIButton?
     @IBOutlet weak var stationLetterTableView:UITableView?
-
- 
-   
+    
+    //顶部的View
+    @IBOutlet weak var topView:UIView?
+    
     //该选择哪条url来发送请求
     var url = ""
     //收到的站内信的参数的字典
@@ -25,35 +31,40 @@ class StationLetterViewController: UIViewController,UITableViewDelegate,UITableV
     var isOut = false
     var inDic = [String:AnyObject]()
     var outDic = [String:AnyObject]()
-    var items = NSMutableArray()
+    var items = NSArray()
     var toDeleteLetterArray = NSMutableArray()
     override func viewDidLoad() {
         super.viewDidLoad()
-      
         
         let userDefault = NSUserDefaults.standardUserDefaults()
         let authtoken = userDefault.valueForKey("authtoken") as! String
         self.inDic = ["authtoken":authtoken,
-        "count":"100",
-        "page":"1",
-        "unreadonly":"2"]
+                      "count":"100",
+                      "page":"1",
+                      "unreadonly":"2"]
         self.outDic = ["authtoken":authtoken,
-                        "count":"100",
-                        "page":"1"]
+                       "count":"100",
+                       "page":"1"]
         self.navigationController?.navigationBar.barTintColor = RGB(0, g: 153, b: 255)
         self.navigationController?.navigationBar.tintColor = UIColor.blackColor()
-        
+        self.topView?.layer.borderColor = UIColor.blueColor().CGColor
+        self.topView?.layer.borderWidth = 1.0
+        self.inBox?.setImage(UIImage(named: "收件箱选中"), forState: .Normal)
+        self.inBox?.setTitleColor(UIColor.blueColor(), forState: .Normal)
         self.stationLetterTableView?.dataSource = self
         self.stationLetterTableView?.delegate = self
         self.stationLetterTableView?.tableFooterView = UIView()
         self.stationLetterTableView?.mj_header = MJRefreshNormalHeader(refreshingTarget: self, refreshingAction: #selector(StationLetterViewController.headerRefresh))
         self.stationLetterTableView?.mj_header.beginRefreshing()
-             //这个依据情况而定
+        self.topView?.alpha = 0.0
+        //这个依据情况而定
         
-            self.stationLetterTableView!.emptyDataSetDelegate = self
+        self.sentBox?.addTarget(self, action: #selector(StationLetterViewController.selectedSentBox(_:)), forControlEvents: .TouchUpInside)
+        self.inBox?.addTarget(self, action: #selector(StationLetterViewController.selectedInBox(_:)), forControlEvents: .TouchUpInside)
+        self.stationLetterTableView!.emptyDataSetDelegate = self
         
     }
-   override func didReceiveMemoryWarning() {
+    override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
@@ -65,26 +76,25 @@ class StationLetterViewController: UIViewController,UITableViewDelegate,UITableV
     }
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier("stationLetterCell") as! StationLetterCellTableViewCell
-        cell.kingOfLetterImageView!.image = UIImage(named: "已读")
-
+        let image = UIImage(named: "已读")
+        cell.kingOfLetterImageView!.image = image
         //看接收到的人里面拿出来 随后循环遍历 自己相等 随后判断 赋不同的值
         if(isIn){
-            if  cell.isFirstTimeToAssign  == false {
-                
             cell.isRead = self.items[indexPath.row].valueForKey("isread") as! NSInteger
-            }
-        //定义cell的属性
-        if(cell.isRead == 0){
-            cell.kingOfLetterImageView!.image = UIImage(named: "未读")
-
-            }else{
-             cell.kingOfLetterImageView!.image = UIImage(named: "已读")
             
-        }
+            //定义cell的属性
+            if(cell.isRead == 0){
+                let image = UIImage(named: "未读")
+                  cell.kingOfLetterImageView!.image = image
+            }else{
+                let image = UIImage(named: "已读")
+                 cell.kingOfLetterImageView!.image = image
+
+            }
         }
         var senderName = ""
         if(isIn){
-      senderName  = (self.items[indexPath.row].valueForKey("sendername") as? String)!
+            senderName  = (self.items[indexPath.row].valueForKey("sendername") as? String)!
         }
         cell.subjectLabel?.text = self.items[indexPath.row].valueForKey("subject") as! NSString as String
         //时间的切割
@@ -104,14 +114,14 @@ class StationLetterViewController: UIViewController,UITableViewDelegate,UITableV
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         tableView.deselectRowAtIndexPath(indexPath, animated: true)
         let cell = tableView.cellForRowAtIndexPath(indexPath) as! StationLetterCellTableViewCell
-     
-       
-     //随后推到一个页面中进行详细的说明
-    let readEmailVC = UIStoryboard(name: "StationLetter", bundle: nil).instantiateViewControllerWithIdentifier("ReadEmailVC") as! ReadEmailViewController
+        
+        
+        //随后推到一个页面中进行详细的说明
+        let readEmailVC = UIStoryboard(name: "StationLetter", bundle: nil).instantiateViewControllerWithIdentifier("ReadEmailVC") as! ReadEmailViewController
         readEmailVC.string = self.items[indexPath.row].valueForKey("content") as! String
-      
+        
         readEmailVC.subject = self.items[indexPath.row].valueForKey("subject") as! String
-       
+        
         readEmailVC.title = "读邮件"
         if(isIn){
             readEmailVC.code = self.items[indexPath.row].valueForKey("code") as! String
@@ -123,38 +133,79 @@ class StationLetterViewController: UIViewController,UITableViewDelegate,UITableV
         if(isOut){
             readEmailVC.isOut = true
         }
-        cell.kingOfLetterImageView!.image = UIImage(named: "已读")
-        //如果是收件箱的话，就有未读和已读，推进去了就表示已读，就要把未读的标签设为1
-        if(isIn){
-       
-      cell.isFirstTimeToAssign = true
-          cell.isRead = 1
-        }
         self.navigationController?.pushViewController(readEmailVC, animated: true)
-           }
-
+        
+        tableView.reloadData()
+    }
+    
+    //跟换tableView的内容
+    var isShow = false
+    @IBAction func selectDifferentStation(sender:UIBarButtonItem) {
+        //跟新tableView的界面
+        
+        if(!isShow){
+            isShow = true
+            UIView.animateWithDuration(0.3, animations: {
+                self.stationLetterTableView?.frame.origin.x += 100
+                }, completion: { (Bool) in
+                    sender.image = UIImage(named: "更多选择")
+                    
+            })
+        }else{
+            isShow = false
+            UIView.animateWithDuration(0.3, animations: {
+                self.stationLetterTableView?.frame.origin.x = 0
+                }, completion: { (Bool) in
+                    sender.image = UIImage(named: "更多选择")
+                    
+            })
+        }
+        self.stationLetterTableView?.userInteractionEnabled = !isShow
+        
+    }
     @IBAction func reFresh(sender:UIBarButtonItem) {
         //刷新界面 根据获取到的值多少
         self.stationLetterTableView?.mj_header.beginRefreshing()
-           }
+    }
     @IBAction func writeLetter(sender:UIBarButtonItem) {
         //跳转到写信的界面
         let writeLetterVC = UIStoryboard(name: "StationLetter", bundle: nil).instantiateViewControllerWithIdentifier("writeLetterVC")
-        as! WriteLetterViewController
+            as! WriteLetterViewController
         writeLetterVC.title = "写邮件"
         self.navigationController?.pushViewController(writeLetterVC, animated: true)
     }
- 
+    //三个按钮选择的状态
+    func selectedSentBox(sender:UIButton){
+        isOut = true
+        isIn = false
+        isShow = false
+        self.stationLetterTableView?.userInteractionEnabled = !isShow
+        self.stationLetterTableView?.mj_header.beginRefreshing()
+        
+        //跟新是发件箱将stationArray改掉 随后跟新tableView,将其他按钮变为黑色 自己变为蓝色
+        self.inBox?.setImage(UIImage(named: "收件箱未选中"), forState: .Normal)
+        self.inBox?.setTitleColor(UIColor.blackColor(), forState: .Normal)
+        sender.setImage(UIImage(named: "发件箱选中"), forState: .Normal)
+        sender.setTitleColor(UIColor.blueColor(), forState: .Normal)
+    }
+    func selectedInBox(sender:UIButton){
+        isOut = false
+        isIn = true
+        isShow = false
+        self.stationLetterTableView?.userInteractionEnabled = !isShow
+        self.stationLetterTableView?.mj_header.beginRefreshing()
+        
+        //跟新是发件箱将stationArray改掉 随后跟新tableView,将其他按钮变为黑色 自己变为蓝色
+        
+        self.sentBox?.setImage(UIImage(named: "收件箱未选中"), forState: .Normal)
+        self.sentBox?.setTitleColor(UIColor.blackColor(), forState: .Normal)
+        
+        sender.setImage(UIImage(named: "收件箱选中"), forState: .Normal)
+        sender.setTitleColor(UIColor.blueColor(), forState: .Normal)
+    }
     //头部刷新
     func headerRefresh() {
-        //左半边按钮不可点击
-     //slide按钮的左半边不可点击性
-        let delegate = UIApplication.sharedApplication().delegate as! AppDelegate
-    
-        delegate.MyletterSlide.leftBtn.enabled = false
-         delegate.MyletterSlide.leftViewShowWidth = 0
-
-        self.toDeleteLetterArray = [0,0,0,0,0]
+       self.navigationItem.leftBarButtonItem?.enabled = false
         //参数的数组
         var paramDic = [String:AnyObject]()
         if(isIn){
@@ -163,60 +214,62 @@ class StationLetterViewController: UIViewController,UITableViewDelegate,UITableV
         }
         if(isOut){
             paramDic = self.outDic
-         url = "http://dodo.hznu.edu.cn/api/messagesendquery"
+            url = "http://dodo.hznu.edu.cn/api/messagesendquery"
         }
         Alamofire.request(.POST, url, parameters: paramDic, encoding: ParameterEncoding.URL, headers: nil).responseJSON { (response) in
-            delegate.MyletterSlide.leftBtn.enabled = true
-            delegate.MyletterSlide.leftViewShowWidth = 200
+             self.navigationItem.leftBarButtonItem?.enabled = true
             switch response.result{
-              case .Failure(_):
+               
+            case .Failure(_):
                 ProgressHUD.showError("请求失败")
-               
-                self.items = NSMutableArray()
-               dispatch_async(dispatch_get_main_queue(), {
-                self.stationLetterTableView!.emptyDataSetSource = self
-
-                self.stationLetterTableView?.mj_header.endRefreshing()
-                self.stationLetterTableView?.reloadData()
-               })
-               
+                self.items = NSArray()
+                dispatch_async(dispatch_get_main_queue(), {
+                    self.stationLetterTableView!.emptyDataSetSource = self
+                    
+                    self.stationLetterTableView?.mj_header.endRefreshing()
+                    self.stationLetterTableView?.reloadData()
+                })
+                
             case .Success(let Value):
                 let json = JSON(Value)
                 
                 if(json["retcode"].number != 0){
                     ProgressHUD.showError("请求失败")
-                    self.items = NSMutableArray()
+                    self.items = NSArray()
                     dispatch_async(dispatch_get_main_queue(), {
                         self.stationLetterTableView!.emptyDataSetSource = self
-
+                        
                         self.stationLetterTableView?.mj_header.endRefreshing()
                         self.stationLetterTableView?.reloadData()
                     })
-
+                    
                 }else{
-                    let jsonItems =  json["items"].arrayObject! as NSArray
-                    self.items = NSMutableArray(array: jsonItems)
+                    self.items = json["items"].arrayObject! as NSArray
                     dispatch_async(dispatch_get_main_queue(), {
                         self.stationLetterTableView?.mj_header.endRefreshing()
                         if(self.items.count == 0){
                             self.stationLetterTableView!.emptyDataSetSource = self
                         }
                         self.stationLetterTableView?.reloadData()
-
+                        
                     })
                 }
-            
+                
+            }
         }
-          }
     }
     override func viewWillAppear(animated: Bool) {
-      
-     
+        
+        self.isShow = false
+        self.stationLetterTableView?.userInteractionEnabled = !isShow
     }
     override func viewWillDisappear(animated: Bool) {
-               
+        self.isShow = false
+        self.stationLetterTableView?.userInteractionEnabled = !isShow
+        self.stationLetterTableViewToSuperViewLeading.constant = 0
+        
         ProgressHUD.dismiss()
-   self.view.setNeedsLayout()
+        self.view.setNeedsLayout()
     }
     func titleForEmptyDataSet(scrollView: UIScrollView!) -> NSAttributedString! {
         let string = "暂无信件信息"
@@ -228,4 +281,4 @@ class StationLetterViewController: UIViewController,UITableViewDelegate,UITableV
     func emptyDataSetShouldAllowScroll(scrollView: UIScrollView!) -> Bool {
         return true
     }
- }
+}

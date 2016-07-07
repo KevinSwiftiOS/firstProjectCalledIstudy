@@ -157,7 +157,7 @@ class WriteTopicsViewController: UIViewController,UICollectionViewDelegate,UICol
         return self.photos.count
     }
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCellWithReuseIdentifier("photoCell", forIndexPath: indexPath) as! PhotoWaterfallCollectionViewCell
+        let cell = collectionView.dequeueReusableCellWithReuseIdentifier("PhotoCell", forIndexPath: indexPath) as! PhotoWaterfallCollectionViewCell
         if(indexPath.row < self.photos.count){
             cell.btn.tag = indexPath.row
            cell.btn.setBackgroundImage(self.photos[indexPath.row] as? UIImage, forState: .Normal)
