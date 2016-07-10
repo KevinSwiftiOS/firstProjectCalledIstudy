@@ -250,13 +250,18 @@ class SubjectiveQusViewController: UIViewController,AJPhotoPickerProtocol,UINavi
             self.selfAnswers.replaceObjectAtIndex(self.index, withObject: "")
             self.answerPhotos.removeAllObjects()
             self.answerTextView.text = ""
-            self.answerTextView.hidden = true
-            self.answerWebView.hidden = false
-            self.collectionView.hidden = true
+//            self.answerTextView.hidden = true
+//            self.answerWebView.hidden = false
+//            self.collectionView.hidden = true
+            self.collectionView.reloadData()
             self.answerTextView.resignFirstResponder()
             self.answerWebView.loadHTMLString("", baseURL: nil)
             
             self.postAnswer()
+            let  tempAnswerString = "<html><head><style>P{text-align:center;vertical-align: middle;font-size: 17px;font-family: " + "\"" + "宋体" + "\"" +  "}</style></head><body><p>无作业信息</p></body></html>"
+         
+            self.answerWebView.loadHTMLString(tempAnswerString, baseURL: nil)
+
         }
         let cancelAction = UIAlertAction(title: "取消", style: UIAlertActionStyle.Destructive, handler: nil)
         resetAlertView.addAction(resetAction)

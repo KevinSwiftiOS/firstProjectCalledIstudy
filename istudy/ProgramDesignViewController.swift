@@ -438,7 +438,7 @@ class ProgramDesignViewController: UIViewController,UIWebViewDelegate,UIGestureR
             if(self.displayMarkingArray[index] as! NSObject != 0){
                 self.Over()
                 self.saveBtn?.enabled = false
-                self.answerTextView?.userInteractionEnabled = false
+                self.answerTextView?.editable = false
                 
                 self.gooverBtn.enabled = false
             }
@@ -446,7 +446,7 @@ class ProgramDesignViewController: UIViewController,UIWebViewDelegate,UIGestureR
               self.displayMarkingArray[index] = 1
             self.gooverBtn.enabled = false
             self.saveBtn?.enabled = false
-            self.answerTextView?.userInteractionEnabled = false
+            self.answerTextView?.editable = false
             self.resetBtn?.enabled = false
             isOver = true
             self.Over()
