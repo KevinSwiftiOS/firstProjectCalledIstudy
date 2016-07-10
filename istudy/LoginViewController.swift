@@ -17,10 +17,12 @@ class LoginViewController: UIViewController {
     @IBOutlet weak var userName:UITextField?
     @IBOutlet weak var passWord:UITextField?
     @IBOutlet weak var forgetPasswordBtn:UIButton?
+    @IBOutlet weak var loginBtn:UIButton?
     var dic = [String:AnyObject]()
     override func viewDidLoad() {
         super.viewDidLoad()
-       
+        loginBtn?.layer.cornerRadius = 6.0
+       loginBtn?.layer.masksToBounds = true
    //键盘出现时的挡住问题
         XKeyBoard.registerKeyBoardHide(self)
         XKeyBoard.registerKeyBoardShow(self)

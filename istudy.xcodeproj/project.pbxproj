@@ -99,10 +99,6 @@
 		388741701C8AFF0C008B665A /* MyHomeWorkViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3887416F1C8AFF0C008B665A /* MyHomeWorkViewController.swift */; };
 		388741721C8AFF30008B665A /* PeerAssessmentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 388741711C8AFF30008B665A /* PeerAssessmentViewController.swift */; };
 		388741781C8AFF88008B665A /* DiscussViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 388741771C8AFF88008B665A /* DiscussViewController.swift */; };
-		3888527C1D2BDB8E005D065F /* AppLogo.png in Resources */ = {isa = PBXBuildFile; fileRef = 3888527B1D2BDB8E005D065F /* AppLogo.png */; };
-		388B3E4D1CF5F010000DD1F4 /* RXRotateButtonOverlayView.m in Sources */ = {isa = PBXBuildFile; fileRef = 388B3E4A1CF5F010000DD1F4 /* RXRotateButtonOverlayView.m */; };
-		388B3E4E1CF5F011000DD1F4 /* ImageAndTitleVerticalButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 388B3E4C1CF5F010000DD1F4 /* ImageAndTitleVerticalButton.m */; };
-		388B3E501CF5F017000DD1F4 /* rotateView.gif in Resources */ = {isa = PBXBuildFile; fileRef = 388B3E4F1CF5F017000DD1F4 /* rotateView.gif */; };
 		3890073A1CAAB2CB003E6944 /* LFLUISegmentedControl.m in Sources */ = {isa = PBXBuildFile; fileRef = 389007391CAAB2CB003E6944 /* LFLUISegmentedControl.m */; };
 		389051C11CFDC5E200E6D57F /* ImageShowBigViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 389051C01CFDC5E200E6D57F /* ImageShowBigViewController.swift */; };
 		389BCF901CCFA817009B63EB /* AchCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 389BCF8F1CCFA817009B63EB /* AchCollectionViewCell.swift */; };
@@ -137,7 +133,6 @@
 		38AED7F81CA8044C009ADC44 /* social-icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 38AED7E81CA8044C009ADC44 /* social-icon@2x.png */; };
 		38AED7F91CA8044C009ADC44 /* star-icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 38AED7E91CA8044C009ADC44 /* star-icon.png */; };
 		38AED7FA1CA8044C009ADC44 /* star-icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 38AED7EA1CA8044C009ADC44 /* star-icon@2x.png */; };
-		38AED7FC1CA8046A009ADC44 /* 隶变体.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 38AED7FB1CA8046A009ADC44 /* 隶变体.ttf */; };
 		38AED7FF1CA81555009ADC44 /* TopDiscussTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38AED7FE1CA81555009ADC44 /* TopDiscussTableViewCell.swift */; };
 		38AED8011CA81568009ADC44 /* UnTopTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38AED8001CA81568009ADC44 /* UnTopTableViewCell.swift */; };
 		38BB13751CA95159009BF00C /* CourseInfoTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38BB13741CA95159009BF00C /* CourseInfoTableViewCell.swift */; };
@@ -194,8 +189,6 @@
 		38F4E8F81C92632A004AF629 /* ImageCropperView.m in Sources */ = {isa = PBXBuildFile; fileRef = 38F4E8F51C92632A004AF629 /* ImageCropperView.m */; };
 		38F4E8F91C92632A004AF629 /* UIImage+Rotation.m in Sources */ = {isa = PBXBuildFile; fileRef = 38F4E8F71C92632A004AF629 /* UIImage+Rotation.m */; };
 		38FB35C51D264D5300264B47 /* PeerTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38FB35C41D264D5300264B47 /* PeerTableViewCell.swift */; };
-		38FBFC8A1CAD498D00D245EF /* ASProgressPopUpView.m in Sources */ = {isa = PBXBuildFile; fileRef = 38FBFC891CAD498D00D245EF /* ASProgressPopUpView.m */; };
-		38FBFC8D1CAD49A400D245EF /* ASPopUpView.m in Sources */ = {isa = PBXBuildFile; fileRef = 38FBFC8C1CAD49A400D245EF /* ASPopUpView.m */; };
 		38FC6FA11CE9F98F0063E36B /* MKAnnotationView+WebCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 38FC6F811CE9F98F0063E36B /* MKAnnotationView+WebCache.m */; };
 		38FC6FA21CE9F98F0063E36B /* NSData+ImageContentType.m in Sources */ = {isa = PBXBuildFile; fileRef = 38FC6F831CE9F98F0063E36B /* NSData+ImageContentType.m */; };
 		38FC6FA31CE9F98F0063E36B /* SDImageCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 38FC6F851CE9F98F0063E36B /* SDImageCache.m */; };
@@ -558,12 +551,6 @@
 		3887416F1C8AFF0C008B665A /* MyHomeWorkViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyHomeWorkViewController.swift; sourceTree = "<group>"; };
 		388741711C8AFF30008B665A /* PeerAssessmentViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PeerAssessmentViewController.swift; sourceTree = "<group>"; };
 		388741771C8AFF88008B665A /* DiscussViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DiscussViewController.swift; sourceTree = "<group>"; };
-		3888527B1D2BDB8E005D065F /* AppLogo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = AppLogo.png; sourceTree = "<group>"; };
-		388B3E491CF5F010000DD1F4 /* RXRotateButtonOverlayView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RXRotateButtonOverlayView.h; sourceTree = "<group>"; };
-		388B3E4A1CF5F010000DD1F4 /* RXRotateButtonOverlayView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RXRotateButtonOverlayView.m; sourceTree = "<group>"; };
-		388B3E4B1CF5F010000DD1F4 /* ImageAndTitleVerticalButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageAndTitleVerticalButton.h; sourceTree = "<group>"; };
-		388B3E4C1CF5F010000DD1F4 /* ImageAndTitleVerticalButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImageAndTitleVerticalButton.m; sourceTree = "<group>"; };
-		388B3E4F1CF5F017000DD1F4 /* rotateView.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = rotateView.gif; sourceTree = "<group>"; };
 		389007381CAAB2CB003E6944 /* LFLUISegmentedControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LFLUISegmentedControl.h; sourceTree = "<group>"; };
 		389007391CAAB2CB003E6944 /* LFLUISegmentedControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LFLUISegmentedControl.m; sourceTree = "<group>"; };
 		389051C01CFDC5E200E6D57F /* ImageShowBigViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageShowBigViewController.swift; sourceTree = "<group>"; };
@@ -603,7 +590,6 @@
 		38AED7E81CA8044C009ADC44 /* social-icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "social-icon@2x.png"; sourceTree = "<group>"; };
 		38AED7E91CA8044C009ADC44 /* star-icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "star-icon.png"; sourceTree = "<group>"; };
 		38AED7EA1CA8044C009ADC44 /* star-icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "star-icon@2x.png"; sourceTree = "<group>"; };
-		38AED7FB1CA8046A009ADC44 /* 隶变体.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "隶变体.ttf"; sourceTree = "<group>"; };
 		38AED7FE1CA81555009ADC44 /* TopDiscussTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TopDiscussTableViewCell.swift; sourceTree = "<group>"; };
 		38AED8001CA81568009ADC44 /* UnTopTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UnTopTableViewCell.swift; sourceTree = "<group>"; };
 		38BB13741CA95159009BF00C /* CourseInfoTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CourseInfoTableViewCell.swift; sourceTree = "<group>"; };
@@ -679,10 +665,6 @@
 		38F4E8F61C92632A004AF629 /* UIImage+Rotation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+Rotation.h"; sourceTree = "<group>"; };
 		38F4E8F71C92632A004AF629 /* UIImage+Rotation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+Rotation.m"; sourceTree = "<group>"; };
 		38FB35C41D264D5300264B47 /* PeerTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PeerTableViewCell.swift; sourceTree = "<group>"; };
-		38FBFC881CAD498D00D245EF /* ASProgressPopUpView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ASProgressPopUpView.h; sourceTree = "<group>"; };
-		38FBFC891CAD498D00D245EF /* ASProgressPopUpView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ASProgressPopUpView.m; sourceTree = "<group>"; };
-		38FBFC8B1CAD49A400D245EF /* ASPopUpView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ASPopUpView.h; sourceTree = "<group>"; };
-		38FBFC8C1CAD49A400D245EF /* ASPopUpView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ASPopUpView.m; sourceTree = "<group>"; };
 		38FC6F801CE9F98F0063E36B /* MKAnnotationView+WebCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "MKAnnotationView+WebCache.h"; sourceTree = "<group>"; };
 		38FC6F811CE9F98F0063E36B /* MKAnnotationView+WebCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "MKAnnotationView+WebCache.m"; sourceTree = "<group>"; };
 		38FC6F821CE9F98F0063E36B /* NSData+ImageContentType.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSData+ImageContentType.h"; sourceTree = "<group>"; };
@@ -982,7 +964,6 @@
 				3811F5D91C88679B00BCC841 /* istudy-Bridging-Header.h */,
 				3811F5861C883CD000BCC841 /* LaunchScreen.storyboard */,
 				38C146901C899E6300CBAFFB /* config.swift */,
-				3888527B1D2BDB8E005D065F /* AppLogo.png */,
 				3811F5891C883CD000BCC841 /* Info.plist */,
 				3811F5811C883CD000BCC841 /* istudy.xcdatamodeld */,
 				38CCBF6E1C93B8A2002BEA6B /* PersonalInformation+CoreDataProperties.swift */,
@@ -1072,7 +1053,6 @@
 			isa = PBXGroup;
 			children = (
 				38A1949B1CFB0A4900AF71E5 /* ComplexSubView */,
-				388B3E481CF5EFF3000DD1F4 /* OverlayView */,
 				38FC6FB11CEA00D80063E36B /* AYBuddleView */,
 				38FC6F7E1CE9F7660063E36B /* SDWebImage */,
 				38680BE21CDE128800EA6A5A /* ShowBigImage */,
@@ -1081,9 +1061,7 @@
 				3806F9D41CB284D000CAD6F2 /* Menu */,
 				382CBCC81CB15C07003FE2DE /* FlipView */,
 				38FBFC8E1CAD49BC00D245EF /* PopView */,
-				38FBFC871CAD498100D245EF /* ProgressView */,
 				389007371CAAB2B7003E6944 /* LFLUISegmentControl */,
-				38AED7FB1CA8046A009ADC44 /* 隶变体.ttf */,
 				38AED7D61CA803CC009ADC44 /* AKSegmentedControl */,
 				38AED7C91CA7FCF8009ADC44 /* arrayPicker */,
 				38BD7BE01CA6D1C8001F44B2 /* MJRefresh */,
@@ -1276,18 +1254,6 @@
 				38219B421CA158D1005839C5 /* Discuss */,
 			);
 			name = C;
-			sourceTree = "<group>";
-		};
-		388B3E481CF5EFF3000DD1F4 /* OverlayView */ = {
-			isa = PBXGroup;
-			children = (
-				388B3E4F1CF5F017000DD1F4 /* rotateView.gif */,
-				388B3E491CF5F010000DD1F4 /* RXRotateButtonOverlayView.h */,
-				388B3E4A1CF5F010000DD1F4 /* RXRotateButtonOverlayView.m */,
-				388B3E4B1CF5F010000DD1F4 /* ImageAndTitleVerticalButton.h */,
-				388B3E4C1CF5F010000DD1F4 /* ImageAndTitleVerticalButton.m */,
-			);
-			name = OverlayView;
 			sourceTree = "<group>";
 		};
 		389007371CAAB2B7003E6944 /* LFLUISegmentControl */ = {
@@ -1636,17 +1602,6 @@
 				38F4E8F71C92632A004AF629 /* UIImage+Rotation.m */,
 			);
 			name = CropAndRotateImage;
-			sourceTree = "<group>";
-		};
-		38FBFC871CAD498100D245EF /* ProgressView */ = {
-			isa = PBXGroup;
-			children = (
-				38FBFC8B1CAD49A400D245EF /* ASPopUpView.h */,
-				38FBFC8C1CAD49A400D245EF /* ASPopUpView.m */,
-				38FBFC881CAD498D00D245EF /* ASProgressPopUpView.h */,
-				38FBFC891CAD498D00D245EF /* ASProgressPopUpView.m */,
-			);
-			name = ProgressView;
 			sourceTree = "<group>";
 		};
 		38FBFC8E1CAD49BC00D245EF /* PopView */ = {
@@ -2250,7 +2205,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				38AED7FC1CA8046A009ADC44 /* 隶变体.ttf in Resources */,
 				38870BFF1C9979ED007528C6 /* Problem.storyboard in Resources */,
 				38AED7EF1CA8044C009ADC44 /* segmented-bg-pressed-right.png in Resources */,
 				38AED7F81CA8044C009ADC44 /* social-icon@2x.png in Resources */,
@@ -2285,8 +2239,6 @@
 				38AED7EC1CA8044C009ADC44 /* segmented-bg-pressed-center@2x.png in Resources */,
 				3811F5AC1C883D5800BCC841 /* LoginAndReset.storyboard in Resources */,
 				38AED7F31CA8044C009ADC44 /* segmented-separator.png in Resources */,
-				388B3E501CF5F017000DD1F4 /* rotateView.gif in Resources */,
-				3888527C1D2BDB8E005D065F /* AppLogo.png in Resources */,
 				38AED7FA1CA8044C009ADC44 /* star-icon@2x.png in Resources */,
 				3811F5B01C8842FB00BCC841 /* Main.storyboard in Resources */,
 				382C14B91CA1390400AB420A /* OneCourse.storyboard in Resources */,
@@ -2377,7 +2329,6 @@
 				38FC6FA21CE9F98F0063E36B /* NSData+ImageContentType.m in Sources */,
 				38CCBF751C93B911002BEA6B /* PersonalHeadPortrait.swift in Sources */,
 				38BD7C271CA6D317001F44B2 /* MJRefreshBackGifFooter.m in Sources */,
-				388B3E4E1CF5F011000DD1F4 /* ImageAndTitleVerticalButton.m in Sources */,
 				387C25D21CB52C6B00531AE4 /* DetailTopicViewController.swift in Sources */,
 				38680BEA1CDE129C00EA6A5A /* TGRImageViewController.m in Sources */,
 				380D8BA91CA0338B00430E71 /* AJPhotoTapDetectingImageView.m in Sources */,
@@ -2402,7 +2353,6 @@
 				38CEB0431CAEB7AA00FB8C4A /* PopoverView.m in Sources */,
 				388741721C8AFF30008B665A /* PeerAssessmentViewController.swift in Sources */,
 				380D8BAE1CA0338B00430E71 /* MASConstraintMaker.m in Sources */,
-				38FBFC8D1CAD49A400D245EF /* ASPopUpView.m in Sources */,
 				38D729CA1D279CB60073DEDF /* JudgeQusTableViewCell.swift in Sources */,
 				38AA52951CD4A486005D60F4 /* CropAndRotateViewController.swift in Sources */,
 				382CBCE41CB15C24003FE2DE /* JCFlipPageView.m in Sources */,
@@ -2417,7 +2367,6 @@
 				38680BEC1CDE129C00EA6A5A /* TGRImageZoomAnimationController.m in Sources */,
 				38DF995E1C8C6A9100BBE15E /* AdressViewController.swift in Sources */,
 				3811F5B51C884BB600BCC841 /* CourseDesViewController.swift in Sources */,
-				38FBFC8A1CAD498D00D245EF /* ASProgressPopUpView.m in Sources */,
 				38870C011C997A61007528C6 /* ChoiceQusViewController.swift in Sources */,
 				380D9AB81CB3D83E003E459A /* NSString+TextDirectionality.m in Sources */,
 				38D729B41D2799230073DEDF /* JudgeQusViewController.swift in Sources */,
@@ -2438,7 +2387,6 @@
 				3831B4121C942E6B00F44278 /* ReadEmailViewController.swift in Sources */,
 				38D35FDF1CEDD6BB00F657FC /* BasicInformationTableViewCell.swift in Sources */,
 				38FC6FAB1CE9F98F0063E36B /* UIImage+GIF.m in Sources */,
-				388B3E4D1CF5F010000DD1F4 /* RXRotateButtonOverlayView.m in Sources */,
 				3890073A1CAAB2CB003E6944 /* LFLUISegmentedControl.m in Sources */,
 				3806F9D71CB284DF00CAD6F2 /* BlurEffectMenu.m in Sources */,
 				38DE95951C9040FC002E31F8 /* writeEmialOrMobilePhoneViewController.swift in Sources */,

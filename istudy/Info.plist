@@ -2,16 +2,12 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>CFBundleDisplayName</key>
+	<string>iStudy</string>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>zh_CN</string>
-	<key>CFBundleDisplayName</key>
-	<string>istudy</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
-	<key>CFBundleIconFiles</key>
-	<array>
-		<string>AppLogo</string>
-	</array>
 	<key>CFBundleIdentifier</key>
 	<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
 	<key>CFBundleInfoDictionaryVersion</key>
@@ -38,10 +34,7 @@
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>使用应用程期间，可以使用定位服务</string>
 	<key>UIAppFonts</key>
-	<array>
-		<string>隶变体.ttf</string>
-		<string>FontAwesome.ttf</string>
-	</array>
+	<array/>
 	<key>UIMainStoryboardFile</key>
 	<string>LoginAndReset</string>
 	<key>UIRequiredDeviceCapabilities</key>

@@ -48,8 +48,13 @@ class DiscussViewController: UIViewController,UITableViewDelegate,UITableViewDat
         self.automaticallyAdjustsScrollViewInsets = false
         //顶部topView赋值
         self.courseNameLabel?.text = self.courseNameString
+        //如果为空的话 默认加载RGB(0,153,255)的颜色
+        if(self.rgbArray.count > 0){
         self.classLabel?.backgroundColor = RGB(Float(rgbArray[0] as! NSNumber), g:Float(rgbArray[1] as! NSNumber), b: Float(rgbArray[2] as! NSNumber))
-      
+        }else{
+            self.classLabel?.backgroundColor = RGB(0, g: 153, b: 255)
+        }
+        
         self.classLabel?.text = userDefault.valueForKey("cls") as? String
         self.classLabel?.layer.cornerRadius = 5.0
         self.classLabel?.layer.masksToBounds = true

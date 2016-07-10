@@ -36,6 +36,8 @@ class WriteTopicsViewController: UIViewController,UICollectionViewDelegate,UICol
        UIApplication.sharedApplication().keyWindow?.endEditing(true)
         self.view.endEditing(true)
         self.view.tintColor = UIColor.grayColor()
+        self.collectionView?.layer.borderWidth = 0.3
+        self.collectionView?.layer.borderColor = UIColor.grayColor().CGColor
     }
 
     @IBAction func resign(sender: UIControl) {
@@ -74,7 +76,7 @@ class WriteTopicsViewController: UIViewController,UICollectionViewDelegate,UICol
     func keyboardWillHideNotification(notification:NSNotification){
         self.writeTextView?.contentInset = UIEdgeInsetsMake(0, 0, 0, 0)
         UIView.animateWithDuration(0.3) { 
-         self.bottomLayout.constant = 8
+         self.bottomLayout.constant = 25
             self.view.setNeedsLayout()
        
         }

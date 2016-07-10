@@ -12,6 +12,7 @@ import SwiftyJSON
 class writeEmialOrMobilePhoneViewController: UIViewController {
     @IBOutlet weak var topLayout: NSLayoutConstraint!
     @IBOutlet weak var writeTextField:UITextField?
+    @IBOutlet weak var nextBtn:UIButton?
     //正则表达式匹配邮箱
     struct RegexHelper {
         let regex: NSRegularExpression
@@ -31,6 +32,8 @@ class writeEmialOrMobilePhoneViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        nextBtn?.layer.cornerRadius = 6.0
+        nextBtn?.layer.masksToBounds = true
         //键盘出现时的挡住问题
         XKeyBoard.registerKeyBoardHide(self)
         XKeyBoard.registerKeyBoardShow(self)

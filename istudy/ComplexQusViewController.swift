@@ -407,29 +407,73 @@ class ComplexQusViewController: UIViewController,UITableViewDelegate,UITableView
         if(sender.direction == .Left){
             //判断是不是到最后一题
             if(self.subIndex == self.subQusItems.count - 1){
-                ProgressHUD.showError("已到最后一小题")
+                let temp = self.index
+                //手势加载下一道大题目
+                //判断大题目有没有加载完
+                if self.index != self.items.count - 1{
+                    self.index += 1
+                }
+                else if(self.kindOfQusIndex == self.totalKindOfQus - 1){
+                    ProgressHUD.showSuccess("已完成全部试题")
+                }
+                else{
+                    let vc = UIStoryboard(name: "Problem", bundle: nil)
+                        .instantiateViewControllerWithIdentifier("TranslateVC") as!
+                    TranslateViewController
+                    vc.kindOfQusIndex = self.kindOfQusIndex + 1
+                    vc.title = self.title
+                    vc.testid = self.testid
+                    vc.endDate = self.endDate
+                    vc.enableClientJudge = self.enableClientJudge
+                    vc.keyVisible = self.keyVisible
+                    vc.viewOneWithAnswerKey = self.viewOneWithAnswerKey
+                    self.navigationController?.pushViewController(vc, animated: false)
+                }
+                if(temp != index){
+                    self.initView()
+                }
+                
             }else{
                 if(!isSave){
                     self.oneQusSubSelfAnswers[subIndex] = beforeEditing
-                    
                 }
- 
+                
                 isSave = false
                 self.subIndex += 1
                 self.initSubView()
-                          }
+            }
         }
         if(sender.direction == .Right){
             if(self.subIndex == 0){
-                ProgressHUD.showError("是第一小题")
+                let temp = self.index
+                if self.index != 0{
+                    (self.index) -= 1
+                }else{
+                    
+                    let vc = UIStoryboard(name: "Problem", bundle: nil)
+                        .instantiateViewControllerWithIdentifier("TranslateVC") as!
+                    TranslateViewController
+                    vc.title = self.title
+                    vc.kindOfQusIndex = self.kindOfQusIndex
+                    vc.testid = self.testid
+                    vc.endDate = self.endDate
+                    vc.enableClientJudge = self.enableClientJudge
+                    vc.keyVisible = self.keyVisible
+                    vc.viewOneWithAnswerKey = self.viewOneWithAnswerKey
+                    self.navigationController?.pushViewController(vc, animated: false)
+                }
+                if(temp != index){
+                    self.initView()
+                }
+                
             }else{
                 if(!isSave){
                     self.oneQusSubSelfAnswers[subIndex] = beforeEditing
                     
                 }
-              isSave = false
-            self.subIndex -= 1
-            self.initSubView()
+                isSave = false
+                self.subIndex -= 1
+                self.initSubView()
                 
             }
         }
@@ -876,7 +920,7 @@ class ComplexQusViewController: UIViewController,UITableViewDelegate,UITableView
             startRange += self.everySubQusRange[i] as! NSInteger
         }
    endRange += startRange + (self.everySubQusRange[subIndex] as! NSInteger)
-        print(self.items[index].valueForKey("id"))
+    //    print(self.items[index].valueForKey("id"))
         //没有超过指定日期且没有开放阅卷功能的
         if(!self.isOver && !self.enableClientJudge){
             ProgressHUD.showError("没有开启阅卷功能")
@@ -1067,12 +1111,36 @@ class ComplexQusViewController: UIViewController,UITableViewDelegate,UITableView
         if(sender.tag == 2){
             //判断是不是到最后一题
             if(self.subIndex == self.subQusItems.count - 1){
-                ProgressHUD.showError("已到最后一小题")
-            }else{
+                let temp = self.index
+               //手势加载下一道大题目
+                //判断大题目有没有加载完
+                if self.index != self.items.count - 1{
+                    self.index += 1
+                }
+                else if(self.kindOfQusIndex == self.totalKindOfQus - 1){
+                    ProgressHUD.showSuccess("已完成全部试题")
+                }
+                else{
+                    let vc = UIStoryboard(name: "Problem", bundle: nil)
+                        .instantiateViewControllerWithIdentifier("TranslateVC") as!
+                    TranslateViewController
+                    vc.kindOfQusIndex = self.kindOfQusIndex + 1
+                    vc.title = self.title
+                    vc.testid = self.testid
+                    vc.endDate = self.endDate
+                    vc.enableClientJudge = self.enableClientJudge
+                    vc.keyVisible = self.keyVisible
+                    vc.viewOneWithAnswerKey = self.viewOneWithAnswerKey
+                    self.navigationController?.pushViewController(vc, animated: false)
+                }
+                if(temp != index){
+                    self.initView()
+                }
+                
+        }else{
                 if(!isSave){
                     self.oneQusSubSelfAnswers[subIndex] = beforeEditing
-                    
-                }
+                    }
                 
                 isSave = false
                 self.subIndex += 1
@@ -1081,7 +1149,27 @@ class ComplexQusViewController: UIViewController,UITableViewDelegate,UITableView
         }
         if(sender.tag == 1){
             if(self.subIndex == 0){
-                ProgressHUD.showError("是第一小题")
+                let temp = self.index
+                if self.index != 0{
+                    (self.index) -= 1
+                }else{
+                    
+                    let vc = UIStoryboard(name: "Problem", bundle: nil)
+                        .instantiateViewControllerWithIdentifier("TranslateVC") as!
+                    TranslateViewController
+                    vc.title = self.title
+                    vc.kindOfQusIndex = self.kindOfQusIndex
+                    vc.testid = self.testid
+                    vc.endDate = self.endDate
+                    vc.enableClientJudge = self.enableClientJudge
+                    vc.keyVisible = self.keyVisible
+                    vc.viewOneWithAnswerKey = self.viewOneWithAnswerKey
+                    self.navigationController?.pushViewController(vc, animated: false)
+                }
+                if(temp != index){
+                    self.initView()
+                }
+                
             }else{
                 if(!isSave){
                     self.oneQusSubSelfAnswers[subIndex] = beforeEditing
@@ -1096,10 +1184,17 @@ class ComplexQusViewController: UIViewController,UITableViewDelegate,UITableView
 }
     //底部的tableView出现时候的动画
     func tableView(tableView: UITableView, willDisplayCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {
-        cell.layer.transform = CATransform3DMakeScale(0.1, 0.1, 1.0)
-        UIView.animateWithDuration(0.8) {
-            cell.layer.transform = CATransform3DMakeScale(1, 1, 1)
-        }
-
+        //判断小题的类型
+        if(self.subQusItems[subIndex].valueForKey("type") as! String == "FILL_BLANK"){
+//        cell.layer.transform = CATransform3DMakeScale(0.1, 0.1, 1.0)
+//        UIView.animateWithDuration(0.8) {
+//            cell.layer.transform = CATransform3DMakeScale(1, 1, 1)
+//        }
+//
+            cell.contentView.alpha = 0
+            UIView.animateWithDuration(0.8, animations: {
+                cell.contentView.alpha = 1
+            })
+    }
     }
 }

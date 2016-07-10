@@ -385,10 +385,12 @@ class JudgeQueViewController: UIViewController,UIWebViewDelegate,UITableViewDele
         scrollView.contentSize = CGSizeMake(CGFloat(width!), 0)
         scrollView.showsVerticalScrollIndicator = false
         let tableHeaderView = UIView(frame:CGRectMake(0,0,SCREEN_WIDTH,frame.size.height + 1))
-        let borderView = UIView(frame: CGRectMake(0,frame.size.height,SCREEN_WIDTH,1))
-        borderView.layer.borderWidth = 1.0
+        let borderView = UIView(frame: CGRectMake(0,frame.size.height,SCREEN_WIDTH,0.3))
+        borderView.layer.borderColor = UIColor.grayColor().CGColor
+        borderView.layer.borderWidth = 0.3
         tableHeaderView.addSubview(webView)
         tableHeaderView.addSubview(borderView)
+
         webView.addGestureRecognizer(tap)
         self.tableView?.tableHeaderView = tableHeaderView
 

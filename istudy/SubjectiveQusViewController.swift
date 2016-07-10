@@ -201,7 +201,7 @@ class SubjectiveQusViewController: UIViewController,AJPhotoPickerProtocol,UINavi
     //保存的代码
     func save(sender:UIButton){
         //save的时候转化成为html的格式 随后answerTextView和imageView进行初始化影藏
-        self.answerTextView.hidden = true
+    //    self.answerTextView.hidden = true
         var allAnswer = ""
         allAnswer = self.selfAnswers[index] as! String
         var tempHtmlString = ""
@@ -216,14 +216,18 @@ class SubjectiveQusViewController: UIViewController,AJPhotoPickerProtocol,UINavi
             tempHtmlString += imgHtml
         }
         allAnswer += tempHtmlString
-        self.collectionView!.hidden = true
-        self.answerTextView.hidden = true
-        
-        self.answerWebView.hidden = false
+//        self.collectionView!.hidden = true
+//        self.answerTextView.hidden = true
+//        
+//        self.answerWebView.hidden = false
         //转化成html的格式
         self.selfAnswers.replaceObjectAtIndex(index, withObject: allAnswer)
         
         self.answerWebView.loadHTMLString(self.selfAnswers[index] as! String, baseURL: nil)
+        //数组清空
+        self.answerPhotos = NSMutableArray()
+        self.answerTextView.text = ""
+        self.collectionView.reloadData()
         //一个个来加载控件
         let tap = UITapGestureRecognizer(target: self, action: #selector(SubjectiveQusViewController.webViewShowBig(_:)))
         tap.delegate = self
@@ -319,8 +323,9 @@ class SubjectiveQusViewController: UIViewController,AJPhotoPickerProtocol,UINavi
     }
     func blurEffectMenu(menu: BlurEffectMenu!, didTapOnItem item: BlurEffectMenuItem!) {
         //将answerWebView的隐藏 随后出现两个控件 一个用来添加文字 一个用来添加图片
-        self.answerWebView.hidden = true
+     //   self.answerWebView.hidden = true
         if(item.title == "添加图片"){
+            self.answerPhotos = NSMutableArray()
             self.imagePicker = AJPhotoPickerViewController()
             //设置最大的数量
             imagePicker.maximumNumberOfSelection = 6
@@ -336,10 +341,7 @@ class SubjectiveQusViewController: UIViewController,AJPhotoPickerProtocol,UINavi
         }
         if(item.title == "添加文字"){
             self.answerTextView.becomeFirstResponder()
-            self.answerTextView.hidden = false
-            self.collectionView?.hidden = false
-            self.answerWebView.hidden = true
-            self.answerTextView.becomeFirstResponder()
+        self.answerTextView.becomeFirstResponder()
             menu.dismissViewControllerAnimated(true, completion: nil)
         }
         
@@ -353,9 +355,9 @@ class SubjectiveQusViewController: UIViewController,AJPhotoPickerProtocol,UINavi
     func photoPickerDidCancel(picker: AJPhotoPickerViewController!) {
         picker.dismissViewControllerAnimated(true, completion: nil)
         menu.dismissViewControllerAnimated(true, completion: nil)
-        self.answerWebView.hidden = false
-        self.collectionView.hidden = true
-        self.answerTextView.hidden = true
+//        self.answerWebView.hidden = false
+//        self.collectionView.hidden = true
+//        self.answerTextView.hidden = true
     }
     //当点击了照相机的时候
     func photoPickerTapCameraAction(picker: AJPhotoPickerViewController!) {
@@ -375,9 +377,9 @@ class SubjectiveQusViewController: UIViewController,AJPhotoPickerProtocol,UINavi
         picker.dismissViewControllerAnimated(true, completion: nil)
         self.imagePicker.dismissViewControllerAnimated(true, completion: nil)
         menu.dismissViewControllerAnimated(true, completion: nil)
-        self.answerTextView.hidden = true
-        self.answerWebView.hidden = true
-        self.collectionView?.hidden = false
+//        self.answerTextView.hidden = true
+//        self.answerWebView.hidden = true
+//        self.collectionView?.hidden = false
         self.collectionView?.reloadData()
     }
     //退出照相机的时候
@@ -385,9 +387,9 @@ class SubjectiveQusViewController: UIViewController,AJPhotoPickerProtocol,UINavi
         picker.dismissViewControllerAnimated(true, completion: nil)
         self.imagePicker.dismissViewControllerAnimated(true, completion: nil)
         menu.dismissViewControllerAnimated(true, completion: nil)
-        self.answerTextView.hidden = true
-        self.answerWebView.hidden = false
-        self.collectionView?.hidden = true
+//        self.answerTextView.hidden = true
+//        self.answerWebView.hidden = false
+//        self.collectionView?.hidden = true
     }
     //当选择好相册后 更新scrollView
     func photoPicker(picker: AJPhotoPickerViewController!, didSelectAssets assets: [AnyObject]!) {
@@ -398,9 +400,9 @@ class SubjectiveQusViewController: UIViewController,AJPhotoPickerProtocol,UINavi
         }
         picker.dismissViewControllerAnimated(true, completion: nil)
         menu.dismissViewControllerAnimated(true, completion: nil)
-        self.collectionView?.hidden = false
-        self.answerWebView.hidden = true
-        self.answerTextView.hidden = true
+//        self.collectionView?.hidden = false
+//        self.answerWebView.hidden = true
+//        self.answerTextView.hidden = true
         
         self.collectionView?.reloadData()
         
@@ -591,40 +593,56 @@ self.rightBtn.addTarget(self, action: #selector(SubjectiveQusViewController.chan
         self.answerWebView.addGestureRecognizer(tap1)
         self.answerWebView.tag = 1
         self.answerWebView.userInteractionEnabled = true
-     
         
-        self.contentScrollView?.addSubview(self.answerWebView)
+      
         //有没有答案的选择
+        let answerWebViewLabel = UILabel(frame: CGRectMake(5,totalHeight,SCREEN_WIDTH,21))
+        answerWebViewLabel.text = "学生答案区:"
+        totalHeight += 23
+        self.contentScrollView?.addSubview(answerWebViewLabel)
         var tempAnswerString = (self.selfAnswers[index] as! String)
         if(tempAnswerString) == ""{
            tempAnswerString = "<html><head><style>P{text-align:center;vertical-align: middle;font-size: 17px;font-family: " + "\"" + "宋体" + "\"" +  "}</style></head><body><p>无作业信息</p></body></html>"
-            self.answerWebView.frame = CGRectMake(5, totalHeight, SCREEN_WIDTH - 10, 30)
+            self.answerWebView.frame = CGRectMake(5, totalHeight, SCREEN_WIDTH - 10, 120)
               self.answerWebView.loadHTMLString(tempAnswerString, baseURL: nil)
-             totalHeight += 35
+           
         }else{
-              self.answerWebView.frame = CGRectMake(5, totalHeight, SCREEN_WIDTH - 10, 100)
+            self.answerWebView.frame = CGRectMake(5, totalHeight, SCREEN_WIDTH - 10, 120)
         let answerWebString = cssDesString + (self.selfAnswers[index] as! String)
         self.answerWebView.loadHTMLString(answerWebString, baseURL: nil)
-            totalHeight += 105
-        }
+                   }
+        totalHeight += 125
+        self.answerWebView.layer.borderWidth = 0.3
+        self.answerWebView.layer.borderColor = UIColor.grayColor().CGColor
+     self.contentScrollView?.addSubview(self.answerWebView)
+     
         let currentDate = NSDate()
         let result:NSComparisonResult = currentDate.compare(endDate)
-        
-        self.answerWebView.hidden = false
         if result == .OrderedAscending{
             //加载textView 和 collectionView
+            let answerTextLabel = UILabel(frame: CGRectMake(5, totalHeight, SCREEN_WIDTH, 21))
+            answerTextLabel.text = "文本区:"
+            totalHeight += 23
             self.answerTextView.frame = CGRectMake(5, totalHeight, SCREEN_WIDTH - 10, 100)
             totalHeight += 110
+            let answerPhtotoCollectionLabel = UILabel(frame: CGRectMake(5,totalHeight,SCREEN_WIDTH,21))
+            answerPhtotoCollectionLabel.text = "图片区:"
+            totalHeight += 23
             self.collectionView.frame = CGRectMake(5, totalHeight, SCREEN_WIDTH - 10, 200)
-            self.answerTextView.hidden = true
-            self.collectionView.hidden = true
             self.contentScrollView?.addSubview(collectionView)
             self.answerTextView.keyboardDismissMode = .OnDrag
             totalHeight += 210
             self.contentScrollView?.addSubview(answerTextView)
+            self.contentScrollView?.addSubview(answerTextLabel)
+            self.contentScrollView?.addSubview(answerPhtotoCollectionLabel)
             self.resetBtn.addTarget(self, action: #selector(SubjectiveQusViewController.resetAnswer(_:)), forControlEvents: .TouchUpInside)
             self.addBtn.addTarget(self, action: #selector(SubjectiveQusViewController.selectAnswerType(_:)), forControlEvents: .TouchUpInside)
             self.saveBtn.addTarget(self, action: #selector(SubjectiveQusViewController.save(_:)), forControlEvents: .TouchUpInside)
+            //加载边框线
+            self.collectionView.layer.borderWidth = 0.30
+            self.collectionView.layer.borderColor = UIColor.grayColor().CGColor
+            self.answerTextView.layer.borderWidth = 0.3
+            self.answerTextView.layer.borderColor = UIColor.grayColor().CGColor
         }else{
            // totalHeight += 155
             //加载评论的
@@ -640,15 +658,26 @@ self.rightBtn.addTarget(self, action: #selector(SubjectiveQusViewController.chan
             }else{
                 commetTextView.text = "无评语"
             }
+            commetTextView.layer.borderWidth = 0.3
+            commetTextView.layer.borderColor = UIColor.grayColor().CGColor
             self.contentScrollView?.addSubview(commetTextView)
             let standAnswerLabel = UILabel(frame: CGRectMake(5,totalHeight,SCREEN_WIDTH - 10,21))
             standAnswerLabel.text = "标准答案:"
             totalHeight += 23
             self.contentScrollView?.addSubview(standAnswerLabel)
             let standAnswerWebView = UIWebView(frame: CGRectMake(5,totalHeight,SCREEN_WIDTH - 10,100))
-            standAnswerWebView.loadHTMLString(self.items[index].valueForKey("strandanswer") as! String, baseURL: nil)
+            //标准答案有可能为空
+            if(self.items[index].valueForKey("strandanswer") as? String != nil && self.items[index].valueForKey("strandanswer") as! String != "") {
+            
+    standAnswerWebView.loadHTMLString(self.items[index].valueForKey("strandanswer") as! String, baseURL: nil)
+            }else{
+                //加载没有标准答案的信息
+                standAnswerWebView.loadHTMLString("<html><head><style>P{text-align:center;vertical-align: middle;font-size: 17px;font-family: " + "\"" + "宋体" + "\"" +  "}</style></head><body><p>无标准答案</p></body></html>",baseURL: nil)
+            }
             totalHeight += 120
             self.contentScrollView?.addSubview(standAnswerWebView)
+            standAnswerWebView.layer.borderWidth = 0.3
+            standAnswerWebView.layer.borderColor = UIColor.grayColor().CGColor
         }
         self.contentScrollView?.contentSize = CGSizeMake(SCREEN_WIDTH, totalHeight + 20)
     }

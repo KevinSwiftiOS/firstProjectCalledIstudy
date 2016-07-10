@@ -11,7 +11,6 @@
 #import "AKSegmentedControl.h"
 #import "PopoverView.h"
 #import "HZAreaPickerView.h"
-#import "ASProgressPopUpView.h"
 #import "LFLUISegmentedControl.h"
 #import "JCFlipPageView.h"
 #import "JCFlipPage.h"
@@ -25,9 +24,6 @@
 #import "TGRImageZoomAnimationController.h"
 #import "UIImageView+WebCache.h"
 #import "AYBubbleView.h"
-#import "RXRotateButtonOverlayView.h"
-#import "ImageAndTitleVerticalButton.h"
-#import "HZQUserResizableView.h"
 #import "DZNEmptyDataSet/UIScrollView+EmptyDataSet.h"
 #import "FDFullscreenPopGesture/UINavigationController+FDFullscreenPopGesture.h"
 

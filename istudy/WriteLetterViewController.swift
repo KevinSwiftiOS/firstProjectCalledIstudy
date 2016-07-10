@@ -30,7 +30,6 @@ import SwiftyJSON
   var selectedPersonIdArray = NSMutableArray()
    var selectedPersonNameArray = NSMutableArray()
     var items = NSArray()
-    
     @IBOutlet weak var recevieBtn:UIButton?
     @IBOutlet weak var photoBtn:UIButton!
     @IBOutlet weak var sendBtn:UIButton!
@@ -43,6 +42,8 @@ import SwiftyJSON
         self.collectionView.delegate = self
         self.collectionView.dataSource = self
         self.collectionView.backgroundColor = UIColor.whiteColor()
+        self.collectionView.layer.borderWidth = 0.3
+        self.collectionView.layer.borderColor = UIColor.grayColor().CGColor
         self.writeTextView.placeholder = "请输入内容"
        self.subjectTextField?.text =  self.subject
      self.tabBarController?.tabBar.hidden = true
@@ -52,8 +53,7 @@ import SwiftyJSON
         XKeyBoard.registerKeyBoardHide(self)
         XKeyBoard.registerKeyBoardShow(self)
         
-      
-                tempString += self.repleyToOneName
+      tempString += self.repleyToOneName
         
     self.recevieBtn?.addTarget(self, action: #selector(WriteLetterViewController.showmoreReceivedPerson(_:)), forControlEvents: .TouchUpInside)
         // Do any additional setup after loading the view.
@@ -96,9 +96,7 @@ import SwiftyJSON
                 self.tempString += self.repleyToOneName
                 }
             
-            
-
-self.selectedPersonIdArray = idArray
+            self.selectedPersonIdArray = idArray
         }
     contactPersonVC.selectedPersonIdArray = self.selectedPersonIdArray
     
@@ -121,7 +119,7 @@ self.selectedPersonIdArray = idArray
     }
     func keyboardWillHideNotification(notification:NSNotification){
        UIView.animateWithDuration(0.3) { 
-        self.bottomLayout.constant = 8
+        self.bottomLayout.constant = 25
         self.view.setNeedsLayout()
         }
     }

@@ -29,7 +29,7 @@ class ReplyTopicViewController: UIViewController,UITableViewDelegate,UITableView
     @IBOutlet weak var replyListTableView:mainTableView?
     @IBOutlet weak var sendBtn:UIButton!
     @IBOutlet weak var photoBtn:UIButton!
-    @IBOutlet weak var voiceBtn:UIButton!
+   // @IBOutlet weak var voiceBtn:UIButton!
     @IBOutlet weak var btmView:UIView!
     override func viewDidLoad() {
          topView = UIView(frame: CGRectMake(80,0,SCREEN_WIDTH - 80,64))
@@ -51,7 +51,7 @@ class ReplyTopicViewController: UIViewController,UITableViewDelegate,UITableView
         bubbleView.bubbleColor = UIColor.redColor()
      sendBtn?.setFAText(prefixText: "", icon: FAType.FASend, postfixText: "", size: 25, forState: .Normal)
      photoBtn?.setFAText(prefixText: "", icon: FAType.FAImage, postfixText: "", size: 25, forState: .Normal)
-             voiceBtn?.setFAText(prefixText: "", icon: FAType.FAMusic, postfixText: "", size: 25, forState: .Normal)
+//             voiceBtn?.setFAText(prefixText: "", icon: FAType.FAMusic, postfixText: "", size: 25, forState: .Normal)
         
       self.automaticallyAdjustsScrollViewInsets = false
         self.writeTextView?.placeholder = "请输入回复内容"
@@ -376,7 +376,12 @@ self.replyListTableView?.tableFooterView = UIView()
     }
     func updateView() {
         if(self.photos.count > 0){
-            self.collectionView?.frame = CGRectMake(0, 64 + SCREEN_HEIGHT * 0.15 + 5, SCREEN_WIDTH,SCREEN_HEIGHT * 0.15)
+            let photoCollecionLabel = UILabel(frame: CGRectMake(5, 64 + SCREEN_HEIGHT * 0.15 + 5,SCREEN_WIDTH - 10,21))
+            photoCollecionLabel.text = "图片区:"
+            self.view.addSubview(photoCollecionLabel)
+            self.collectionView?.frame = CGRectMake(5, 64 + SCREEN_HEIGHT * 0.15 + 5 + 23, SCREEN_WIDTH - 10,SCREEN_HEIGHT * 0.15)
+            self.collectionView?.layer.borderWidth = 0.3
+            self.collectionView?.layer.borderColor = UIColor.grayColor().CGColor
             self.replyTopToWriteBtm?.constant = SCREEN_HEIGHT * 0.3 + 5
         }else{
              self.replyTopToWriteBtm?.constant =  8

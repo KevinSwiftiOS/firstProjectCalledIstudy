@@ -234,6 +234,7 @@ class StationLetterViewController: UIViewController,UITableViewDelegate,UITableV
                 let json = JSON(Value)
                 
                 if(json["retcode"].number != 0){
+                    print(json["retcode"])
                     ProgressHUD.showError("请求失败")
                     self.items = NSArray()
                     dispatch_async(dispatch_get_main_queue(), {

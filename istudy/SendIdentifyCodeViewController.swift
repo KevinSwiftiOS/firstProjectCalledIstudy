@@ -14,10 +14,23 @@ class SendIdentifyCodeViewController: UIViewController {
     var email = String()
     @IBOutlet weak var identifyCode:UITextField?
     @IBOutlet weak var timerLabel:UILabel?
+    @IBOutlet weak var sendAgainBtn:UIButton?
+    @IBOutlet weak var configBtn:UIButton?
+    
+    //计数器
+    var sendAgainCnt = 0
+   var  isOutTime = false
     var timer = NSTimer()
     var currentTime = NSInteger()
     override func viewDidLoad() {
         super.viewDidLoad()
+        //加再发一次的按钮
+        sendAgainBtn?.addTarget(self, action: #selector(SendIdentifyCodeViewController.sendAgain(_:)), forControlEvents: .TouchUpInside)
+        sendAgainBtn?.hidden = true
+        configBtn?.layer.cornerRadius = 6.0
+        configBtn?.layer.masksToBounds = true
+        sendAgainBtn?.layer.cornerRadius = 6.0
+        sendAgainBtn?.layer.masksToBounds = true
         self.currentTime = 60
         self.timerLabel?.text = "\(self.currentTime)" + "秒"
         self.timer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(SendIdentifyCodeViewController.updateTime(_:)), userInfo: nil, repeats: true)
@@ -35,6 +48,7 @@ class SendIdentifyCodeViewController: UIViewController {
             self.currentTime -= 1
             self.timerLabel?.text = "\(self.currentTime)" + "秒"
         }else{
+            self.sendAgainBtn?.hidden = false
             self.timerLabel?.text = "0秒"
         }
     }
@@ -92,5 +106,37 @@ class SendIdentifyCodeViewController: UIViewController {
     }
     override func viewWillDisappear(animated: Bool) {
         ProgressHUD.dismiss()
+    }
+    func sendAgain(sender:UIButton) {
+    
+        sendAgainCnt += 1
+        if(sendAgainCnt != 4){
+            
+              let urlString = "http://dodo.hznu.edu.cn/api/sendvalidcode" + "?email=" + (email)
+        
+        Alamofire.request(.POST, urlString).responseJSON(completionHandler: { (response) in
+            switch response.result{
+            case .Failure(_):
+                ProgressHUD.showError("发送失败")
+            case .Success(let Value):
+                let json = JSON(Value)
+                if(json["retcode"].number == 0){
+                    dispatch_async(dispatch_get_main_queue(), {
+                        self.currentTime = 60
+                        self.timerLabel?.text = "\(self.currentTime)" + "秒"
+                        sender.hidden = true
+                    })
+                    
+                    ProgressHUD.showSuccess("已发送")
+                }else{
+                    ProgressHUD.showError("邮箱无效")
+                }
+            }
+        })
+        
+    }else{
+            ProgressHUD.showError("请查看邮箱填写是否正确")
+            self.navigationController?.popViewControllerAnimated(true)
+    }
     }
 }
