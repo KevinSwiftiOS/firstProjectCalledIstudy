@@ -212,7 +212,7 @@
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="图片区:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BHB-ct-jFX">
                                 <rect key="frame" x="-42" y="-21" width="42" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                         </subviews>
@@ -243,17 +243,23 @@
                             <constraint firstItem="Zgl-AC-XoL" firstAttribute="height" secondItem="NHI-TC-v2O" secondAttribute="height" multiplier="0.46" id="VvF-sf-YDp"/>
                             <constraint firstItem="BHB-ct-jFX" firstAttribute="top" secondItem="0DL-ZI-5d3" secondAttribute="bottom" constant="2" id="WMM-HL-t9a"/>
                             <constraint firstAttribute="trailing" secondItem="grE-Wm-HBP" secondAttribute="trailing" id="Wn8-I4-kSV"/>
-                            <constraint firstItem="VFU-qY-N0w" firstAttribute="top" secondItem="KH4-2g-FnG" secondAttribute="bottom" id="XOG-6R-JbK"/>
+                            <constraint firstItem="VFU-qY-N0w" firstAttribute="top" secondItem="KH4-2g-FnG" secondAttribute="bottom" id="XOG-6R-JbK">
+                                <variation key="heightClass=regular-widthClass=compact" constant="0.0"/>
+                            </constraint>
                             <constraint firstItem="Zgl-AC-XoL" firstAttribute="top" secondItem="0DL-ZI-5d3" secondAttribute="bottom" constant="8" id="Zi6-nx-BMO"/>
                             <constraint firstItem="grE-Wm-HBP" firstAttribute="top" secondItem="Zgl-AC-XoL" secondAttribute="bottom" constant="8" id="dij-hW-1eR"/>
                             <constraint firstItem="Zgl-AC-XoL" firstAttribute="top" secondItem="0DL-ZI-5d3" secondAttribute="bottom" constant="25" id="eDq-kg-VTv"/>
                             <constraint firstItem="Zgl-AC-XoL" firstAttribute="top" secondItem="0DL-ZI-5d3" secondAttribute="bottom" constant="8" id="kXD-34-nng"/>
-                            <constraint firstItem="VFU-qY-N0w" firstAttribute="leading" secondItem="NHI-TC-v2O" secondAttribute="leading" constant="2" id="mpU-fr-QLa"/>
+                            <constraint firstItem="VFU-qY-N0w" firstAttribute="leading" secondItem="NHI-TC-v2O" secondAttribute="leading" constant="2" id="mpU-fr-QLa">
+                                <variation key="heightClass=regular-widthClass=compact" constant="5"/>
+                            </constraint>
                             <constraint firstItem="0DL-ZI-5d3" firstAttribute="leading" secondItem="NHI-TC-v2O" secondAttribute="leading" id="oys-Dn-xcr"/>
                             <constraint firstAttribute="trailing" secondItem="0DL-ZI-5d3" secondAttribute="trailing" id="qx2-2e-AR8"/>
                             <constraint firstItem="VLN-4c-93l" firstAttribute="top" secondItem="MTB-w3-xYT" secondAttribute="bottom" constant="1" id="sGK-qF-1h4"/>
                             <constraint firstItem="0DL-ZI-5d3" firstAttribute="top" secondItem="VLN-4c-93l" secondAttribute="bottom" constant="2" id="tlf-sn-hkS"/>
-                            <constraint firstItem="VLN-4c-93l" firstAttribute="leading" secondItem="NHI-TC-v2O" secondAttribute="leading" constant="2" id="uPo-fb-U62"/>
+                            <constraint firstItem="VLN-4c-93l" firstAttribute="leading" secondItem="NHI-TC-v2O" secondAttribute="leading" constant="2" id="uPo-fb-U62">
+                                <variation key="heightClass=regular-widthClass=compact" constant="5"/>
+                            </constraint>
                             <constraint firstItem="0DL-ZI-5d3" firstAttribute="leading" secondItem="NHI-TC-v2O" secondAttribute="leading" id="vIO-S4-A4R">
                                 <variation key="heightClass=regular-widthClass=compact" constant="5"/>
                             </constraint>

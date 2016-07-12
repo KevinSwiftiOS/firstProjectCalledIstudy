@@ -27,6 +27,7 @@ import SwiftyJSON
     @IBOutlet weak var writeTextView: JVFloatLabeledTextView!
     @IBOutlet weak var collectionView:UICollectionView!
     @IBOutlet weak var btmView:UIView!
+    @IBOutlet weak var addPersonBtn:UIButton?
   var selectedPersonIdArray = NSMutableArray()
    var selectedPersonNameArray = NSMutableArray()
     var items = NSArray()
@@ -35,6 +36,9 @@ import SwiftyJSON
     @IBOutlet weak var sendBtn:UIButton!
     override func viewDidLoad() {
         super.viewDidLoad()
+        recevieBtn?.layer.borderWidth = 0.4
+        recevieBtn?.layer.borderColor = UIColor.grayColor().CGColor
+        addPersonBtn?.setFAText(prefixText: "", icon: FAType.FAPlusCircle, postfixText: "", size: 25, forState: .Normal)
         ShowBigImageFactory.topViewEDit(self.btmView)
         photoBtn.setFAText(prefixText: "", icon: FAType.FAImage, postfixText: "", size: 25, forState: .Normal)
         sendBtn.setFAText(prefixText: "", icon: FAType.FASend, postfixText: "", size: 25, forState: .Normal)
