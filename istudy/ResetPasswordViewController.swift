@@ -13,12 +13,15 @@ class ResetPasswordViewController: UIViewController {
     @IBOutlet weak var topLayout: NSLayoutConstraint!
     @IBOutlet weak var newPassWord:UITextField?
     @IBOutlet weak var configPassWord:UITextField?
+    @IBOutlet weak var sureBtn:UIButton?
     var token = String()
     override func viewDidLoad() {
         super.viewDidLoad()
         //键盘出现时的挡住问题
         XKeyBoard.registerKeyBoardHide(self)
         XKeyBoard.registerKeyBoardShow(self)
+        sureBtn?.layer.cornerRadius = 6.0
+        sureBtn?.layer.masksToBounds = true
         
     }
     

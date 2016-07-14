@@ -32,7 +32,6 @@ class StationLetterViewController: UIViewController,UITableViewDelegate,UITableV
     var inDic = [String:AnyObject]()
     var outDic = [String:AnyObject]()
     var items = NSArray()
-    var toDeleteLetterArray = NSMutableArray()
     override func viewDidLoad() {
         super.viewDidLoad()
         

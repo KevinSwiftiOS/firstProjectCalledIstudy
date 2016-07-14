@@ -64,16 +64,6 @@
                                     </mask>
                                 </variation>
                             </imageView>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="M6K-4v-spK">
-                                <rect key="frame" x="-23" y="-15" width="46" height="30"/>
-                                <color key="backgroundColor" red="0.2901960784" green="0.6705882353" blue="0.96862745100000003" alpha="1" colorSpace="calibratedRGB"/>
-                                <state key="normal" title="登录">
-                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                                <connections>
-                                    <action selector="login:" destination="QBB-J4-r5L" eventType="touchUpInside" id="fXJ-pd-XNO"/>
-                                </connections>
-                            </button>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="安全设置2" translatesAutoresizingMaskIntoConstraints="NO" id="pwK-LS-eTd">
                                 <rect key="frame" x="0.0" y="0.0" width="240" height="128"/>
                                 <constraints>
@@ -105,6 +95,16 @@
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits" keyboardType="numberPad"/>
                             </textField>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="M6K-4v-spK">
+                                <rect key="frame" x="-23" y="-15" width="46" height="30"/>
+                                <color key="backgroundColor" red="0.2901960784" green="0.6705882353" blue="0.96862745100000003" alpha="1" colorSpace="calibratedRGB"/>
+                                <state key="normal" title="登录">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="login:" destination="QBB-J4-r5L" eventType="touchUpInside" id="fXJ-pd-XNO"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
@@ -139,12 +139,27 @@
                                 <exclude reference="8nQ-O5-vc3"/>
                                 <exclude reference="4KD-dz-VyJ"/>
                                 <exclude reference="Mdn-v9-GQW"/>
-                                <exclude reference="M6K-4v-spK"/>
                                 <exclude reference="pwK-LS-eTd"/>
                                 <exclude reference="DQm-iH-xjt"/>
                                 <exclude reference="D1J-S9-3FV"/>
+                                <exclude reference="M6K-4v-spK"/>
                             </mask>
                             <mask key="constraints">
+                                <exclude reference="WYP-PJ-lr0"/>
+                                <exclude reference="YZM-cv-9Ab"/>
+                                <exclude reference="Yk0-sP-VyF"/>
+                                <exclude reference="dFY-Sq-wd3"/>
+                                <exclude reference="rqo-iq-aO4"/>
+                                <exclude reference="6WP-CM-m4p"/>
+                                <exclude reference="7MI-m6-lV7"/>
+                                <exclude reference="ODi-Cc-0Pd"/>
+                                <exclude reference="kjD-Cz-uZZ"/>
+                                <exclude reference="lA9-X3-t3v"/>
+                                <exclude reference="yCE-Kp-Ypv"/>
+                                <exclude reference="A1k-2s-pgm"/>
+                                <exclude reference="kET-jX-59B"/>
+                                <exclude reference="mIG-0l-geV"/>
+                                <exclude reference="J8P-wL-FPq"/>
                                 <exclude reference="DL0-o3-BCK"/>
                                 <exclude reference="XkK-1b-Kqm"/>
                                 <exclude reference="eD3-xq-PgM"/>
@@ -152,24 +167,9 @@
                                 <exclude reference="7eN-J7-NzS"/>
                                 <exclude reference="XBJ-Ov-Hqw"/>
                                 <exclude reference="zIG-ui-4mi"/>
-                                <exclude reference="6WP-CM-m4p"/>
-                                <exclude reference="7MI-m6-lV7"/>
-                                <exclude reference="ODi-Cc-0Pd"/>
-                                <exclude reference="kjD-Cz-uZZ"/>
-                                <exclude reference="lA9-X3-t3v"/>
                                 <exclude reference="67T-qJ-xiH"/>
                                 <exclude reference="a87-rU-rhy"/>
                                 <exclude reference="f5Y-UA-SA4"/>
-                                <exclude reference="WYP-PJ-lr0"/>
-                                <exclude reference="YZM-cv-9Ab"/>
-                                <exclude reference="Yk0-sP-VyF"/>
-                                <exclude reference="dFY-Sq-wd3"/>
-                                <exclude reference="rqo-iq-aO4"/>
-                                <exclude reference="A1k-2s-pgm"/>
-                                <exclude reference="kET-jX-59B"/>
-                                <exclude reference="mIG-0l-geV"/>
-                                <exclude reference="yCE-Kp-Ypv"/>
-                                <exclude reference="J8P-wL-FPq"/>
                             </mask>
                         </variation>
                         <variation key="heightClass=regular-widthClass=compact">
@@ -177,12 +177,27 @@
                                 <include reference="8nQ-O5-vc3"/>
                                 <include reference="4KD-dz-VyJ"/>
                                 <include reference="Mdn-v9-GQW"/>
-                                <include reference="M6K-4v-spK"/>
                                 <include reference="pwK-LS-eTd"/>
                                 <include reference="DQm-iH-xjt"/>
                                 <include reference="D1J-S9-3FV"/>
+                                <include reference="M6K-4v-spK"/>
                             </mask>
                             <mask key="constraints">
+                                <include reference="WYP-PJ-lr0"/>
+                                <include reference="YZM-cv-9Ab"/>
+                                <exclude reference="Yk0-sP-VyF"/>
+                                <include reference="dFY-Sq-wd3"/>
+                                <include reference="rqo-iq-aO4"/>
+                                <include reference="6WP-CM-m4p"/>
+                                <include reference="7MI-m6-lV7"/>
+                                <include reference="ODi-Cc-0Pd"/>
+                                <exclude reference="kjD-Cz-uZZ"/>
+                                <include reference="lA9-X3-t3v"/>
+                                <include reference="yCE-Kp-Ypv"/>
+                                <include reference="A1k-2s-pgm"/>
+                                <include reference="kET-jX-59B"/>
+                                <include reference="mIG-0l-geV"/>
+                                <include reference="J8P-wL-FPq"/>
                                 <include reference="DL0-o3-BCK"/>
                                 <include reference="XkK-1b-Kqm"/>
                                 <include reference="eD3-xq-PgM"/>
@@ -190,24 +205,9 @@
                                 <exclude reference="7eN-J7-NzS"/>
                                 <include reference="XBJ-Ov-Hqw"/>
                                 <exclude reference="zIG-ui-4mi"/>
-                                <include reference="6WP-CM-m4p"/>
-                                <include reference="7MI-m6-lV7"/>
-                                <include reference="ODi-Cc-0Pd"/>
-                                <exclude reference="kjD-Cz-uZZ"/>
-                                <include reference="lA9-X3-t3v"/>
                                 <exclude reference="67T-qJ-xiH"/>
                                 <include reference="a87-rU-rhy"/>
                                 <exclude reference="f5Y-UA-SA4"/>
-                                <include reference="WYP-PJ-lr0"/>
-                                <include reference="YZM-cv-9Ab"/>
-                                <exclude reference="Yk0-sP-VyF"/>
-                                <include reference="dFY-Sq-wd3"/>
-                                <include reference="rqo-iq-aO4"/>
-                                <include reference="A1k-2s-pgm"/>
-                                <include reference="kET-jX-59B"/>
-                                <include reference="mIG-0l-geV"/>
-                                <include reference="yCE-Kp-Ypv"/>
-                                <include reference="J8P-wL-FPq"/>
                             </mask>
                         </variation>
                         <connections>
@@ -571,6 +571,7 @@
                     <connections>
                         <outlet property="configPassWord" destination="opa-Rd-lb1" id="KER-lX-1a5"/>
                         <outlet property="newPassWord" destination="K2H-ee-xle" id="Ks8-hJ-bSh"/>
+                        <outlet property="sureBtn" destination="YLg-yP-9YF" id="55Z-EW-Kps"/>
                         <outlet property="topLayout" destination="yJV-K4-3t2" id="ll7-KL-69m"/>
                     </connections>
                 </viewController>

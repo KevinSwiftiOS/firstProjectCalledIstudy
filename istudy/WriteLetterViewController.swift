@@ -13,23 +13,25 @@ import SwiftyJSON
  class WriteLetterViewController: UIViewController,UICollectionViewDataSource,UICollectionViewDelegate,AJPhotoPickerProtocol,UIImagePickerControllerDelegate,UINavigationControllerDelegate,UICollectionViewDelegateFlowLayout{
  //收件人的添加
     var parentcode  = ""
-    //主题
-//主题的id
-    //看是有回复发件人的还是没有回复发件人的
-    var repleyToOneId = NSInteger()
-    var repleyToOneName = ""
-     var alertView = GUAAlertView()
+       //主题
+    //主题的id
     var subject = ""
     var photos = NSMutableArray()
-    var tempString = ""
+    //全部发信人的名称
+    var sendNamesString = ""
+    //发件人的姓名和id
+    var senderId = NSInteger()
+    var senderName = ""
+    //所有收件人的数组
+    var receiveIds = NSMutableArray()
+    var receivesNames = NSMutableArray()
+     //看是有回复发件人的还是没有回复发件人的
     var isReply = false
     @IBOutlet weak var subjectTextField:UITextField?
     @IBOutlet weak var writeTextView: JVFloatLabeledTextView!
     @IBOutlet weak var collectionView:UICollectionView!
     @IBOutlet weak var btmView:UIView!
     @IBOutlet weak var addPersonBtn:UIButton?
-  var selectedPersonIdArray = NSMutableArray()
-   var selectedPersonNameArray = NSMutableArray()
     var items = NSArray()
     @IBOutlet weak var recevieBtn:UIButton?
     @IBOutlet weak var photoBtn:UIButton!
@@ -56,12 +58,23 @@ import SwiftyJSON
         //键盘的代理
         XKeyBoard.registerKeyBoardHide(self)
         XKeyBoard.registerKeyBoardShow(self)
-        
-      tempString += self.repleyToOneName
-        
-    self.recevieBtn?.addTarget(self, action: #selector(WriteLetterViewController.showmoreReceivedPerson(_:)), forControlEvents: .TouchUpInside)
+        self.recevieBtn?.addTarget(self, action: #selector(WriteLetterViewController.showmoreReceivedPerson(_:)), forControlEvents: .TouchUpInside)
         // Do any additional setup after loading the view.
-         }
+       //遍历循环所有的收件人 看其中是否有发件人
+        var i = 0
+        while i < self.receiveIds.count {
+            if(self.receiveIds[i]  as! NSInteger == self.senderId){
+                break
+            }
+        i += 1
+        }
+      //如果没有的话 就进行添加
+        if(i == self.receiveIds.count && self.senderId != 0){
+        self.receiveIds.addObject(self.senderId)
+            self.receivesNames.addObject(self.senderName)
+        }
+    
+    }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -73,47 +86,43 @@ import SwiftyJSON
         //var tempString = "收件人"
         let contactPersonVC = UIStoryboard(name: "StationLetter", bundle: nil).instantiateViewControllerWithIdentifier("ContactPersonVC") as! ContactPersonViewController
         contactPersonVC.title = "联系人"
-        contactPersonVC.callBack =  { (idArray:NSMutableArray,items:NSArray) -> Void in
+        contactPersonVC.callBack =  { (idArray:NSMutableArray,nameArray:NSMutableArray) -> Void in
             
-            self.items = items
-            //拿到整个数组后进行整合 抽取
-            self.tempString = ""
-            for i in 0 ..< self.items.count{
-                let contactPersonArray = self.items[i].valueForKey("ContacterList") as! NSArray
-                
-                for tempOut in 0 ..< contactPersonArray.count{
-                    for tempIn in 0 ..< idArray.count{
-                        if(idArray[tempIn] as! NSInteger == contactPersonArray[tempOut].valueForKey("Id") as! NSInteger){
-                            self.tempString += contactPersonArray[tempOut].valueForKey("Name") as! String + ","
-                        }
-                    }
+         self.receivesNames = nameArray
+        self.receiveIds = idArray
+            var i = 0
+            while i < self.receiveIds.count {
+                if(self.receiveIds[i]  as! NSInteger == self.senderId){
+                    break
                 }
+                i += 1
             }
-                var i = 0
-                while i < self.selectedPersonIdArray.count {
-                    if NSInteger(self.selectedPersonIdArray[i] as! NSNumber) == self.repleyToOneId{
-                        break
-                    }
-                    i += 1
-                }
-                if(i == self.selectedPersonIdArray.count){
-                self.tempString += self.repleyToOneName
-                }
+            //如果没有的话 就进行添加
+            if(i == self.receiveIds.count && self.senderId != 0){
+                self.receiveIds.addObject(self.senderId)
+                self.receivesNames.addObject(self.senderName)
+            }
+
             
-            self.selectedPersonIdArray = idArray
         }
-    contactPersonVC.selectedPersonIdArray = self.selectedPersonIdArray
-    
+        
       self.navigationController?.pushViewController(contactPersonVC, animated: true)
     }
     func showmoreReceivedPerson(sender:UIButton){
-     self.subjectTextField?.resignFirstResponder()
+        //进行组合并且看有没有发件人
+        sendNamesString = ""
+        for i in 0 ..< self.receivesNames.count{
+            sendNamesString += self.receivesNames[i] as! String + ","
+        }
+        self.subjectTextField?.resignFirstResponder()
         self.writeTextView.resignFirstResponder()
-        if(self.tempString != ""){
-            self.alertView = GUAAlertView(title: "已选择收件人", message: self.tempString, buttonTitle: "确定", buttonTouchedAction: {
-                
+        if(self.sendNamesString != ""){
+            let alertView = GUAAlertView(title: "已选择收件人", message: self.sendNamesString, buttonTitle: "确定", buttonTouchedAction: {
+              
             }){}
-        alertView.show()
+   
+            
+            alertView.show()
         }
         }
     //键盘消失
@@ -137,18 +146,7 @@ self.view.setNeedsLayout()
     //发送的信箱
     @IBAction func sendEmail(sender:UIButton){
         //遍历循环看有没有replyToOneId
-        var i = 0
-        while i < self.selectedPersonIdArray.count{
-            if NSInteger(self.selectedPersonIdArray[i] as! NSNumber) == self.repleyToOneId{
-                break
-            }
-            i += 1
-        }
-        if(i == self.selectedPersonIdArray.count && self.repleyToOneId != 0)
-        {
-            self.selectedPersonIdArray.addObject(self.repleyToOneId)
-        }
-            
+        
         let userDefault = NSUserDefaults.standardUserDefaults()
         let authtoken = userDefault.valueForKey("authtoken") as! String
         //主题
@@ -166,12 +164,20 @@ self.view.setNeedsLayout()
 
         }
         var receives = ""
-        if(self.selectedPersonIdArray.count > 0){
-            for i in 0 ..< self.selectedPersonIdArray.count - 1{
-                receives += String(self.selectedPersonIdArray[i] as! NSNumber) + ","
-            }
-        receives += String(self.selectedPersonIdArray[self.selectedPersonIdArray.count - 1] as! NSNumber)
+        //直接全部添加联系人
+        if(self.receiveIds.count > 0){
+            //添加联系人
+            for i in 0 ..< self.receiveIds.count - 1{
+            receives += "\(self.receiveIds[i] as! NSInteger)" + ","
+             }
+            receives += "\(self.receiveIds[self.receiveIds.count - 1] as! NSInteger)"
+            
         }
+        if(receives == ""){
+            ProgressHUD.showError("未添加联系人")
+        }
+        else{
+        
         var  dic = [String:AnyObject]()
         if(parentcode == "" ){
          dic = ["subject":subject!,
@@ -215,6 +221,7 @@ Alamofire.request(.POST, "http://dodo.hznu.edu.cn/api/messagesend", parameters: 
             }
             }
         )
+        }
 }
     //添加照片的按钮
     @IBAction func addPhoto(sender:UIButton){

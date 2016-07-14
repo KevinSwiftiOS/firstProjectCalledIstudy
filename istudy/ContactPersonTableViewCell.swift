@@ -12,8 +12,7 @@ class ContactPersonTableViewCell: UITableViewCell {
     @IBOutlet weak var teacherHeadImageView:UIImageView?
     @IBOutlet weak var teacherNameLabel:UILabel?
     @IBOutlet weak var selectedBtn:CustomContactSelectBtn?
-    //是否被选择
-    var isSelect = false
+   
     //每个联系人的id
     var id = NSInteger()
        override func awakeFromNib() {

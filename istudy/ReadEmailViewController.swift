@@ -39,10 +39,6 @@ class ReadEmailViewController: UIViewController,UIGestureRecognizerDelegate{
     var senderId = NSInteger()
     var senderName = ""
     
-    //所有收件人的id和名字
-    var receiveIds = NSMutableArray()
-    var receiveNames = NSMutableArray()
-
     @IBOutlet weak var replyToOneBtn:UIButton?
    
     override func viewDidLoad() {
@@ -54,7 +50,7 @@ class ReadEmailViewController: UIViewController,UIGestureRecognizerDelegate{
         //receiveid和recevieName 进行标示
         writeBtn.setFAIcon(FAType.FAEdit, iconSize: 30, forState: .Normal)
         replyToOneBtn?.setFAIcon(FAType.FAReply, iconSize: 30, forState: .Normal)
-self.view.bringSubviewToFront(self.writeBtn)
+    self.view.bringSubviewToFront(self.writeBtn)
     self.automaticallyAdjustsScrollViewInsets = false
     self.tabBarController?.tabBar.hidden = true
         self.subjectLabel?.text = self.subject
@@ -95,8 +91,8 @@ self.view.bringSubviewToFront(self.writeBtn)
         
         let writeEmailVC = UIStoryboard(name: "StationLetter", bundle: nil)
         .instantiateViewControllerWithIdentifier("writeLetterVC") as! WriteLetterViewController
-        writeEmailVC.repleyToOneName = self.senderName
-        writeEmailVC.repleyToOneId = self.senderId
+        writeEmailVC.senderName = self.senderName
+        writeEmailVC.senderId = self.senderId
         writeEmailVC.title = "写邮件"
         writeEmailVC.parentcode = self.code
         writeEmailVC.subject = "回复:" + self.subject
@@ -110,8 +106,8 @@ self.view.bringSubviewToFront(self.writeBtn)
         self.sendNames.removeAllObjects()
         let writeEmailVC = UIStoryboard(name: "StationLetter", bundle: nil)
             .instantiateViewControllerWithIdentifier("writeLetterVC") as! WriteLetterViewController
-        writeEmailVC.selectedPersonIdArray = self.sendIds
-           writeEmailVC.selectedPersonNameArray = self.sendNames
+//        writeEmailVC.selectedPersonIdArray = self.sendIds
+//           writeEmailVC.selectedPersonNameArray = self.sendNames
         writeEmailVC.title = "写邮件"
         self.navigationController?.pushViewController(writeEmailVC, animated: true)
     }

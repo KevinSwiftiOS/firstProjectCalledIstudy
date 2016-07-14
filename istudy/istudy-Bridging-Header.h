@@ -26,7 +26,7 @@
 #import "AYBubbleView.h"
 #import "DZNEmptyDataSet/UIScrollView+EmptyDataSet.h"
 #import "FDFullscreenPopGesture/UINavigationController+FDFullscreenPopGesture.h"
-
+#import <Bugly/Bugly.h>
 
 
 
