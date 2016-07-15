@@ -22,6 +22,7 @@ class DiscussViewController: UIViewController,UITableViewDelegate,UITableViewDat
     @IBOutlet weak var writeBtn:UIButton?
     @IBOutlet weak var refreshBtn:UIButton?
     @IBOutlet weak var typeBtn:UIButton?
+    @IBOutlet weak var btmView:UIView?
     var url = ""
     var paramDic = [String:AnyObject]()
     var pop:PopoverView?
@@ -68,6 +69,7 @@ class DiscussViewController: UIViewController,UITableViewDelegate,UITableViewDat
         typeBtn?.setFATitleColor(UIColor.blueColor())
         
         //设置阴影效果
+        ShowBigImageFactory.topViewEDit(self.btmView!)
         ShowBigImageFactory.topViewEDit(self.topView!)
         self.discussTableView?.mj_header  = MJRefreshNormalHeader(refreshingTarget: self, refreshingAction: #selector(DiscussViewController.headRefresh))
         let point = CGPointMake(SCREEN_WIDTH , SCREEN_HEIGHT - 70 - 100)
@@ -172,6 +174,7 @@ class DiscussViewController: UIViewController,UITableViewDelegate,UITableViewDat
             isShow = true
             self.view.addSubview(pop!)
             self.discussTableView?.alpha = 0.3
+        self.btmView?.alpha = 0.3
             self.topView?.alpha = 0.3
             self.view.backgroundColor = UIColor.grayColor()
             pop?.selectRowAtIndex = {(index:NSInteger) -> Void in
@@ -197,6 +200,7 @@ class DiscussViewController: UIViewController,UITableViewDelegate,UITableViewDat
                 default:
                     break
                 }
+             self.discussTableView?.mj_header.beginRefreshing()
                 self.bottomChooseViewResign()
                 
             }
@@ -224,8 +228,12 @@ class DiscussViewController: UIViewController,UITableViewDelegate,UITableViewDat
     }
     //刷新
     func headRefresh() {
-        
+        //设置更改按钮的不可点击性
+        self.typeBtn?.enabled = false
+            self.btmView?.userInteractionEnabled = false
         Alamofire.request(.POST, url, parameters: self.paramDic, encoding: ParameterEncoding.URL, headers: nil).responseJSON { (response) in
+              self.typeBtn?.enabled = true
+              self.btmView?.userInteractionEnabled = true
             switch response.result{
             case .Success(let Value):
                 let json = JSON(Value)
@@ -300,6 +308,7 @@ class DiscussViewController: UIViewController,UITableViewDelegate,UITableViewDat
     //将底部的选择视图消失
     func bottomChooseViewResign(){
         self.discussTableView!.alpha = 1.0
+        self.btmView?.alpha = 1.0
         self.topView?.alpha = 1.0
         self.view.backgroundColor = UIColor.whiteColor()
         

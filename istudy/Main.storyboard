@@ -805,7 +805,7 @@
                                                     <rect key="frame" x="0.0" y="0.0" width="240" height="128"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="70" id="0EU-3C-b5Q">
-                                                            <variation key="heightClass=regular-widthClass=compact" constant="60"/>
+                                                            <variation key="heightClass=regular-widthClass=compact" constant="50"/>
                                                         </constraint>
                                                         <constraint firstAttribute="height" constant="60" id="0ye-sz-HyG"/>
                                                     </constraints>
@@ -828,15 +828,14 @@
                                                         <constraint firstAttribute="height" constant="21" id="knA-Hw-JQD"/>
                                                     </constraints>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                     <variation key="default">
                                                         <mask key="constraints">
                                                             <exclude reference="knA-Hw-JQD"/>
                                                         </mask>
                                                     </variation>
-                                                    <variation key="heightClass=regular-widthClass=compact" misplaced="YES">
-                                                        <rect key="frame" x="78" y="10" width="154" height="21"/>
+                                                    <variation key="heightClass=regular-widthClass=compact">
                                                         <mask key="constraints">
                                                             <include reference="knA-Hw-JQD"/>
                                                         </mask>
@@ -848,15 +847,14 @@
                                                         <constraint firstAttribute="height" constant="21" id="3WZ-et-jEc"/>
                                                     </constraints>
                                                     <fontDescription key="fontDescription" type="system" pointSize="13"/>
-                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                     <variation key="default">
                                                         <mask key="constraints">
                                                             <exclude reference="3WZ-et-jEc"/>
                                                         </mask>
                                                     </variation>
-                                                    <variation key="heightClass=regular-widthClass=compact" misplaced="YES">
-                                                        <rect key="frame" x="78" y="54" width="154" height="21"/>
+                                                    <variation key="heightClass=regular-widthClass=compact">
                                                         <mask key="constraints">
                                                             <include reference="3WZ-et-jEc"/>
                                                         </mask>

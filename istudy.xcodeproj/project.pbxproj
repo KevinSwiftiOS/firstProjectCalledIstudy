@@ -44,7 +44,6 @@
 		3811F57B1C883CD000BCC841 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3811F57A1C883CD000BCC841 /* AppDelegate.swift */; };
 		3811F5831C883CD000BCC841 /* istudy.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 3811F5811C883CD000BCC841 /* istudy.xcdatamodeld */; };
 		3811F5851C883CD000BCC841 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3811F5841C883CD000BCC841 /* Assets.xcassets */; };
-		3811F5881C883CD000BCC841 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3811F5861C883CD000BCC841 /* LaunchScreen.storyboard */; };
 		3811F5931C883CD000BCC841 /* istudyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3811F5921C883CD000BCC841 /* istudyTests.swift */; };
 		3811F59E1C883CD000BCC841 /* istudyUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3811F59D1C883CD000BCC841 /* istudyUITests.swift */; };
 		3811F5AC1C883D5800BCC841 /* LoginAndReset.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3811F5AB1C883D5800BCC841 /* LoginAndReset.storyboard */; };
@@ -489,7 +488,6 @@
 		3811F57A1C883CD000BCC841 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		3811F5821C883CD000BCC841 /* istudy.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = istudy.xcdatamodel; sourceTree = "<group>"; };
 		3811F5841C883CD000BCC841 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		3811F5871C883CD000BCC841 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		3811F5891C883CD000BCC841 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		3811F58E1C883CD000BCC841 /* istudyTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = istudyTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		3811F5921C883CD000BCC841 /* istudyTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = istudyTests.swift; sourceTree = "<group>"; };
@@ -983,7 +981,6 @@
 				38AA028F1D2E2922006ABA53 /* menu-button.png */,
 				38AA02901D2E2922006ABA53 /* menu-button@2x.png */,
 				3811F5D91C88679B00BCC841 /* istudy-Bridging-Header.h */,
-				3811F5861C883CD000BCC841 /* LaunchScreen.storyboard */,
 				38C146901C899E6300CBAFFB /* config.swift */,
 				3811F5891C883CD000BCC841 /* Info.plist */,
 				3811F5811C883CD000BCC841 /* istudy.xcdatamodeld */,
@@ -2243,7 +2240,6 @@
 				38AED7EB1CA8044C009ADC44 /* segmented-bg-pressed-center.png in Resources */,
 				38AED7F01CA8044C009ADC44 /* segmented-bg-pressed-right@2x.png in Resources */,
 				3811F5E11C8868EC00BCC841 /* ProgressHUD.bundle in Resources */,
-				3811F5881C883CD000BCC841 /* LaunchScreen.storyboard in Resources */,
 				38AED7F41CA8044C009ADC44 /* segmented-separator@2x.png in Resources */,
 				38AA02921D2E2922006ABA53 /* menu-button@2x.png in Resources */,
 				38219B3B1CA15780005839C5 /* PeerAssessment.storyboard in Resources */,
@@ -2541,14 +2537,6 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
-		3811F5861C883CD000BCC841 /* LaunchScreen.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				3811F5871C883CD000BCC841 /* Base */,
-			);
-			name = LaunchScreen.storyboard;
-			sourceTree = "<group>";
-		};
 		AB17D9DA1C9FF66F00C0666A /* Main.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
