@@ -175,6 +175,8 @@ class JudgeQueViewController: UIViewController,UIWebViewDelegate,UITableViewDele
     }
     
     @IBAction func goOver(sender:UIButton){
+        self.displayMarkingArray.replaceObjectAtIndex(self.index, withObject: 1)
+        self.tableView?.reloadData()
         self.Over()
     }
     func Over() {
@@ -242,6 +244,7 @@ class JudgeQueViewController: UIViewController,UIWebViewDelegate,UITableViewDele
                         //阅卷的界面不可点击
                         self.resultTextView.editable = false
                         self.displayMarkingArray.replaceObjectAtIndex(self.index, withObject: 1)
+                       self.tableView?.userInteractionEnabled = false
                         self.tableView?.reloadData()
                     }
                 case .Failure(_):
@@ -259,6 +262,7 @@ class JudgeQueViewController: UIViewController,UIWebViewDelegate,UITableViewDele
             self.tableView?.tableFooterView = UIView()
             self.gooverBtn?.enabled = true
             self.answers.replaceObjectAtIndex(self.index, withObject: "")
+            self.tableView?.userInteractionEnabled = true
             self.tableView?.reloadData()
             self.postAnswer()
             
@@ -332,9 +336,9 @@ class JudgeQueViewController: UIViewController,UIWebViewDelegate,UITableViewDele
         }
     }
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        tableView.deselectRowAtIndexPath(indexPath, animated: true)
+       tableView.deselectRowAtIndexPath(indexPath, animated: true)
         self.answers.replaceObjectAtIndex(index, withObject: self.tempArray[indexPath.row].uppercaseString)
-        self.tableView?.reloadData()
+        tableView.reloadData()
         self.postAnswer()
     }
     //向服务器传送答案
@@ -439,12 +443,12 @@ class JudgeQueViewController: UIViewController,UIWebViewDelegate,UITableViewDele
             
             let key = "option" + tempArray[indexPath.row]
         let tempStr =  self.items[index].valueForKey(key) as? String
-            if(tempStr?.containsString("对") == true)
+            if(tempStr?.containsString("错") == true)
             {
-                cell.TFLabel.text = "对"
+                cell.TFLabel.text = "错"
             }
             else{
-                cell.TFLabel.text = "错"
+                cell.TFLabel.text = "对"
             }
             let optionString = self.tempArray[indexPath.row].uppercaseString + "."
             cell.contentView.userInteractionEnabled = true
@@ -456,6 +460,9 @@ class JudgeQueViewController: UIViewController,UIWebViewDelegate,UITableViewDele
             cell.optionLabel.textColor = RGB(0, g: 153, b: 255)
 
             }
+
+  
+  
         }
         return cell
     }

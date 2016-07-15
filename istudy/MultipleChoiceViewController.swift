@@ -258,10 +258,9 @@ class MultipleChoiceViewController: UIViewController,UIWebViewDelegate,UITableVi
     @IBAction func goOver(sender:UIButton){
         //确实保存了
         self.isSave = true
-
-    self.postAnswer()
-    self.Over()
-    }
+       self.displayMarkingArray.replaceObjectAtIndex(index, withObject: 1)
+        self.postAnswer()
+       }
       func Over() {
         //没有超过指定的日期且没有开启阅卷功能
         if(!self.isOver && !self.enableClientJudge){
@@ -329,6 +328,7 @@ class MultipleChoiceViewController: UIViewController,UIWebViewDelegate,UITableVi
                         self.resultTextView.editable = false
 
                         self.displayMarkingArray.replaceObjectAtIndex(self.index, withObject: 1)
+                   self.tableView?.reloadData()
                     }
                 case .Failure(_):
                     ProgressHUD.showError("阅卷失败")
@@ -373,7 +373,13 @@ class MultipleChoiceViewController: UIViewController,UIWebViewDelegate,UITableVi
                     ProgressHUD.showError("保存失败")
                     print(json["retcode"].number)
                 }else{
+                    
+                    //进行阅卷 先保存再阅卷
+                    if(self.displayMarkingArray[self.index] as! NSInteger == 1){
+                        self.Over()
+                    }else{
                     ProgressHUD.showSuccess("保存成功")
+                    }
                 }
             }
         }
@@ -515,9 +521,8 @@ class MultipleChoiceViewController: UIViewController,UIWebViewDelegate,UITableVi
             cell.btn?.setTitle(optionString, forState: .Normal)
             let oneSelfAnswer = self.totalAnswers[index] as! String
             cell.btn?.setTitleColor(UIColor.blackColor(), forState: .Normal)
-            cell.view?.userInteractionEnabled = true
             cell.canTap = true
-            if(self.displayMarkingArray[index] as! NSObject != 0){
+            if(self.displayMarkingArray[index] as! NSInteger != 0){
                 cell.canTap = false
             }
             //多选题 如果包含这个字符就变色

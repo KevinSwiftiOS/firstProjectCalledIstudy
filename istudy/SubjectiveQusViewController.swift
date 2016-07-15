@@ -31,7 +31,7 @@ class SubjectiveQusViewController: UIViewController,AJPhotoPickerProtocol,UINavi
     var totalItems = NSArray()
     var items = NSArray()
     var totalKindOfQus = NSInteger()
-    
+    var isOver = false
     @IBOutlet weak var qusKind:UILabel?
      @IBOutlet weak var  addBtn:UIButton!
     @IBOutlet weak var resetBtn: UIButton!
@@ -624,6 +624,7 @@ self.rightBtn.addTarget(self, action: #selector(SubjectiveQusViewController.chan
         let currentDate = NSDate()
         let result:NSComparisonResult = currentDate.compare(endDate)
         if result == .OrderedAscending{
+            self.isOver = false
             //加载textView 和 collectionView
             let answerTextLabel = UILabel(frame: CGRectMake(5, totalHeight, SCREEN_WIDTH, 21))
             answerTextLabel.text = "文本区:"
@@ -649,13 +650,16 @@ self.rightBtn.addTarget(self, action: #selector(SubjectiveQusViewController.chan
             self.answerTextView.layer.borderWidth = 0.3
             self.answerTextView.layer.borderColor = UIColor.grayColor().CGColor
         }else{
+            self.isOver = true
            // totalHeight += 155
             //加载评论的
             let commetLabel = UILabel(frame: CGRectMake(5,totalHeight,SCREEN_WIDTH - 10,21))
             commetLabel.text = "评语:"
             totalHeight += 23
             self.contentScrollView?.addSubview(commetLabel)
-            let commetTextView = UITextView(frame: CGRectMake(5, totalHeight, SCREEN_WIDTH - 10, 50))
+            let commetTextView = JVFloatLabeledTextView(frame: CGRectMake(5, totalHeight, SCREEN_WIDTH - 10, 50))
+            //不可点击性
+            commetTextView.editable = false
             totalHeight += 55
             if(self.items[index].valueForKey("comments") as? String != nil &&
                 self.items[index].valueForKey("comments") as! String != ""){
@@ -663,8 +667,8 @@ self.rightBtn.addTarget(self, action: #selector(SubjectiveQusViewController.chan
             }else{
                 commetTextView.text = "无评语"
             }
-            commetTextView.layer.borderWidth = 0.3
-            commetTextView.layer.borderColor = UIColor.grayColor().CGColor
+//            commetTextView.layer.borderWidth = 0.3
+//            commetTextView.layer.borderColor = UIColor.grayColor().CGColor
             self.contentScrollView?.addSubview(commetTextView)
             let standAnswerLabel = UILabel(frame: CGRectMake(5,totalHeight,SCREEN_WIDTH - 10,21))
             standAnswerLabel.text = "标准答案:"
@@ -672,12 +676,18 @@ self.rightBtn.addTarget(self, action: #selector(SubjectiveQusViewController.chan
             self.contentScrollView?.addSubview(standAnswerLabel)
             let standAnswerWebView = UIWebView(frame: CGRectMake(5,totalHeight,SCREEN_WIDTH - 10,100))
             //标准答案有可能为空
+               if((self.keyVisible && !self.isOver) || (self.isOver && self.viewOneWithAnswerKey)){
+            
             if(self.items[index].valueForKey("strandanswer") as? String != nil && self.items[index].valueForKey("strandanswer") as! String != "") {
             
     standAnswerWebView.loadHTMLString(self.items[index].valueForKey("strandanswer") as! String, baseURL: nil)
+                
             }else{
                 //加载没有标准答案的信息
                 standAnswerWebView.loadHTMLString("<html><head><style>P{text-align:center;vertical-align: middle;font-size: 17px;font-family: " + "\"" + "宋体" + "\"" +  "}</style></head><body><p>无标准答案</p></body></html>",baseURL: nil)
+            }
+               }else{
+                  standAnswerWebView.loadHTMLString("<html><head><style>P{text-align:center;vertical-align: middle;font-size: 17px;font-family: " + "\"" + "宋体" + "\"" +  "}</style></head><body><p>无标准答案</p></body></html>",baseURL: nil)
             }
             totalHeight += 120
             self.contentScrollView?.addSubview(standAnswerWebView)

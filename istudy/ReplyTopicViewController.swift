@@ -13,11 +13,11 @@ import DZNEmptyDataSet
 import Font_Awesome_Swift
 class ReplyTopicViewController: UIViewController,UITableViewDelegate,UITableViewDataSource,DZNEmptyDataSetSource,DZNEmptyDataSetDelegate,UICollectionViewDelegate,UICollectionViewDataSource,AJPhotoPickerProtocol,UINavigationControllerDelegate,UIImagePickerControllerDelegate,UICollectionViewDelegateFlowLayout{
     @IBOutlet weak var topLayout: NSLayoutConstraint!
- var id = NSInteger()
+    var id = NSInteger()
     @IBOutlet weak var replyTopToWriteBtm: NSLayoutConstraint!
     var items = NSArray()
     @IBOutlet weak var collectionView:UICollectionView?
-     var projectid = NSInteger()
+    var projectid = NSInteger()
     var topView = UIView()
     var bubbleView = AYBubbleView()
     var photos = NSMutableArray()
@@ -29,10 +29,10 @@ class ReplyTopicViewController: UIViewController,UITableViewDelegate,UITableView
     @IBOutlet weak var replyListTableView:mainTableView?
     @IBOutlet weak var sendBtn:UIButton!
     @IBOutlet weak var photoBtn:UIButton!
-   // @IBOutlet weak var voiceBtn:UIButton!
+    // @IBOutlet weak var voiceBtn:UIButton!
     @IBOutlet weak var btmView:UIView!
     override func viewDidLoad() {
-         topView = UIView(frame: CGRectMake(80,0,SCREEN_WIDTH - 80,64))
+        topView = UIView(frame: CGRectMake(80,0,SCREEN_WIDTH - 80,64))
         self.navigationController?.view.addSubview(topView)
         super.viewDidLoad()
         self.replyListTableView?.emptyDataSetDelegate = self
@@ -40,32 +40,32 @@ class ReplyTopicViewController: UIViewController,UITableViewDelegate,UITableView
         self.collectionView?.dataSource = self
         self.collectionView?.delegate = self
         ShowBigImageFactory.topViewEDit(btmView)
-     self.replyListTableView?.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(ReplyTopicViewController.TableViewResign)))
+        self.replyListTableView?.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(ReplyTopicViewController.TableViewResign)))
         self.collectionView?.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(ReplyTopicViewController.TableViewResign)))
         self.collectionView?.backgroundColor = UIColor.whiteColor()
         //气泡的效果
         var point = topView.center
         point.x -= 84
         
-         bubbleView = AYBubbleView(centerPoint: (point), bubleRadius: 15, addToSuperView: topView)
+        bubbleView = AYBubbleView(centerPoint: (point), bubleRadius: 15, addToSuperView: topView)
         bubbleView.bubbleColor = UIColor.redColor()
-     sendBtn?.setFAText(prefixText: "", icon: FAType.FASend, postfixText: "", size: 25, forState: .Normal)
-     photoBtn?.setFAText(prefixText: "", icon: FAType.FAImage, postfixText: "", size: 25, forState: .Normal)
-//             voiceBtn?.setFAText(prefixText: "", icon: FAType.FAMusic, postfixText: "", size: 25, forState: .Normal)
+        sendBtn?.setFAText(prefixText: "", icon: FAType.FASend, postfixText: "", size: 25, forState: .Normal)
+        photoBtn?.setFAText(prefixText: "", icon: FAType.FAImage, postfixText: "", size: 25, forState: .Normal)
+        //             voiceBtn?.setFAText(prefixText: "", icon: FAType.FAMusic, postfixText: "", size: 25, forState: .Normal)
         
-      self.automaticallyAdjustsScrollViewInsets = false
+        self.automaticallyAdjustsScrollViewInsets = false
         self.writeTextView?.placeholder = "请输入回复内容"
-self.replyListTableView?.dataSource = self
-self.replyListTableView?.delegate = self
-self.replyListTableView?.tableFooterView = UIView()
+        self.replyListTableView?.dataSource = self
+        self.replyListTableView?.delegate = self
+        self.replyListTableView?.tableFooterView = UIView()
         self.replyListTableView?.mj_header = MJRefreshNormalHeader(refreshingTarget: self, refreshingAction: #selector(ReplyTopicViewController.headerRefresh))
-      
+        
         self.replyListTableView?.emptyDataSetDelegate = self
         //注册webView加载完的通知
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ReplyTopicViewController.reloadHeight(_:)), name: "replyListContentWebViewHeight", object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ReplyTopicViewController.replyImageShowBig(_:)), name: "replyListShowBig", object: nil)
         self.replyListTableView?.mj_header.beginRefreshing()
-               // Do any additional setup after loading the view.
+        // Do any additional setup after loading the view.
     }
     func emptyDataSetShouldAllowScroll(scrollView: UIScrollView!) -> Bool {
         return true
@@ -91,27 +91,27 @@ self.replyListTableView?.tableFooterView = UIView()
     }
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier("ReplyListTableViewCell")
-        as! ReplyListTableViewCell
+            as! ReplyListTableViewCell
         cell.authorLabel?.text = self.items[indexPath.row].valueForKey("author") as? String
         //加载头像
         if(self.items[indexPath.row].valueForKey("avatar_url") as? String != nil &&
             self.items[indexPath.row].valueForKey("avatar_url") as! String != ""){
             //将base64转化成图片 首先转化成数据流 随后再转化图片
-           cell.headImageView?.sd_setImageWithURL(NSURL(string: self.items[indexPath.row].valueForKey("avatar_url") as! String), placeholderImage: UIImage(named: "默认头像"))
-        cell.headImageView?.layer.cornerRadius = 6.0
+            cell.headImageView?.sd_setImageWithURL(NSURL(string: self.items[indexPath.row].valueForKey("avatar_url") as! String), placeholderImage: UIImage(named: "默认头像"))
+            cell.headImageView?.layer.cornerRadius = 6.0
             cell.headImageView?.layer.masksToBounds = true
         }else{
-        cell.headImageView?.image = UIImage(named: "默认头像")
-        
+            cell.headImageView?.image = UIImage(named: "默认头像")
+            
         }
         //时间的切割
         let yearRange = NSMakeRange(0, 4)
         let monthRange = NSMakeRange(4, 2)
         let dateRange = NSMakeRange(6, 2)
-    let  tempDate = items[indexPath.row].valueForKey("date") as! NSString
+        let  tempDate = items[indexPath.row].valueForKey("date") as! NSString
         let date = "于" + (tempDate.substringWithRange(yearRange) + "年" + tempDate.substringWithRange(monthRange) + "月" + tempDate.substringWithRange(dateRange)  + "日 "  + "发表")
         cell.dateLabel?.text = date
-      
+        
         cell.contectWebView?.loadHTMLString(self.items[indexPath.row].valueForKey("content") as! String, baseURL: nil)
         cell.cellTag = indexPath.row
         return cell
@@ -131,7 +131,7 @@ self.replyListTableView?.tableFooterView = UIView()
         }
         
     }
-
+    
     
     //回复的按钮
     @IBAction func reply(sender:UIButton){
@@ -139,20 +139,20 @@ self.replyListTableView?.tableFooterView = UIView()
         let authtoken = userDefault.valueForKey("authtoken") as!  String
         //主题
         //内容
-     
+        
         var content:String = self.writeTextView!.text
         for i in 0 ..< self.photos.count{
             let widthAndHeight = " width = " + "\(50)" + " height = " + "\(50)"
             let base64String = imageToBae64(self.photos[i] as! UIImage)
             let imgHtml = "<img"  + widthAndHeight +  " src = " + "\"" +  "data:image/jpg;base64," + base64String +  "\"" + "/>"
-        content += imgHtml
+            content += imgHtml
         }
         let dic:[String:AnyObject] = ["subject":"",
                                       "parentid":"\(self.id)",
                                       "content":content,
                                       "forumtypeid":"",
                                       "projectid":"\(self.projectid)"]
-     
+        
         var result = String()
         //先转化成data数据流 随后再转化成base64的字符串
         do{
@@ -182,7 +182,7 @@ self.replyListTableView?.tableFooterView = UIView()
                     ProgressHUD.showSuccess("发送成功")
                     dispatch_async(dispatch_get_main_queue(), {
                         
-                    self.replyListTableView?.mj_header.beginRefreshing()
+                        self.replyListTableView?.mj_header.beginRefreshing()
                     })
                 }
             }
@@ -197,9 +197,9 @@ self.replyListTableView?.tableFooterView = UIView()
     override func viewWillDisappear(animated: Bool) {
         topView.removeFromSuperview()
         ProgressHUD.dismiss()
-    
-        }
-      func headerRefresh() {
+        
+    }
+    func headerRefresh() {
         //查询论坛的主题回复
         let userDefault = NSUserDefaults.standardUserDefaults()
         let authtoken = userDefault.valueForKey("authtoken") as! String
@@ -214,10 +214,10 @@ self.replyListTableView?.tableFooterView = UIView()
                 if(json["retcode"].number != 0){
                     ProgressHUD.showError("请求失败")
                     dispatch_async(dispatch_get_main_queue(), {
-                    self.replyListTableView?.emptyDataSetSource = self
+                        self.replyListTableView?.emptyDataSetSource = self
                         self.items = NSArray()
                         self.replyListTableView?.mj_header.endRefreshing()
-                      self.updateView()
+                        self.updateView()
                     })
                     
                 }else{
@@ -230,7 +230,7 @@ self.replyListTableView?.tableFooterView = UIView()
                         ProgressHUD.dismiss()
                         self.bubbleView.unReadLabel.text = "\(self.items.count)"
                         self.replyListTableView?.emptyDataSetSource = self
-                          self.updateView()
+                        self.updateView()
                         
                     })
                     
@@ -242,10 +242,10 @@ self.replyListTableView?.tableFooterView = UIView()
                     self.replyListTableView?.emptyDataSetSource = self
                     self.items = NSArray()
                     self.replyListTableView?.mj_header.endRefreshing()
-                   self.updateView()                })
+                    self.updateView()                })
             }
         }
-
+        
     }
     //高度的问题
     func reloadHeight(sender:NSNotification){
@@ -292,7 +292,7 @@ self.replyListTableView?.tableFooterView = UIView()
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
         return CGSizeMake(SCREEN_WIDTH / 5, SCREEN_HEIGHT / 8)
     }
-
+    
     func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return self.photos.count
     }
@@ -302,7 +302,7 @@ self.replyListTableView?.tableFooterView = UIView()
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCellWithReuseIdentifier("photoCell", forIndexPath: indexPath) as! PhotoWaterfallCollectionViewCell
         if(indexPath.row < self.photos.count){
-          cell.btn.setBackgroundImage(self.photos[indexPath.row] as? UIImage, forState: .Normal)
+            cell.btn.setBackgroundImage(self.photos[indexPath.row] as? UIImage, forState: .Normal)
             cell.btn.addTarget(self, action: #selector(ReplyTopicViewController.collectionPhotosShowBig(_:)), forControlEvents: .TouchUpInside)
             cell.btn.tag = indexPath.row
         }
@@ -318,19 +318,19 @@ self.replyListTableView?.tableFooterView = UIView()
     //当选择超过最大比重时
     func photoPickerDidMaximum(picker: AJPhotoPickerViewController!) {
         
-
+        
         ProgressHUD.showError("已超过最大选择数")
     }
     //当点击取消按钮时
     func photoPickerDidCancel(picker: AJPhotoPickerViewController!) {
         self.updateView()
-
+        
         picker.dismissViewControllerAnimated(true, completion: nil)
     }
     //当点击了照相机的时候
     func photoPickerTapCameraAction(picker: AJPhotoPickerViewController!) {
         self.updateView()
-
+        
         let cameraPicker = UIImagePickerController()
         if (UIImagePickerController.availableMediaTypesForSourceType(.Camera) != nil){
             cameraPicker.sourceType = .Camera
@@ -343,21 +343,19 @@ self.replyListTableView?.tableFooterView = UIView()
     //当相机拍完了照片后
     func imagePickerController(picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : AnyObject]) {
         let image = info[UIImagePickerControllerOriginalImage] as! UIImage
-        
-        
         self.photos.addObject(image)
-      self.topLayout.constant = (self.collectionView?.frame.height)! + 10
+        self.topLayout.constant = (self.collectionView?.frame.height)! + 10
         self.view.setNeedsLayout()
         picker.dismissViewControllerAnimated(true, completion: nil)
         self.updateView()
-
+        
         self.collectionView?.reloadData()
     }
     //退出照相机的时候
     func imagePickerControllerDidCancel(picker: UIImagePickerController) {
         picker.dismissViewControllerAnimated(true, completion: nil)
         self.updateView()
-
+        
     }
     //当选择好相册后
     func photoPicker(picker: AJPhotoPickerViewController!, didSelectAssets assets: [AnyObject]!) {
@@ -368,9 +366,9 @@ self.replyListTableView?.tableFooterView = UIView()
         }
         picker.dismissViewControllerAnimated(true, completion: nil)
         
-  
+        
         ProgressHUD.dismiss()
-       self.updateView()
+        self.updateView()
         self.replyListTableView?.reloadData()
         self.collectionView?.reloadData()
     }
@@ -384,17 +382,17 @@ self.replyListTableView?.tableFooterView = UIView()
             self.collectionView?.layer.borderColor = UIColor.grayColor().CGColor
             self.replyTopToWriteBtm?.constant = SCREEN_HEIGHT * 0.3 + 5
         }else{
-             self.replyTopToWriteBtm?.constant =  8
+            self.replyTopToWriteBtm?.constant =  8
         }
         self.replyListTableView?.emptyDataSetDelegate = self
         self.replyListTableView?.emptyDataSetSource = self
         self.replyListTableView?.reloadData()
         self.collectionView?.reloadData()
         self.view.bringSubviewToFront(self.replyListTableView!)
-       
+        
         self.view.setNeedsLayout()
         self.view.setNeedsDisplay()
-     
+        
     }
     func titleForEmptyDataSet(scrollView: UIScrollView!) -> NSAttributedString! {
         let string = "暂无评论"

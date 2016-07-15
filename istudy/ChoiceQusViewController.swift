@@ -468,7 +468,7 @@ func showAct(){
             cell.btn?.setTitleColor(UIColor.blackColor(), forState: .Normal)
             cell.view?.userInteractionEnabled = true
             cell.canTap = true
-            if(self.displayMarkingArray[index] as! NSObject != 0){
+            if(self.displayMarkingArray[index] as! NSInteger != 0){
                 cell.canTap = false
             }
             if(oneSelfAnswer == tempArray[indexPath.row].uppercaseString){

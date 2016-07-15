@@ -883,26 +883,27 @@ class ComplexQusViewController: UIViewController,UITableViewDelegate,UITableView
         self.presentViewController(resetAlertView, animated: true, completion: nil)
     }
     @IBAction func goOver(sender:UIButton){
-        //没有超过指定日期且没有开放阅卷功能的
-//        if(!self.isOver && !self.enableClientJudge){
-//            ProgressHUD.showError("没有开启阅卷功能")
-//        }
-//        else{
+       // 没有超过指定日期且没有开放阅卷功能的
+        if(!self.isOver && !self.enableClientJudge){
+            ProgressHUD.showError("没有开启阅卷功能")
+        }
+        else{
      self.disPlayMarkTextArray.replaceObjectAtIndex(subIndex, withObject: "1")
         self.save()
-       // }
+        }
     }
     //阅卷的功能
     func Over() {
-        //没有超过指定日期且没有开放阅卷功能的
-        //        if(!self.isOver && !self.enableClientJudge){
-        //            ProgressHUD.showError("没有开启阅卷功能")
-        //        }
-        //        else{
+       // 没有超过指定日期且没有开放阅卷功能的
+        if(!self.isOver && !self.enableClientJudge){
+            ProgressHUD.showError("没有开启阅卷功能")
+        }
+        //如果没有超过指定日期且可以阅卷或者已经超过日期的
+        if(!self.isOver && self.enableClientJudge || (self.isOver)){
         
      
        
-        // }
+         
         switch self.subQusItems[subIndex].valueForKey("type") as! String{
         case "JUDGE","SINGLE_CHIOCE","MULIT_CHIOCE":
             self.choiceOver()
@@ -910,6 +911,7 @@ class ComplexQusViewController: UIViewController,UITableViewDelegate,UITableView
     self.filLBlankOver()
     default:
             break
+        }
         }
     }
     func choiceOver() {
@@ -1046,9 +1048,15 @@ class ComplexQusViewController: UIViewController,UITableViewDelegate,UITableView
                             totalString += "\(judgeItems[i].valueForKey("GotScore") as! NSNumber)" + "/" + "\(judgeItems[i].valueForKey("FullScore") as! NSNumber)" + " "
                         }
                         //随后再加载标准答案
-                        totalString += "\n" + "答案:"
+                                             //查看标准答案是否已经开放
+                          if((self.keyVisible && !self.isOver) || (self.isOver && self.viewOneWithAnswerKey)){
+                            totalString += "\n" + "答案:"
+
                         for i in startRange ..< endRange{
                             totalString += (judgeItems[i].valueForKey("Key") as! String) + "\n"
+                        }
+                          }else{
+                            totalString += "\n" + "标准答案未开放"
                         }
                         let totalAttriString = NSMutableAttributedString(string: totalString)
                         //设置颜色

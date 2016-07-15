@@ -232,7 +232,11 @@ class CompletionQusViewController: UIViewController,UITextFieldDelegate,UIWebVie
                     ProgressHUD.showError("保存失败")
                     print(json["retcode"].number)
                 }else{
+                    if(self.displayMarkingArray[self.index] as! NSInteger == 1){
+                        self.Over()
+                    }else{
                     ProgressHUD.showSuccess("保存成功")
+                }
                 }
             }
         }
@@ -302,10 +306,16 @@ class CompletionQusViewController: UIViewController,UITextFieldDelegate,UIWebVie
                         for i in 0 ..< judgeItems.count{
                             totalString += "\(judgeItems[i].valueForKey("GotScore") as! NSNumber)" + "/" + "\(judgeItems[i].valueForKey("FullScore") as! NSNumber)" + " "
                         }
+                        
                         //随后再加载标准答案
+                        
+                        if((self.keyVisible && !self.isOver) || (self.isOver && self.viewOneWithAnswerKey)){
                         totalString += "\n" + "答案:"
                         for i in 0 ..< judgeItems.count{
                             totalString += (judgeItems[i].valueForKey("Key") as! String) + "\n"
+                        }
+                        }else{
+                            totalString += "\n" + "标准答案未开放"
                         }
               let totalAttriString = NSMutableAttributedString(string: totalString)
                     //设置颜色
@@ -354,8 +364,9 @@ class CompletionQusViewController: UIViewController,UITextFieldDelegate,UIWebVie
         }
         answerString += self.oneSubFillBlankSelfAnswerArray[self.oneSubFillBlankSelfAnswerArray.count - 1] as! String
         self.totalAnswerArray.replaceObjectAtIndex(index, withObject: answerString)
+            self.displayMarkingArray.replaceObjectAtIndex(index, withObject: 1)
        self.postAnswer()
-            self.Over()
+            
         }
         
         

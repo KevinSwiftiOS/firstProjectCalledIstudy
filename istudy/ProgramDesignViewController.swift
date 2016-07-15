@@ -226,8 +226,9 @@ class ProgramDesignViewController: UIViewController,UIWebViewDelegate,UIGestureR
     }
     @IBAction func goOver(sender:UIButton){
         //阅卷都是先保存 后阅卷
+    self.displayMarkingArray.replaceObjectAtIndex(index, withObject: 1)
         self.save()
-        self.Over()
+    
     }
     //保存的动作 和阅卷时的动作是一样的 应该程序题都是可以阅卷的
     @IBAction func save(sender:UIButton){
@@ -377,7 +378,11 @@ class ProgramDesignViewController: UIViewController,UIWebViewDelegate,UIGestureR
                     ProgressHUD.showError("保存失败")
                     print(json["retcode"].number)
                 }else{
+                    if(self.displayMarkingArray[self.index] as! NSInteger == 1) {
+                        self.Over()
+                    }else{
                     ProgressHUD.showSuccess("保存成功")
+                    }
                 }
             }
         }
