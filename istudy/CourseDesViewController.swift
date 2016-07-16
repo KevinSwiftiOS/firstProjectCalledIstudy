@@ -72,7 +72,7 @@
             //webView来进行加载
             let cell = tableView.dequeueReusableCellWithIdentifier("courseDesCell") as! CourseDesTableViewCell
             //设置箭头
-            cell.arrowImageView.setFAIconWithName(FAType.FAAngleDown, textColor: UIColor.blueColor())
+            cell.arrowImageView.setFAIconWithName(FAType.FAAngleDown, textColor: UIColor.grayColor())
             //随后cell的图片等各种信息根据接受到的数组传值
             if(sc.active == false){
                 //判断有没有题目描述
