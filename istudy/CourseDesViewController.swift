@@ -11,6 +11,7 @@
     import SwiftyJSON
     import CoreData
     import DZNEmptyDataSet
+    import Font_Awesome_Swift
     class CourseDesViewController: UIViewController,UITableViewDataSource,UITableViewDelegate,
     UISearchControllerDelegate,UISearchResultsUpdating,DZNEmptyDataSetSource,DZNEmptyDataSetDelegate{
         var managedContext:NSManagedObjectContext?
@@ -70,6 +71,8 @@
             let webView = UIWebView(frame: CGRectMake(0, 70, SCREEN_WIDTH, 80))
             //webView来进行加载
             let cell = tableView.dequeueReusableCellWithIdentifier("courseDesCell") as! CourseDesTableViewCell
+            //设置箭头
+            cell.arrowImageView.setFAIconWithName(FAType.FAAngleDown, textColor: UIColor.blueColor())
             //随后cell的图片等各种信息根据接受到的数组传值
             if(sc.active == false){
                 //判断有没有题目描述
@@ -198,6 +201,13 @@
         }
         //点击图片的时候
         func click(sender:UIButton) {
+            let cell = self.courseDesTableView?.cellForRowAtIndexPath(NSIndexPath(forRow: sender.tag, inSection: 0)) as! CourseDesTableViewCell
+            //设置动画
+         
+            
+
+
+            
             sender.setTitleColor(UIColor.whiteColor(), forState: .Normal)
             if(sc.active){
       sender.setTitle(self.filterItems[sender.tag].valueForKey("pictit") as? String, forState: .Normal)
@@ -206,9 +216,20 @@
 
             }
           if(self.isClick[sender.tag] as! NSObject == false){
-                self.isClick[sender.tag] = true
+            UIView.animateWithDuration(0.8, animations: {
+                //旋转180度
+              cell.arrowImageView.transform = CGAffineTransformMakeRotation(CGFloat(M_PI))
+            })
+
+                                    self.isClick[sender.tag] = true
                 self.cellHeight[sender.tag] = 150
             }else{
+            UIView.animateWithDuration(0.8, animations: {
+                //旋转180度
+                  cell.arrowImageView.transform = CGAffineTransformMakeRotation(0)
+            })
+
+          
               self.isClick[sender.tag] = false
                 sender.selected = false
                 self.cellHeight[sender.tag] = 80

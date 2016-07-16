@@ -38,6 +38,8 @@ import SwiftyJSON
     @IBOutlet weak var sendBtn:UIButton!
     override func viewDidLoad() {
         super.viewDidLoad()
+        //添加手势 来消失键盘
+    self.collectionView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "resignKeyboard"))
         recevieBtn?.layer.borderWidth = 0.4
         recevieBtn?.layer.borderColor = UIColor.grayColor().CGColor
         addPersonBtn?.setFAText(prefixText: "", icon: FAType.FAPlusCircle, postfixText: "", size: 25, forState: .Normal)
@@ -59,6 +61,7 @@ import SwiftyJSON
         XKeyBoard.registerKeyBoardHide(self)
         XKeyBoard.registerKeyBoardShow(self)
         self.recevieBtn?.addTarget(self, action: #selector(WriteLetterViewController.showmoreReceivedPerson(_:)), forControlEvents: .TouchUpInside)
+        
         // Do any additional setup after loading the view.
        //遍历循环所有的收件人 看其中是否有发件人
         var i = 0
@@ -126,6 +129,11 @@ import SwiftyJSON
         }
         }
     //键盘消失
+    func resignKeyboard() {
+        self.subjectTextField?.resignFirstResponder()
+        self.writeTextView?.resignFirstResponder()
+
+    }
     @IBAction func resign(sender: UIControl) {
         self.subjectTextField?.resignFirstResponder()
         self.writeTextView?.resignFirstResponder()

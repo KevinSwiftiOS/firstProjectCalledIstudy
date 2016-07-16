@@ -756,21 +756,21 @@
                                 <exclude reference="cxn-dq-jlo"/>
                             </mask>
                             <mask key="constraints">
-                                <exclude reference="ALx-KT-ain"/>
-                                <exclude reference="pfv-Fv-wjX"/>
-                                <exclude reference="CPU-Ja-v4e"/>
-                                <exclude reference="qc7-LG-nfN"/>
-                                <exclude reference="xLb-d5-CXQ"/>
-                                <exclude reference="Qq6-Bh-zCl"/>
-                                <exclude reference="lss-ao-Pc4"/>
                                 <exclude reference="Zrz-cF-Edh"/>
                                 <exclude reference="atc-P4-iyN"/>
                                 <exclude reference="cd6-p3-Q4F"/>
-                                <exclude reference="5f6-f3-aB4"/>
-                                <exclude reference="hEV-zr-LMA"/>
                                 <exclude reference="Eg7-D8-1PW"/>
                                 <exclude reference="Hiw-g7-JiQ"/>
                                 <exclude reference="WWQ-BV-8jq"/>
+                                <exclude reference="CPU-Ja-v4e"/>
+                                <exclude reference="qc7-LG-nfN"/>
+                                <exclude reference="xLb-d5-CXQ"/>
+                                <exclude reference="ALx-KT-ain"/>
+                                <exclude reference="pfv-Fv-wjX"/>
+                                <exclude reference="Qq6-Bh-zCl"/>
+                                <exclude reference="lss-ao-Pc4"/>
+                                <exclude reference="5f6-f3-aB4"/>
+                                <exclude reference="hEV-zr-LMA"/>
                             </mask>
                         </variation>
                         <variation key="heightClass=regular-widthClass=compact">
@@ -783,21 +783,21 @@
                                 <include reference="cxn-dq-jlo"/>
                             </mask>
                             <mask key="constraints">
-                                <include reference="ALx-KT-ain"/>
-                                <include reference="pfv-Fv-wjX"/>
-                                <include reference="CPU-Ja-v4e"/>
-                                <include reference="qc7-LG-nfN"/>
-                                <include reference="xLb-d5-CXQ"/>
-                                <include reference="Qq6-Bh-zCl"/>
-                                <include reference="lss-ao-Pc4"/>
                                 <include reference="Zrz-cF-Edh"/>
                                 <include reference="atc-P4-iyN"/>
                                 <include reference="cd6-p3-Q4F"/>
-                                <include reference="5f6-f3-aB4"/>
-                                <include reference="hEV-zr-LMA"/>
                                 <include reference="Eg7-D8-1PW"/>
                                 <include reference="Hiw-g7-JiQ"/>
                                 <include reference="WWQ-BV-8jq"/>
+                                <include reference="CPU-Ja-v4e"/>
+                                <include reference="qc7-LG-nfN"/>
+                                <include reference="xLb-d5-CXQ"/>
+                                <include reference="ALx-KT-ain"/>
+                                <include reference="pfv-Fv-wjX"/>
+                                <include reference="Qq6-Bh-zCl"/>
+                                <include reference="lss-ao-Pc4"/>
+                                <include reference="5f6-f3-aB4"/>
+                                <include reference="hEV-zr-LMA"/>
                             </mask>
                         </variation>
                         <connections>

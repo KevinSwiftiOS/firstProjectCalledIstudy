@@ -657,19 +657,21 @@ self.rightBtn.addTarget(self, action: #selector(SubjectiveQusViewController.chan
             commetLabel.text = "评语:"
             totalHeight += 23
             self.contentScrollView?.addSubview(commetLabel)
-            let commetTextView = JVFloatLabeledTextView(frame: CGRectMake(5, totalHeight, SCREEN_WIDTH - 10, 50))
+            //改成webView 并进行居中显示
+            let commetWebView = UIWebView(frame: CGRectMake(5, totalHeight, SCREEN_WIDTH - 10, 50))
             //不可点击性
-            commetTextView.editable = false
-            totalHeight += 55
+                       totalHeight += 55
             if(self.items[index].valueForKey("comments") as? String != nil &&
                 self.items[index].valueForKey("comments") as! String != ""){
-                commetTextView.text = self.items[index].valueForKey("comments") as! String
+                let totalCommetString = cssDesString + ((self.items[index]).valueForKey("comments") as! String)
+                commetWebView.loadHTMLString(totalCommetString,baseURL: nil)
             }else{
-                commetTextView.text = "无评语"
+                
+                commetWebView.loadHTMLString("<html><head><style>P{text-align:center;vertical-align: middle;font-size: 17px;font-family: " + "\"" + "宋体" + "\"" +  "}</style></head><body><p>无评语</p></body></html>", baseURL: nil)
             }
-//            commetTextView.layer.borderWidth = 0.3
-//            commetTextView.layer.borderColor = UIColor.grayColor().CGColor
-            self.contentScrollView?.addSubview(commetTextView)
+          commetWebView.layer.borderWidth = 0.3
+            commetWebView.layer.borderColor = UIColor.grayColor().CGColor
+            self.contentScrollView?.addSubview(commetWebView)
             let standAnswerLabel = UILabel(frame: CGRectMake(5,totalHeight,SCREEN_WIDTH - 10,21))
             standAnswerLabel.text = "标准答案:"
             totalHeight += 23

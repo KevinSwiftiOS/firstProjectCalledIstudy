@@ -22,6 +22,8 @@ class WriteTopicsViewController: UIViewController,UICollectionViewDelegate,UICol
     @IBOutlet weak var btmView:UIView!
     override func viewDidLoad() {
         super.viewDidLoad()
+        //添加键盘的消失
+        self.collectionView?.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(WriteTopicsViewController.resignKeyBoard)))
         ShowBigImageFactory.topViewEDit(self.btmView)
         photoBtn.setFAText(prefixText: "", icon: FAType.FAImage, postfixText: "", size: 25, forState: .Normal, iconSize: 25)
         sendBtn.setFAText(prefixText: "", icon: FAType.FASend, postfixText: "", size: 25, forState: .Normal, iconSize: 25)

@@ -12,6 +12,7 @@ class CourseDesTableViewCell: UITableViewCell {
     @IBOutlet weak var courseTea:UILabel?
     @IBOutlet weak var courseImageBtn:UIButton?
     @IBOutlet weak var studyCourse:UIButton?
+    @IBOutlet weak var arrowImageView:UIImageView!
     override func awakeFromNib() {
         
         super.awakeFromNib()

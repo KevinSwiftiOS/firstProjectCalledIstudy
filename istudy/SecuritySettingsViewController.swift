@@ -78,8 +78,8 @@ class SecuritySettingsViewController: UIViewController {
 
     func keyboardWillHideNotification(notifacition:NSNotification) {
         UIView.animateWithDuration(0.3) { () -> Void in
-            self.topLayout.constant = 69
-            self.labelTopLayout.constant = 69
+            self.topLayout.constant = 138
+            self.labelTopLayout.constant = 138
             //加载新的约束
             self.view.layoutIfNeeded()
         }
