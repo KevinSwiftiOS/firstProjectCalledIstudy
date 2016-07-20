@@ -162,8 +162,7 @@ self.courseDataCollectionView!.emptyDataSetDelegate = self
         let dateRange = NSMakeRange(6, 2)
         let  date = "发布日期:" + tempDate.substringWithRange(yearRange) + "-" + tempDate.substringWithRange(monthRange) + "-" + tempDate.substringWithRange(dateRange)
         cell.dateLabel?.text = date as String
-        cell.viewTimesLabel?.text = "访问次数:" + "\((items[indexPath.row].valueForKey("viewtimes") as! NSNumber))"
-        return cell
+             return cell
     }
     //当选择了某个cell的时候
     

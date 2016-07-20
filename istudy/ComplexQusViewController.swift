@@ -14,6 +14,7 @@ class ComplexQusViewController: UIViewController,UITableViewDelegate,UITableView
     //几个手势 为了键盘的bug
     //每个题目的范围 
     var everySubQusRange = NSMutableArray()
+    //小题目的左右手势 为了加载题目
     var subUpSwipe = UISwipeGestureRecognizer()
     var subDownSwipe = UISwipeGestureRecognizer()
     var rightSwipe = UISwipeGestureRecognizer()
@@ -50,7 +51,6 @@ class ComplexQusViewController: UIViewController,UITableViewDelegate,UITableView
     @IBOutlet weak var currentSubQusLabel:UILabel?
     @IBOutlet weak var leftBtn:UIButton?
     @IBOutlet weak var rightBtn:UIButton?
-    
     //阅卷 重置 保存的按钮
     @IBOutlet weak var resetBtn:UIButton?
     @IBOutlet weak var saveBtn:UIButton?
@@ -181,7 +181,7 @@ class ComplexQusViewController: UIViewController,UITableViewDelegate,UITableView
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-    
+    //通用的回去按钮
     func showAct(){
         let vc = UIStoryboard(name: "Problem", bundle: nil).instantiateViewControllerWithIdentifier("AchVC") as! AchViewController
         vc.title = self.title
@@ -218,7 +218,7 @@ class ComplexQusViewController: UIViewController,UITableViewDelegate,UITableView
         
         
     }
-    
+    //加载大题目的view
     func initView() {
         //初始化界面
         let contentString = cssDesString + (self.items[index].valueForKey("content") as! String)
@@ -743,8 +743,8 @@ class ComplexQusViewController: UIViewController,UITableViewDelegate,UITableView
         if(self.cellHeights[cell.Custag] as! CGFloat != cell.cellHeight){
             self.cellHeights.replaceObjectAtIndex(cell.Custag, withObject: cell.cellHeight)
             if(cell.Custag == self.cellHeights.count - 1){
-                let y = 64 + 21 + 4 + SCREEN_HEIGHT * 0.4 + 21 + 5 + 21 + 21
-                self.tableView.frame = CGRectMake(0, y, SCREEN_WIDTH, SCREEN_HEIGHT - 40 - y)
+//                let y = 64 + 21 + 4 + SCREEN_HEIGHT * 0.4 + 21 + 5 + 21 + 21
+//                self.tableView.frame = CGRectMake(0, y, SCREEN_WIDTH, SCREEN_HEIGHT - 40 - y)
                 //阅卷的
                 if(self.disPlayMarkTextArray[subIndex] as! String != ""){
                     self.Over()

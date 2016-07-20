@@ -330,7 +330,7 @@ class SubjectiveQusViewController: UIViewController,AJPhotoPickerProtocol,UINavi
         //将answerWebView的隐藏 随后出现两个控件 一个用来添加文字 一个用来添加图片
      //   self.answerWebView.hidden = true
         if(item.title == "添加图片"){
-            self.answerPhotos = NSMutableArray()
+        //    self.answerPhotos = NSMutableArray()
             self.imagePicker = AJPhotoPickerViewController()
             //设置最大的数量
             imagePicker.maximumNumberOfSelection = 6

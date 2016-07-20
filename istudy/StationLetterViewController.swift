@@ -49,7 +49,7 @@ class StationLetterViewController: UIViewController,UITableViewDelegate,UITableV
         self.topView?.layer.borderColor = UIColor.blueColor().CGColor
         self.topView?.layer.borderWidth = 1.0
         self.inBox?.setImage(UIImage(named: "收件箱选中"), forState: .Normal)
-        self.inBox?.setTitleColor(UIColor.blueColor(), forState: .Normal)
+        self.inBox?.setTitleColor(RGB(0,g: 153,b: 255), forState: .Normal)
         self.stationLetterTableView?.dataSource = self
         self.stationLetterTableView?.delegate = self
         self.stationLetterTableView?.tableFooterView = UIView()
@@ -69,6 +69,9 @@ class StationLetterViewController: UIViewController,UITableViewDelegate,UITableV
     }
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         return 1
+    }
+    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+        return 66
     }
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return self.items.count
@@ -185,7 +188,7 @@ class StationLetterViewController: UIViewController,UITableViewDelegate,UITableV
         self.inBox?.setImage(UIImage(named: "收件箱未选中"), forState: .Normal)
         self.inBox?.setTitleColor(UIColor.blackColor(), forState: .Normal)
         sender.setImage(UIImage(named: "发件箱选中"), forState: .Normal)
-        sender.setTitleColor(UIColor.blueColor(), forState: .Normal)
+        sender.setTitleColor(RGB(0,g: 153,b: 255), forState: .Normal)
     }
     func selectedInBox(sender:UIButton){
         isOut = false
@@ -200,7 +203,7 @@ class StationLetterViewController: UIViewController,UITableViewDelegate,UITableV
         self.sentBox?.setTitleColor(UIColor.blackColor(), forState: .Normal)
         
         sender.setImage(UIImage(named: "收件箱选中"), forState: .Normal)
-        sender.setTitleColor(UIColor.blueColor(), forState: .Normal)
+        sender.setTitleColor(RGB(0,g: 153,b: 255), forState: .Normal)
     }
     //头部刷新
     func headerRefresh() {

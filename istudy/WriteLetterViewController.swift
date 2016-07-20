@@ -39,7 +39,7 @@ import SwiftyJSON
     override func viewDidLoad() {
         super.viewDidLoad()
         //添加手势 来消失键盘
-    self.collectionView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "resignKeyboard"))
+    self.collectionView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(WriteLetterViewController.resignKeyboard)))
         recevieBtn?.layer.borderWidth = 0.4
         recevieBtn?.layer.borderColor = UIColor.grayColor().CGColor
         addPersonBtn?.setFAText(prefixText: "", icon: FAType.FAPlusCircle, postfixText: "", size: 25, forState: .Normal)

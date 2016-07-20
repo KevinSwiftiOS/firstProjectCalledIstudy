@@ -47,7 +47,7 @@ class DetailInfoViewController: UIViewController,UIWebViewDelegate{
                         let tempStartDate = json["info"]["date"].string! as NSString
                         let  date = "发布时间:" + tempStartDate.substringWithRange(yearRange) + "-" + tempStartDate.substringWithRange(monthRange) + "-" + tempStartDate.substringWithRange(dateRange)
                        totalString += (date as String) + "</br>"
-                        totalString += "访问次数" + "\(json["info"]["viewtimes"].number!)" + "</br>"
+                       
                        
                         self.webView.loadHTMLString(totalString, baseURL: nil)
                     })
