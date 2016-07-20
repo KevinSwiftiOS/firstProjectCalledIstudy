@@ -161,8 +161,6 @@
 		38C146921C89DA2D00CBAFFB /* StationLetterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3811F5C21C885D8300BCC841 /* StationLetterViewController.swift */; };
 		38C367B81CCCE4C2009A5E00 /* ProgramDesignViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38C367B71CCCE4C2009A5E00 /* ProgramDesignViewController.swift */; };
 		38C554FF1D05B16E007BEEC6 /* Podfile in Resources */ = {isa = PBXBuildFile; fileRef = 38C554FE1D05B16E007BEEC6 /* Podfile */; };
-		38C555061D05B26C007BEEC6 /* Font_Awesome_Swift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 38C555051D05B26C007BEEC6 /* Font_Awesome_Swift.framework */; };
-		38C555071D05B26C007BEEC6 /* Font_Awesome_Swift.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 38C555051D05B26C007BEEC6 /* Font_Awesome_Swift.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		38CCBF701C93B8A2002BEA6B /* PersonalInformation+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38CCBF6E1C93B8A2002BEA6B /* PersonalInformation+CoreDataProperties.swift */; };
 		38CCBF711C93B8A2002BEA6B /* PersonalInformation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38CCBF6F1C93B8A2002BEA6B /* PersonalInformation.swift */; };
 		38CCBF741C93B911002BEA6B /* PersonalHeadPortrait+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38CCBF721C93B911002BEA6B /* PersonalHeadPortrait+CoreDataProperties.swift */; };
@@ -411,7 +409,6 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				38C555071D05B26C007BEEC6 /* Font_Awesome_Swift.framework in Embed Frameworks */,
 				ABB35C651CA0155A008D0B6C /* SwiftyJSON.framework in Embed Frameworks */,
 				38870BB21C993176007528C6 /* Alamofire.framework in Embed Frameworks */,
 			);
@@ -642,7 +639,6 @@
 		38C146901C899E6300CBAFFB /* config.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = config.swift; sourceTree = "<group>"; };
 		38C367B71CCCE4C2009A5E00 /* ProgramDesignViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProgramDesignViewController.swift; sourceTree = "<group>"; };
 		38C554FE1D05B16E007BEEC6 /* Podfile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Podfile; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
-		38C555051D05B26C007BEEC6 /* Font_Awesome_Swift.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; name = Font_Awesome_Swift.framework; path = "/Users/hznucai/Library/Developer/Xcode/DerivedData/istudy-gqrkaeczzfmkqcapngsspjmshvsx/Build/Products/Debug-iphonesimulator/Font-Awesome-Swift/Font_Awesome_Swift.framework"; sourceTree = "<absolute>"; };
 		38CCBF6E1C93B8A2002BEA6B /* PersonalInformation+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "PersonalInformation+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		38CCBF6F1C93B8A2002BEA6B /* PersonalInformation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PersonalInformation.swift; sourceTree = "<group>"; };
 		38CCBF721C93B911002BEA6B /* PersonalHeadPortrait+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "PersonalHeadPortrait+CoreDataProperties.swift"; sourceTree = "<group>"; };
@@ -818,7 +814,6 @@
 				38AED7C81CA7FC41009ADC44 /* QuartzCore.framework in Frameworks */,
 				38AED7451CA7E9A4009ADC44 /* MapKit.framework in Frameworks */,
 				AB17DA601C9FF6A200C0666A /* SwiftyJSON.framework in Frameworks */,
-				38C555061D05B26C007BEEC6 /* Font_Awesome_Swift.framework in Frameworks */,
 				38BF5FD21C969250005DDD79 /* Alamofire.framework in Frameworks */,
 				3831B40E1C940ED400F44278 /* CoreLocation.framework in Frameworks */,
 				38AD67941C8EF86B00D10F05 /* QuickLook.framework in Frameworks */,
@@ -1461,7 +1456,6 @@
 			isa = PBXGroup;
 			children = (
 				38FBB3111D37AB5A00D7B095 /* Bugly.framework */,
-				38C555051D05B26C007BEEC6 /* Font_Awesome_Swift.framework */,
 				38AED7C71CA7FC41009ADC44 /* QuartzCore.framework */,
 				38AED7441CA7E9A4009ADC44 /* MapKit.framework */,
 				AB17D9C71C9FF66F00C0666A /* Alamofire-master */,
