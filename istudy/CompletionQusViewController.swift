@@ -152,7 +152,7 @@ class CompletionQusViewController: UIViewController,UITextFieldDelegate,UIWebVie
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-
+   //到作业题目的列表
     func actShow() {
         let vc = UIStoryboard(name: "Problem", bundle: nil).instantiateViewControllerWithIdentifier("AchVC") as! AchViewController
         vc.title = self.title
@@ -188,10 +188,11 @@ class CompletionQusViewController: UIViewController,UITextFieldDelegate,UIWebVie
         
         
     }
-
+   //进行保存的动作
     @IBAction func save(sender:UIButton){
         self.Save()
       }
+    //保存
     func Save() {
         var answerString = ""
         for i in 0 ..< self.oneSubFillBlankSelfAnswerArray.count - 1{
@@ -242,6 +243,7 @@ class CompletionQusViewController: UIViewController,UITextFieldDelegate,UIWebVie
         }
 
     }
+    //重置的动作 阅卷的displayMarkingArray代替为0
     @IBAction func reset(sender:UIButton){
         let resetAlertView = UIAlertController(title: nil, message: "确定要重置吗", preferredStyle: UIAlertControllerStyle.Alert)
           let cancelAction = UIAlertAction(title: "取消", style: UIAlertActionStyle.Destructive, handler: nil)
@@ -262,6 +264,7 @@ class CompletionQusViewController: UIViewController,UITextFieldDelegate,UIWebVie
         
         self.presentViewController(resetAlertView, animated: true, completion: nil)
     }
+    //阅卷的动作
     func Over() {
        
         //没有超过指定日期且没有开放阅卷功能的
@@ -351,7 +354,7 @@ class CompletionQusViewController: UIViewController,UITextFieldDelegate,UIWebVie
       }
     }
 
-    //阅卷与重做的功能
+    //阅卷与保存的功能
     @IBAction func goOver(sender:UIButton){
       
       
@@ -371,6 +374,7 @@ class CompletionQusViewController: UIViewController,UITextFieldDelegate,UIWebVie
         
         
     }
+    //加载新题目
        func addNewQus(sender:UISwipeGestureRecognizer){
         let temp = index
         if sender.direction == .Left{
@@ -378,7 +382,7 @@ class CompletionQusViewController: UIViewController,UITextFieldDelegate,UIWebVie
                 index += 1
             }
             else if self.totalKindOfQus - 1 == self.kindOfQusIndex{
-                ProgressHUD.showSuccess("已经完成全部试题")
+                ProgressHUD.showSuccess("已完成全部试题")
             }else{
                 let vc = UIStoryboard(name: "Problem", bundle: nil)
                     .instantiateViewControllerWithIdentifier("TranslateVC") as!
@@ -418,6 +422,7 @@ class CompletionQusViewController: UIViewController,UITextFieldDelegate,UIWebVie
         }
     }
     //初始化界面
+    //拆分组装标准答案 就有几个cell
     func initView(){
         self.tableHeaderWebViewHeight = 0
         self.currentQus?.text = "\(self.index + 1)" + "/" + "\(self.items.count)"
@@ -461,6 +466,7 @@ class CompletionQusViewController: UIViewController,UITextFieldDelegate,UIWebVie
             self.tableView?.frame = CGRectMake(0, 64 + 21 + 2, SCREEN_WIDTH, SCREEN_HEIGHT * 0.6)
         }
     }
+    //在show以后 要进行键盘高度的计算 来计算出tableView的高度
     func keyboardWillShowNotification(notification:NSNotification){
         self.tableView?.removeGestureRecognizer(leftSwap)
         self.tableView?.removeGestureRecognizer(rightSwap)
@@ -481,6 +487,7 @@ class CompletionQusViewController: UIViewController,UITextFieldDelegate,UIWebVie
         }
         }
     }
+    //消失键盘
     func resign() {
         for i in 0 ..< self.cellHeights.count{
             let cell = self.tableView?.cellForRowAtIndexPath(NSIndexPath(forRow: i, inSection: 0)) as? CompletionTableViewCell
@@ -489,7 +496,8 @@ class CompletionQusViewController: UIViewController,UITextFieldDelegate,UIWebVie
             }
         }
     }
-         func webViewDidStartLoad(webView: UIWebView) {
+    //webView的代理操作
+    func webViewDidStartLoad(webView: UIWebView) {
         webView.frame = CGRectMake(0, 0, SCREEN_WIDTH, 1)
     }
     func webViewDidFinishLoad(webView: UIWebView) {
@@ -537,6 +545,7 @@ class CompletionQusViewController: UIViewController,UITextFieldDelegate,UIWebVie
       self.tableView?.reloadData()
     
     }
+    //tableView的一些代理
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         return 1
     }
@@ -600,6 +609,7 @@ class CompletionQusViewController: UIViewController,UITextFieldDelegate,UIWebVie
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return cellHeights.count
     }
+    //键盘高度的整合
     func completionHeight(sender:NSNotification){
     //    var frame = self.tableView?.frame
         let cell = sender.object as! CompletionTableViewCell
@@ -629,6 +639,7 @@ class CompletionQusViewController: UIViewController,UITextFieldDelegate,UIWebVie
         self.oneSubFillBlankSelfAnswerArray.replaceObjectAtIndex(cell.Custag, withObject: (cell.textField?.text)!)
        
     }
+    //图片的放大
     func gestureRecognizerShouldBegin(gestureRecognizer: UIGestureRecognizer) -> Bool {
         
         return true
@@ -650,6 +661,7 @@ class CompletionQusViewController: UIViewController,UITextFieldDelegate,UIWebVie
     override func viewWillDisappear(animated: Bool) {
         ProgressHUD.dismiss()
     }
+    //左右按钮的滑动
     func changeIndex(sender:UIButton){
     //左右的滑动
     let temp = index
@@ -658,7 +670,7 @@ class CompletionQusViewController: UIViewController,UITextFieldDelegate,UIWebVie
     index += 1
     }
     else if self.totalKindOfQus - 1 == self.kindOfQusIndex{
-    ProgressHUD.showSuccess("已经完成全部试题")
+    ProgressHUD.showSuccess("已完成全部试题")
     }else{
     let vc = UIStoryboard(name: "Problem", bundle: nil)
     .instantiateViewControllerWithIdentifier("TranslateVC") as!

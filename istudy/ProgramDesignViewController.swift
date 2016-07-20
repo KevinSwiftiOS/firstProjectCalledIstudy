@@ -64,9 +64,6 @@ class ProgramDesignViewController: UIViewController,UIWebViewDelegate,UIGestureR
                //顶部加条线
         //设置阴影效果
         ShowBigImageFactory.topViewEDit(self.topView!)
-        
-
-        
         self.automaticallyAdjustsScrollViewInsets = false
         self.tap = UITapGestureRecognizer(target: self, action: #selector(ProgramDesignViewController.webViewShowBig(_:)))
         self.tap.delegate = self
@@ -126,7 +123,7 @@ class ProgramDesignViewController: UIViewController,UIWebViewDelegate,UIGestureR
         saveBtn?.setFAText(prefixText: "", icon: FAType.FASave, postfixText: "", size: 25, forState: .Normal)
         resetBtn?.setFAText(prefixText: "", icon: FAType.FAMinusSquare, postfixText: "", size: 25, forState: .Normal)
     }
-    
+    //跳转到题目列表
     func actShow() {
         let vc = UIStoryboard(name: "Problem", bundle: nil).instantiateViewControllerWithIdentifier("AchVC") as! AchViewController
         vc.title = self.title
@@ -168,6 +165,7 @@ class ProgramDesignViewController: UIViewController,UIWebViewDelegate,UIGestureR
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
+    //加载新题目
     func addNewQus(sender:UISwipeGestureRecognizer){
         
         let temp = index
@@ -176,7 +174,7 @@ class ProgramDesignViewController: UIViewController,UIWebViewDelegate,UIGestureR
                 index += 1
             }
             else if self.kindOfQusIndex == self.totalKindOfQus - 1{
-                ProgressHUD.showSuccess("已完成全部")
+              ProgressHUD.showSuccess("已完成全部试题")
             }else{
                 let vc = UIStoryboard(name: "Problem", bundle: nil)
                     .instantiateViewControllerWithIdentifier("TranslateVC") as!
@@ -213,6 +211,7 @@ class ProgramDesignViewController: UIViewController,UIWebViewDelegate,UIGestureR
             self.initView()
         }
     }
+    //加载新题目 在webView的代理中来加载新题目
     func initView() {
         for view in (self.contentScrollView?.subviews)!{
             view.removeFromSuperview()
@@ -238,12 +237,14 @@ class ProgramDesignViewController: UIViewController,UIWebViewDelegate,UIGestureR
             self.Over()
         }
     }
+    //保存后改变答案的数组 和进行服务器传送
     func save(){
         let text = self.answerTextView?.text
         self.selfAnswers.replaceObjectAtIndex(index, withObject: text!)
         self.postAnswer()
         //还有阅卷的信息
     }
+    //阅卷的按钮 有可能此时进行阅卷和已经阅卷后 回到这个界面也要进行阅卷
     func Over() {
         //没有超过指定的日期且没有开启阅卷功能
         if(!self.isOver && !self.enableClientJudge){
@@ -252,7 +253,6 @@ class ProgramDesignViewController: UIViewController,UIWebViewDelegate,UIGestureR
         //没有超过指定的日期且开启阅卷功能 或者已经超过日期了
         if(!self.isOver && self.enableClientJudge || (self.isOver)){
             //每道题目进行阅卷
-            
             //进行阅卷
             let userDefault = NSUserDefaults.standardUserDefaults()
             let authtoken = userDefault.valueForKey("authtoken") as! String
@@ -281,7 +281,7 @@ class ProgramDesignViewController: UIViewController,UIWebViewDelegate,UIGestureR
                         
                         totalString += "得分:" + "\(judgeItems[0].valueForKey("GotScore") as! NSNumber)"
                             + "/" + "\(judgeItems[0].valueForKey("FullScore") as! NSNumber)" + "\n"
-                        
+                        //标准答案是否开放
                         if((self.keyVisible && !self.isOver) || (self.isOver && self.viewOneWithAnswerKey)){                            totalString += "答案:" + (judgeItems[0].valueForKey("Key") as! String)
                         }
                         else{
@@ -388,7 +388,7 @@ class ProgramDesignViewController: UIViewController,UIWebViewDelegate,UIGestureR
         }
         
     }
-    
+    //webView的代理
     func webViewDidStartLoad(webView: UIWebView) {
         var frame = webView.frame
         frame.size.height = 1
@@ -468,6 +468,7 @@ class ProgramDesignViewController: UIViewController,UIWebViewDelegate,UIGestureR
         
         
     }
+    //键盘的消失
     @IBAction func resign(sender: UIControl) {
         self.answerTextView?.resignFirstResponder()
     }
@@ -499,6 +500,7 @@ class ProgramDesignViewController: UIViewController,UIWebViewDelegate,UIGestureR
     override func viewWillDisappear(animated: Bool) {
         ProgressHUD.dismiss()
     }
+    //下方按钮的切换题目
     func changeIndex(sender:UIButton){
         let temp = index
         if(sender.tag == 2){
@@ -506,7 +508,7 @@ class ProgramDesignViewController: UIViewController,UIWebViewDelegate,UIGestureR
                 index += 1
             }
             else if self.kindOfQusIndex == self.totalKindOfQus - 1{
-                ProgressHUD.showSuccess("已完成全部")
+              ProgressHUD.showSuccess("已完成全部试题")
             }else{
                 let vc = UIStoryboard(name: "Problem", bundle: nil)
                     .instantiateViewControllerWithIdentifier("TranslateVC") as!

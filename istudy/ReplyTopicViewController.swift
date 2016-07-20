@@ -46,7 +46,7 @@ class ReplyTopicViewController: UIViewController,UITableViewDelegate,UITableView
         //气泡的效果
         var point = topView.center
         point.x -= 84
-        
+        //头部的总够有几个回复
         bubbleView = AYBubbleView(centerPoint: (point), bubleRadius: 15, addToSuperView: topView)
         bubbleView.bubbleColor = UIColor.redColor()
         sendBtn?.setFAText(prefixText: "", icon: FAType.FASend, postfixText: "", size: 25, forState: .Normal)
@@ -74,7 +74,7 @@ class ReplyTopicViewController: UIViewController,UITableViewDelegate,UITableView
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-    //头视图
+    //头视图 tableView的一些代理
     func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let view = UIView(frame: CGRectMake(0,0,SCREEN_WIDTH,21))
         let label = UILabel(frame: CGRectMake(0,0,SCREEN_WIDTH,21))
@@ -188,6 +188,7 @@ class ReplyTopicViewController: UIViewController,UITableViewDelegate,UITableView
             }
         }
     }
+    //键盘消失的动作
     @IBAction func resign(sender: UIControl) {
         self.writeTextView?.resignFirstResponder()
     }
@@ -199,6 +200,7 @@ class ReplyTopicViewController: UIViewController,UITableViewDelegate,UITableView
         ProgressHUD.dismiss()
         
     }
+    //头部视图的刷新
     func headerRefresh() {
         //查询论坛的主题回复
         let userDefault = NSUserDefaults.standardUserDefaults()
@@ -255,6 +257,7 @@ class ReplyTopicViewController: UIViewController,UITableViewDelegate,UITableView
             self.replyListTableView?.reloadData()
         }
     }
+    //图片的放大
     func replyImageShowBig(sender:NSNotification){
         let cell = sender.object as! ReplyListTableViewCell
         
@@ -288,7 +291,7 @@ class ReplyTopicViewController: UIViewController,UITableViewDelegate,UITableView
     func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
         return 1
     }
-    //定义每个cell的大小
+    //定义每个cell的大小 collectionView 图片视图的代理
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
         return CGSizeMake(SCREEN_WIDTH / 5, SCREEN_HEIGHT / 8)
     }
@@ -308,6 +311,7 @@ class ReplyTopicViewController: UIViewController,UITableViewDelegate,UITableView
         }
         return cell
     }
+    //collectionView中图片点击的放大
     func collectionPhotosShowBig(sender:UIButton) {
         let previewPhotoVC = UIStoryboard(name: "Problem", bundle: nil).instantiateViewControllerWithIdentifier("previewPhotoVC") as! previewPhotoViewController
         previewPhotoVC.toShowBigImageArray = self.photos

@@ -17,14 +17,16 @@ class SubjectiveQusViewController: UIViewController,AJPhotoPickerProtocol,UINavi
     var  enableClientJudge = Bool()
     var keyVisible = Bool()
     var viewOneWithAnswerKey = Bool()
+    //图片放大的点击手势
     var tap = UITapGestureRecognizer()
     var tap1 = UITapGestureRecognizer()
-    //用来记录textView的frame
-    var frame = CGRect()
-    //从其他题型跳转过来的
+    
+    
+    
     var imagePicker:AJPhotoPickerViewController!
     var isFromOtherKindQus = false
     //记录当前是第几个题型
+    //从其他题型跳转过来的
     var kindOfQusIndex = NSInteger()
     var id = NSInteger()
     var testid = NSInteger()
@@ -32,12 +34,14 @@ class SubjectiveQusViewController: UIViewController,AJPhotoPickerProtocol,UINavi
     var items = NSArray()
     var totalKindOfQus = NSInteger()
     var isOver = false
+    //添加图片和文字的按钮 和 重置的按钮
     @IBOutlet weak var qusKind:UILabel?
-     @IBOutlet weak var  addBtn:UIButton!
+    @IBOutlet weak var  addBtn:UIButton!
     @IBOutlet weak var resetBtn: UIButton!
     //左右按钮
+    //用来包裹题目描述 reset和addBtn 还有 commentBtn 还有 评语等
     @IBOutlet weak var  leftBtn: UIButton!
-     @IBOutlet weak var rightBtn: UIButton!
+    @IBOutlet weak var rightBtn: UIButton!
     @IBOutlet weak  var saveBtn: UIButton!
     @IBOutlet weak var contentScrollView:UIScrollView?
     @IBOutlet weak var currentQus:UILabel?
@@ -45,14 +49,13 @@ class SubjectiveQusViewController: UIViewController,AJPhotoPickerProtocol,UINavi
     var answerWebView = UIWebView()
     var answerTextView = JVFloatLabeledTextView()
     var totalHeight:CGFloat = 0.0
-    //用来包裹题目描述 reset和addBtn 还有 commentBtn 还有 评语等
     @IBOutlet weak var collectionView:UICollectionView!
     //展示图片的瀑布流形式的collectionView
     @IBOutlet weak var topView:UIView?
     @IBOutlet weak var btmView:UIView!
     var menu:BlurEffectMenu!
-  let  cameraPicker = UIImagePickerController()
-    var longTap = UILongPressGestureRecognizer()
+    let  cameraPicker = UIImagePickerController()
+    
     //记录当前在第几页和总共的页数
     var index:NSInteger = 0
     var answerPhotos = NSMutableArray()
@@ -60,7 +63,7 @@ class SubjectiveQusViewController: UIViewController,AJPhotoPickerProtocol,UINavi
     var selfAnswers = NSMutableArray()
     override func viewDidLoad() {
         super.viewDidLoad()
- ShowBigImageFactory.topViewEDit(self.btmView)
+        ShowBigImageFactory.topViewEDit(self.btmView)
         
         //顶部加条线
         //设置阴影效果
@@ -171,6 +174,7 @@ class SubjectiveQusViewController: UIViewController,AJPhotoPickerProtocol,UINavi
         for view in (self.contentScrollView?.subviews)!{
             view.removeFromSuperview()
         }
+        //加载题目的内容
         let contenString = cssDesString + (self.items[index].valueForKey("content") as! String)
         self.qusDes.loadHTMLString(contenString, baseURL: nil)
         self.qusDes.delegate = self
@@ -201,11 +205,11 @@ class SubjectiveQusViewController: UIViewController,AJPhotoPickerProtocol,UINavi
     //保存的代码
     func save(sender:UIButton){
         //save的时候转化成为html的格式 随后answerTextView和imageView进行初始化影藏
-    //    self.answerTextView.hidden = true
+        //    self.answerTextView.hidden = true
         var allAnswer = ""
         allAnswer = self.selfAnswers[index] as! String
         var tempHtmlString = ""
-         tempHtmlString = self.answerTextView.text
+        tempHtmlString = self.answerTextView.text
         
         //循环将图片数组中的值取出 转化成html格式
         for i in 0 ..< self.answerPhotos.count{
@@ -216,10 +220,10 @@ class SubjectiveQusViewController: UIViewController,AJPhotoPickerProtocol,UINavi
             tempHtmlString += imgHtml
         }
         allAnswer += tempHtmlString
-//        self.collectionView!.hidden = true
-//        self.answerTextView.hidden = true
-//        
-//        self.answerWebView.hidden = false
+        //        self.collectionView!.hidden = true
+        //        self.answerTextView.hidden = true
+        //
+        //        self.answerWebView.hidden = false
         //转化成html的格式
         self.selfAnswers.replaceObjectAtIndex(index, withObject: allAnswer)
         
@@ -250,18 +254,18 @@ class SubjectiveQusViewController: UIViewController,AJPhotoPickerProtocol,UINavi
             self.selfAnswers.replaceObjectAtIndex(self.index, withObject: "")
             self.answerPhotos.removeAllObjects()
             self.answerTextView.text = ""
-//            self.answerTextView.hidden = true
-//            self.answerWebView.hidden = false
-//            self.collectionView.hidden = true
+            //            self.answerTextView.hidden = true
+            //            self.answerWebView.hidden = false
+            //            self.collectionView.hidden = true
             self.collectionView.reloadData()
             self.answerTextView.resignFirstResponder()
             self.answerWebView.loadHTMLString("", baseURL: nil)
             
             self.postAnswer()
             let  tempAnswerString = "<html><head><style>P{text-align:center;vertical-align: middle;font-size: 17px;font-family: " + "\"" + "宋体" + "\"" +  "}</style></head><body><p>无作业信息</p></body></html>"
-         
+            
             self.answerWebView.loadHTMLString(tempAnswerString, baseURL: nil)
-
+            
         }
         let cancelAction = UIAlertAction(title: "取消", style: UIAlertActionStyle.Destructive, handler: nil)
         resetAlertView.addAction(resetAction)
@@ -269,7 +273,6 @@ class SubjectiveQusViewController: UIViewController,AJPhotoPickerProtocol,UINavi
         
         self.presentViewController(resetAlertView, animated: true, completion: nil)
     }
-    //向服务器传送答案
     //向服务器传送答案
     func postAnswer() {
         let answer = ["testid":"\(testid)",
@@ -326,11 +329,12 @@ class SubjectiveQusViewController: UIViewController,AJPhotoPickerProtocol,UINavi
     func blurEffectMenuDidTapOnBackground(menu: BlurEffectMenu!) {
         menu.dismissViewControllerAnimated(true, completion: nil)
     }
+    //确实点击了某到题目的时候
     func blurEffectMenu(menu: BlurEffectMenu!, didTapOnItem item: BlurEffectMenuItem!) {
         //将answerWebView的隐藏 随后出现两个控件 一个用来添加文字 一个用来添加图片
-     //   self.answerWebView.hidden = true
+        //   self.answerWebView.hidden = true
         if(item.title == "添加图片"){
-        //    self.answerPhotos = NSMutableArray()
+            //    self.answerPhotos = NSMutableArray()
             self.imagePicker = AJPhotoPickerViewController()
             //设置最大的数量
             imagePicker.maximumNumberOfSelection = 6
@@ -346,7 +350,7 @@ class SubjectiveQusViewController: UIViewController,AJPhotoPickerProtocol,UINavi
         }
         if(item.title == "添加文字"){
             self.answerTextView.becomeFirstResponder()
-        self.answerTextView.becomeFirstResponder()
+            self.answerTextView.becomeFirstResponder()
             menu.dismissViewControllerAnimated(true, completion: nil)
         }
         
@@ -360,9 +364,9 @@ class SubjectiveQusViewController: UIViewController,AJPhotoPickerProtocol,UINavi
     func photoPickerDidCancel(picker: AJPhotoPickerViewController!) {
         picker.dismissViewControllerAnimated(true, completion: nil)
         menu.dismissViewControllerAnimated(true, completion: nil)
-//        self.answerWebView.hidden = false
-//        self.collectionView.hidden = true
-//        self.answerTextView.hidden = true
+        //        self.answerWebView.hidden = false
+        //        self.collectionView.hidden = true
+        //        self.answerTextView.hidden = true
     }
     //当点击了照相机的时候
     func photoPickerTapCameraAction(picker: AJPhotoPickerViewController!) {
@@ -382,9 +386,9 @@ class SubjectiveQusViewController: UIViewController,AJPhotoPickerProtocol,UINavi
         picker.dismissViewControllerAnimated(true, completion: nil)
         self.imagePicker.dismissViewControllerAnimated(true, completion: nil)
         menu.dismissViewControllerAnimated(true, completion: nil)
-//        self.answerTextView.hidden = true
-//        self.answerWebView.hidden = true
-//        self.collectionView?.hidden = false
+        //        self.answerTextView.hidden = true
+        //        self.answerWebView.hidden = true
+        //        self.collectionView?.hidden = false
         self.collectionView?.reloadData()
     }
     //退出照相机的时候
@@ -392,9 +396,9 @@ class SubjectiveQusViewController: UIViewController,AJPhotoPickerProtocol,UINavi
         picker.dismissViewControllerAnimated(true, completion: nil)
         self.imagePicker.dismissViewControllerAnimated(true, completion: nil)
         menu.dismissViewControllerAnimated(true, completion: nil)
-//        self.answerTextView.hidden = true
-//        self.answerWebView.hidden = false
-//        self.collectionView?.hidden = true
+        //        self.answerTextView.hidden = true
+        //        self.answerWebView.hidden = false
+        //        self.collectionView?.hidden = true
     }
     //当选择好相册后 更新scrollView
     func photoPicker(picker: AJPhotoPickerViewController!, didSelectAssets assets: [AnyObject]!) {
@@ -405,15 +409,14 @@ class SubjectiveQusViewController: UIViewController,AJPhotoPickerProtocol,UINavi
         }
         picker.dismissViewControllerAnimated(true, completion: nil)
         menu.dismissViewControllerAnimated(true, completion: nil)
-//        self.collectionView?.hidden = false
-//        self.answerWebView.hidden = true
-//        self.answerTextView.hidden = true
+        //        self.collectionView?.hidden = false
+        //        self.answerWebView.hidden = true
+        //        self.answerTextView.hidden = true
         
         self.collectionView?.reloadData()
         
     }
-    //图片放大的效果
-
+    
     //图片编辑
     func editOrShow(sender:UIButton){
         
@@ -453,23 +456,22 @@ class SubjectiveQusViewController: UIViewController,AJPhotoPickerProtocol,UINavi
         alert.addAction(deleteAction)
         alert.addAction(cropAction)
         alert.addAction(cancelAction)
-      //  if(alert.accessibilityFrame == CGRect()){
+        //  if(alert.accessibilityFrame == CGRect()){
         menu.dismissViewControllerAnimated(true, completion: nil)
         cameraPicker.dismissViewControllerAnimated(true, completion: nil)
         imagePicker.dismissViewControllerAnimated(true, completion: nil)
-            self.presentViewController(alert, animated: true, completion: nil)
+        self.presentViewController(alert, animated: true, completion: nil)
         // }
-         }
-   
+    }
+    //加载下一道题目
     func addNewQus(sender:UISwipeGestureRecognizer) {
         let temp = index
-        //加载下一道题目
         if sender.direction == .Left{
             if self.index != self.items.count - 1{
                 self.index += 1
             }
             else if(self.kindOfQusIndex == self.totalItems.count - 1){
-                ProgressHUD.showError("已是最后一题")
+                ProgressHUD.showSuccess("已完成全部试题")
             }
             else {
                 let vc = UIStoryboard(name: "Problem", bundle: nil)
@@ -538,7 +540,7 @@ class SubjectiveQusViewController: UIViewController,AJPhotoPickerProtocol,UINavi
         }
     }
     func webViewShowBig(sender:UITapGestureRecognizer){
-     
+        
         ShowBigImageFactory.showBigImage(self, webView: sender.view as! UIWebView, sender: sender)
     }
     //图片显示区域的CollectionView的实现
@@ -551,11 +553,11 @@ class SubjectiveQusViewController: UIViewController,AJPhotoPickerProtocol,UINavi
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCellWithReuseIdentifier("PhotoCell", forIndexPath: indexPath) as! PhotoWaterfallCollectionViewCell
         if(indexPath.row < self.answerPhotos.count){
-
+            
             cell.btn.setBackgroundImage(self.answerPhotos[indexPath.row] as? UIImage, forState: .Normal)
             //每个imagView都加手势 点击预览 长按编辑
             cell.btn.tag = indexPath.row
-      
+            
             cell.btn.addTarget(self, action: #selector(SubjectiveQusViewController.editOrShow(_:)), forControlEvents: .TouchUpInside)
             
         }
@@ -584,12 +586,12 @@ class SubjectiveQusViewController: UIViewController,AJPhotoPickerProtocol,UINavi
         addBtn.setFAText(prefixText: "", icon: FAType.FAPlusSquare, postfixText: "", size: 25, forState: .Normal)
         saveBtn.setFAText(prefixText: "", icon: FAType.FASave, postfixText: "", size: 25, forState: .Normal)
         resetBtn.setFAText(prefixText: "", icon: FAType.FAMinusSquare, postfixText: "", size: 25, forState: .Normal)
-    leftBtn.setFAText(prefixText: "", icon: FAType.FAArrowLeft, postfixText: "", size: 25, forState: .Normal)
+        leftBtn.setFAText(prefixText: "", icon: FAType.FAArrowLeft, postfixText: "", size: 25, forState: .Normal)
         rightBtn.setFAText(prefixText: "", icon: FAType.FAArrowRight, postfixText: "", size: 25, forState: .Normal)
         self.leftBtn.tag = 1
         self.rightBtn.tag = 2
-self.leftBtn.addTarget(self, action: #selector(SubjectiveQusViewController.changeIndex(_:)), forControlEvents: .TouchUpInside)
-self.rightBtn.addTarget(self, action: #selector(SubjectiveQusViewController.changeIndex(_:)), forControlEvents: .TouchUpInside)
+        self.leftBtn.addTarget(self, action: #selector(SubjectiveQusViewController.changeIndex(_:)), forControlEvents: .TouchUpInside)
+        self.rightBtn.addTarget(self, action: #selector(SubjectiveQusViewController.changeIndex(_:)), forControlEvents: .TouchUpInside)
         
         totalHeight += 35
         self.resetBtnAndQusHeight = totalHeight
@@ -599,7 +601,7 @@ self.rightBtn.addTarget(self, action: #selector(SubjectiveQusViewController.chan
         self.answerWebView.tag = 1
         self.answerWebView.userInteractionEnabled = true
         
-      
+        
         //有没有答案的选择
         let answerWebViewLabel = UILabel(frame: CGRectMake(5,totalHeight,SCREEN_WIDTH,21))
         answerWebViewLabel.text = "学生答案区:"
@@ -607,20 +609,20 @@ self.rightBtn.addTarget(self, action: #selector(SubjectiveQusViewController.chan
         self.contentScrollView?.addSubview(answerWebViewLabel)
         var tempAnswerString = (self.selfAnswers[index] as! String)
         if(tempAnswerString) == ""{
-           tempAnswerString = "<html><head><style>P{text-align:center;vertical-align: middle;font-size: 17px;font-family: " + "\"" + "宋体" + "\"" +  "}</style></head><body><p>无作业信息</p></body></html>"
+            tempAnswerString = "<html><head><style>P{text-align:center;vertical-align: middle;font-size: 17px;font-family: " + "\"" + "宋体" + "\"" +  "}</style></head><body><p>无作业信息</p></body></html>"
             self.answerWebView.frame = CGRectMake(5, totalHeight, SCREEN_WIDTH - 10, 120)
-              self.answerWebView.loadHTMLString(tempAnswerString, baseURL: nil)
-           
+            self.answerWebView.loadHTMLString(tempAnswerString, baseURL: nil)
+            
         }else{
             self.answerWebView.frame = CGRectMake(5, totalHeight, SCREEN_WIDTH - 10, 120)
-        let answerWebString = cssDesString + (self.selfAnswers[index] as! String)
-        self.answerWebView.loadHTMLString(answerWebString, baseURL: nil)
-                   }
+            let answerWebString = cssDesString + (self.selfAnswers[index] as! String)
+            self.answerWebView.loadHTMLString(answerWebString, baseURL: nil)
+        }
         totalHeight += 125
         self.answerWebView.layer.borderWidth = 0.3
         self.answerWebView.layer.borderColor = UIColor.grayColor().CGColor
-     self.contentScrollView?.addSubview(self.answerWebView)
-     
+        self.contentScrollView?.addSubview(self.answerWebView)
+        
         let currentDate = NSDate()
         let result:NSComparisonResult = currentDate.compare(endDate)
         if result == .OrderedAscending{
@@ -651,7 +653,7 @@ self.rightBtn.addTarget(self, action: #selector(SubjectiveQusViewController.chan
             self.answerTextView.layer.borderColor = UIColor.grayColor().CGColor
         }else{
             self.isOver = true
-           // totalHeight += 155
+            // totalHeight += 155
             //加载评论的
             let commetLabel = UILabel(frame: CGRectMake(5,totalHeight,SCREEN_WIDTH - 10,21))
             commetLabel.text = "评语:"
@@ -660,7 +662,7 @@ self.rightBtn.addTarget(self, action: #selector(SubjectiveQusViewController.chan
             //改成webView 并进行居中显示
             let commetWebView = UIWebView(frame: CGRectMake(5, totalHeight, SCREEN_WIDTH - 10, 50))
             //不可点击性
-                       totalHeight += 55
+            totalHeight += 55
             if(self.items[index].valueForKey("comments") as? String != nil &&
                 self.items[index].valueForKey("comments") as! String != ""){
                 let totalCommetString = cssDesString + ((self.items[index]).valueForKey("comments") as! String)
@@ -669,7 +671,7 @@ self.rightBtn.addTarget(self, action: #selector(SubjectiveQusViewController.chan
                 
                 commetWebView.loadHTMLString("<html><head><style>P{text-align:center;vertical-align: middle;font-size: 17px;font-family: " + "\"" + "宋体" + "\"" +  "}</style></head><body><p>无评语</p></body></html>", baseURL: nil)
             }
-          commetWebView.layer.borderWidth = 0.3
+            commetWebView.layer.borderWidth = 0.3
             commetWebView.layer.borderColor = UIColor.grayColor().CGColor
             self.contentScrollView?.addSubview(commetWebView)
             let standAnswerLabel = UILabel(frame: CGRectMake(5,totalHeight,SCREEN_WIDTH - 10,21))
@@ -678,18 +680,18 @@ self.rightBtn.addTarget(self, action: #selector(SubjectiveQusViewController.chan
             self.contentScrollView?.addSubview(standAnswerLabel)
             let standAnswerWebView = UIWebView(frame: CGRectMake(5,totalHeight,SCREEN_WIDTH - 10,100))
             //标准答案有可能为空
-               if((self.keyVisible && !self.isOver) || (self.isOver && self.viewOneWithAnswerKey)){
-            
-            if(self.items[index].valueForKey("strandanswer") as? String != nil && self.items[index].valueForKey("strandanswer") as! String != "") {
-            
-    standAnswerWebView.loadHTMLString(self.items[index].valueForKey("strandanswer") as! String, baseURL: nil)
+            if((self.keyVisible && !self.isOver) || (self.isOver && self.viewOneWithAnswerKey)){
                 
+                if(self.items[index].valueForKey("strandanswer") as? String != nil && self.items[index].valueForKey("strandanswer") as! String != "") {
+                    
+                    standAnswerWebView.loadHTMLString(self.items[index].valueForKey("strandanswer") as! String, baseURL: nil)
+                    
+                }else{
+                    //加载没有标准答案的信息
+                    standAnswerWebView.loadHTMLString("<html><head><style>P{text-align:center;vertical-align: middle;font-size: 17px;font-family: " + "\"" + "宋体" + "\"" +  "}</style></head><body><p>无标准答案</p></body></html>",baseURL: nil)
+                }
             }else{
-                //加载没有标准答案的信息
                 standAnswerWebView.loadHTMLString("<html><head><style>P{text-align:center;vertical-align: middle;font-size: 17px;font-family: " + "\"" + "宋体" + "\"" +  "}</style></head><body><p>无标准答案</p></body></html>",baseURL: nil)
-            }
-               }else{
-                  standAnswerWebView.loadHTMLString("<html><head><style>P{text-align:center;vertical-align: middle;font-size: 17px;font-family: " + "\"" + "宋体" + "\"" +  "}</style></head><body><p>无标准答案</p></body></html>",baseURL: nil)
             }
             totalHeight += 120
             self.contentScrollView?.addSubview(standAnswerWebView)
@@ -713,7 +715,7 @@ self.rightBtn.addTarget(self, action: #selector(SubjectiveQusViewController.chan
                 self.index += 1
             }
             else if(self.kindOfQusIndex == self.totalItems.count - 1){
-                ProgressHUD.showError("已是最后一题")
+                ProgressHUD.showSuccess("已完成全部试题")
             }
             else {
                 let vc = UIStoryboard(name: "Problem", bundle: nil)
@@ -753,12 +755,12 @@ self.rightBtn.addTarget(self, action: #selector(SubjectiveQusViewController.chan
             self.initView()
             self.collectionView?.reloadData()
         }
-
+        
     }
     
-    //响应者连函数
+    //响应者链函数
     override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
-        print(222)
+        
         self.nextResponder()?.touchesBegan(touches, withEvent: event)
         super.touchesBegan(touches, withEvent: event)
     }

@@ -35,7 +35,7 @@ var questions = NSMutableArray()
     var items = NSArray()
     var usertestid = NSInteger()
     var index = 0 
-    //var callBack:send_index?
+//加载视图的一些代理
     override func viewDidLoad() {
         super.viewDidLoad()
         let diveseView = UIView(frame: CGRectMake(0,SCREEN_HEIGHT * 0.8 - 30,SCREEN_WIDTH,1))
@@ -76,7 +76,7 @@ var questions = NSMutableArray()
         // Dispose of any resources that can be recreated.
     }
     
- //提交评论的结果
+ //提交评论的结果 转化为字典模式
     @IBAction func savePeer(sender:UIButton){
         pickerView.hidden = true
      //   self.callBack!(index:self.index)
@@ -133,7 +133,7 @@ var questions = NSMutableArray()
                     ProgressHUD.showError("请求失败")
                     
                 }else{
-                    
+                    //实际上这里就是把他的字典全部拿到 在改变评论的时候就直接在字典里面进行修改即可
                     dispatch_async(dispatch_get_main_queue(), {
                         ProgressHUD.dismiss()
                         self.items = json["items"].arrayObject! as NSArray
@@ -172,6 +172,7 @@ var questions = NSMutableArray()
     override func viewWillDisappear(animated: Bool) {
         ProgressHUD.dismiss()
     }
+    //webView的一些代理
     func webViewDidStartLoad(webView: UIWebView) {
         webView.frame = CGRectMake(0, 0, SCREEN_WIDTH, 1)
     }
@@ -307,6 +308,7 @@ var questions = NSMutableArray()
             }
         }
     }
+    //初始化视图
     func initView() {
         for view in self.scrollView.subviews{
             view.removeFromSuperview()
@@ -325,6 +327,7 @@ var questions = NSMutableArray()
         self.contentWebView.userInteractionEnabled = true
         self.totalHeight = 0
           }
+    //评论的按钮 tag要注意
     func gotoPeer(sender:UIButton){
         self.pickerView.delegate = self
         self.pickerView.dataSource = self
@@ -337,6 +340,7 @@ var questions = NSMutableArray()
 
         self.pickerView.selectRow(score, inComponent: 0, animated: true)
     }
+    //pickerView的一些代理
     func pickerView(pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
         let rules = self.items[index].valueForKey("rules") as! NSMutableArray
         let tempIndex = pickerView.tag - 1000
@@ -349,6 +353,7 @@ var questions = NSMutableArray()
     func numberOfComponentsInPickerView(pickerView: UIPickerView) -> Int {
         return 1
     }
+    //pickerView的代理
     func pickerView(pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
               let tag = pickerView.tag - 1000
        
@@ -356,13 +361,6 @@ var questions = NSMutableArray()
             if view.isKindOfClass(UIButton.classForCoder()){
                 if(view.tag == tag){
         let btn =  view as! UIButton
-//       let  str1 = NSMutableAttributedString(string:"__" + "\(row)" + "__分")
-//                    let range1 = NSRange(location: 0, length: str1.length - 1)
-//                    let range2 = NSRange(location: str1.length - 1, length: 1)
-//                    let number = NSNumber(integer: NSUnderlineStyle.StyleSingle.rawValue)
-//                    str1.addAttribute(NSUnderlineStyleAttributeName, value: number, range: range1)
-//                    str1.addAttribute(NSForegroundColorAttributeName, value: UIColor.redColor(), range: range1)
-//                    str1.addAttribute(NSForegroundColorAttributeName,value:UIColor.blackColor(), range: range2)
                     let scoreString = NSMutableAttributedString(string: "\(row)")
                     let scoreStringRange = NSMakeRange(0, scoreString.length)
                     scoreString.addAttribute(NSForegroundColorAttributeName, value: UIColor.redColor(), range: scoreStringRange)
@@ -422,6 +420,7 @@ var questions = NSMutableArray()
         pickerView.hidden = true
          ShowBigImageFactory.showBigImage(self, webView: self.contentWebView, sender: sender)
     }
+    //改变题目
     func changeIndex(sender:UIButton){
         pickerView.hidden = true
         if sender.tag == 2{

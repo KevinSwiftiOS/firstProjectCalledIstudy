@@ -12,7 +12,6 @@ import SwiftyJSON
 import DZNEmptyDataSet
 import Font_Awesome_Swift
 class DiscussViewController: UIViewController,UITableViewDelegate,UITableViewDataSource,DZNEmptyDataSetSource,DZNEmptyDataSetDelegate{
-    
     @IBOutlet weak var discussTableView:UITableView?
     //测试数组
     @IBOutlet weak var topView:UIView?
@@ -55,7 +54,7 @@ class DiscussViewController: UIViewController,UITableViewDelegate,UITableViewDat
         }else{
             self.classLabel?.backgroundColor = RGB(0, g: 153, b: 255)
         }
-        
+        //顶部的设置
         self.classLabel?.text = userDefault.valueForKey("cls") as? String
         self.classLabel?.layer.cornerRadius = 5.0
         self.classLabel?.layer.masksToBounds = true
@@ -91,6 +90,7 @@ class DiscussViewController: UIViewController,UITableViewDelegate,UITableViewDat
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
+    //tableView的一些代理
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         return self.totalItems.count
     }
@@ -158,9 +158,6 @@ class DiscussViewController: UIViewController,UITableViewDelegate,UITableViewDat
             tableView.deselectRowAtIndexPath(indexPath, animated: true)
         }
     }
-    override func viewWillAppear(animated: Bool) {
-        
-    }
     @IBAction func refresh(sender:UIButton) {
         if(isShow){
             bottomChooseViewResign()
@@ -210,6 +207,7 @@ class DiscussViewController: UIViewController,UITableViewDelegate,UITableViewDat
         }
         
     }
+    //到写主题帖去
     @IBAction func writeTopics(sender:UIButton){
         if(isShow){
             bottomChooseViewResign()
@@ -292,6 +290,7 @@ class DiscussViewController: UIViewController,UITableViewDelegate,UITableViewDat
             }
         }
     }
+    
     override func viewWillDisappear(animated: Bool) {
         ProgressHUD.dismiss()
     }

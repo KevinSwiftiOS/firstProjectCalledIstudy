@@ -146,6 +146,7 @@ class ChoiceQusViewController: UIViewController,UIWebViewDelegate,UITableViewDel
     print("ChoiceDeinit")
           NSNotificationCenter.defaultCenter().removeObserver(self)
     }
+    //到题目列表
 func showAct(){
      let vc = UIStoryboard(name: "Problem", bundle: nil).instantiateViewControllerWithIdentifier("AchVC") as! AchViewController
         vc.title = self.title
@@ -180,7 +181,7 @@ func showAct(){
         
         
     }
-    
+    //阅卷的按钮
     @IBAction func goOver(sender:UIButton){
       self.Over()
         }
@@ -257,7 +258,7 @@ func showAct(){
             })
             }
     }
-    
+    //重置的按钮
     @IBAction func reset(sender:UIButton){
         let resetAlertView = UIAlertController(title: nil, message: "确定重置吗", preferredStyle: UIAlertControllerStyle.Alert)
         let resetAction = UIAlertAction(title: "确定", style: UIAlertActionStyle.Default) { (UIAlertAction) in
@@ -276,6 +277,7 @@ func showAct(){
      
         self.presentViewController(resetAlertView, animated: true, completion: nil)
     }
+    //添加新题目的按钮
     func addNewQus(sender:UISwipeGestureRecognizer){
         let temp = index
     if sender.direction == .Left{
@@ -323,7 +325,7 @@ func showAct(){
          self.initView()
         }
          }
-
+//初始化视图的动作
     func initView() {
     self.kindOfQuesLabel?.text = self.totalItems[kindOfQusIndex].valueForKey("title") as! String + "(" + "\(self.items[index].valueForKey("totalscore") as! NSNumber)" + "分/题)"
         self.currentQus?.text = "\(index + 1)" + "/" + "\(self.items.count)"
@@ -341,6 +343,7 @@ func showAct(){
                 }
             }
     }
+    //点击来改变答案
     func tap(sender:NSNotification){
         let cell = sender.object as! ChoiceTableViewCell
              self.answers.replaceObjectAtIndex(index, withObject: self.tempArray[cell.Custag].uppercaseString)
@@ -381,6 +384,7 @@ func showAct(){
         }
 
     }
+    //webView的一些代理
     func webViewDidStartLoad(webView: UIWebView) {
         webView.frame = CGRectMake(0, 0, SCREEN_WIDTH, 1)
       
@@ -429,7 +433,7 @@ func showAct(){
         }
         self.tableView?.reloadData()
         }
-    
+    //tableView的一些代理
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         return 1
     }
@@ -443,6 +447,7 @@ func showAct(){
             return 0
         }
     }
+    //刷新cell的高度
     func reloadCellHeight(sender:NSNotification){
         let cell = sender.object as! ChoiceTableViewCell
         if(self.cellHeight[cell.Custag] as! CGFloat != cell.cellHeight){
@@ -479,8 +484,8 @@ func showAct(){
             }
     return cell
     }
+    //点击图片的放大动作
     func gestureRecognizerShouldBegin(gestureRecognizer: UIGestureRecognizer) -> Bool {
-        
         return true
         
     }
@@ -491,7 +496,7 @@ func showAct(){
             return false
         }
     }
-    
+    //放大动作
     func webViewShowBig(sender:UITapGestureRecognizer){
     ShowBigImageFactory.showBigImage(self, webView: self.queDes, sender: sender)
     }
@@ -514,7 +519,7 @@ func showAct(){
             self.index += 1
         }
         else if(self.kindOfQusIndex == self.totalKindOfQus - 1){
-            ProgressHUD.showSuccess("已完成全部试题")
+           ProgressHUD.showSuccess("已完成全部试题")
         }
         else{
             

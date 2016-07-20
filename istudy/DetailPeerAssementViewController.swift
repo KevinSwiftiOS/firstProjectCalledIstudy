@@ -20,7 +20,7 @@ class DetailPeerAssementViewController: UIViewController,UITableViewDelegate,UIT
     var id = NSInteger()
     var count = 0
     var progress = Float()
-    //根据客户端和服务器传过来的值 看这条有没有评论过 现在是测试
+    //根据客户端和服务器传过来的值
       override func viewDidLoad() {
         self.automaticallyAdjustsScrollViewInsets = false
         super.viewDidLoad()
@@ -36,10 +36,11 @@ class DetailPeerAssementViewController: UIViewController,UITableViewDelegate,UIT
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
+    //tableView的代理
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         return 1
     }
-    //返回总共要评论的数量为多少个 暂时未5个
+ //头部的视图
     func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let view = UIView(frame: CGRectMake(0,5,SCREEN_WIDTH,37))
         let segmentController = AKSegmentedControl(frame: CGRectMake(10,5,SCREEN_WIDTH - 20, 37))
@@ -57,10 +58,11 @@ class DetailPeerAssementViewController: UIViewController,UITableViewDelegate,UIT
     func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         return 40
     }
+    //返回总共要评论的数量为多少个
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return self.items.count
     }
-    //头部的视图
+    
 
     //返回每个单元格的具体内容
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
@@ -101,12 +103,6 @@ if(self.items[indexPath.row].valueForKey("hupingtime") as? String != nil &&
         writePeerAssessmentVC.title = "评论"
        
         writePeerAssessmentVC.usertestid = self.items[sender.tag].valueForKey("usertestid") as! NSInteger
-//        writePeerAssessmentVC.callBack = {(index:NSInteger) -> Void in
-//            weak var wself = self
-//            wself!.isPeer[index] = 1
-//            wself!.collectionView?.reloadData()
-
-        //}
         
         self.navigationController?.pushViewController(writePeerAssessmentVC, animated: true)
     }

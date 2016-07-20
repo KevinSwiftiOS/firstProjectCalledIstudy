@@ -79,7 +79,7 @@ class TranslateViewController: UIViewController{
         if(sender.direction == .Right){
             if(self.kindOfQusIndex == 0){
                 
-                ProgressHUD.showError("开头")
+                ProgressHUD.showError("第一大题")
             }else{
                 
                 self.kindOfQusIndex -= 1
@@ -368,7 +368,7 @@ class TranslateViewController: UIViewController{
         if(sender.tag == 1){
             if(self.kindOfQusIndex == 0){
                 
-                ProgressHUD.showError("开头")
+                ProgressHUD.showError("第一大题")
             }else{
                 
                 self.kindOfQusIndex -= 1

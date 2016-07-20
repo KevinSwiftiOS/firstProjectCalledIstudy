@@ -10,6 +10,7 @@ import Alamofire
 import SwiftyJSON
 import Font_Awesome_Swift
 class JudgeQueViewController: UIViewController,UIWebViewDelegate,UITableViewDelegate,UITableViewDataSource,UIGestureRecognizerDelegate{
+    //和choiceQus基本上是一致的
     //有没有超过指定的日期
     var isOver = false
     var tap = UITapGestureRecognizer()
@@ -494,7 +495,7 @@ class JudgeQueViewController: UIViewController,UIWebViewDelegate,UITableViewDele
                 self.index += 1
             }
             else if(self.kindOfQusIndex == self.totalKindOfQus - 1){
-                ProgressHUD.showSuccess("已完成全部试题")
+           ProgressHUD.showSuccess("已完成全部试题")
             }
             else{
                 

@@ -87,9 +87,8 @@ class ComplexQusViewController: UIViewController,UITableViewDelegate,UITableView
         //设置左右的按钮
         leftBtn?.setFAText(prefixText: "", icon: FAType.FAArrowLeft, postfixText: "", size: 25, forState: .Normal)
         rightBtn?.setFAText(prefixText: "", icon: FAType.FAArrowRight, postfixText: "", size: 25, forState: .Normal)
-        self.tableView.keyboardDismissMode = .OnDrag
+      //  self.tableView.keyboardDismissMode = .OnDrag
         //顶部加条线
-        //设置阴影效果
         //设置阴影效果
         ShowBigImageFactory.topViewEDit(self.topView!)
         
@@ -285,6 +284,7 @@ class ComplexQusViewController: UIViewController,UITableViewDelegate,UITableView
     //每个subwebview的高度
     var subWebViewHeight:CGFloat = 0.0
     func initSubView() {
+        self.tableView.keyboardDismissMode = .OnDrag
         //初始化小题的内容
         switch self.subQusItems[subIndex].valueForKey("type") as! String {
         case "SINGLE_CHIOCE":
@@ -359,7 +359,7 @@ class ComplexQusViewController: UIViewController,UITableViewDelegate,UITableView
                 self.index += 1
             }
             else if(self.kindOfQusIndex == self.totalKindOfQus - 1){
-                ProgressHUD.showSuccess("已完成全部试题")
+               ProgressHUD.showSuccess("已完成全部试题")
             }
             else{
                 let vc = UIStoryboard(name: "Problem", bundle: nil)
@@ -414,7 +414,7 @@ class ComplexQusViewController: UIViewController,UITableViewDelegate,UITableView
                     self.index += 1
                 }
                 else if(self.kindOfQusIndex == self.totalKindOfQus - 1){
-                    ProgressHUD.showSuccess("已完成全部试题")
+                 ProgressHUD.showSuccess("已完成全部试题")
                 }
                 else{
                     let vc = UIStoryboard(name: "Problem", bundle: nil)
@@ -479,6 +479,7 @@ class ComplexQusViewController: UIViewController,UITableViewDelegate,UITableView
         }
         
     }
+    //webView的代理 等webView代理完成才进行tableView的刷新
     func webViewDidStartLoad(webView: UIWebView) {
         webView.frame = CGRectMake(0, 0, SCREEN_WIDTH, 1)
     }
@@ -529,6 +530,7 @@ class ComplexQusViewController: UIViewController,UITableViewDelegate,UITableView
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return cellHeights.count
     }
+    //cell要进行不同的判断 填空题时就加载textField 选择题时就加载webView
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         
         //进行拆分每道题目的答案
@@ -636,6 +638,7 @@ class ComplexQusViewController: UIViewController,UITableViewDelegate,UITableView
     func tap(sender:NSNotification){
         //判断是多选题还是单选题 来进行不同的组装即可
         //如果是单选题的话
+        //要看有没有按下保存键
         beforeEditing = self.oneQusSubSelfAnswers[subIndex] as! String
         let cell = sender.object as! ComplexChoiceTableViewCell
         if(self.subQusItems[subIndex].valueForKey("type") as! String != "MULIT_CHIOCE"){
@@ -764,11 +767,11 @@ class ComplexQusViewController: UIViewController,UITableViewDelegate,UITableView
         if(self.cellHeights[cell.Custag] as! CGFloat != cell.cellHeight){
             //   var frame = self.tableView.frame
             
-            self.subTableViewToTop.constant = -100
+        //    self.subTableViewToTop.constant = -100
             if(cell.Custag == self.cellHeights.count - 1){
-                self.subTableViewToTop.constant = 3
-                let y = 64 + 21 + 4 + SCREEN_HEIGHT * 0.4 + 21 + 5 + 21 + 21
-                self.tableView.frame = CGRectMake(0, y, SCREEN_WIDTH, SCREEN_HEIGHT - 40 - y)
+                self.subTableViewToTop.constant = 0
+//                let y = 64 + 21 + 4 + SCREEN_HEIGHT * 0.4 + 21 + 5 + 21 + 21
+//                self.tableView.frame = CGRectMake(0, y, SCREEN_WIDTH, SCREEN_HEIGHT - 40 - y)
                     //是否已经阅过卷
                 if(!isOver){
                     if(self.disPlayMarkTextArray[subIndex] as! String != ""){
@@ -812,15 +815,16 @@ class ComplexQusViewController: UIViewController,UITableViewDelegate,UITableView
             totalTableViewHeight += CGFloat(self.cellHeights[i] as! NSNumber)
         }
         
-        //和填空题相同的方法来做
-        
-        //    let rect = XKeyBoard.returnKeyBoardWindow(notifacition)
-        //  let total = rect.height + totalTableViewHeight + 3
+        let rect = XKeyBoard.returnKeyBoardWindow(notifacition)
+            //记录tablView总共的高度
+    
+        for i in 0 ..< self.cellHeights.count{
+            totalTableViewHeight += CGFloat(self.cellHeights[i] as! NSNumber)
+        }
         UIView.animateWithDuration(0.3) {
-            self.tableView.frame = CGRectMake(0, 64, SCREEN_WIDTH, SCREEN_HEIGHT * 0.6 - 64 - 42 - 4 )
-           self.subTableViewToTop.constant = -1 * (SCREEN_HEIGHT * 0.4 + 21)
+         self.subTableViewToTop.constant = -(SCREEN_HEIGHT * 0.4) - 42
             self.view.bringSubviewToFront(self.tableView)
-            self.view.setNeedsLayout()
+            self.view.bringSubviewToFront(self.subTopView!)
         }
     }
     //键盘出现的时候的代理
@@ -831,12 +835,14 @@ class ComplexQusViewController: UIViewController,UITableViewDelegate,UITableView
         self.qusDesWebView?.addGestureRecognizer(leftSwipe)
         self.qusDesWebView?.addGestureRecognizer(rightSwipe)
         UIView.animateWithDuration(0.3) {
-            self.subTableViewToTop.constant = 3
+            self.subTableViewToTop.constant = 0
+            
             self.view.setNeedsLayout()
             
         }
         
     }
+    //消失键盘的代理
     func resign() {
         for i in 0 ..< self.cellHeights.count{
             let cell = self.tableView.cellForRowAtIndexPath(NSIndexPath(forRow: i, inSection: 0)) as? ComplexCompletionTableViewCell
@@ -862,6 +868,7 @@ class ComplexQusViewController: UIViewController,UITableViewDelegate,UITableView
         
         //拼装答案
     }
+    //重置的按钮
     @IBAction func reset(sender:UIButton){
         let resetAlertView = UIAlertController(title: nil, message: "确定重置吗", preferredStyle: UIAlertControllerStyle.Alert)
         let resetAction = UIAlertAction(title: "确定", style: UIAlertActionStyle.Default) { (UIAlertAction) in
@@ -882,6 +889,7 @@ class ComplexQusViewController: UIViewController,UITableViewDelegate,UITableView
         
         self.presentViewController(resetAlertView, animated: true, completion: nil)
     }
+    //阅卷
     @IBAction func goOver(sender:UIButton){
        // 没有超过指定日期且没有开放阅卷功能的
         if(!self.isOver && !self.enableClientJudge){
@@ -1107,12 +1115,14 @@ class ComplexQusViewController: UIViewController,UITableViewDelegate,UITableView
     func webViewShowBig(sender:UITapGestureRecognizer){
        ShowBigImageFactory.showBigImage(self, webView: self.qusDesWebView!, sender: sender)
     }
+    //图片放大的动作
       func showImage(sender:NSNotification){
         let cell = sender.object as! ComplexChoiceTableViewCell
         let vc = UIStoryboard(name: "Problem", bundle: nil).instantiateViewControllerWithIdentifier("showBigVC") as! ImageShowBigViewController
          vc.url = cell.url
     self.navigationController?.pushViewController(vc, animated: true)
    }
+    //底部按钮的左右滑动
     func changeIndex(sender:UIButton){
         //阅卷的问题
         
@@ -1126,7 +1136,7 @@ class ComplexQusViewController: UIViewController,UITableViewDelegate,UITableView
                     self.index += 1
                 }
                 else if(self.kindOfQusIndex == self.totalKindOfQus - 1){
-                    ProgressHUD.showSuccess("已完成全部试题")
+                   ProgressHUD.showSuccess("已完成全部试题")
                 }
                 else{
                     let vc = UIStoryboard(name: "Problem", bundle: nil)
@@ -1191,18 +1201,18 @@ class ComplexQusViewController: UIViewController,UITableViewDelegate,UITableView
         }
 }
     //底部的tableView出现时候的动画
-    func tableView(tableView: UITableView, willDisplayCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {
-        //判断小题的类型
-        if(self.subQusItems[subIndex].valueForKey("type") as! String == "FILL_BLANK"){
-//        cell.layer.transform = CATransform3DMakeScale(0.1, 0.1, 1.0)
-//        UIView.animateWithDuration(0.8) {
-//            cell.layer.transform = CATransform3DMakeScale(1, 1, 1)
-//        }
-//
-            cell.contentView.alpha = 0
-            UIView.animateWithDuration(0.8, animations: {
-                cell.contentView.alpha = 1
-            })
-    }
-    }
+//    func tableView(tableView: UITableView, willDisplayCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {
+//        //判断小题的类型
+//        if(self.subQusItems[subIndex].valueForKey("type") as! String == "FILL_BLANK"){
+////        cell.layer.transform = CATransform3DMakeScale(0.1, 0.1, 1.0)
+////        UIView.animateWithDuration(0.8) {
+////            cell.layer.transform = CATransform3DMakeScale(1, 1, 1)
+////        }
+////
+//            cell.contentView.alpha = 0
+//            UIView.animateWithDuration(0.8, animations: {
+//                cell.contentView.alpha = 1
+//            })
+//    }
+//    }
 }

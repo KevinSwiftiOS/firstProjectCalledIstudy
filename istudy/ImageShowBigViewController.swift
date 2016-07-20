@@ -16,6 +16,7 @@ class ImageShowBigViewController: UIViewController,UIScrollViewDelegate {
         super.viewDidLoad()
         self.title = "预览图"
      ProgressHUD.show("请稍候")
+        //图片放大的动作
         self.view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(ImageShowBigViewController.back)))
       imageView.sd_setImageWithURL(NSURL(string: url)) { (_,_, _, _) in
         
@@ -33,7 +34,7 @@ class ImageShowBigViewController: UIViewController,UIScrollViewDelegate {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-    
+    //图片的放大
     func viewForZoomingInScrollView(scrollView: UIScrollView) -> UIView? {
         return self.imageView
     }

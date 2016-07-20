@@ -41,7 +41,7 @@ class WriteTopicsViewController: UIViewController,UICollectionViewDelegate,UICol
         self.collectionView?.layer.borderWidth = 0.3
         self.collectionView?.layer.borderColor = UIColor.grayColor().CGColor
     }
-    
+    //键盘的消失
     @IBAction func resign(sender: UIControl) {
         self.writeTextView.resignFirstResponder()
         self.titleTextField.resignFirstResponder()
@@ -97,7 +97,7 @@ class WriteTopicsViewController: UIViewController,UICollectionViewDelegate,UICol
         let encodeString = data?.base64EncodedStringWithOptions(NSDataBase64EncodingOptions.Encoding64CharacterLineLength)
         return encodeString!
     }
-    //发送的响应
+    //发出一个帖子后进行刷新列表
     @IBAction func send(sender:UIButton){
         let userDefault = NSUserDefaults.standardUserDefaults()
         let authtoken = userDefault.valueForKey("authtoken") as!  String
@@ -154,6 +154,7 @@ class WriteTopicsViewController: UIViewController,UICollectionViewDelegate,UICol
             }
         }
     }
+    //collectionView中的一些代理
     func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
         return 1
     }
@@ -178,6 +179,7 @@ class WriteTopicsViewController: UIViewController,UICollectionViewDelegate,UICol
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAtIndex section: Int) -> CGFloat {
         return 5.0
     }
+    //collectionView中图片的放大
     func collectionsPhotosShowBig(sender:UIButton){
         let previewPhotoVC = UIStoryboard(name: "Problem", bundle: nil).instantiateViewControllerWithIdentifier("previewPhotoVC") as! previewPhotoViewController
         previewPhotoVC.toShowBigImageArray = self.photos
@@ -219,10 +221,8 @@ class WriteTopicsViewController: UIViewController,UICollectionViewDelegate,UICol
         picker.dismissViewControllerAnimated(true, completion: nil)
         
     }
-    //当选择好相册后
+    //当选择好相册后 跟新collectionView
     func photoPicker(picker: AJPhotoPickerViewController!, didSelectAssets assets: [AnyObject]!) {
-        
-        
         for i in 0 ..< assets.count {
             let asset = assets[i]
             let tempImage = UIImage(CGImage: asset.defaultRepresentation().fullScreenImage().takeUnretainedValue())

@@ -14,6 +14,7 @@ class PeerAssessmentViewController: UIViewController ,UITableViewDataSource,UITa
     @IBOutlet weak var tableView:UITableView?
     var items = NSArray()
     var id = NSInteger()
+    //互评列表的代理
     override func viewDidLoad() {
         super.viewDidLoad()
         self.tableView?.delegate = self
@@ -25,6 +26,7 @@ class PeerAssessmentViewController: UIViewController ,UITableViewDataSource,UITa
         // Do any additional setup after loading the view.
         self.tableView?.emptyDataSetDelegate = self
     }
+    //当列表为空的时候的下拉刷新
     func emptyDataSetShouldAllowScroll(scrollView: UIScrollView!) -> Bool {
         return true
     }
@@ -36,7 +38,7 @@ class PeerAssessmentViewController: UIViewController ,UITableViewDataSource,UITa
         return 1
         
     }
-    //头部视图
+    //头部视图 tableView的代理
     func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let view = UIView(frame: CGRectMake(0,5,SCREEN_WIDTH,37))
         let segmentController = AKSegmentedControl(frame: CGRectMake(10,5,SCREEN_WIDTH - 20, 37))
@@ -114,9 +116,9 @@ class PeerAssessmentViewController: UIViewController ,UITableViewDataSource,UITa
         self.navigationController?.pushViewController(detailPeerAssementVC, animated: true)
         //把id也得传过去
         detailPeerAssementVC.id = self.items[sender.tag].valueForKey("testid") as! NSInteger
-        detailPeerAssementVC.progress = self.items[sender.tag].valueForKey("progress") as! Float
         detailPeerAssementVC.titleString = self.items[sender.tag].valueForKey("title") as! String
         }
+    //头部的刷新
     func headerRefresh() {
         let userDefault = NSUserDefaults.standardUserDefaults()
         let dic:[String:AnyObject] = ["authtoken":userDefault.valueForKey("authtoken") as! String,

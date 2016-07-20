@@ -40,7 +40,7 @@ class DetailTopicViewController: UIViewController,UIWebViewDelegate,UIGestureRec
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-    
+    //跳转到回复列表的界面
     @IBAction func replyTopic(sender:UIButton){
         let replyTopicVC = UIStoryboard(name: "Discuss", bundle: nil).instantiateViewControllerWithIdentifier("ReplyTopicVC") as! ReplyTopicViewController
         replyTopicVC.title = "回复"
@@ -48,6 +48,7 @@ class DetailTopicViewController: UIViewController,UIWebViewDelegate,UIGestureRec
         replyTopicVC.projectid = self.projectid
         self.navigationController?.pushViewController(replyTopicVC, animated: true)
     }
+    //webView的加载
     func webViewDidStartLoad(webView: UIWebView) {
         ProgressHUD.show("请稍候")
         let frame = CGRectMake(0, 0, SCREEN_WIDTH, 2)
@@ -71,6 +72,7 @@ class DetailTopicViewController: UIViewController,UIWebViewDelegate,UIGestureRec
         scrollView.showsVerticalScrollIndicator = false
         
     }
+    //手势图片的放大
     func gestureRecognizerShouldBegin(gestureRecognizer: UIGestureRecognizer) -> Bool {
         
         return true
@@ -83,10 +85,12 @@ class DetailTopicViewController: UIViewController,UIWebViewDelegate,UIGestureRec
             return false
         }
     }
+    
     override func viewWillDisappear(animated: Bool) {
         ProgressHUD.dismiss()
         // self.view.bringSubviewToFront(self.replyBtn)
     }
+    //图片的放大
     func showBig(sender:UITapGestureRecognizer){
         
         ShowBigImageFactory.showBigImage(self, webView: webView!, sender: sender)

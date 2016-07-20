@@ -1537,6 +1537,9 @@
                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                             <nil key="highlightedColor"/>
+                                            <variation key="heightClass=regular-widthClass=compact" misplaced="YES">
+                                                <rect key="frame" x="0.0" y="0.0" width="240" height="50"/>
+                                            </variation>
                                         </label>
                                     </subviews>
                                     <constraints>
@@ -1787,10 +1790,6 @@
                                     </mask>
                                 </variation>
                             </view>
-                            <webView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Dwi-La-JDF">
-                                <rect key="frame" x="0.0" y="0.0" width="240" height="128"/>
-                                <color key="backgroundColor" red="0.36078431370000003" green="0.38823529410000002" blue="0.4039215686" alpha="1" colorSpace="deviceRGB"/>
-                            </webView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="wOB-lo-tac">
                                 <rect key="frame" x="0.0" y="0.0" width="240" height="128"/>
                                 <subviews>
@@ -2024,12 +2023,18 @@
                                     </tableViewCell>
                                 </prototypes>
                             </tableView>
+                            <webView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Dwi-La-JDF">
+                                <rect key="frame" x="0.0" y="0.0" width="240" height="128"/>
+                                <color key="backgroundColor" red="0.36078431370000003" green="0.38823529410000002" blue="0.4039215686" alpha="1" colorSpace="deviceRGB"/>
+                            </webView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="avC-ye-Wl9" firstAttribute="leading" secondItem="XOG-qp-dT6" secondAttribute="leading" id="5A6-Hi-BCz"/>
                             <constraint firstItem="Q7Y-VR-5qC" firstAttribute="leading" secondItem="XOG-qp-dT6" secondAttribute="leading" id="6Xb-VV-PHf"/>
-                            <constraint firstItem="wOB-lo-tac" firstAttribute="top" secondItem="Dwi-La-JDF" secondAttribute="bottom" constant="3" id="CU3-eb-tau"/>
+                            <constraint firstItem="wOB-lo-tac" firstAttribute="top" secondItem="Dwi-La-JDF" secondAttribute="bottom" constant="-10" id="CU3-eb-tau">
+                                <variation key="heightClass=regular-widthClass=compact" constant="5"/>
+                            </constraint>
                             <constraint firstItem="wOB-lo-tac" firstAttribute="leading" secondItem="XOG-qp-dT6" secondAttribute="leading" id="FNP-nS-VdZ"/>
                             <constraint firstItem="Dwi-La-JDF" firstAttribute="width" secondItem="XOG-qp-dT6" secondAttribute="width" id="HtX-A0-pnR"/>
                             <constraint firstAttribute="trailing" secondItem="avC-ye-Wl9" secondAttribute="trailing" id="I6z-5b-SP9"/>
@@ -2042,16 +2047,16 @@
                             <constraint firstItem="Dwi-La-JDF" firstAttribute="leading" secondItem="XOG-qp-dT6" secondAttribute="leading" id="hTT-y7-IRc"/>
                             <constraint firstItem="avC-ye-Wl9" firstAttribute="top" secondItem="Q7Y-VR-5qC" secondAttribute="bottom" constant="8" symbolic="YES" id="lzo-hL-aVT"/>
                             <constraint firstItem="Dwi-La-JDF" firstAttribute="top" secondItem="ojr-2m-tXz" secondAttribute="bottom" constant="-2" id="u6b-CM-rh0"/>
-                            <constraint firstItem="Dwi-La-JDF" firstAttribute="height" secondItem="XOG-qp-dT6" secondAttribute="height" multiplier="0.4" id="vui-lg-plQ"/>
+                            <constraint firstItem="Dwi-La-JDF" firstAttribute="height" secondItem="XOG-qp-dT6" secondAttribute="height" multiplier="0.35" id="vui-lg-plQ"/>
                             <constraint firstAttribute="trailing" secondItem="Q7Y-VR-5qC" secondAttribute="trailing" id="xMX-Oq-D9M"/>
                         </constraints>
                         <variation key="default">
                             <mask key="subviews">
                                 <exclude reference="ojr-2m-tXz"/>
-                                <exclude reference="Dwi-La-JDF"/>
                                 <exclude reference="wOB-lo-tac"/>
                                 <exclude reference="avC-ye-Wl9"/>
                                 <exclude reference="Q7Y-VR-5qC"/>
+                                <exclude reference="Dwi-La-JDF"/>
                             </mask>
                             <mask key="constraints">
                                 <exclude reference="Uy0-rb-JMx"/>
@@ -2076,10 +2081,10 @@
                         <variation key="heightClass=regular-widthClass=compact">
                             <mask key="subviews">
                                 <include reference="ojr-2m-tXz"/>
-                                <include reference="Dwi-La-JDF"/>
                                 <include reference="wOB-lo-tac"/>
                                 <include reference="avC-ye-Wl9"/>
                                 <include reference="Q7Y-VR-5qC"/>
+                                <include reference="Dwi-La-JDF"/>
                             </mask>
                             <mask key="constraints">
                                 <include reference="Uy0-rb-JMx"/>

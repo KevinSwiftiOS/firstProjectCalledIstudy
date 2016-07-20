@@ -70,7 +70,7 @@ class AchViewController: UIViewController,UICollectionViewDelegate,UICollectionV
         let everyQusArray = self.totalItems[section].valueForKey("questions") as! NSArray
         return everyQusArray.count
     }
-    
+    //每个点击后进行跳转的界面
     func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
     let type = self.totalItems[indexPath.section].valueForKey("type") as! String
             switch type{

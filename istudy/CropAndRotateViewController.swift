@@ -10,6 +10,7 @@ import UIKit
 typealias pushBack = (image:UIImage) -> Void
 class CropAndRotateViewController: UIViewController {
     var image = UIImage()
+    //进行裁剪和缩放的图片
     var callBack:pushBack?
     @IBOutlet weak var saveBtn:UIButton!
     @IBOutlet weak var resetBtn:UIButton!

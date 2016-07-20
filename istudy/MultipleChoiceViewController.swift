@@ -140,6 +140,7 @@ class MultipleChoiceViewController: UIViewController,UIWebViewDelegate,UITableVi
         print("MutilyDeinit")
          NSNotificationCenter.defaultCenter().removeObserver(self)
     }
+    //到作业列表的跳转
     func actShow() {
         let vc = UIStoryboard(name: "Problem", bundle: nil).instantiateViewControllerWithIdentifier("AchVC") as! AchViewController
         vc.title = self.title
@@ -179,6 +180,7 @@ class MultipleChoiceViewController: UIViewController,UIWebViewDelegate,UITableVi
         
 
         }
+    //加载新的题目
     func addNewQus(sender:UISwipeGestureRecognizer){
         
         let temp = index
@@ -187,7 +189,7 @@ class MultipleChoiceViewController: UIViewController,UIWebViewDelegate,UITableVi
                 self.index += 1
             }
             else if(self.kindOfQusIndex == self.totalKindOfQus - 1){
-                ProgressHUD.showSuccess("题目已完成")
+            ProgressHUD.showSuccess("已完成全部试题")
             }else{
                 let vc = UIStoryboard(name: "Problem", bundle: nil)
                     .instantiateViewControllerWithIdentifier("TranslateVC") as!
@@ -261,6 +263,7 @@ class MultipleChoiceViewController: UIViewController,UIWebViewDelegate,UITableVi
        self.displayMarkingArray.replaceObjectAtIndex(index, withObject: 1)
         self.postAnswer()
        }
+    //阅卷的动作 会在两部分中用到 一个是一件阅过卷的 还有一个是阅过卷 跳转回来的
       func Over() {
         //没有超过指定的日期且没有开启阅卷功能
         if(!self.isOver && !self.enableClientJudge){
@@ -435,6 +438,7 @@ class MultipleChoiceViewController: UIViewController,UIWebViewDelegate,UITableVi
       self.totalAnswers[index] = tempString
        self.tableView?.reloadData()
     }
+    //webView的代理 等webView加载结束后 进行页面的加载
     func webViewDidStartLoad(webView: UIWebView) {
         webView.frame = CGRectMake(0, 0, SCREEN_WIDTH, 1)
     }
@@ -485,7 +489,7 @@ class MultipleChoiceViewController: UIViewController,UIWebViewDelegate,UITableVi
         }
         self.tableView?.reloadData()
     }
-
+//tableView的一些代理
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         return 1
     }
@@ -500,6 +504,7 @@ class MultipleChoiceViewController: UIViewController,UIWebViewDelegate,UITableVi
         }
         
     }
+    //等tableViewCell加载完全以后 更新cell的高度
     func reloadCellHeight(sender:NSNotification){
         let cell = sender.object as! ChoiceTableViewCell
         if(self.cellHeights[cell.Custag] as! CGFloat != cell.cellHeight){
@@ -507,6 +512,7 @@ class MultipleChoiceViewController: UIViewController,UIWebViewDelegate,UITableVi
             self.tableView?.reloadData()
         }
     }
+    //每一个cell的内容
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         
         let cell = ChoiceTableViewCell(style: .Default, reuseIdentifier: "ChoiceTableViewCell")
@@ -535,6 +541,7 @@ class MultipleChoiceViewController: UIViewController,UIWebViewDelegate,UITableVi
         }
         return cell
     }
+    //手势添加放大和缩小
     func gestureRecognizerShouldBegin(gestureRecognizer: UIGestureRecognizer) -> Bool {
         
         return true
@@ -551,6 +558,7 @@ class MultipleChoiceViewController: UIViewController,UIWebViewDelegate,UITableVi
     func webViewShowBig(sender:UITapGestureRecognizer){
   ShowBigImageFactory.showBigImage(self, webView: self.qusDesWebView, sender: sender)
     }
+    //cell里面的showImage
     func showImage(sender:NSNotification){
         let cell = sender.object as! ChoiceTableViewCell
         
@@ -561,7 +569,7 @@ class MultipleChoiceViewController: UIViewController,UIWebViewDelegate,UITableVi
     override func viewWillDisappear(animated: Bool) {
         ProgressHUD.dismiss()
     }
-    //左右的滑动
+    //按钮左右的滑动
     func changeIndex(sender:UIButton){
         let temp = index
         if sender.tag == 2{
@@ -569,7 +577,7 @@ class MultipleChoiceViewController: UIViewController,UIWebViewDelegate,UITableVi
                 self.index += 1
             }
             else if(self.kindOfQusIndex == self.totalKindOfQus - 1){
-                ProgressHUD.showSuccess("题目已完成")
+              ProgressHUD.showSuccess("已完成全部试题")
             }else{
                 let vc = UIStoryboard(name: "Problem", bundle: nil)
                     .instantiateViewControllerWithIdentifier("TranslateVC") as!
