@@ -11,7 +11,7 @@ import Foundation
 import Alamofire
 import SwiftyJSON
 class LoginViewController: UIViewController {
-   
+    
     @IBOutlet weak var textFieldToBtn: NSLayoutConstraint!
     @IBOutlet weak var topLayout: NSLayoutConstraint!
     @IBOutlet weak var userName:UITextField?
@@ -23,14 +23,14 @@ class LoginViewController: UIViewController {
         super.viewDidLoad()
         loginBtn?.layer.cornerRadius = 6.0
        loginBtn?.layer.masksToBounds = true
-   //键盘出现时的挡住问题
+       //键盘出现时的挡住问题
         XKeyBoard.registerKeyBoardHide(self)
         XKeyBoard.registerKeyBoardShow(self)
         //设置button的下划线
-        //设置前景色
+        //设置前景色 设置navigation的颜色
         self.navigationController?.navigationBar.barTintColor = RGB(0, g: 153, b: 255)
         self.navigationController?.navigationBar.tintColor = UIColor.blackColor()
-
+     //设置按钮的下划线颜色
         let str1 = NSMutableAttributedString(string: (self.forgetPasswordBtn?.titleLabel?.text)!)
         let range1 = NSRange(location: 0, length: str1.length)
         let number = NSNumber(integer: NSUnderlineStyle.StyleSingle.rawValue)
@@ -44,11 +44,12 @@ class LoginViewController: UIViewController {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-    
+    //点背景后按钮消失
     @IBAction func keyBoardHide(sender: UIControl) {
         self.userName?.resignFirstResponder()
         self.passWord?.resignFirstResponder()
     }
+    //登录发送请求后 保存下来 用小型数据库userDefault
     @IBAction func login(sender:UIButton){
         self.userName?.resignFirstResponder()
         self.passWord?.resignFirstResponder()

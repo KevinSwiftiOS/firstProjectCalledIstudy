@@ -84,7 +84,7 @@ import SwiftyJSON
         // Dispose of any resources that can be recreated.
     }
     
-
+//选择好以后进行添加
     @IBAction func selectPerson(sender:UIButton){
         //var tempString = "收件人"
         let contactPersonVC = UIStoryboard(name: "StationLetter", bundle: nil).instantiateViewControllerWithIdentifier("ContactPersonVC") as! ContactPersonViewController
@@ -111,6 +111,7 @@ import SwiftyJSON
         
       self.navigationController?.pushViewController(contactPersonVC, animated: true)
     }
+    //看联系人 联系人的组装
     func showmoreReceivedPerson(sender:UIButton){
         //进行组合并且看有没有发件人
         sendNamesString = ""
@@ -257,6 +258,7 @@ Alamofire.request(.POST, "http://dodo.hznu.edu.cn/api/messagesend", parameters: 
     func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
         return 1
     }
+    //图片选择的代理
     func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return self.photos.count
     }

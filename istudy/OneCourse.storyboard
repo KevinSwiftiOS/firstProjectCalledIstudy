@@ -3,7 +3,6 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
-        <capability name="Alignment constraints with different attributes" minToolsVersion="5.1"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
     </dependencies>
@@ -85,10 +84,14 @@
                                                 <constraint firstAttribute="trailing" secondItem="en4-TY-r4n" secondAttribute="trailing" id="BsL-0l-eZB"/>
                                                 <constraint firstItem="keB-9O-jnT" firstAttribute="height" secondItem="en4-TY-r4n" secondAttribute="height" id="Mzm-Rl-wHd"/>
                                                 <constraint firstItem="keB-9O-jnT" firstAttribute="width" secondItem="en4-TY-r4n" secondAttribute="width" id="N4T-qS-3cr"/>
-                                                <constraint firstItem="vp3-b2-PB9" firstAttribute="top" secondItem="5BX-5N-oOQ" secondAttribute="topMargin" constant="5" id="hZe-lb-4ry"/>
-                                                <constraint firstItem="vp3-b2-PB9" firstAttribute="leading" secondItem="5BX-5N-oOQ" secondAttribute="leadingMargin" constant="8" id="jJP-Z6-ieh"/>
+                                                <constraint firstItem="vp3-b2-PB9" firstAttribute="top" secondItem="5BX-5N-oOQ" secondAttribute="topMargin" constant="5" id="hZe-lb-4ry">
+                                                    <variation key="heightClass=regular-widthClass=compact" constant="5"/>
+                                                </constraint>
+                                                <constraint firstItem="vp3-b2-PB9" firstAttribute="leading" secondItem="5BX-5N-oOQ" secondAttribute="leadingMargin" id="jJP-Z6-ieh"/>
                                                 <constraint firstAttribute="trailing" secondItem="keB-9O-jnT" secondAttribute="trailing" id="mcs-Qa-vr1"/>
-                                                <constraint firstItem="en4-TY-r4n" firstAttribute="top" secondItem="5BX-5N-oOQ" secondAttribute="top" constant="5" id="o7w-eu-Tlw"/>
+                                                <constraint firstItem="en4-TY-r4n" firstAttribute="top" secondItem="5BX-5N-oOQ" secondAttribute="top" constant="5" id="o7w-eu-Tlw">
+                                                    <variation key="heightClass=regular-widthClass=compact" constant="10"/>
+                                                </constraint>
                                                 <constraint firstItem="en4-TY-r4n" firstAttribute="leading" secondItem="vp3-b2-PB9" secondAttribute="trailing" constant="3" id="sga-Y7-1KB"/>
                                             </constraints>
                                             <variation key="default">
@@ -214,7 +217,8 @@
                                                             <exclude reference="8Rn-Jw-D7F"/>
                                                         </mask>
                                                     </variation>
-                                                    <variation key="heightClass=regular-widthClass=compact">
+                                                    <variation key="heightClass=regular-widthClass=compact" misplaced="YES">
+                                                        <rect key="frame" x="15" y="8" width="174" height="21"/>
                                                         <mask key="constraints">
                                                             <include reference="8Rn-Jw-D7F"/>
                                                         </mask>
@@ -225,18 +229,27 @@
                                                     <color key="backgroundColor" red="0.2901960784" green="0.6705882353" blue="0.96862745100000003" alpha="1" colorSpace="calibratedRGB"/>
                                                     <color key="tintColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                                     <state key="normal" title="答题"/>
+                                                    <variation key="heightClass=regular-widthClass=compact" misplaced="YES">
+                                                        <rect key="frame" x="189" y="5" width="36" height="68"/>
+                                                    </variation>
                                                 </button>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="S8a-Gf-sY8">
                                                     <rect key="frame" x="-42" y="-21" width="42" height="21"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
+                                                    <variation key="heightClass=regular-widthClass=compact" misplaced="YES">
+                                                        <rect key="frame" x="15" y="36" width="174" height="47"/>
+                                                    </variation>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YqW-HX-Bxt">
                                                     <rect key="frame" x="-42" y="-21" width="42" height="21"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
+                                                    <variation key="heightClass=regular-widthClass=compact" misplaced="YES">
+                                                        <rect key="frame" x="137" y="36" width="52" height="47"/>
+                                                    </variation>
                                                 </label>
                                             </subviews>
                                             <constraints>
@@ -399,7 +412,8 @@
                                                             <exclude reference="l54-I8-pwW"/>
                                                         </mask>
                                                     </variation>
-                                                    <variation key="heightClass=regular-widthClass=compact">
+                                                    <variation key="heightClass=regular-widthClass=compact" misplaced="YES">
+                                                        <rect key="frame" x="5" y="5" width="180" height="21"/>
                                                         <mask key="constraints">
                                                             <include reference="l54-I8-pwW"/>
                                                         </mask>
@@ -418,7 +432,8 @@
                                                             <exclude reference="ssR-qp-at7"/>
                                                         </mask>
                                                     </variation>
-                                                    <variation key="heightClass=regular-widthClass=compact">
+                                                    <variation key="heightClass=regular-widthClass=compact" misplaced="YES">
+                                                        <rect key="frame" x="5" y="31" width="180" height="21"/>
                                                         <mask key="constraints">
                                                             <include reference="ssR-qp-at7"/>
                                                         </mask>
@@ -437,7 +452,8 @@
                                                             <exclude reference="cTZ-e3-yxR"/>
                                                         </mask>
                                                     </variation>
-                                                    <variation key="heightClass=regular-widthClass=compact">
+                                                    <variation key="heightClass=regular-widthClass=compact" misplaced="YES">
+                                                        <rect key="frame" x="5" y="57" width="180" height="21"/>
                                                         <mask key="constraints">
                                                             <include reference="cTZ-e3-yxR"/>
                                                         </mask>
@@ -457,7 +473,8 @@
                                                             <exclude reference="XWc-DL-sBy"/>
                                                         </mask>
                                                     </variation>
-                                                    <variation key="heightClass=regular-widthClass=compact">
+                                                    <variation key="heightClass=regular-widthClass=compact" misplaced="YES">
+                                                        <rect key="frame" x="193" y="5" width="39" height="67"/>
                                                         <mask key="constraints">
                                                             <include reference="XWc-DL-sBy"/>
                                                         </mask>

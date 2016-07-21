@@ -27,6 +27,7 @@ class ChangeSexViewController: UIViewController {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
+    //选择男和选择女时候的不同
     func selectMan() {
         self.manBtn?.setImage(UIImage(named: "选择信件"), forState: .Normal)
         self.womanBtn?.setImage(UIImage(named: "未选择信件"), forState: .Normal)
@@ -37,6 +38,7 @@ class ChangeSexViewController: UIViewController {
         self.manBtn?.setImage(UIImage(named: "未选择信件"), forState: .Normal)
         self.selectedSex = 0
     }
+    //做保存的操作
     func save(sender:UIBarButtonItem){
         //做save的一些事情
         var sex = String()
@@ -49,6 +51,7 @@ class ChangeSexViewController: UIViewController {
         userDefault.setValue(sex, forKey: "gender")
         self.saveProfile()
             }
+    
     override func viewWillAppear(animated: Bool) {
         let userDefaults = NSUserDefaults.standardUserDefaults()
         if(userDefaults.valueForKey("gender") == nil || userDefaults.valueForKey("gender") as! String == "男"){
@@ -65,6 +68,7 @@ class ChangeSexViewController: UIViewController {
     override func viewWillDisappear(animated: Bool) {
         ProgressHUD.dismiss()
     }
+    //保存性别
     func saveProfile() {
         let userDefault = NSUserDefaults.standardUserDefaults()
         var email = ""

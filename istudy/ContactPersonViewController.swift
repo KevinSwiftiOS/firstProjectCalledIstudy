@@ -29,6 +29,7 @@ class ContactPersonViewController: UIViewController,UITableViewDelegate,UITableV
     var idArray = NSMutableArray()
     var nameArray = NSMutableArray()
     var callBack:push_selectedPersons?
+    //视图的加载
     override func viewDidLoad() {
         self.idArray.removeAllObjects()
         self.nameArray.removeAllObjects()
@@ -53,7 +54,7 @@ class ContactPersonViewController: UIViewController,UITableViewDelegate,UITableV
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-    //实现sectionView的视图
+    //实现sectionView的视图 也像注册headerView 一样进行
     func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let identifer = "tableHeader"
         var view = tableView.dequeueReusableHeaderFooterViewWithIdentifier(identifer)
@@ -104,7 +105,7 @@ class ContactPersonViewController: UIViewController,UITableViewDelegate,UITableV
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         return 60
     }
-
+//像qq一样打开
     func btnOpenList(sender:UIButton){
         if(self.selectArr[sender.tag] as! NSObject == 0){
             self.selectArr[sender.tag] = 1
@@ -129,6 +130,7 @@ class ContactPersonViewController: UIViewController,UITableViewDelegate,UITableV
             return 0
         }
     }
+    
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         //首先赋值每个组的联系人表
         self.contacterlistArray = self.items[indexPath.section].valueForKey("ContacterList") as! NSArray
@@ -160,7 +162,7 @@ class ContactPersonViewController: UIViewController,UITableViewDelegate,UITableV
         }
         return cell
     }
-    //全选这组的按钮
+    //全选这组的按钮 全选的按钮
     func selectedThisGroup(sender:UIButton){
         let trueTag = sender.tag - 100
         let tempArr = self.items[trueTag].valueForKey("ContacterList") as! NSArray

@@ -16,15 +16,14 @@ class SendIdentifyCodeViewController: UIViewController {
     @IBOutlet weak var timerLabel:UILabel?
     @IBOutlet weak var sendAgainBtn:UIButton?
     @IBOutlet weak var configBtn:UIButton?
-    
-    //计数器
+    //计数器 最多按三次
     var sendAgainCnt = 0
    var  isOutTime = false
     var timer = NSTimer()
     var currentTime = NSInteger()
     override func viewDidLoad() {
         super.viewDidLoad()
-        //加再发一次的按钮
+        //加再发一次的按钮 刚开始是隐藏的 随后当倒计时完成后 才出现
         sendAgainBtn?.addTarget(self, action: #selector(SendIdentifyCodeViewController.sendAgain(_:)), forControlEvents: .TouchUpInside)
         sendAgainBtn?.hidden = true
         configBtn?.layer.cornerRadius = 6.0
@@ -43,6 +42,7 @@ class SendIdentifyCodeViewController: UIViewController {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
+    //跟新时间 当NSTimer在倒计时的时候
     func updateTime(sender:NSTimer){
         if(self.currentTime > 0){
             self.currentTime -= 1
@@ -52,6 +52,7 @@ class SendIdentifyCodeViewController: UIViewController {
             self.timerLabel?.text = "0秒"
         }
     }
+    //验证码是否填写正确
     @IBAction func sureIdentifyCode(sender:UIButton){
         //停止计时器
         self.timer.invalidate()
@@ -86,6 +87,7 @@ class SendIdentifyCodeViewController: UIViewController {
     @IBAction func keyBoardHide(sender: UIControl) {
         self.identifyCode!.resignFirstResponder()
     }
+    //键盘的动画
     func keyboardWillHideNotification(notifacition:NSNotification) {
         UIView.animateWithDuration(0.3) { () -> Void in
             self.topLayout.constant = 123
@@ -107,6 +109,7 @@ class SendIdentifyCodeViewController: UIViewController {
     override func viewWillDisappear(animated: Bool) {
         ProgressHUD.dismiss()
     }
+    //最多重发三次 当三次后 就要提醒用户邮箱是否填写正确  返回上一个界面
     func sendAgain(sender:UIButton) {
     
         sendAgainCnt += 1

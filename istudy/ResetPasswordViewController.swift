@@ -29,6 +29,7 @@ class ResetPasswordViewController: UIViewController {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
+    //确认重置后 进行跳转到主界面
     @IBAction func sureToResetPassword(sender:UIButton){
         //确认两者输入的密码
         if(self.configPassWord?.text == self.newPassWord?.text){
@@ -59,10 +60,12 @@ class ResetPasswordViewController: UIViewController {
             ProgressHUD.showError("密码不相同")
         }
     }
+    //点击背景消失键盘
     @IBAction func keyBoardHide(sender: UIControl) {
         self.newPassWord!.resignFirstResponder()
         self.configPassWord?.resignFirstResponder()
     }
+    //键盘的动画
     func keyboardWillHideNotification(notifacition:NSNotification) {
         UIView.animateWithDuration(0.3) { () -> Void in
             self.topLayout.constant = 108

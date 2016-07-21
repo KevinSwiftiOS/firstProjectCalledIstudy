@@ -12,7 +12,7 @@ import SwiftyJSON
 import Font_Awesome_Swift
 import DZNEmptyDataSet
 class MyTestViewController: UIViewController,UITableViewDataSource,UITableViewDelegate,UISearchResultsUpdating,UISearchControllerDelegate,DZNEmptyDataSetSource,DZNEmptyDataSetDelegate{
-      //接受数据信息的数组
+      //接受数据信息的数组 搜索条的动作
     var sc = UISearchController(searchResultsController: nil)
     var testDataArray = NSArray()
     var trueArray = NSMutableArray()
@@ -54,6 +54,7 @@ self.testTableView?.emptyDataSetDelegate = self
             return self.testDataArray.count
         }
     }
+    //每个cell的内容
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier("testCell") as! testTableViewCell
         var trueItems = NSArray()
@@ -206,6 +207,7 @@ self.testTableView?.emptyDataSetDelegate = self
         arr.append(second)
         return arr
     }
+    //空时候的顶部视图
     func titleForEmptyDataSet(scrollView: UIScrollView!) -> NSAttributedString! {
         let string = "暂无考试信息"
         let dic = [NSFontAttributeName:UIFont.boldSystemFontOfSize(18.0),

@@ -9,6 +9,7 @@
 import UIKit
 import Alamofire
 import SwiftyJSON
+//更改密码的操作
 class SecuritySettingsViewController: UIViewController {
     @IBOutlet weak var labelTopLayout: NSLayoutConstraint!
     @IBOutlet weak var topLayout: NSLayoutConstraint!
@@ -32,7 +33,7 @@ class SecuritySettingsViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
-//完成密码确认后
+//完成密码确认后 要判断密码和原先填的是否正确
      func save(sender:UIButton){
         let userDefault = NSUserDefaults.standardUserDefaults()
         //新旧密码
@@ -70,6 +71,7 @@ class SecuritySettingsViewController: UIViewController {
             })
              }
     }
+    //keyBoard的操作
     @IBAction func keyBoardHide(sender: UIControl) {
         self.lastPassWord?.resignFirstResponder()
         self.newPassWord?.resignFirstResponder()

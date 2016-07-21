@@ -62,6 +62,7 @@ class ReadEmailViewController: UIViewController,UIGestureRecognizerDelegate{
         self.tap.delegate = self
      
     }
+    //点击图片时候的放大
     func gestureRecognizer(gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWithGestureRecognizer otherGestureRecognizer: UIGestureRecognizer) -> Bool {
         if(gestureRecognizer == self.tap){
             return true

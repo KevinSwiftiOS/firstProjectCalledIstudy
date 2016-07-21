@@ -14,10 +14,6 @@
     import Font_Awesome_Swift
     class CourseDesViewController: UIViewController,UITableViewDataSource,UITableViewDelegate,
     UISearchControllerDelegate,UISearchResultsUpdating,DZNEmptyDataSetSource,DZNEmptyDataSetDelegate{
-        var managedContext:NSManagedObjectContext?
-        var fetchedResults = [PersonalHeadPortrait]()
-        var imageHeadData = NSData()
-
         var items = NSArray()
         var filterItems = NSMutableArray()
         var sc = UISearchController(searchResultsController: nil)
@@ -25,6 +21,7 @@
         //每一个cell的高度
         var cellHeight = NSMutableArray()
         @IBOutlet weak var courseDesTableView:mainTableView?
+         //要注意搜索框的使用
         override func viewDidLoad() {
             super.viewDidLoad()
                              self.navigationController?.navigationBar.barTintColor = RGB(0, g: 153, b: 255)
@@ -47,6 +44,7 @@
             sc.delegate = self
             self.courseDesTableView?.emptyDataSetDelegate = self
            }
+        //课程为空的时候的操作
         func emptyDataSetShouldAllowScroll(scrollView: UIScrollView!) -> Bool {
             return true
         }
@@ -54,7 +52,7 @@
             super.didReceiveMemoryWarning()
             // Dispose of any resources that can be recreated.
         }
-        //实现协议
+        //tableView的代理
         func numberOfSectionsInTableView(tableView: UITableView) -> Int {
             return 1
         }
@@ -67,6 +65,7 @@
             return self.items.count
             }
         }
+        //要注意cell的展现 搜索条有时和没时展现的列表信息是不一样的
         func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
             let webView = UIWebView(frame: CGRectMake(0, 70, SCREEN_WIDTH, 80))
             //webView来进行加载
@@ -119,8 +118,10 @@
             }else{
                 if(self.filterItems[indexPath.row].valueForKey("memo") as? String != nil &&
                     self.filterItems[indexPath.row].valueForKey("memo") as! String != ""){
-                    webView.loadHTMLString(self.filterItems[indexPath.row].valueForKey("memo")
-                        as! String, baseURL: nil)
+                    var memoString = self.items[indexPath.row].valueForKey("memo") as! String
+                    memoString = "<head><style>p{text-indent: 2em; font-size: 15px;font-family: " + "\"" + "宋体" + "\"" +  "}" + "</style></head>" +  "" +  "<p>" + memoString + "</p>"
+                    webView.loadHTMLString(memoString, baseURL: nil)
+                    
                 }
 
                 cell.courseImageBtn?.addTarget(self, action: #selector(CourseDesViewController.click(_:)),
@@ -204,11 +205,7 @@
             let cell = self.courseDesTableView?.cellForRowAtIndexPath(NSIndexPath(forRow: sender.tag, inSection: 0)) as! CourseDesTableViewCell
             //设置动画
          
-            
-
-
-            
-            sender.setTitleColor(UIColor.whiteColor(), forState: .Normal)
+sender.setTitleColor(UIColor.whiteColor(), forState: .Normal)
             if(sc.active){
       sender.setTitle(self.filterItems[sender.tag].valueForKey("pictit") as? String, forState: .Normal)
             }else{
@@ -221,7 +218,7 @@
               cell.arrowImageView.transform = CGAffineTransformMakeRotation(CGFloat(M_PI))
             })
 
-                                    self.isClick[sender.tag] = true
+            self.isClick[sender.tag] = true
                 self.cellHeight[sender.tag] = 150
             }else{
             UIView.animateWithDuration(0.8, animations: {
@@ -237,6 +234,7 @@
             self.courseDesTableView?.beginUpdates()
             self.courseDesTableView?.endUpdates()
         }
+        //搜索条头部的一些代理
         func updateSearchResultsForSearchController(searchController: UISearchController) {
             self.filterItems.removeAllObjects()
           
@@ -249,7 +247,7 @@
             self.courseDesTableView?.reloadData()
         }
 
-          //顶部刷新
+          //顶部刷新 首先先登录 后再获取到课程列表的信息
         func headerRefresh() {
             //每次都是登录
             
@@ -345,19 +343,19 @@
  
                 }
     })}
-        
+       //搜索条出现的时候tableView顶部的代理
         func willPresentSearchController(searchController: UISearchController) {
             self.courseDesTableView?.mj_header.hidden = true
         }
         func willDismissSearchController(searchController: UISearchController) {
             self.courseDesTableView?.mj_header.hidden = false
         }
-       
+       //界面消失的时候 要带着把搜索条拿走 否则会出现内存报错
           deinit{
             print("CourseDesDeinit")
             self.sc.view.removeFromSuperview()
         }
-        
+        //响应链事件 当搜索条出现时 点击背景搜索条会消失
            override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
                 self.sc.active = false
             self.sc.searchBar.text = ""

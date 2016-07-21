@@ -15,10 +15,9 @@ class ChangeHeadPortraitViewController: UIViewController,UITableViewDelegate,UIT
     @IBOutlet weak var selectImageFromTableView:UITableView?
     var selectFromArray = ["相册","相机"]
     var imagePicker = UIImagePickerController()
-//    var managedContext:NSManagedObjectContext?
-//    var fetchedResults = [PersonalHeadPortrait]()
-  var selectedImageData = NSData()
+    var selectedImageData = NSData()
     var isFromFromImagePicker = false
+    //保存头像的操作
     override func viewDidLoad() {
         super.viewDidLoad()
         self.headPortraitImageView?.layer.masksToBounds = true
@@ -38,6 +37,7 @@ class ChangeHeadPortraitViewController: UIViewController,UITableViewDelegate,UIT
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
+    //tableView的代理
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         return 1
     }
@@ -84,7 +84,7 @@ class ChangeHeadPortraitViewController: UIViewController,UITableViewDelegate,UIT
         self.isFromFromImagePicker = true
         
     }
-    
+    //imagePicker的代理
     func imagePickerControllerDidCancel(picker: UIImagePickerController) {
         self.dismissViewControllerAnimated(true, completion: nil)
     }
@@ -102,6 +102,7 @@ class ChangeHeadPortraitViewController: UIViewController,UITableViewDelegate,UIT
             }
         }
     }
+    //保存头像
     func saveProfile() {
         let userDefault = NSUserDefaults.standardUserDefaults()
         let string = "http://dodo.hznu.edu.cn/api/upfile?authtoken=" + (userDefault.valueForKey("authtoken") as! String)

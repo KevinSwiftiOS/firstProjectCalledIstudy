@@ -49,6 +49,7 @@ UISearchControllerDelegate,UISearchResultsUpdating,DZNEmptyDataSetSource,DZNEmpt
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
+    //tableView的代理
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         return 1
     }
@@ -111,6 +112,7 @@ UISearchControllerDelegate,UISearchResultsUpdating,DZNEmptyDataSetSource,DZNEmpt
         }
         return cell
     }
+    //当选择这个文件后 先判断沙盒里面是否存在这个文件 有就直接打开 没有就先下载 随后打开
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         
         tableView.deselectRowAtIndexPath(indexPath, animated: true)
@@ -195,7 +197,7 @@ UISearchControllerDelegate,UISearchResultsUpdating,DZNEmptyDataSetSource,DZNEmpt
     func previewController(controller: QLPreviewController, shouldOpenURL url: NSURL, forPreviewItem item: QLPreviewItem) -> Bool {
         return true
     }
-    
+    //headerView的刷新
     func headerRefresh() {
         let userDefault = NSUserDefaults.standardUserDefaults()
         let authtoken = userDefault.valueForKey("authtoken") as! String
@@ -245,6 +247,7 @@ UISearchControllerDelegate,UISearchResultsUpdating,DZNEmptyDataSetSource,DZNEmpt
             }
         }
     }
+    //顶部的搜索条的代理
     func updateSearchResultsForSearchController(searchController: UISearchController) {
         self.filterItems.removeAllObjects()
         let scopePredicate = NSPredicate(format: "SELF CONTAINS[c] %@", searchController.searchBar.text!)

@@ -26,8 +26,9 @@ class OneCourseDesViewController:UIViewController,UICollectionViewDelegateFlowLa
     //记录课程通知的
     var items = NSArray()
     //文本框的信息
-   var scrollView = UIScrollView()
+
     var courseDesString = NSString()
+    //主界面的代码 三个头部的跳转 和collectionView tableView的跳转
     override func viewDidLoad() {
          super.viewDidLoad()
          self.navigationController?.navigationItem.backBarButtonItem?.tintColor = UIColor.blackColor()
@@ -83,6 +84,7 @@ class OneCourseDesViewController:UIViewController,UICollectionViewDelegateFlowLa
 self.courseDataCollectionView!.emptyDataSetDelegate = self
         
     }
+    //当列表为空的时候的允许下拉
     func emptyDataSetShouldAllowScroll(scrollView: UIScrollView!) -> Bool {
         return true
     }
@@ -90,6 +92,7 @@ self.courseDataCollectionView!.emptyDataSetDelegate = self
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
+    //collectionView的代理
     func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
         return 1
     }
@@ -121,31 +124,26 @@ self.courseDataCollectionView!.emptyDataSetDelegate = self
     
     //定义每个cell的边框大小
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAtIndex section: Int) -> UIEdgeInsets {
-        return UIEdgeInsets(top: 5, left: 5, bottom: 5, right: 5)
+        return UIEdgeInsets(top: 5, left: 10, bottom: 5, right: 10)
        
     }
-    //定义每个cell的大小
+    //定义每个cell的大小 这里是要进行修改的 要看图片的大小
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
         //判断是4 4s 5 6 6p
-        var width:CGFloat = 0
-        var height:CGFloat = 0
+//        var width:CGFloat = 0
+//        var height:CGFloat = 0
         if(SCREEN_WIDTH == 320){
-            width = 85.5
-        let biLi = (SCREEN_WIDTH - 30) / 3 / 85.5
-         height = biLi * 75 + 23
-            return CGSize(width:width, height: height)
+        
+            return CGSize(width: 80,height: 96)
 
         }
-        else{
-            width = 114
-           
-            let biLi = (SCREEN_WIDTH - 30) / 3 / 114
-            height = biLi * 75 + 23
-
-            return CGSize(width:width, height: height)
-
+        else if(SCREEN_WIDTH == 414){
+               return CGSizeMake(100, 120)
+        }else{
+            return CGSizeMake(90, 108)
         }
-           }
+        
+    }
     //tableView的一些协议
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         return 1
@@ -164,7 +162,7 @@ self.courseDataCollectionView!.emptyDataSetDelegate = self
         cell.dateLabel?.text = date as String
              return cell
     }
-    //当选择了某个cell的时候
+    //当选择了某个cell的时候 查看公告的操作 详细公告
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         tableView.deselectRowAtIndexPath(indexPath, animated: true)
@@ -173,10 +171,9 @@ self.courseDataCollectionView!.emptyDataSetDelegate = self
         vc.title = "详细信息"
               self.navigationController?.pushViewController(vc, animated: true)
     }
+    //学习资料 或者作业的任何一个 将课程id传过去
     func pushNewVC(sender:UIButton){
-
-        
-            let oneCourseSB = UIStoryboard(name: "OneCourse", bundle: nil)
+        let oneCourseSB = UIStoryboard(name: "OneCourse", bundle: nil)
         switch sender.tag {
         case 0: let VC = oneCourseSB.instantiateViewControllerWithIdentifier("StudyMaterialVC")  as! StudyMaterialViewController
          VC.title = "学习资料"
@@ -210,7 +207,7 @@ self.courseDataCollectionView!.emptyDataSetDelegate = self
         }
         
     }
-    //点击标题按钮
+    //点击标题按钮 选择不同的空间 课程信息是webView展现 学习资料等是collectionView的展现 公告信息是tableView的展现
     func uisegumentSelectionChange(selection: Int) {
         switch selection{
         case 0:
@@ -233,7 +230,7 @@ self.courseDataCollectionView!.emptyDataSetDelegate = self
         }
        
     }
-    //开始刷新
+    //开始刷新 公告信息的tableViewHeader的刷新 要注意是否是课程公告还是系统公告 请求参数会不同
     func headerRefresh() {
         let userDefault = NSUserDefaults.standardUserDefaults()
         let dic:[String:AnyObject] = ["authtoken":userDefault.valueForKey("authtoken") as! String,"courseid": "\(self.id)"]
@@ -312,6 +309,7 @@ self.courseDataCollectionView!.emptyDataSetDelegate = self
         }
         }
     }
+    //公告属性的改变
     func changeInfo(sender:AKSegmentedControl){
         let index = sender.selectedIndexes.lastIndex
         if(index == 1){
@@ -325,6 +323,7 @@ self.courseDataCollectionView!.emptyDataSetDelegate = self
     override func viewDidDisappear(animated: Bool) {
               ProgressHUD.dismiss()
     }
+    //公告列表为空的提醒
     func titleForEmptyDataSet(scrollView: UIScrollView!) -> NSAttributedString! {
         let string = "暂无通知信息"
         let dic = [NSFontAttributeName:UIFont.boldSystemFontOfSize(18.0),

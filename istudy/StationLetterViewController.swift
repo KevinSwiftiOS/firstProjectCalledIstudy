@@ -17,6 +17,8 @@ class StationLetterViewController: UIViewController,UITableViewDelegate,UITableV
     @IBOutlet weak var stationLetterTableViewToSuperViewLeading: NSLayoutConstraint!
     //三个信箱
     @IBOutlet weak var inBox:UIButton?
+    //发件箱和收件箱之间的分割线
+var  diviseView:UIView?
     @IBOutlet weak var sentBox:UIButton?
     @IBOutlet weak var stationLetterTableView:UITableView?
     
@@ -32,9 +34,12 @@ class StationLetterViewController: UIViewController,UITableViewDelegate,UITableV
     var inDic = [String:AnyObject]()
     var outDic = [String:AnyObject]()
     var items = NSArray()
+    //收件箱发件箱 tableView的加载
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        diviseView = UIView(frame: CGRectMake(10,64 + SCREEN_HEIGHT * 0.05 + 17 + 23 + 6.5,79,1))
+        diviseView?.layer.borderWidth = 1.0
+        self.view.addSubview(diviseView!)
         let userDefault = NSUserDefaults.standardUserDefaults()
         let authtoken = userDefault.valueForKey("authtoken") as! String
         self.inDic = ["authtoken":authtoken,
@@ -67,6 +72,7 @@ class StationLetterViewController: UIViewController,UITableViewDelegate,UITableV
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
+    //tableView的代理
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         return 1
     }
@@ -169,6 +175,7 @@ class StationLetterViewController: UIViewController,UITableViewDelegate,UITableV
         //刷新界面 根据获取到的值多少
         self.stationLetterTableView?.mj_header.beginRefreshing()
     }
+    //写信的界面
     @IBAction func writeLetter(sender:UIBarButtonItem) {
         //跳转到写信的界面
         let writeLetterVC = UIStoryboard(name: "StationLetter", bundle: nil).instantiateViewControllerWithIdentifier("writeLetterVC")

@@ -17,6 +17,7 @@ class PersonalViewController: UIViewController,UITableViewDelegate,UITableViewDa
     @IBOutlet weak var userName:UILabel?
     //头像
     @IBOutlet weak var headPortrait:UIImageView?
+    //tableView的代理
     override func viewDidLoad() {
                super.viewDidLoad()
         self.navigationController?.navigationBar.barTintColor = RGB(0, g: 153, b: 255)
@@ -24,7 +25,7 @@ class PersonalViewController: UIViewController,UITableViewDelegate,UITableViewDa
         self.tableView?.delegate = self
         self.tableView?.dataSource = self
         self.tableView?.tableFooterView = UIView()
-        //注册cell
+        //注册cell 没有tableViewCell的时候可以直接用
         self.tableView?.registerClass(UITableViewCell.classForCoder(), forCellReuseIdentifier: "personalCell")
         //头像的圆角设置
         self.headPortrait?.image = UIImage(named: "默认头像")
@@ -37,6 +38,7 @@ class PersonalViewController: UIViewController,UITableViewDelegate,UITableViewDa
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
+    //tableView的代理
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         return 1
     }
@@ -63,6 +65,7 @@ class PersonalViewController: UIViewController,UITableViewDelegate,UITableViewDa
         }
         return cell!
     }
+    //选择基本信息 或者头像设置等 跳转到新的界面去
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         tableView.deselectRowAtIndexPath(indexPath, animated: true)
         let row = indexPath.row
@@ -105,6 +108,7 @@ class PersonalViewController: UIViewController,UITableViewDelegate,UITableViewDa
         default:break
        }
     }
+    //头部视图的加载 例如图片等
     override func viewWillAppear(animated: Bool) {
 
 let userDefault = NSUserDefaults.standardUserDefaults()

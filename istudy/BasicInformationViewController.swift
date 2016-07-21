@@ -32,6 +32,7 @@ class BasicInformationViewController: UIViewController,UITableViewDelegate,UITab
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
+    //tableView的代理
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         return 2
     }
@@ -118,6 +119,7 @@ class BasicInformationViewController: UIViewController,UITableViewDelegate,UITab
         self.tableView?.contentInset = UIEdgeInsetsZero
         self.tableView?.scrollIndicatorInsets = UIEdgeInsetsZero
     }
+    //设置头像等基本信息的显示
     override func viewWillAppear(animated: Bool) {
             let userDefault = NSUserDefaults.standardUserDefaults()
         if(userDefault.valueForKey("userName") == nil){

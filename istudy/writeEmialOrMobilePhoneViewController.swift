@@ -49,10 +49,11 @@ class writeEmialOrMobilePhoneViewController: UIViewController {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-    
+    //点击背景后消失键盘
     @IBAction func keyBoardHide(sender: UIControl) {
         self.writeTextField?.resignFirstResponder()
     }
+    //先匹配邮箱是否正确 随后进行发送验证码
     @IBAction func  nextAction(sender:UIButton){
         self.writeTextField?.resignFirstResponder()
         //检查邮箱或者手机号是否正确
@@ -98,6 +99,7 @@ class writeEmialOrMobilePhoneViewController: UIViewController {
         }
 
           }
+    //键盘出现和消失的一些动作
     func keyboardWillHideNotification(notifacition:NSNotification) {
         UIView.animateWithDuration(0.3) { () -> Void in
             self.topLayout.constant = 78

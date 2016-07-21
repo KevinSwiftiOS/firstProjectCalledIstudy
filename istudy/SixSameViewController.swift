@@ -10,6 +10,7 @@ import UIKit
 import Alamofire
 import SwiftyJSON
 class SixSameViewController: UIViewController {
+    //利用正则表达式进行匹配
     struct RegexHelper {
         let regex: NSRegularExpression
         
@@ -69,7 +70,7 @@ override func didReceiveMemoryWarning() {
     @IBAction func keyBoardHide(sender: UIControl) {
        self.changeNameTextField?.resignFirstResponder()
     }
-
+//保存的时候要进行正则表达式的匹配
     func save(sender:UIBarButtonItem){
     
         //做save的一些事情
@@ -164,6 +165,7 @@ let PhonePattern = "^((13[0-9])|(17[0-9])|(15[^4,\\D])|(18[0,5-9]))\\d{8}$"
        
 
     }
+    //保存的按钮
     func saveProfile() {
         let userDefault = NSUserDefaults.standardUserDefaults()
         var email = ""

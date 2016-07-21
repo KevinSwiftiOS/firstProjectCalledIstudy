@@ -52,6 +52,7 @@ class AdressViewController: UIViewController,CLLocationManagerDelegate,HZAreaPic
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
+    //允许定位的操作
     func locationManager(manager: CLLocationManager, didChangeAuthorizationStatus status: CLAuthorizationStatus) {
         if status == CLAuthorizationStatus.NotDetermined || status == CLAuthorizationStatus.Denied
         {
@@ -60,6 +61,7 @@ class AdressViewController: UIViewController,CLLocationManagerDelegate,HZAreaPic
             
         }
     }
+    //保存定位地址
     func save(sender:UIBarButtonItem){
         //做save的一些事情
          self.userDefault.setValue(self.address, forKey: "address")
@@ -107,12 +109,14 @@ class AdressViewController: UIViewController,CLLocationManagerDelegate,HZAreaPic
         //开始定位
         self.locationManager.startUpdatingLocation()
     }
+    //自定义按钮
     @IBAction func customLocation(sender:UIButton){
         self.cancelLocatePicker()
         self.locatePicker = HZAreaPickerView(style: HZAreaPickerWithStateAndCityAndDistrict, delegate: self)
         self.locatePicker.showInView(self.view)
       
     }
+    
     func pickerDidChaneStatus(picker: HZAreaPickerView!) {
         self.address = picker.locate.state + picker.locate.city + picker.locate.district
         self.addressTextField?.text = self.address as String
@@ -122,10 +126,10 @@ class AdressViewController: UIViewController,CLLocationManagerDelegate,HZAreaPic
         self.locatePicker.cancelPicker()
         self.locatePicker.delegate = nil
     }
+    //keyBoard的代理 
     func keyboardWillHideNotification(notifacition:NSNotification) {
         UIView.animateWithDuration(0.3) { () -> Void in
             self.topLayout.constant = 64
-           
             //加载新的约束
             self.view.layoutIfNeeded()
         }

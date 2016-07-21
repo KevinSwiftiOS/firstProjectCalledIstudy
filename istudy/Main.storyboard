@@ -803,7 +803,8 @@
                                                             <exclude reference="knA-Hw-JQD"/>
                                                         </mask>
                                                     </variation>
-                                                    <variation key="heightClass=regular-widthClass=compact">
+                                                    <variation key="heightClass=regular-widthClass=compact" misplaced="YES">
+                                                        <rect key="frame" x="50" y="10" width="182" height="21"/>
                                                         <mask key="constraints">
                                                             <include reference="knA-Hw-JQD"/>
                                                         </mask>
@@ -822,7 +823,8 @@
                                                             <exclude reference="3WZ-et-jEc"/>
                                                         </mask>
                                                     </variation>
-                                                    <variation key="heightClass=regular-widthClass=compact">
+                                                    <variation key="heightClass=regular-widthClass=compact" misplaced="YES">
+                                                        <rect key="frame" x="50" y="34" width="182" height="21"/>
                                                         <mask key="constraints">
                                                             <include reference="3WZ-et-jEc"/>
                                                         </mask>
