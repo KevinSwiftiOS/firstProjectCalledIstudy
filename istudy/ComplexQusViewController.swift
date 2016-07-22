@@ -348,8 +348,19 @@ class ComplexQusViewController: UIViewController,UITableViewDelegate,UITableView
         }
          beforeEditing = self.oneQusSubSelfAnswers[subIndex] as! String
         self.tableView.frame = CGRectMake(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT)
+        //是否已经阅过卷
+        if(!isOver){
+            if(self.disPlayMarkTextArray[subIndex] as! String != ""){
+              self.Over()
+                
+            }
+            else{
+                self.tableView.tableFooterView = UIView()
+            }
+            
+
         self.tableView.reloadData()
-        
+        }
     }
     //滑动题目的内容来加载新的大题目
     func addNewQus(sender:UISwipeGestureRecognizer){
@@ -754,6 +765,7 @@ class ComplexQusViewController: UIViewController,UITableViewDelegate,UITableView
                 }else{
                     self.tableView.tableFooterView = UIView()
                 }
+           self.tableView.reloadData()
             }
             self.tableView.reloadData()
         }
@@ -772,19 +784,10 @@ class ComplexQusViewController: UIViewController,UITableViewDelegate,UITableView
                 self.subTableViewToTop.constant = 0
 //                let y = 64 + 21 + 4 + SCREEN_HEIGHT * 0.4 + 21 + 5 + 21 + 21
 //                self.tableView.frame = CGRectMake(0, y, SCREEN_WIDTH, SCREEN_HEIGHT - 40 - y)
-                    //是否已经阅过卷
-                if(!isOver){
-                    if(self.disPlayMarkTextArray[subIndex] as! String != ""){
-                        self.Over()
-                        
-                    }
-                    else{
-                        self.tableView.tableFooterView = UIView()
-                    }
-                    
-                }
                 
             }
+                
+
             self.cellHeights.replaceObjectAtIndex(cell.Custag, withObject: cell.cellHeight)
                   self.view.setNeedsLayout()
             self.tableView.reloadData()
