@@ -62,6 +62,7 @@ class PeerAssessmentViewController: UIViewController ,UITableViewDataSource,UITa
     }
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier("PeerAssessmentCell") as! PeerAssessmentTableViewCell
+        if(indexPath.row < self.items.count){
         cell.selectionStyle = .None
         cell.title?.text = self.items[indexPath.row].valueForKey("title") as? String
         cell.teacher?.text = self.items[indexPath.row].valueForKey("teacher") as? String
@@ -106,6 +107,7 @@ class PeerAssessmentViewController: UIViewController ,UITableViewDataSource,UITa
         cell.peerBtn?.tag = indexPath.row
         cell.peerBtn?.layer.cornerRadius = 5.0
         cell.peerBtn?.layer.masksToBounds = true
+        }
         return cell
     }
     //随后评论的界面

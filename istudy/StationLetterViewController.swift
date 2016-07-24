@@ -84,6 +84,7 @@ var  diviseView:UIView?
     }
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier("stationLetterCell") as! StationLetterCellTableViewCell
+        if(indexPath.row < self.items.count){
         let image = UIImage(named: "已读")
         cell.kingOfLetterImageView!.image = image
         //看接收到的人里面拿出来 随后循环遍历 自己相等 随后判断 赋不同的值
@@ -116,6 +117,7 @@ var  diviseView:UIView?
         let date = "于" + (tempDate.substringWithRange(yearRange) + "年" + tempDate.substringWithRange(monthRange) + "月" + tempDate.substringWithRange(dateRange)  + "日 " + "发表")
         let totalString = senderName + date
         cell.sendLetterPersonNameAndDateLabel?.text = totalString
+        }
         return cell
     }
     //每行选择cell的时候该干什么

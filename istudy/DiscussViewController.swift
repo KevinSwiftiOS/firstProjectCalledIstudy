@@ -99,12 +99,14 @@ class DiscussViewController: UIViewController,UITableViewDelegate,UITableViewDat
     }
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         //字符串的分割日期
-        let yearRange = NSMakeRange(0, 4)
+              let yearRange = NSMakeRange(0, 4)
         let monthRange = NSMakeRange(4, 2)
         let dateRange = NSMakeRange(6, 2)
         var tempStartDate = NSString()
         var date = ""
+        if(indexPath.section < self.totalItems.count){
         let item = self.totalItems[indexPath.section]
+        
         if(item.valueForKey("top") as? NSNumber != nil && item.valueForKey("top") as! NSNumber == 1){
             let  cell = tableView.dequeueReusableCellWithIdentifier("TopDiscussTableViewCell") as! TopDiscussTableViewCell
             cell.titleLabel?.text = item.valueForKey("title") as? String
@@ -135,6 +137,8 @@ class DiscussViewController: UIViewController,UITableViewDelegate,UITableViewDat
             
             return cell
         }
+        }
+        return UITableViewCell()
     }
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         return 62

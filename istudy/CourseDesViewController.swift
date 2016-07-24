@@ -70,10 +70,12 @@
             let webView = UIWebView(frame: CGRectMake(0, 70, SCREEN_WIDTH, 80))
             //webView来进行加载
             let cell = tableView.dequeueReusableCellWithIdentifier("courseDesCell") as! CourseDesTableViewCell
+           
             //设置箭头
             cell.arrowImageView.setFAIconWithName(FAType.FAAngleDown, textColor: UIColor.grayColor())
             //随后cell的图片等各种信息根据接受到的数组传值
             if(sc.active == false){
+                if(indexPath.row < self.items.count){
                 //判断有没有题目描述
             if(self.items[indexPath.row].valueForKey("memo") as? String != nil &&
                 self.items[indexPath.row].valueForKey("memo") as! String != ""){
@@ -99,7 +101,9 @@
                     cell.courseImageBtn?.setBackgroundImage(image, forState: .Normal)
                    
 
-                }else{
+                }
+            
+            else{
         cell.courseImageBtn?.setTitle(self.items[indexPath.row].valueForKey("pictit") as? String, forState: .Normal)
             if(self.items[indexPath.row].valueForKey("picbg") != nil) {
             let rgb:[Float] = self.items[indexPath.row].valueForKey("picbg") as! NSArray as! [Float]
@@ -115,7 +119,9 @@
             cell.studyCourse?.layer.masksToBounds = true
             cell.studyCourse?.tag = indexPath.row
           cell.studyCourse?.addTarget(self, action: #selector(CourseDesViewController.pushNewVC(_:)), forControlEvents: .TouchUpInside)
+                }
             }else{
+                if(indexPath.row < self.filterItems.count){
                 if(self.filterItems[indexPath.row].valueForKey("memo") as? String != nil &&
                     self.filterItems[indexPath.row].valueForKey("memo") as! String != ""){
                     var memoString = self.items[indexPath.row].valueForKey("memo") as! String
@@ -155,7 +161,7 @@
                 cell.studyCourse?.layer.masksToBounds = true
                 cell.studyCourse?.tag = indexPath.row
                 cell.studyCourse?.addTarget(self, action: #selector(CourseDesViewController.pushNewVC(_:)), forControlEvents: .TouchUpInside)
-
+                }
             }
             cell.courseImageBtn?.tag = indexPath.row
             cell.courseImageBtn?.setTitleColor(UIColor.whiteColor(), forState:.Normal)

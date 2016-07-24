@@ -296,7 +296,7 @@ var questions = NSMutableArray()
                 self.index += 1
                 self.initView()
             }else{
-                ProgressHUD.showError("已完成评论")
+                ProgressHUD.showSuccess("已完成评论")
             }
         }
         if sender.direction == .Right{
@@ -304,7 +304,7 @@ var questions = NSMutableArray()
                 self.index -= 1
                 self.initView()
             }else{
-                ProgressHUD.showError("开头")
+                ProgressHUD.showError("第一大题")
             }
         }
     }

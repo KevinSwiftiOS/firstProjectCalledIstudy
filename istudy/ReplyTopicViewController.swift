@@ -92,6 +92,7 @@ class ReplyTopicViewController: UIViewController,UITableViewDelegate,UITableView
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier("ReplyListTableViewCell")
             as! ReplyListTableViewCell
+        if(indexPath.row < self.items.count){
         cell.authorLabel?.text = self.items[indexPath.row].valueForKey("author") as? String
         //加载头像
         if(self.items[indexPath.row].valueForKey("avatar_url") as? String != nil &&
@@ -114,6 +115,7 @@ class ReplyTopicViewController: UIViewController,UITableViewDelegate,UITableView
         
         cell.contectWebView?.loadHTMLString(self.items[indexPath.row].valueForKey("content") as! String, baseURL: nil)
         cell.cellTag = indexPath.row
+        }
         return cell
     }
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {

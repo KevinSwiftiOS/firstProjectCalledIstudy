@@ -153,6 +153,7 @@ self.courseDataCollectionView!.emptyDataSetDelegate = self
     }
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier("CourseInfoTableViewCell") as! CourseInfoTableViewCell
+        if(indexPath.row < self.items.count){
         cell.titleLabel?.text = items[indexPath.row].valueForKey("title") as? String
         let tempDate = items[indexPath.row].valueForKey("date") as! NSString
         let yearRange = NSMakeRange(0, 4)
@@ -160,6 +161,7 @@ self.courseDataCollectionView!.emptyDataSetDelegate = self
         let dateRange = NSMakeRange(6, 2)
         let  date = "发布日期:" + tempDate.substringWithRange(yearRange) + "-" + tempDate.substringWithRange(monthRange) + "-" + tempDate.substringWithRange(dateRange)
         cell.dateLabel?.text = date as String
+        }
              return cell
     }
     //当选择了某个cell的时候 查看公告的操作 详细公告

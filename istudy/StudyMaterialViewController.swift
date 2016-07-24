@@ -65,6 +65,7 @@ UISearchControllerDelegate,UISearchResultsUpdating,DZNEmptyDataSetSource,DZNEmpt
         let cell = tableView.dequeueReusableCellWithIdentifier("StudyMaterialCell")
             as! StudyMaterialTableViewCell
         if(!sc.active){
+            if(indexPath.row < self.items.count){
             cell.fileNameLalel.text = self.items[indexPath.row].valueForKey("filename") as? String
             var typeString = "类型:"
             typeString += (self.items[indexPath.row].valueForKey("extensions") as? String)!
@@ -86,7 +87,9 @@ UISearchControllerDelegate,UISearchResultsUpdating,DZNEmptyDataSetSource,DZNEmpt
             default:
                 cell.typeImageView.image = UIImage(named: "zip")
             }
+            }
         }else{
+            if(indexPath.row < self.filterItems.count){
             //自定义tableViewCell
             cell.fileNameLalel.text = self.filterItems[indexPath.row].valueForKey("filename") as? String
             var typeString = "类型:"
@@ -110,6 +113,7 @@ UISearchControllerDelegate,UISearchResultsUpdating,DZNEmptyDataSetSource,DZNEmpt
                 cell.typeImageView.image = UIImage(named: "zip")
             }
         }
+        }
         return cell
     }
     //当选择这个文件后 先判断沙盒里面是否存在这个文件 有就直接打开 没有就先下载 随后打开
@@ -117,6 +121,8 @@ UISearchControllerDelegate,UISearchResultsUpdating,DZNEmptyDataSetSource,DZNEmpt
         
         tableView.deselectRowAtIndexPath(indexPath, animated: true)
         let doc = NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true)
+   
+
         if(!sc.active){
             //判断是否存在这个文件
             //不能打开rar还有DIR文件
@@ -166,6 +172,7 @@ UISearchControllerDelegate,UISearchResultsUpdating,DZNEmptyDataSetSource,DZNEmpt
                 self.navigationController?.pushViewController(qlVC, animated: true)
             }
             else{
+                   ProgressHUD.show("正在下载中")
                 let destination = Alamofire.Request.suggestedDownloadDestination(directory: .DocumentDirectory, domain: .UserDomainMask)
                 Alamofire.download(.GET, NSURL(string: self.filterItems[indexPath.row].valueForKey("url") as! String)!, destination: destination).progress { (bytesRead, totalBytesRead, totalBytesExpectedToRead) in
                     }.response { (request, response, _, error) in
