@@ -233,8 +233,8 @@ class AchViewController: UIViewController,UICollectionViewDelegate,UICollectionV
     //在显示完成多少的界面的时候 要根据是不是从其他界面跳转过来的进行判断
     override func viewWillAppear(animated: Bool) {
         self.achCollectionView.userInteractionEnabled = false
-        self.achCollectionView.alpha = 0.4
-        self.achCollectionView.backgroundColor = UIColor.lightGrayColor()
+        self.achCollectionView.alpha = 0.3
+        self.achCollectionView.backgroundColor = UIColor.grayColor()
          ProgressHUD.show("请稍候")
             let userDefault = NSUserDefaults.standardUserDefaults()
             let authtoken = userDefault.valueForKey("authtoken") as! String
