@@ -216,7 +216,7 @@ class ProgramDesignViewController: UIViewController,UIWebViewDelegate,UIGestureR
         for view in (self.contentScrollView?.subviews)!{
             view.removeFromSuperview()
         }
-        print(self.items[index].valueForKey("defaultanswer"))
+      
         self.kindOfQusLabel?.text = self.totalitems[kindOfQusIndex].valueForKey("title") as! String + "(" + "\(self.items[index].valueForKey("totalscore") as! NSNumber)" + "分/题)"
         self.currentQusLabel?.text = "\(self.index + 1)" + "/" + "\(self.items.count)"
         let contentString = cssDesString + (self.items[index].valueForKey("content") as! String)
@@ -326,16 +326,18 @@ class ProgramDesignViewController: UIViewController,UIWebViewDelegate,UIGestureR
     @IBAction func reset(sender:UIButton){
         let resetAlertView = UIAlertController(title: nil, message: "确定重置吗", preferredStyle: UIAlertControllerStyle.Alert)
         let resetAction = UIAlertAction(title: "确定", style: UIAlertActionStyle.Default) { (UIAlertAction) in
-            if(self.type == "PROGRAM_DESIGN"){
-                self.answerTextView?.text = ""
-            }
-            if self.type == "PROGRAM_CORRECT"{
-                self.answerTextView?.text = self.items[self.index].valueForKey("defaultanswer") as! String
-            }
-            self.displayMarkingArray.replaceObjectAtIndex(self.index, withObject: 0)
+                       self.displayMarkingArray.replaceObjectAtIndex(self.index, withObject: 0)
             self.selfAnswers.replaceObjectAtIndex(self.index, withObject: "")
             self.saveBtn?.enabled = true
             self.answerTextView?.userInteractionEnabled = true
+            if(self.items[self.index].valueForKey("defaultanswer") as? String != nil
+                && self.items[self.index].valueForKey("defaultanswer") as! String != ""){
+                self.answerTextView?.text = self.replaceAnswerText((self.items[self.index].valueForKey("defaultanswer") as? String)! , toReplaceString: self.selfAnswers[self.index] as! String)
+            }
+            else{
+                self.answerTextView?.text = self.replaceAnswerText("", toReplaceString: self.selfAnswers[self.index] as! String)
+            }
+
             self.answerTextView?.editable = true
             self.resultTextView.removeFromSuperview()
             self.gooverBtn.enabled = true
@@ -416,25 +418,14 @@ class ProgramDesignViewController: UIViewController,UIWebViewDelegate,UIGestureR
         self.resetBtn?.enabled = true
         self.answerTextView = JVFloatLabeledTextView(frame: CGRectMake(10, webViewHeight, SCREEN_WIDTH - 20, 100))
         self.contentScrollView?.addSubview(self.answerTextView!)
-        //设置自己的回答
-        if(self.type == "PROGRAM_DESIGN"){
-            self.answerTextView?.text = self.selfAnswers[index] as! String
+        if(self.items[index].valueForKey("defaultanswer") as? String != nil
+        && self.items[index].valueForKey("defaultanswer") as! String != ""){
+      self.answerTextView?.text = replaceAnswerText((self.items[index].valueForKey("defaultanswer") as? String)! , toReplaceString: self.selfAnswers[self.index] as! String)
         }
-        if(self.type == "PROGRAM_CORRECT"){
-            if(self.selfAnswers[index] as! String != ""){
-                self.answerTextView?.text = self.selfAnswers[index] as! String
-            }else{
-                self.answerTextView?.text = self.items[index].valueForKey("defaultanswer") as! String
-            }
+        else{
+            self.answerTextView?.text = replaceAnswerText("", toReplaceString: self.selfAnswers[index] as! String)
         }
-        if(self.items[index].valueForKey("defaultanswer") as? String != nil && self.items[index].valueForKey("defaultanswer") as! String != ""){
-            var defaultAnswerString = self.items[index].valueForKey("defaultanswer") as! String
-         
-            defaultAnswerString = defaultAnswerString.stringByReplacingOccurrencesOfString("[E]", withString: " ")
-            defaultAnswerString = defaultAnswerString.stringByReplacingOccurrencesOfString("[/E]", withString:" ")
-            self.answerTextView?.text = defaultAnswerString
-            
-        }
+        
         self.contentScrollView?.contentSize = CGSizeMake(SCREEN_WIDTH, webViewHeight + 150)
         let currentDate = NSDate()
         let result:NSComparisonResult = currentDate.compare(endDate)
@@ -546,4 +537,28 @@ class ProgramDesignViewController: UIViewController,UIWebViewDelegate,UIGestureR
         }
 
     }
+//进行替换字符串
+    func replaceAnswerText(replacedString:String,toReplaceString:String) -> String{
+       //这里来进行判断
+        //首先是没有默认的填充内容
+        if(replacedString == ""){
+            return toReplaceString
+        }
+        //如果包含[E]和[/E]
+        else if(replacedString.containsString("[E]") && replacedString.containsString("[/E]")){
+        let tempString = NSString(string:replacedString)
+        let startRange = tempString.rangeOfString("[E]")
+        let endRange = tempString.rangeOfString("[/E]")
+        let trueRange = NSMakeRange(startRange.location, endRange.location - startRange.location + endRange.length)
+        let resString = tempString.stringByReplacingCharactersInRange(trueRange, withString: toReplaceString)
+    return resString
+        }else{
+            //不为空且没有[E]
+            return replacedString + toReplaceString
+        }
+     
+        
+        
+        }
 }
+

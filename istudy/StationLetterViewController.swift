@@ -89,8 +89,10 @@ var  diviseView:UIView?
         cell.kingOfLetterImageView!.image = image
         //看接收到的人里面拿出来 随后循环遍历 自己相等 随后判断 赋不同的值
         if(isIn){
+            if(cell.isFirstTimeToAssign){
             cell.isRead = self.items[indexPath.row].valueForKey("isread") as! NSInteger
-            
+            cell.isFirstTimeToAssign = false
+            }
             //定义cell的属性
             if(cell.isRead == 0){
                 let image = UIImage(named: "未读")

@@ -14,30 +14,16 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "F8111E3219A95C8B0040E7D1"
-               BuildableName = "Alamofire.framework"
-               BlueprintName = "Alamofire iOS"
-               ReferencedContainer = "container:Alamofire.xcodeproj">
-            </BuildableReference>
-         </BuildActionEntry>
-         <BuildActionEntry
-            buildForTesting = "YES"
-            buildForRunning = "NO"
-            buildForProfiling = "NO"
-            buildForArchiving = "NO"
-            buildForAnalyzing = "NO">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "F8111E3D19A95C8B0040E7D1"
-               BuildableName = "Alamofire iOS Tests.xctest"
-               BlueprintName = "Alamofire iOS Tests"
-               ReferencedContainer = "container:Alamofire.xcodeproj">
+               BlueprintIdentifier = "3811F5761C883CD000BCC841"
+               BuildableName = "istudy.app"
+               BlueprintName = "istudy"
+               ReferencedContainer = "container:istudy.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
    </BuildAction>
    <TestAction
-      buildConfiguration = "Debug"
+      buildConfiguration = "Release"
       selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
       shouldUseLaunchSchemeArgsEnv = "YES"
@@ -47,20 +33,30 @@
             skipped = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "F8111E3D19A95C8B0040E7D1"
-               BuildableName = "Alamofire iOS Tests.xctest"
-               BlueprintName = "Alamofire iOS Tests"
-               ReferencedContainer = "container:Alamofire.xcodeproj">
+               BlueprintIdentifier = "3811F58D1C883CD000BCC841"
+               BuildableName = "istudyTests.xctest"
+               BlueprintName = "istudyTests"
+               ReferencedContainer = "container:istudy.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "3811F5981C883CD000BCC841"
+               BuildableName = "istudyUITests.xctest"
+               BlueprintName = "istudyUITests"
+               ReferencedContainer = "container:istudy.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "F8111E3219A95C8B0040E7D1"
-            BuildableName = "Alamofire.framework"
-            BlueprintName = "Alamofire iOS"
-            ReferencedContainer = "container:Alamofire.xcodeproj">
+            BlueprintIdentifier = "3811F5761C883CD000BCC841"
+            BuildableName = "istudy.app"
+            BlueprintName = "istudy"
+            ReferencedContainer = "container:istudy.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
       <AdditionalOptions>
@@ -76,15 +72,16 @@
       debugDocumentVersioning = "YES"
       debugServiceExtension = "internal"
       allowLocationSimulation = "YES">
-      <MacroExpansion>
+      <BuildableProductRunnable
+         runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "F8111E3219A95C8B0040E7D1"
-            BuildableName = "Alamofire.framework"
-            BlueprintName = "Alamofire iOS"
-            ReferencedContainer = "container:Alamofire.xcodeproj">
+            BlueprintIdentifier = "3811F5761C883CD000BCC841"
+            BuildableName = "istudy.app"
+            BlueprintName = "istudy"
+            ReferencedContainer = "container:istudy.xcodeproj">
          </BuildableReference>
-      </MacroExpansion>
+      </BuildableProductRunnable>
       <AdditionalOptions>
       </AdditionalOptions>
    </LaunchAction>
@@ -94,15 +91,16 @@
       savedToolIdentifier = ""
       useCustomWorkingDirectory = "NO"
       debugDocumentVersioning = "YES">
-      <MacroExpansion>
+      <BuildableProductRunnable
+         runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "F8111E3219A95C8B0040E7D1"
-            BuildableName = "Alamofire.framework"
-            BlueprintName = "Alamofire iOS"
-            ReferencedContainer = "container:Alamofire.xcodeproj">
+            BlueprintIdentifier = "3811F5761C883CD000BCC841"
+            BuildableName = "istudy.app"
+            BlueprintName = "istudy"
+            ReferencedContainer = "container:istudy.xcodeproj">
          </BuildableReference>
-      </MacroExpansion>
+      </BuildableProductRunnable>
    </ProfileAction>
    <AnalyzeAction
       buildConfiguration = "Debug">

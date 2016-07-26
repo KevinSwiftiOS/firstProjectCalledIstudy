@@ -43,6 +43,7 @@ import SwiftyJSON
         recevieBtn?.layer.borderWidth = 0.4
         recevieBtn?.layer.borderColor = UIColor.grayColor().CGColor
         addPersonBtn?.setFAText(prefixText: "", icon: FAType.FAPlusCircle, postfixText: "", size: 25, forState: .Normal)
+        addPersonBtn?.setFATitleColor(UIColor.grayColor())
         ShowBigImageFactory.topViewEDit(self.btmView)
         photoBtn.setFAText(prefixText: "", icon: FAType.FAImage, postfixText: "", size: 25, forState: .Normal)
         sendBtn.setFAText(prefixText: "", icon: FAType.FASend, postfixText: "", size: 25, forState: .Normal)
@@ -226,6 +227,7 @@ Alamofire.request(.POST, "http://dodo.hznu.edu.cn/api/messagesend", parameters: 
                     print(json["retcode"].number)
                 }else{
                     ProgressHUD.showSuccess("发送成功")
+                    self.navigationController?.popToRootViewControllerAnimated(true)
                 }
             }
             }

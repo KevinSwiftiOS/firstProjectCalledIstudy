@@ -208,8 +208,9 @@
                                         <variation key="heightClass=regular-widthClass=compact" constant="28"/>
                                     </constraint>
                                 </constraints>
+                                <color key="tintColor" red="0.59999999999999998" green="0.59999999999999998" blue="0.59999999999999998" alpha="1" colorSpace="calibratedRGB"/>
                                 <state key="normal">
-                                    <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                    <color key="titleColor" red="0.59999999999999998" green="0.59999999999999998" blue="0.59999999999999998" alpha="1" colorSpace="calibratedRGB"/>
                                 </state>
                                 <variation key="default">
                                     <mask key="constraints">
@@ -710,7 +711,8 @@
                                                             <exclude reference="b9z-1y-jnp"/>
                                                         </mask>
                                                     </variation>
-                                                    <variation key="heightClass=regular-widthClass=compact">
+                                                    <variation key="heightClass=regular-widthClass=compact" misplaced="YES">
+                                                        <rect key="frame" x="70" y="29" width="134" height="21"/>
                                                         <mask key="constraints">
                                                             <include reference="b9z-1y-jnp"/>
                                                         </mask>
@@ -732,7 +734,8 @@
                                                             <exclude reference="sSZ-Xn-Be2"/>
                                                         </mask>
                                                     </variation>
-                                                    <variation key="heightClass=regular-widthClass=compact">
+                                                    <variation key="heightClass=regular-widthClass=compact" misplaced="YES">
+                                                        <rect key="frame" x="195" y="22" width="35" height="35"/>
                                                         <mask key="constraints">
                                                             <include reference="8if-Vj-07V"/>
                                                             <include reference="sSZ-Xn-Be2"/>

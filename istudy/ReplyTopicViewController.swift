@@ -183,7 +183,9 @@ class ReplyTopicViewController: UIViewController,UITableViewDelegate,UITableView
                 }else{
                     ProgressHUD.showSuccess("发送成功")
                     dispatch_async(dispatch_get_main_queue(), {
-                        
+                        self.photos = NSMutableArray()
+                        self.writeTextView?.text = ""
+                        self.updateView()
                         self.replyListTableView?.mj_header.beginRefreshing()
                     })
                 }

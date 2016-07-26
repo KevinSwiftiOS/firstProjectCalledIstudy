@@ -294,7 +294,10 @@ class DiscussViewController: UIViewController,UITableViewDelegate,UITableViewDat
             }
         }
     }
-    
+    override func viewWillAppear(animated: Bool) {
+             self.discussTableView?.mj_header  = MJRefreshNormalHeader(refreshingTarget: self, refreshingAction: #selector(DiscussViewController.headRefresh))
+        self.discussTableView?.mj_header.beginRefreshing()
+    }
     override func viewWillDisappear(animated: Bool) {
         ProgressHUD.dismiss()
     }

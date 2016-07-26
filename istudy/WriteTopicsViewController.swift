@@ -150,6 +150,7 @@ class WriteTopicsViewController: UIViewController,UICollectionViewDelegate,UICol
                     print(json["retcode"].number)
                 }else{
                     ProgressHUD.showSuccess("发送成功")
+                    self.navigationController?.popViewControllerAnimated(true)
                 }
             }
         }

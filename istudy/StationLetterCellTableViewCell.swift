@@ -15,8 +15,8 @@ class StationLetterCellTableViewCell: UITableViewCell {
     @IBOutlet weak var subjectLabel:UILabel?
 
     var isRead = 0
-    //是否是第一次赋值
-    var isFirstTimeToAssign = false
+    //是否是第一次赋值已读和未读
+    var isFirstTimeToAssign = true
   
     override func awakeFromNib() {
         super.awakeFromNib()

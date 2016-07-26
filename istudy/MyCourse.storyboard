@@ -172,7 +172,9 @@
                                                 <constraint firstAttribute="bottom" secondItem="I0x-2P-meJ" secondAttribute="bottom" constant="27" id="7Nb-cn-vAa">
                                                     <variation key="heightClass=regular-widthClass=compact" constant="9"/>
                                                 </constraint>
-                                                <constraint firstItem="klm-Vx-4Tr" firstAttribute="top" secondItem="0bU-pp-gtO" secondAttribute="top" id="A00-o5-yNL"/>
+                                                <constraint firstItem="klm-Vx-4Tr" firstAttribute="top" secondItem="0bU-pp-gtO" secondAttribute="top" id="A00-o5-yNL">
+                                                    <variation key="heightClass=regular-widthClass=compact" constant="10"/>
+                                                </constraint>
                                                 <constraint firstItem="I0x-2P-meJ" firstAttribute="width" secondItem="0bU-pp-gtO" secondAttribute="width" multiplier="0.7" id="CBj-tf-Yu9"/>
                                                 <constraint firstItem="klm-Vx-4Tr" firstAttribute="leading" secondItem="0bU-pp-gtO" secondAttribute="leading" id="GoM-eu-iIj">
                                                     <variation key="heightClass=regular-widthClass=compact" constant="10"/>
