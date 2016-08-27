@@ -736,7 +736,7 @@
         <!--站內信-->
         <scene sceneID="3lo-XT-A61">
             <objects>
-                <viewController id="wkL-hB-eUk" customClass="StationLetterViewController" customModule="istudy" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="mainStationLetter" id="wkL-hB-eUk" customClass="StationLetterViewController" customModule="istudy" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="hta-O9-vjZ"/>
                         <viewControllerLayoutGuide type="bottom" id="Com-q1-aw1"/>

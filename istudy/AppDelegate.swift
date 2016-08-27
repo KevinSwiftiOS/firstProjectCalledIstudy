@@ -37,7 +37,7 @@ func application(application: UIApplication, didFinishLaunchingWithOptions launc
         self.window?.rootViewController = mainVC
     }
     //配置Bugly
-  Bugly.startWithAppId("7c6c05b04f")
+    Bugly.startWithAppId("a86391d216")
   
         self.window?.makeKeyAndVisible()
         return true

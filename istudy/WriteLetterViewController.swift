@@ -10,7 +10,9 @@ import UIKit
 import Alamofire
 import Font_Awesome_Swift
 import SwiftyJSON
+
  class WriteLetterViewController: UIViewController,UICollectionViewDataSource,UICollectionViewDelegate,AJPhotoPickerProtocol,UIImagePickerControllerDelegate,UINavigationControllerDelegate,UICollectionViewDelegateFlowLayout{
+ 
  //收件人的添加
     var parentcode  = ""
        //主题
@@ -166,9 +168,9 @@ self.view.setNeedsLayout()
         content = self.writeTextView.text
         //转换成base64字符串
         for i in 0 ..< self.photos.count{
-            let widthAndHeight = " width = " + "\(50)" + " height = " + "\(50)"
+            
             let base64String = imageToBae64(self.photos[i] as! UIImage)
-            let imgHtml = "<img"  + widthAndHeight +  " src = " + "\"" +  "data:image/jpg;base64," + base64String +  "\"" + "/>"
+            let imgHtml = "<img" + " src = " + "\"" +  "data:image/jpg;base64," + base64String +  "\"" + "/>"
             
             content += imgHtml
 
@@ -185,6 +187,10 @@ self.view.setNeedsLayout()
         }
         if(receives == ""){
             ProgressHUD.showError("未添加联系人")
+        }
+        else
+            if(content == ""){
+                ProgressHUD.showError("邮件内容未填")
         }
         else{
         
@@ -228,6 +234,7 @@ Alamofire.request(.POST, "http://dodo.hznu.edu.cn/api/messagesend", parameters: 
                 }else{
                     ProgressHUD.showSuccess("发送成功")
                     self.navigationController?.popToRootViewControllerAnimated(true)
+          
                 }
             }
             }

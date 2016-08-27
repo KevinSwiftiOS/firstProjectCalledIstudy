@@ -20,8 +20,7 @@ class SubjectiveQusViewController: UIViewController,AJPhotoPickerProtocol,UINavi
     //图片放大的点击手势
     var tap = UITapGestureRecognizer()
     var tap1 = UITapGestureRecognizer()
-    
-    
+    var tap2 = UITapGestureRecognizer()
     
     var imagePicker:AJPhotoPickerViewController!
     var isFromOtherKindQus = false
@@ -77,6 +76,9 @@ class SubjectiveQusViewController: UIViewController,AJPhotoPickerProtocol,UINavi
         self.collectionView?.backgroundColor = UIColor.whiteColor()
         self.tap = UITapGestureRecognizer(target: self, action: #selector(SubjectiveQusViewController.webViewShowBig(_:)))
         self.tap1 = UITapGestureRecognizer(target: self, action: #selector(SubjectiveQusViewController.webViewShowBig(_:)))
+        self.tap2 = UITapGestureRecognizer(target: self, action: #selector(SubjectiveQusViewController.webViewShowBig(_:)))
+        self.tap2.delegate = self
+    
         self.automaticallyAdjustsScrollViewInsets = false
         //backBtn和submitBtn
         let backBtn = UIButton(frame: CGRectMake(0,0,43,43))
@@ -213,7 +215,8 @@ class SubjectiveQusViewController: UIViewController,AJPhotoPickerProtocol,UINavi
         
         //循环将图片数组中的值取出 转化成html格式
         for i in 0 ..< self.answerPhotos.count{
-            let widthAndHeight = " width = " + "\(50)" + " height = " + "\(50)"
+            let widthAndHeight = " width = " + "\(50.123)" + " height = " + "\(50.123)"
+
             let base64String = imageToBae64(self.answerPhotos[i] as! UIImage)
             let imgHtml = "<img"  + widthAndHeight +  " src = " + "\"" +  "data:image/jpg;base64," + base64String +  "\"" + "/>"
             
@@ -225,9 +228,10 @@ class SubjectiveQusViewController: UIViewController,AJPhotoPickerProtocol,UINavi
         //
         //        self.answerWebView.hidden = false
         //转化成html的格式
+        
         self.selfAnswers.replaceObjectAtIndex(index, withObject: allAnswer)
         
-        self.answerWebView.loadHTMLString(self.selfAnswers[index] as! String, baseURL: nil)
+        self.answerWebView.loadHTMLString(imageDecString + (self.selfAnswers[index] as! String) , baseURL: nil)
         //数组清空
         self.answerPhotos = NSMutableArray()
         self.answerTextView.text = ""
@@ -275,9 +279,13 @@ class SubjectiveQusViewController: UIViewController,AJPhotoPickerProtocol,UINavi
     }
     //向服务器传送答案
     func postAnswer() {
+        //这道题的答案拿出来 把尺寸拿掉
+        let widthAndHeight = " width = " + "\(50.123)" + " height = " + "\(50.123)"
+       var oneAnswer = self.selfAnswers.objectAtIndex(index) as! String
+        oneAnswer = oneAnswer.stringByReplacingOccurrencesOfString(widthAndHeight, withString: "")
         let answer = ["testid":"\(testid)",
                       "questionid":"\(self.items[index].valueForKey("id") as! NSNumber)",
-                      "answer":self.selfAnswers.objectAtIndex(index)]
+                      "answer":oneAnswer]
         let userDefault = NSUserDefaults.standardUserDefaults()
         let authtoken = userDefault.valueForKey("authtoken") as! String
         
@@ -533,7 +541,7 @@ class SubjectiveQusViewController: UIViewController,AJPhotoPickerProtocol,UINavi
         
     }
     func gestureRecognizer(gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWithGestureRecognizer otherGestureRecognizer: UIGestureRecognizer) -> Bool {
-        if(gestureRecognizer == self.tap || gestureRecognizer == self.tap1){
+        if(gestureRecognizer == self.tap || gestureRecognizer == self.tap1 || gestureRecognizer == self.tap2){
             return true
         }else{
             return false
@@ -568,6 +576,7 @@ class SubjectiveQusViewController: UIViewController,AJPhotoPickerProtocol,UINavi
     }
     //题目描述的代理 当开始加载和已经加载完
     func webViewDidStartLoad(webView: UIWebView) {
+        ProgressHUD.show("请稍候")
         webView.frame = CGRectMake(0, 0, SCREEN_WIDTH, 1)
     }
     var resetBtnAndQusHeight:CGFloat = 0.0
@@ -615,7 +624,7 @@ class SubjectiveQusViewController: UIViewController,AJPhotoPickerProtocol,UINavi
             
         }else{
             self.answerWebView.frame = CGRectMake(5, totalHeight, SCREEN_WIDTH - 10, 120)
-            let answerWebString = cssDesString + (self.selfAnswers[index] as! String)
+            let answerWebString = imageDecString + (self.selfAnswers[index] as! String)
             self.answerWebView.loadHTMLString(answerWebString, baseURL: nil)
         }
         totalHeight += 125
@@ -684,7 +693,7 @@ class SubjectiveQusViewController: UIViewController,AJPhotoPickerProtocol,UINavi
                 
                 if(self.items[index].valueForKey("strandanswer") as? String != nil && self.items[index].valueForKey("strandanswer") as! String != "") {
                     
-                    standAnswerWebView.loadHTMLString(self.items[index].valueForKey("strandanswer") as! String, baseURL: nil)
+                    standAnswerWebView.loadHTMLString(cssDesString +  (self.items[index].valueForKey("strandanswer") as! String), baseURL: nil)
                     
                 }else{
                     //加载没有标准答案的信息
@@ -697,8 +706,12 @@ class SubjectiveQusViewController: UIViewController,AJPhotoPickerProtocol,UINavi
             self.contentScrollView?.addSubview(standAnswerWebView)
             standAnswerWebView.layer.borderWidth = 0.3
             standAnswerWebView.layer.borderColor = UIColor.grayColor().CGColor
+            standAnswerWebView.addGestureRecognizer(self.tap2)
+            standAnswerWebView.userInteractionEnabled = true
+            standAnswerWebView.tag = 3
         }
         self.contentScrollView?.contentSize = CGSizeMake(SCREEN_WIDTH, totalHeight + 20)
+        ProgressHUD.dismiss()
     }
     //看内存有没有释放掉
     deinit{

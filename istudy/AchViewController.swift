@@ -21,6 +21,8 @@ class AchViewController: UIViewController,UICollectionViewDelegate,UICollectionV
     var viewOneWithAnswerKey = Bool()
     override func viewDidLoad() {
         super.viewDidLoad()
+        //自动移下64个单位去掉
+        self.automaticallyAdjustsScrollViewInsets = false
         self.achCollectionView?.delegate = self
         self.achCollectionView?.dataSource = self
              //提交的作业

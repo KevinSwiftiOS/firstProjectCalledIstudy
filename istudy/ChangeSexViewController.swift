@@ -54,7 +54,9 @@ class ChangeSexViewController: UIViewController {
     
     override func viewWillAppear(animated: Bool) {
         let userDefaults = NSUserDefaults.standardUserDefaults()
-        if(userDefaults.valueForKey("gender") == nil || userDefaults.valueForKey("gender") as! String == "男"){
+        if(userDefaults.valueForKey("gender") == nil){
+            
+        }else if(userDefaults.valueForKey("gender") as! String == "男"){
             self.manBtn?.setImage(UIImage(named: "选择信件"), forState: .Normal)
             self.womanBtn?.setImage(UIImage(named: "未选择信件"), forState: .Normal)
             self.selectedSex = 1

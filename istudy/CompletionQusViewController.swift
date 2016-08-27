@@ -617,9 +617,10 @@ class CompletionQusViewController: UIViewController,UITextFieldDelegate,UIWebVie
         if(cell.Custag < cellHeights.count){
             
         if(self.cellHeights[cell.Custag] as! CGFloat != cell.cellHeight){
+            self.tableView?.beginUpdates()
             self.cellHeights.replaceObjectAtIndex(cell.Custag, withObject: cell.cellHeight)
                        
-            self.tableView?.reloadData()
+        self.tableView?.endUpdates()
         }
         }
     }

@@ -755,7 +755,11 @@ class ComplexQusViewController: UIViewController,UITableViewDelegate,UITableView
         let cell = sender.object as! ComplexChoiceTableViewCell
         self.view.bringSubviewToFront(self.subTopView!)
         if(self.cellHeights[cell.Custag] as! CGFloat != cell.cellHeight){
+   
             self.cellHeights.replaceObjectAtIndex(cell.Custag, withObject: cell.cellHeight)
+            if(cell.Custag == self.cellHeights.count - 1){
+                self.tableView?.reloadData()
+            }
             if(cell.Custag == self.cellHeights.count - 1){
 //                let y = 64 + 21 + 4 + SCREEN_HEIGHT * 0.4 + 21 + 5 + 21 + 21
 //                self.tableView.frame = CGRectMake(0, y, SCREEN_WIDTH, SCREEN_HEIGHT - 40 - y)
@@ -765,9 +769,8 @@ class ComplexQusViewController: UIViewController,UITableViewDelegate,UITableView
                 }else{
                     self.tableView.tableFooterView = UIView()
                 }
-           self.tableView.reloadData()
-            }
-            self.tableView.reloadData()
+                      }
+           
         }
     }
     
@@ -787,10 +790,10 @@ class ComplexQusViewController: UIViewController,UITableViewDelegate,UITableView
                 
             }
                 
-
+self.tableView.beginUpdates()
             self.cellHeights.replaceObjectAtIndex(cell.Custag, withObject: cell.cellHeight)
                   self.view.setNeedsLayout()
-            self.tableView.reloadData()
+           self.tableView.endUpdates()
         }
     }
     

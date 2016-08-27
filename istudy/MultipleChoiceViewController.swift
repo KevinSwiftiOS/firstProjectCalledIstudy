@@ -407,6 +407,7 @@ class MultipleChoiceViewController: UIViewController,UIWebViewDelegate,UITableVi
                 cellHeights.addObject(40)
             }
         }
+        self.tableView?.reloadData()
         }
 
     //因为是多选 所以要进行匹配
@@ -508,9 +509,13 @@ class MultipleChoiceViewController: UIViewController,UIWebViewDelegate,UITableVi
     func reloadCellHeight(sender:NSNotification){
         let cell = sender.object as! ChoiceTableViewCell
         if(self.cellHeights[cell.Custag] as! CGFloat != cell.cellHeight){
+       
+        
             self.cellHeights.replaceObjectAtIndex(cell.Custag, withObject: cell.cellHeight)
-            self.tableView?.reloadData()
-        }
+            if(cell.Custag == self.cellHeights.count - 1){
+                self.tableView?.reloadData()
+            }
+    }
     }
     //每一个cell的内容
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {

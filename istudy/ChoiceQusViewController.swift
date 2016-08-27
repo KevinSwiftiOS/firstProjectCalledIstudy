@@ -342,12 +342,23 @@ func showAct(){
                        cellHeight.addObject(40)
                 }
             }
+self.tableView?.reloadData()
     }
     //点击来改变答案
     func tap(sender:NSNotification){
         let cell = sender.object as! ChoiceTableViewCell
+        //以前那个刷没
+        let answer = self.answers[index].lowercaseString
+        var i = 0
+        while i < self.tempArray.count{
+            if(answer == self.tempArray[i]){
+              break
+            }
+            i += 1
+        }
+     
              self.answers.replaceObjectAtIndex(index, withObject: self.tempArray[cell.Custag].uppercaseString)
-       self.tableView?.reloadData()
+      self.tableView?.reloadData()
         self.postAnswer()
         }
     //向服务器传送答案
@@ -449,13 +460,20 @@ func showAct(){
     }
     //刷新cell的高度
     func reloadCellHeight(sender:NSNotification){
-        let cell = sender.object as! ChoiceTableViewCell
+     let cell = sender.object as! ChoiceTableViewCell
         if(self.cellHeight[cell.Custag] as! CGFloat != cell.cellHeight){
             self.cellHeight.replaceObjectAtIndex(cell.Custag, withObject: cell.cellHeight)
-            self.tableView?.reloadData()
+            if(cell.Custag == self.cellHeight.count - 1){
+                self.tableView?.reloadData()
+            }
+
+            
         }
-        
-        
+//        }else{
+//   
+//                   }
+    
+    
 }
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = ChoiceTableViewCell(style: .Default, reuseIdentifier: "ChoiceTableViewCell")

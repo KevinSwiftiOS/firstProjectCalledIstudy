@@ -54,7 +54,7 @@ class ReadEmailViewController: UIViewController,UIGestureRecognizerDelegate{
     self.automaticallyAdjustsScrollViewInsets = false
     self.tabBarController?.tabBar.hidden = true
         self.subjectLabel?.text = self.subject
-        self.webView?.loadHTMLString(string, baseURL: nil)
+        self.webView?.loadHTMLString(imageDecString + string, baseURL: nil)
         //加载图片放大的效果
         tap = UITapGestureRecognizer(target: self, action: #selector(ReadEmailViewController.showBig(_:)))
         self.webView?.userInteractionEnabled = true

@@ -123,6 +123,7 @@ class ChangeHeadPortraitViewController: UIViewController,UITableViewDelegate,UIT
                             if(json["info"]["succ"].bool == false){
                                 ProgressHUD.showError("保存失败")
                             }else{
+                                print(json["info"]["uploadedurl"].string)
                         userDefault.setValue(json["info"]["uploadedurl"].string, forKey: "avtarurl")
                         self.save()
                             }

@@ -392,6 +392,7 @@ class ProgramDesignViewController: UIViewController,UIWebViewDelegate,UIGestureR
     }
     //webView的代理
     func webViewDidStartLoad(webView: UIWebView) {
+        ProgressHUD.show("请稍候")
         var frame = webView.frame
         frame.size.height = 1
         webView.frame = frame
@@ -447,6 +448,7 @@ class ProgramDesignViewController: UIViewController,UIWebViewDelegate,UIGestureR
             isOver = true
             self.Over()
         }
+           ProgressHUD.dismiss()
     }
     //键盘出现和消失时的动作
     func keyboardWillHideNotification(notification:NSNotification){

@@ -90,7 +90,7 @@ class ContactPersonViewController: UIViewController,UITableViewDelegate,UITableV
             allSelBtn.setFAText(prefixText: "", icon: FAType.FACheckCircle, postfixText: "", size: 30, forState: .Normal)
 
         }else{
-              allSelBtn.setFAText(prefixText: "", icon: FAType.FACircleO, postfixText: "", size: 30, forState: .Normal)
+              allSelBtn.setFAText(prefixText: "", icon: FAType.FACircleThin, postfixText: "", size: 30, forState: .Normal)
         }
         allSelBtn.addTarget(self, action: #selector(ContactPersonViewController.selectedThisGroup(_:)), forControlEvents: .TouchUpInside)
         allSelBtn.tag = section + 100

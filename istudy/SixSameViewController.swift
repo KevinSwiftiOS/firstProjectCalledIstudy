@@ -26,7 +26,8 @@ class SixSameViewController: UIViewController {
             return matches.count > 0
         }
     }
-
+//未保存前的值 如果保存失败的话 就保存前面的值
+    var beforeValue = ""
     @IBOutlet weak var name:UILabel?
     @IBOutlet weak var changeNameTextField:UITextField?
     let dic = ["登录账号":"userName","真实姓名":"name","手机":"phone","Email":"email","QQ":"QQNumber","邮编":"postCode"]
@@ -72,37 +73,71 @@ override func didReceiveMemoryWarning() {
     }
 //保存的时候要进行正则表达式的匹配
     func save(sender:UIBarButtonItem){
-    
+
         //做save的一些事情
         //对每个进行保存的时候要进行判断 用正则表达式进行匹配
       let userDefault = NSUserDefaults.standardUserDefaults()
+        if(userDefault.valueForKey(self.dic[self.title!]!) as? String != nil && userDefault.valueForKey(self.dic[self.title!]!) as! String != ""){
+            beforeValue = userDefault.valueForKey(self.dic[self.title!]!)! as! String
+        }
         switch self.title!{
             case "真实姓名":
             let text = self.changeNameTextField?.text
-            let userDefault = NSUserDefaults.standardUserDefaults()
+           
+         
+         
                userDefault.setValue(text, forKey: "name")
             self.saveProfile()
           case "手机":
-let PhonePattern = "^((13[0-9])|(17[0-9])|(15[^4,\\D])|(18[0,5-9]))\\d{8}$"
-            let matcher: RegexHelper
+            //移动 联通 电信的都搞好...
+let ChinaMobile = "(^1(3[4-9]|4[7]|5[0-27-9]|7[8]|8[2-478])\\d{8}$)|(^1705\\d{7}$)"
+let ChinaUnicom = "(^1(3[0-2]|4[5]|5[56]|7[6]|8[56])\\d{8}$)|(^1709\\d{7}$)"
+let ChinaTelecom = "(^1(33|53|77|8[019])\\d{8}$)|(^1700\\d{7}$)"
+var match = false
+
+            var CMMatcher: RegexHelper
             do {
                
                 var phoneText = self.changeNameTextField?.text
                 phoneText = phoneText!.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceCharacterSet())
-                matcher = try RegexHelper(PhonePattern)
-                if matcher.match(phoneText!){
+                CMMatcher = try RegexHelper(ChinaMobile)
+                if CMMatcher.match(phoneText!){
                     userDefault.setValue(phoneText, forKey:dic[(self.name?.text)!]!)
-                    self.saveProfile()
-                                  }else{
-                    ProgressHUD.showError("填写手机格式错误")
+                   match = true
+            }else{
+                    do{  CMMatcher = try RegexHelper(ChinaUnicom)
+                        if CMMatcher.match(phoneText!){
+                            
+                            userDefault.setValue(phoneText, forKey:dic[(self.name?.text)!]!)
+                            match = true
+                        }else{
+                            do{
+                                CMMatcher = try RegexHelper(ChinaTelecom)
+                                if CMMatcher.match(phoneText!){
+                                    userDefault.setValue(phoneText, forKey:dic[(self.name?.text)!]!)
+                                    match = true
+                                }
+                                
+                            }catch{
+                                
+                            }
+                        }
+                        
+                    }catch{
+                        print("error")
+                    }
                 }
 
             }catch{
                 print("error")
             }
-
-           
-            
+if(match == true){
+    self.saveProfile()
+}else{
+    ProgressHUD.showError("手机格式填写错误")
+            }
+    
+    
         case "Email":
             let mailPattern =
             "^([a-z0-9_\\.-]+)@([\\da-z\\.-]+)\\.([a-z\\.]{2,6})$"
@@ -165,8 +200,9 @@ let PhonePattern = "^((13[0-9])|(17[0-9])|(15[^4,\\D])|(18[0,5-9]))\\d{8}$"
        
 
     }
-    //保存的按钮
+    //保存的按钮 传的参数和未保存前的值 若保存失败的话 就还是保存以前的值
     func saveProfile() {
+        
         let userDefault = NSUserDefaults.standardUserDefaults()
         var email = ""
         var phone = ""
@@ -217,9 +253,12 @@ let PhonePattern = "^((13[0-9])|(17[0-9])|(15[^4,\\D])|(18[0,5-9]))\\d{8}$"
                      self.navigationController?.popViewControllerAnimated(true)
                 }else{
                     ProgressHUD.showError("保存失败")
+                    userDefault.setValue(self.beforeValue, forKey: self.dic[self.title!]!)
                     print(json["retcode"].number)
                 }
-            case .Failure(_):ProgressHUD.showError("保存失败")
+            case .Failure(_):
+                 userDefault.setValue(self.beforeValue, forKey: self.dic[self.title!]!)
+                ProgressHUD.showError("保存失败")
             }
         }
         }

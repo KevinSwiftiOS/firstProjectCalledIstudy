@@ -69,7 +69,8 @@ class ChoiceTableViewCell: UITableViewCell,UIWebViewDelegate {
         
         view?.userInteractionEnabled = canTap
         //发送通知
-        NSNotificationCenter.defaultCenter().postNotificationName("ChoiceWebViewHeight", object: self, userInfo: nil)
+       
+            NSNotificationCenter.defaultCenter().postNotificationName("ChoiceWebViewHeight", object: self, userInfo: nil)
     }
     func tap(sender:UITapGestureRecognizer){
         var pt = CGPoint()

@@ -34,8 +34,13 @@ var  diviseView:UIView?
     var inDic = [String:AnyObject]()
     var outDic = [String:AnyObject]()
     var items = NSArray()
+    var isFromWriteVC = false
     //收件箱发件箱 tableView的加载
     override func viewDidLoad() {
+        if(isFromWriteVC){
+            isIn = false
+            isOut = true
+        }
         super.viewDidLoad()
         diviseView = UIView(frame: CGRectMake(10,64 + SCREEN_HEIGHT * 0.05 + 17 + 23 + 6.5,79,1))
         diviseView?.layer.borderWidth = 1.0
@@ -185,6 +190,8 @@ var  diviseView:UIView?
         let writeLetterVC = UIStoryboard(name: "StationLetter", bundle: nil).instantiateViewControllerWithIdentifier("writeLetterVC")
             as! WriteLetterViewController
         writeLetterVC.title = "写邮件"
+ 
+        
         self.navigationController?.pushViewController(writeLetterVC, animated: true)
     }
     //三个按钮选择的状态
@@ -210,7 +217,7 @@ var  diviseView:UIView?
         
         //跟新是发件箱将stationArray改掉 随后跟新tableView,将其他按钮变为黑色 自己变为蓝色
         
-        self.sentBox?.setImage(UIImage(named: "收件箱未选中"), forState: .Normal)
+        self.sentBox?.setImage(UIImage(named: "发件箱未选中"), forState: .Normal)
         self.sentBox?.setTitleColor(UIColor.blackColor(), forState: .Normal)
         
         sender.setImage(UIImage(named: "收件箱选中"), forState: .Normal)

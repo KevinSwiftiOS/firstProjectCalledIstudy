@@ -61,7 +61,8 @@
                                                             <exclude reference="i43-RO-OKH"/>
                                                         </mask>
                                                     </variation>
-                                                    <variation key="heightClass=regular-widthClass=compact">
+                                                    <variation key="heightClass=regular-widthClass=compact" misplaced="YES">
+                                                        <rect key="frame" x="0.0" y="10" width="60" height="21"/>
                                                         <mask key="constraints">
                                                             <include reference="i43-RO-OKH"/>
                                                         </mask>
@@ -80,7 +81,8 @@
                                                             <exclude reference="eyK-eb-9BL"/>
                                                         </mask>
                                                     </variation>
-                                                    <variation key="heightClass=regular-widthClass=compact">
+                                                    <variation key="heightClass=regular-widthClass=compact" misplaced="YES">
+                                                        <rect key="frame" x="59" y="10" width="60" height="21"/>
                                                         <mask key="constraints">
                                                             <include reference="eyK-eb-9BL"/>
                                                         </mask>
@@ -99,7 +101,8 @@
                                                             <exclude reference="tyg-hE-9yM"/>
                                                         </mask>
                                                     </variation>
-                                                    <variation key="heightClass=regular-widthClass=compact">
+                                                    <variation key="heightClass=regular-widthClass=compact" misplaced="YES">
+                                                        <rect key="frame" x="119" y="10" width="60" height="21"/>
                                                         <mask key="constraints">
                                                             <include reference="tyg-hE-9yM"/>
                                                         </mask>
@@ -119,7 +122,8 @@
                                                             <exclude reference="LfQ-Tm-wso"/>
                                                         </mask>
                                                     </variation>
-                                                    <variation key="heightClass=regular-widthClass=compact">
+                                                    <variation key="heightClass=regular-widthClass=compact" misplaced="YES">
+                                                        <rect key="frame" x="184" y="8" width="48" height="27"/>
                                                         <mask key="constraints">
                                                             <include reference="LfQ-Tm-wso"/>
                                                         </mask>
@@ -277,8 +281,12 @@
                                 </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
-                                    <constraint firstItem="f3C-Cv-vZq" firstAttribute="leading" secondItem="3qr-iQ-uvi" secondAttribute="leading" id="2Dp-Kv-acu"/>
-                                    <constraint firstAttribute="trailing" secondItem="cpb-Be-fca" secondAttribute="trailing" id="IhW-RG-Vnu"/>
+                                    <constraint firstItem="f3C-Cv-vZq" firstAttribute="leading" secondItem="3qr-iQ-uvi" secondAttribute="leading" id="2Dp-Kv-acu">
+                                        <variation key="heightClass=regular-widthClass=compact" constant="5"/>
+                                    </constraint>
+                                    <constraint firstAttribute="trailing" secondItem="cpb-Be-fca" secondAttribute="trailing" id="IhW-RG-Vnu">
+                                        <variation key="heightClass=regular-widthClass=compact" constant="5"/>
+                                    </constraint>
                                     <constraint firstItem="f3C-Cv-vZq" firstAttribute="top" secondItem="3qr-iQ-uvi" secondAttribute="top" id="LZ4-Dm-Rzz"/>
                                     <constraint firstAttribute="height" constant="21" id="NVL-dw-Dsk"/>
                                     <constraint firstItem="f3C-Cv-vZq" firstAttribute="width" secondItem="3qr-iQ-uvi" secondAttribute="width" multiplier="0.5" id="R63-Nw-ty8"/>

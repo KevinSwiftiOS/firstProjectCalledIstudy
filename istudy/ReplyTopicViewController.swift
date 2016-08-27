@@ -113,7 +113,7 @@ class ReplyTopicViewController: UIViewController,UITableViewDelegate,UITableView
         let date = "于" + (tempDate.substringWithRange(yearRange) + "年" + tempDate.substringWithRange(monthRange) + "月" + tempDate.substringWithRange(dateRange)  + "日 "  + "发表")
         cell.dateLabel?.text = date
         
-        cell.contectWebView?.loadHTMLString(self.items[indexPath.row].valueForKey("content") as! String, baseURL: nil)
+        cell.contectWebView?.loadHTMLString(imageDecString + (self.items[indexPath.row].valueForKey("content") as! String), baseURL: nil)
         cell.cellTag = indexPath.row
         }
         return cell
@@ -144,9 +144,8 @@ class ReplyTopicViewController: UIViewController,UITableViewDelegate,UITableView
         
         var content:String = self.writeTextView!.text
         for i in 0 ..< self.photos.count{
-            let widthAndHeight = " width = " + "\(50)" + " height = " + "\(50)"
-            let base64String = imageToBae64(self.photos[i] as! UIImage)
-            let imgHtml = "<img"  + widthAndHeight +  " src = " + "\"" +  "data:image/jpg;base64," + base64String +  "\"" + "/>"
+                   let base64String = imageToBae64(self.photos[i] as! UIImage)
+            let imgHtml = "<img"  +  " src = " + "\"" +  "data:image/jpg;base64," + base64String +  "\"" + "/>"
             content += imgHtml
         }
         let dic:[String:AnyObject] = ["subject":"",
@@ -154,7 +153,9 @@ class ReplyTopicViewController: UIViewController,UITableViewDelegate,UITableView
                                       "content":content,
                                       "forumtypeid":"",
                                       "projectid":"\(self.projectid)"]
-        
+        if(content == ""){
+            ProgressHUD.showError("回复不能为空")
+        }else{
         var result = String()
         //先转化成data数据流 随后再转化成base64的字符串
         do{
@@ -190,6 +191,7 @@ class ReplyTopicViewController: UIViewController,UITableViewDelegate,UITableView
                     })
                 }
             }
+        }
         }
     }
     //键盘消失的动作

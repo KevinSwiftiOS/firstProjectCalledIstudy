@@ -89,8 +89,8 @@ class SecuritySettingsViewController: UIViewController {
     func keyboardWillShowNotification(notifacition:NSNotification) {
         //做一个动画
         UIView.animateWithDuration(0.3) { () -> Void in
-            self.topLayout.constant = 35
-            self.labelTopLayout.constant = 35
+            self.topLayout.constant = 50
+            self.labelTopLayout.constant = 50
                         //加载新的约束
             self.view.layoutIfNeeded()
         }

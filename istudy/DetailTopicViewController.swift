@@ -29,7 +29,7 @@ class DetailTopicViewController: UIViewController,UIWebViewDelegate,UIGestureRec
         self.view.multipleTouchEnabled = true
         self.webView?.userInteractionEnabled = true
         self.webView?.multipleTouchEnabled = true
-        self.webView?.loadHTMLString(detailString, baseURL: nil)
+        self.webView?.loadHTMLString(imageDecString + detailString, baseURL: nil)
         self.automaticallyAdjustsScrollViewInsets = false
         replyBtn.setFAText(prefixText: "", icon: FAType.FAReply, postfixText: "", size: 25, forState: .Normal, iconSize: 25)
         replyBtn.setTitleColor(UIColor.whiteColor(), forState: .Normal)

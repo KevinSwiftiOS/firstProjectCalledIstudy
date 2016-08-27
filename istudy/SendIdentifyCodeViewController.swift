@@ -75,9 +75,12 @@ class SendIdentifyCodeViewController: UIViewController {
                 resetPassordVC.token = json["info"]["token"].string!
                 self.navigationController?.pushViewController(resetPassordVC, animated: true)
             }else{
+    self.timer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(SendIdentifyCodeViewController.updateTime(_:)), userInfo: nil, repeats: true)
                 ProgressHUD.showError("验证失败")
+                
             }
         case .Failure(_):
+        self.timer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(SendIdentifyCodeViewController.updateTime(_:)), userInfo: nil, repeats: true)
             ProgressHUD.showError("验证失败")
         }
         }

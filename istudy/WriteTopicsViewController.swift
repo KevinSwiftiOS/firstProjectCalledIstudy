@@ -109,15 +109,16 @@ class WriteTopicsViewController: UIViewController,UICollectionViewDelegate,UICol
         
         //循环将图片数组中的值取出 转化成html格式
         for i in 0 ..< self.photos.count{
-            let widthAndHeight = " width = " + "\(50)" + " height = " + "\(50)"
-            let base64String = imageToBae64(self.photos[i] as! UIImage)
-            let imgHtml = "<img"  + widthAndHeight +  " src = " + "\"" +  "data:image/jpg;base64," + base64String +  "\"" + "/>"
+        let base64String = imageToBae64(self.photos[i] as! UIImage)
+            let imgHtml = "<img"  +  " src = " + "\"" +  "data:image/jpg;base64," + base64String +  "\"" + "/>"
             
             tempHtmlString += imgHtml
         }
         
         let subject = self.titleTextField.text
-        
+        if(subject == "" || tempHtmlString == ""){
+            ProgressHUD.showError("发帖不能为空")
+        }else{
         let dic:[String:AnyObject] = ["subject":subject!,
                                       "parentid":"",
                                       "content":tempHtmlString,
@@ -153,6 +154,7 @@ class WriteTopicsViewController: UIViewController,UICollectionViewDelegate,UICol
                     self.navigationController?.popViewControllerAnimated(true)
                 }
             }
+        }
         }
     }
     //collectionView中的一些代理
