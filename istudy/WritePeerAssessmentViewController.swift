@@ -147,7 +147,7 @@ var questions = NSMutableArray()
                                    dic1.setObject("", forKey: "comments")
                             }
                         dic1.setObject(0, forKey: "isauthorvisible")
-                            let rules = self.items[tempOut].valueForKey("rules") as! NSMutableArray
+                            let rules = self.items[tempOut].valueForKey("rules") as! NSArray
                             let arr1 = NSMutableArray()
                             for tempIn in 0 ..< rules.count{
                                 let dic2 = NSMutableDictionary()
@@ -197,7 +197,7 @@ var questions = NSMutableArray()
         peerAssermentLabel.tag = 100000
         self.scrollView.addSubview(peerAssermentLabel)
         self.totalHeight += 22
-        let rules = self.items[index].valueForKey("rules") as! NSMutableArray
+        let rules = self.items[index].valueForKey("rules") as! NSArray
         //循环加载rules
         let scores = self.questions[index].valueForKey("rules") as! NSMutableArray
         for i in 0 ..< rules.count{
@@ -342,7 +342,7 @@ var questions = NSMutableArray()
     }
     //pickerView的一些代理
     func pickerView(pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-        let rules = self.items[index].valueForKey("rules") as! NSMutableArray
+        let rules = self.items[index].valueForKey("rules") as! NSArray
         let tempIndex = pickerView.tag - 1000
        let totalscore =  rules[tempIndex].valueForKey("totalscore") as! NSInteger
         return totalscore + 1

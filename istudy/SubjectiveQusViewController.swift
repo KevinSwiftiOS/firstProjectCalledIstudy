@@ -181,8 +181,9 @@ class SubjectiveQusViewController: UIViewController,AJPhotoPickerProtocol,UINavi
         self.qusDes.loadHTMLString(contenString, baseURL: nil)
         self.qusDes.delegate = self
         self.qusKind?.text = self.totalItems[kindOfQusIndex].valueForKey("title") as! String +  "(" +
-            "\(self.items[index].valueForKey("totalscore") as! NSNumber)" + "分/题)"
-        self.currentQus!.text = "\(index + 1)" + "/" + "\(self.items.count)"
+             "\(index + 1)" + "/" + "\(self.items.count)" + ")"
+        self.currentQus!.text =  "\(self.items[index].valueForKey("totalscore") as! NSNumber)" + "分"
+        
         tap.delegate = self
         self.qusDes.addGestureRecognizer(tap)
         tap1.delegate = self
@@ -351,7 +352,7 @@ class SubjectiveQusViewController: UIViewController,AJPhotoPickerProtocol,UINavi
             imagePicker.assetsFilter = ALAssetsFilter.allPhotos()
             imagePicker.showEmptyGroups = true
             imagePicker.delegate = self
-            imagePicker.selectionFilter = NSPredicate(block: { (evaluatedObjecy:AnyObject, dic:[String : AnyObject]?) -> Bool in
+            imagePicker.selectionFilter = NSPredicate(block: { (evaluatedObjecy:AnyObject?, dic:[String : AnyObject]?) -> Bool in
                 return true
             })
             menu.presentViewController(imagePicker, animated: true, completion: nil)

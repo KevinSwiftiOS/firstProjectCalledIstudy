@@ -416,8 +416,8 @@ class CompletionQusViewController: UIViewController,UITextFieldDelegate,UIWebVie
         }
         if(temp != index){
                        self.initView()
-            self.currentQus?.text = "\(self.index + 1)" + "/" + "\(self.items.count)"
-            self.currentQus?.text = "\(index + 1)" + "/" + "\(self.items.count)"
+//            self.currentQus?.text = "\(self.index + 1)" + "/" + "\(self.items.count)"
+//            self.currentQus?.text = "\(index + 1)" + "/" + "\(self.items.count)"
             
         }
     }
@@ -425,8 +425,8 @@ class CompletionQusViewController: UIViewController,UITextFieldDelegate,UIWebVie
     //拆分组装标准答案 就有几个cell
     func initView(){
         self.tableHeaderWebViewHeight = 0
-        self.currentQus?.text = "\(self.index + 1)" + "/" + "\(self.items.count)"
-        self.qusScore?.text = self.totalitems[kindOfQusIndex].valueForKey("title") as! String + "(" + "\(self.items[index].valueForKey("totalscore") as! NSNumber)" + "分/题)"
+        self.currentQus?.text = "\(self.items[index].valueForKey("totalscore") as! NSNumber)" + "分"
+        self.qusScore?.text = self.totalitems[kindOfQusIndex].valueForKey("title") as! String + "(" +  "\(self.index + 1)" + "/" + "\(self.items.count)" + ")"
      let contentString = cssDesString + (self.items[index].valueForKey("content") as! String)
         self.queDes.loadHTMLString(contentString,
                                    baseURL: nil)

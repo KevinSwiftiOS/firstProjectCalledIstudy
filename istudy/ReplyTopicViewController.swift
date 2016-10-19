@@ -283,7 +283,7 @@ class ReplyTopicViewController: UIViewController,UITableViewDelegate,UITableView
         photoPicker.assetsFilter = ALAssetsFilter.allPhotos()
         photoPicker.showEmptyGroups = true
         photoPicker.delegate = self
-        photoPicker.selectionFilter = NSPredicate(block: { (evaluatedObjecy:AnyObject, dic:[String : AnyObject]?) -> Bool in
+        photoPicker.selectionFilter = NSPredicate(block: { (evaluatedObjecy:AnyObject?, dic:[String : AnyObject]?) -> Bool in
             return true
         })
         self.presentViewController(photoPicker, animated: true, completion: nil)

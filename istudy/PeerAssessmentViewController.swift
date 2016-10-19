@@ -98,7 +98,7 @@ class PeerAssessmentViewController: UIViewController ,UITableViewDataSource,UITa
                 cell.peerBtn?.setTitle("评论", forState: .Normal)
             }else{
                 cell.peerBtn?.enabled = false
-                cell.peerBtn?.setTitle("已结束评论", forState: .Normal)
+                cell.peerBtn?.setTitle("已结束", forState: .Normal)
             }
         }else{
             cell.peerBtn?.setTitle("评论", forState: .Normal)

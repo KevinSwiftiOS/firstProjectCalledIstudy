@@ -256,7 +256,7 @@ public extension UIImage {
         attributedString.drawInRect(CGRectMake(0, (size.height - fontSize) / 2, size.width, fontSize))
         let image = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()
-        self.init(CGImage: image.CGImage!, scale: image.scale, orientation: image.imageOrientation)
+        self.init(CGImage: image!.CGImage!, scale: image!.scale, orientation: image!.imageOrientation)
     }
 }
 
@@ -307,7 +307,7 @@ private class FontLoader {
                 let data = NSData(contentsOfURL: fontURL)!
                 
                 let provider = CGDataProviderCreateWithCFData(data)
-                let font = CGFontCreateWithDataProvider(provider)!
+                let font = CGFontCreateWithDataProvider(provider!)
                 
                 var error: Unmanaged<CFError>?
                 if !CTFontManagerRegisterGraphicsFont(font, &error) {

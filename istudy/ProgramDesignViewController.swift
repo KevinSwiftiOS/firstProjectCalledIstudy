@@ -217,8 +217,10 @@ class ProgramDesignViewController: UIViewController,UIWebViewDelegate,UIGestureR
             view.removeFromSuperview()
         }
       
-        self.kindOfQusLabel?.text = self.totalitems[kindOfQusIndex].valueForKey("title") as! String + "(" + "\(self.items[index].valueForKey("totalscore") as! NSNumber)" + "分/题)"
-        self.currentQusLabel?.text = "\(self.index + 1)" + "/" + "\(self.items.count)"
+        self.kindOfQusLabel?.text = self.totalitems[kindOfQusIndex].valueForKey("title") as! String + "(" +        "\(self.index + 1)" + "/" + "\(self.items.count)" + ")"
+        self.currentQusLabel?.text = "\(self.items[index].valueForKey("totalscore") as! NSNumber)" + "分"
+
+     
         let contentString = cssDesString + (self.items[index].valueForKey("content") as! String)
         self.qusDesWebView.loadHTMLString(contentString, baseURL: nil)
 

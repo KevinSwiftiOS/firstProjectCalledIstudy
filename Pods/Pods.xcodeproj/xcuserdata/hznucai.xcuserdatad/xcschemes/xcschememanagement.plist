@@ -35,7 +35,7 @@
 		<key>Pods-istudy.xcscheme</key>
 		<dict>
 			<key>isShown</key>
-			<false/>
+			<true/>
 			<key>orderHint</key>
 			<integer>13</integer>
 		</dict>

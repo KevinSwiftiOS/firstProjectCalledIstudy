@@ -391,8 +391,10 @@ class MultipleChoiceViewController: UIViewController,UIWebViewDelegate,UITableVi
     //初始化界面
     func initView() {
     //加载当前是什么题型和当前是第几题
-        self.kindOfQuesLabel?.text = self.totalitems[kindOfQusIndex].valueForKey("title") as! String + "(" + "\(self.items[index].valueForKey("totalscore") as! NSNumber)" + "分/题)"
-        self.currentQus?.text = "\(index + 1)" + "/" + "\(self.items.count)"
+        self.kindOfQuesLabel?.text = self.totalitems[kindOfQusIndex].valueForKey("title") as! String + "(" +         "\(index + 1)" + "/" + "\(self.items.count)" + ")"
+        self.currentQus?.text = "\(self.items[index].valueForKey("totalscore") as! NSNumber)" + "分"
+
+    
         //有没有选择按钮也要进行加载
         //除了按钮外的ABCDlabel选项和每个选项的内容进行加载 根据option某是否存在而进行加载
         

@@ -327,8 +327,9 @@ func showAct(){
          }
 //初始化视图的动作
     func initView() {
-    self.kindOfQuesLabel?.text = self.totalItems[kindOfQusIndex].valueForKey("title") as! String + "(" + "\(self.items[index].valueForKey("totalscore") as! NSNumber)" + "分/题)"
-        self.currentQus?.text = "\(index + 1)" + "/" + "\(self.items.count)"
+    self.kindOfQuesLabel?.text = self.totalItems[kindOfQusIndex].valueForKey("title") as! String + "(" +  "\(index + 1)" + "/" + "\(self.items.count)" + ")"
+        self.currentQus?.text = "\(self.items[index].valueForKey("totalscore") as! NSNumber)" + "分"
+        
         var contentString = self.items[index].valueForKey("content") as! String
         contentString = cssDesString + contentString + "</p>"
 

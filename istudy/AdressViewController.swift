@@ -10,6 +10,8 @@ import UIKit
 import CoreLocation
 import MapKit
 class AdressViewController: UIViewController,CLLocationManagerDelegate,HZAreaPickerDelegate,UITextFieldDelegate{
+    @IBOutlet weak var customBtn:UIButton!
+    @IBOutlet weak var systemBtn:UIButton!
     @IBOutlet weak var addressTextField:UITextField?
     @IBOutlet weak var topLayout: NSLayoutConstraint!
     //选择框
@@ -22,6 +24,10 @@ class AdressViewController: UIViewController,CLLocationManagerDelegate,HZAreaPic
     let userDefault = NSUserDefaults.standardUserDefaults()
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.customBtn.layer.cornerRadius = 10.0
+        self.customBtn.layer.masksToBounds = true
+        self.systemBtn.layer.cornerRadius = 10.0
+        self.systemBtn.layer.masksToBounds = true
         //键盘出现时的挡住问题
         XKeyBoard.registerKeyBoardHide(self)
         XKeyBoard.registerKeyBoardShow(self)

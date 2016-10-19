@@ -61,7 +61,7 @@ class ComplexQusViewController: UIViewController,UITableViewDelegate,UITableView
     //大题目
     var items = NSArray()
     //小题目
-    var subQusItems = NSMutableArray()
+    var subQusItems = NSArray()
     //整个大题目是到第几题
     var index = 0
     //小题目到第几题
@@ -146,7 +146,7 @@ class ComplexQusViewController: UIViewController,UITableViewDelegate,UITableView
                 self.totalBigSelfAnswers.addObject("")
             }
         }
-        self.subQusItems = self.items[index].valueForKey("subquestions") as! NSMutableArray
+        self.subQusItems = NSMutableArray(array:  self.items[index].valueForKey("subquestions") as! NSArray)
         self.tableView.delegate = self
         self.tableView.dataSource = self
         self.tableView.tableFooterView = UIView()
@@ -225,15 +225,17 @@ class ComplexQusViewController: UIViewController,UITableViewDelegate,UITableView
         self.subQusStandAnswer.removeAllObjects()
         
         //小题目的初始化
-        self.subQusItems = self.items[index].valueForKey("subquestions") as! NSMutableArray
+        self.subQusItems = self.items[index].valueForKey("subquestions") as! NSArray
         for i in 0 ..< self.subQusItems.count{
             //初始化答案
             self.subQusStandAnswer.addObject(self.subQusItems[i].valueForKey("strandanswer") as! String)
             
         }
-        self.kindOfQusLabel?.text = self.totalItems[kindOfQusIndex].valueForKey("title") as! String + "(" + "\(self.items[index].valueForKey("totalscore") as! NSNumber)" + "分/题)"
-        self.currentQusLabel?.text = "\(self.index + 1)" + "/" + "\(self.items.count)"
-        //小题目的默认为第一题
+        self.kindOfQusLabel?.text = self.totalItems[kindOfQusIndex].valueForKey("title") as! String + "(" +   "\(self.index + 1)" + "/" + "\(self.items.count)"
+ + ")"
+        self.currentQusLabel?.text = "\(self.items[index].valueForKey("totalscore") as! NSNumber)" + "分"
+
+                  //小题目的默认为第一题
         self.subIndex = 0
         //每一道大题目的范围给他拿掉
         self.everySubQusRange.removeAllObjects()
@@ -288,13 +290,13 @@ class ComplexQusViewController: UIViewController,UITableViewDelegate,UITableView
         //初始化小题的内容
         switch self.subQusItems[subIndex].valueForKey("type") as! String {
         case "SINGLE_CHIOCE":
-            self.kindofSubQusLabel?.text = "选择题" + "(" + "\(self.subQusItems[subIndex].valueForKey("totalscore") as! NSNumber)" + "分/题)"
+            self.kindofSubQusLabel?.text = "选择题" + "(" + "\(self.subIndex + 1)" + "/" + "\(self.subQusItems.count)" + ")"
         case "MULIT_CHIOCE":
-            self.kindofSubQusLabel?.text = "多选题" + "(" + "\(self.subQusItems[subIndex].valueForKey("totalscore") as! NSNumber)" + "分/题)"
+            self.kindofSubQusLabel?.text = "多选题" + "(" + "\(self.subIndex + 1)" + "/" + "\(self.subQusItems.count)" + ")"
         case "FILL_BLANK":
-            self.kindofSubQusLabel?.text = "填空题" + "(" + "\(self.subQusItems[subIndex].valueForKey("totalscore") as! NSNumber)" + "分/题)"
+            self.kindofSubQusLabel?.text = "填空题" + "(" + "\(self.subIndex + 1)" + "/" + "\(self.subQusItems.count)" + ")"
         case "JUDGE":
-            self.kindofSubQusLabel?.text = "判断题" + "(" + "\(self.subQusItems[subIndex].valueForKey("totalscore") as! NSNumber)" + "分/题)"
+            self.kindofSubQusLabel?.text = "判断题" + "(" + "\(self.subIndex + 1)" + "/" + "\(self.subQusItems.count)" + ")"
             
         default:
             break
@@ -302,7 +304,7 @@ class ComplexQusViewController: UIViewController,UITableViewDelegate,UITableView
         }
    
         
-        self.currentSubQusLabel?.text = "\(self.subIndex + 1)" + "/" + "\(self.subQusItems.count)"
+        self.currentSubQusLabel?.text = "\(self.subQusItems[subIndex].valueForKey("totalscore") as! NSNumber)" + "分"
         //tableView的headerView 小题目的描述
         subWebView = UIWebView(frame: CGRectMake(0,0,SCREEN_WIDTH,1))
         self.tableView.tableHeaderView = subWebView
@@ -821,7 +823,7 @@ self.tableView.beginUpdates()
             totalTableViewHeight += CGFloat(self.cellHeights[i] as! NSNumber)
         }
         
-        let rect = XKeyBoard.returnKeyBoardWindow(notifacition)
+        _ = XKeyBoard.returnKeyBoardWindow(notifacition)
             //记录tablView总共的高度
     
         for i in 0 ..< self.cellHeights.count{
