@@ -283,19 +283,19 @@ class CompletionQusViewController: UIViewController,UITextFieldDelegate,UIWebVie
                 switch response.result{
                 case .Success(let Value):
                     let json = JSON(Value)
-                    if(json["info"]["Success"].bool != true){
+                    if(json["info"]["success"].bool != true){
                         ProgressHUD.showError("阅卷失败")
-                        print(json["ErrorMessage"].string)
+                        print("阅卷失败")
                     }
                     else{
-                        let judgeItems = json["info"]["JudgeResultItemSet"].arrayObject! as NSArray
+                        let judgeItems = json["info"]["points"].arrayObject! as NSArray
                         var totalString = "答案:"
                 //设置红绿字的范围
                 let rangeArray = NSMutableArray()
                 for i in 0 ..< judgeItems.count{
                 let range = NSMakeRange(3 + i * 3,2)
                 rangeArray.addObject(range)
-                        if(judgeItems[i].valueForKey("Right") as! Bool == true){
+                        if(judgeItems[i].valueForKey("right") as! Bool == true){
                             totalString += "正确" + " "
                             
                         }else{
@@ -307,7 +307,7 @@ class CompletionQusViewController: UIViewController,UITextFieldDelegate,UIWebVie
                 //再加得分
                         totalString += "得分:"
                         for i in 0 ..< judgeItems.count{
-                            totalString += "\(judgeItems[i].valueForKey("GotScore") as! NSNumber)" + "/" + "\(judgeItems[i].valueForKey("FullScore") as! NSNumber)" + " "
+                            totalString += "\(judgeItems[i].valueForKey("gotscore") as! NSNumber)" + "/" + "\(judgeItems[i].valueForKey("fullscore") as! NSNumber)" + " "
                         }
                         
                         //随后再加载标准答案
@@ -315,7 +315,7 @@ class CompletionQusViewController: UIViewController,UITextFieldDelegate,UIWebVie
                         if((self.keyVisible && !self.isOver) || (self.isOver && self.viewOneWithAnswerKey)){
                         totalString += "\n" + "答案:"
                         for i in 0 ..< judgeItems.count{
-                            totalString += (judgeItems[i].valueForKey("Key") as! String) + "\n"
+                            totalString += (judgeItems[i].valueForKey("key") as! String) + "\n"
                         }
                         }else{
                             totalString += "\n" + "标准答案未开放"
@@ -324,7 +324,7 @@ class CompletionQusViewController: UIViewController,UITextFieldDelegate,UIWebVie
                     //设置颜色
                         for i in 0 ..< rangeArray.count{
                             let range = rangeArray[i] as! NSRange
-                            if(judgeItems[i].valueForKey("Right") as! Bool == true){
+                            if(judgeItems[i].valueForKey("right") as! Bool == true){
                                 totalAttriString.addAttribute(NSForegroundColorAttributeName, value: UIColor.greenColor(), range: range)
                             }else{
                                 totalAttriString.addAttribute(NSForegroundColorAttributeName, value: UIColor.redColor(), range: range)

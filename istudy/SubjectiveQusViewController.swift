@@ -634,8 +634,12 @@ class SubjectiveQusViewController: UIViewController,AJPhotoPickerProtocol,UINavi
         self.contentScrollView?.addSubview(self.answerWebView)
         
         let currentDate = NSDate()
+        //判断是支持附件上传的题目还是可以图文上传的题目
+        if(self.items[index].valueForKey("designanswermode")?.integerValue == 1){
+            ProgressHUD.showError("不支持文件上传,请登录网站回答本题")
+        }
         let result:NSComparisonResult = currentDate.compare(endDate)
-        if result == .OrderedAscending{
+        if (result == .OrderedAscending && self.items[index].valueForKey("designanswermode")?.integerValue == 0){
             self.isOver = false
             //加载textView 和 collectionView
             let answerTextLabel = UILabel(frame: CGRectMake(5, totalHeight, SCREEN_WIDTH, 21))

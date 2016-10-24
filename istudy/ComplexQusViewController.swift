@@ -285,8 +285,10 @@ class ComplexQusViewController: UIViewController,UITableViewDelegate,UITableView
     }
     //每个subwebview的高度
     var subWebViewHeight:CGFloat = 0.0
+
     func initSubView() {
-        self.tableView.keyboardDismissMode = .OnDrag
+        subWebViewHeight = 0.0
+                self.tableView.keyboardDismissMode = .OnDrag
         //初始化小题的内容
         switch self.subQusItems[subIndex].valueForKey("type") as! String {
         case "SINGLE_CHIOCE":
@@ -349,7 +351,8 @@ class ComplexQusViewController: UIViewController,UITableViewDelegate,UITableView
             }
         }
          beforeEditing = self.oneQusSubSelfAnswers[subIndex] as! String
-        self.tableView.frame = CGRectMake(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT)
+        //选择题重置这里出现bug
+      //  self.tableView.frame = CGRectMake(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT)
         //是否已经阅过卷
         if(!isOver){
             if(self.disPlayMarkTextArray[subIndex] as! String != ""){
@@ -956,14 +959,14 @@ self.tableView.beginUpdates()
                 switch response.result{
                 case .Success(let Value):
                     let json = JSON(Value)
-                    if(json["info"]["Success"].bool != true){
+                    if(json["info"]["success"].bool != true){
                         ProgressHUD.showError("阅卷失败")
-                        print(json["ErrorMessage"].string)
+                       print("阅卷失败")
                     }
                     else{
-                        let judgeItems = json["info"]["JudgeResultItemSet"].arrayObject! as NSArray
+                        let judgeItems = json["info"]["points"].arrayObject! as NSArray
                         var totalString = "答案:"
-                        if(judgeItems[startRange].valueForKey("Right") as! Bool == true){
+                        if(judgeItems[startRange].valueForKey("right") as! Bool == true){
                             totalString += "正确" + "\n"
                             
                         }else{
@@ -971,23 +974,23 @@ self.tableView.beginUpdates()
                         }
                         totalString += "知识点:"  + (self.items[self.index].valueForKey("knowledge") as! String) + "\n"
                         
-                        totalString += "得分:" + "\(judgeItems[startRange].valueForKey("GotScore") as! NSNumber)"
-                            + "/" + "\(judgeItems[startRange].valueForKey("FullScore") as! NSNumber)" + "\n"
+                        totalString += "得分:" + "\(judgeItems[startRange].valueForKey("gotscore") as! NSNumber)"
+                            + "/" + "\(judgeItems[startRange].valueForKey("fullscore") as! NSNumber)" + "\n"
                         
-                        if((self.keyVisible && !self.isOver) || (self.isOver && self.viewOneWithAnswerKey)){                            totalString += "答案:" + (judgeItems[startRange].valueForKey("Key") as! String)
+                        if((self.keyVisible && !self.isOver) || (self.isOver && self.viewOneWithAnswerKey)){                            totalString += "答案:" + (judgeItems[startRange].valueForKey("key") as! String)
                         }
                         else{
                             totalString += "标准答案未开放" + "\n"
                             
                         }
-                        if(judgeItems[startRange].valueForKey("Message") as? String != nil && judgeItems[startRange].valueForKey("Message") as! String != "") {
-                            totalString += "信息:" + (judgeItems[startRange].valueForKey("Message") as! String)
+                        if(judgeItems[startRange].valueForKey("message") as? String != nil && judgeItems[startRange].valueForKey("message") as! String != "") {
+                            totalString += "信息:" + (judgeItems[startRange].valueForKey("message") as! String)
                         }
                         self.resultTextView = UITextView(frame: CGRectMake(10, 0, SCREEN_WIDTH - 20, 200))
                         //设置字体
                         let totalAttriString = NSMutableAttributedString(string: totalString)
                         let range = NSMakeRange(3, 2)
-                        if(judgeItems[startRange].valueForKey("Right") as! Bool == true){
+                        if(judgeItems[startRange].valueForKey("right") as! Bool == true){
                             totalAttriString.addAttribute(NSForegroundColorAttributeName, value: UIColor.greenColor(), range: range)
                         }else{
                             totalAttriString.addAttribute(NSForegroundColorAttributeName, value: UIColor.redColor(), range: range)
@@ -1037,19 +1040,19 @@ self.tableView.beginUpdates()
                 switch response.result{
                 case .Success(let Value):
                     let json = JSON(Value)
-                    if(json["info"]["Success"].bool != true){
+                    if(json["info"]["success"].bool != true){
                         ProgressHUD.showError("阅卷失败")
-                        print(json["ErrorMessage"].string)
+                        print("阅卷失败")
                     }
                     else{
-                        let judgeItems = json["info"]["JudgeResultItemSet"].arrayObject! as NSArray
+                        let judgeItems = json["info"]["points"].arrayObject! as NSArray
                         var totalString = "答案:"
                         //设置红绿字的范围
                         let rangeArray = NSMutableArray()
                         for i in startRange ..< endRange{
                             let range = NSMakeRange(3 + (i - startRange) * 3,2)
                             rangeArray.addObject(range)
-                            if(judgeItems[i].valueForKey("Right") as! Bool == true){
+                            if(judgeItems[i].valueForKey("right") as! Bool == true){
                                 totalString += "正确" + " "
                                 
                             }else{
@@ -1061,7 +1064,7 @@ self.tableView.beginUpdates()
                         //再加得分
                         totalString += "得分:"
                         for i in startRange ..< endRange{
-                            totalString += "\(judgeItems[i].valueForKey("GotScore") as! NSNumber)" + "/" + "\(judgeItems[i].valueForKey("FullScore") as! NSNumber)" + " "
+                            totalString += "\(judgeItems[i].valueForKey("gotscore") as! NSNumber)" + "/" + "\(judgeItems[i].valueForKey("fullscore") as! NSNumber)" + " "
                         }
                         //随后再加载标准答案
                                              //查看标准答案是否已经开放
@@ -1069,7 +1072,7 @@ self.tableView.beginUpdates()
                             totalString += "\n" + "答案:"
 
                         for i in startRange ..< endRange{
-                            totalString += (judgeItems[i].valueForKey("Key") as! String) + "\n"
+                            totalString += (judgeItems[i].valueForKey("key") as! String) + "\n"
                         }
                           }else{
                             totalString += "\n" + "标准答案未开放"
@@ -1078,7 +1081,7 @@ self.tableView.beginUpdates()
                         //设置颜色
                         for i in 0 ..< rangeArray.count{
                             let range = rangeArray[i] as! NSRange
-                            if(judgeItems[i + startRange].valueForKey("Right") as! Bool == true){
+                            if(judgeItems[i + startRange].valueForKey("right") as! Bool == true){
                                 totalAttriString.addAttribute(NSForegroundColorAttributeName, value: UIColor.greenColor(), range: range)
                             }else{
                                 totalAttriString.addAttribute(NSForegroundColorAttributeName, value: UIColor.redColor(), range: range)

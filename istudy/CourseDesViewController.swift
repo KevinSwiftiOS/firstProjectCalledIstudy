@@ -294,6 +294,10 @@ sender.setTitleColor(UIColor.whiteColor(), forState: .Normal)
                             userDefault.setValue(json["info"]["cls"].string, forKey: "cls")
                             userDefault.setValue(json["info"]["phone"].string, forKey: "phone")
                             userDefault.setValue(json["info"]["email"].string, forKey: "email")
+                            //qq 邮编 地址栏的设置
+                            userDefault.setValue(json["info"]["addr"].string, forKey: "address")
+                            userDefault.setValue(json["info"]["qq"].string, forKey: "QQNumber")
+                            userDefault.setValue(json["info"]["zipcode"].string, forKey: "postCode")
                             let authDic :[String:AnyObject] = ["authtoken":userDefault.valueForKey("authtoken") as! String]
                             //设置头像
                             userDefault.setValue(json["info"]["avtarurl"].string, forKey: "avtarurl")

@@ -314,6 +314,7 @@ class TranslateViewController: UIViewController{
                         ProgressHUD.dismiss()
                         self.totalItems = json["items"].arrayObject! as NSArray
                         self.kindOfQusLabel?.text = self.totalItems[self.kindOfQusIndex].valueForKey("title") as? String
+                      
                         //左滑 返回上一个界面 右滑 到下一种提醒
                         let leftSwipe = UISwipeGestureRecognizer(target: self, action: #selector(TranslateViewController.goToNewKindQus(_:)))
                         leftSwipe.direction = .Left

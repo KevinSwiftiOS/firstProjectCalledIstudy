@@ -78,6 +78,10 @@ userDefaults.setValue(json["info"]["cls"].string, forKey: "cls")
                     
 userDefaults.setValue(json["info"]["phone"].string, forKey: "phone")
 userDefaults.setValue(json["info"]["email"].string, forKey: "email")
+        //qq 邮编 地址栏的设置
+                    userDefaults.setValue(json["info"]["addr"].string, forKey: "address")
+                    userDefaults.setValue(json["info"]["qq"].string, forKey: "QQNumber")
+                    userDefaults.setValue(json["info"]["zipcode"].string, forKey: "postCode")
                     
 //设置头像
 userDefaults.setValue(json["info"]["avtarurl"].string, forKey: "avtarurl")

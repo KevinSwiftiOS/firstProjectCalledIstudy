@@ -203,14 +203,15 @@ func showAct(){
                     switch response.result{
                     case .Success(let Value):
                         let json = JSON(Value)
-                        if(json["info"]["Success"].bool != true){
+                       
+                        if(json["info"]["success"].bool != true){
                             ProgressHUD.showError("阅卷失败")
-                            print(json["ErrorMessage"].string)
+                             print("阅卷失败")
                         }
                         else{
-                            let judgeItems = json["info"]["JudgeResultItemSet"].arrayObject! as NSArray
+                            let judgeItems = json["info"]["points"].arrayObject! as NSArray
                             var totalString = "答案:"
-                            if(judgeItems[0].valueForKey("Right") as! Bool == true){
+                            if(judgeItems[0].valueForKey("right") as! Bool == true){
                                 totalString += "正确" + "\n"
                                 
                             }else{
@@ -218,23 +219,23 @@ func showAct(){
                             }
                             totalString += "知识点:"  + (self.items[self.index].valueForKey("knowledge") as! String) + "\n"
                             
-                            totalString += "得分:" + "\(judgeItems[0].valueForKey("GotScore") as! NSNumber)"
-                                + "/" + "\(judgeItems[0].valueForKey("FullScore") as! NSNumber)" + "\n"
+                            totalString += "得分:" + "\(judgeItems[0].valueForKey("gotscore") as! NSNumber)"
+                                + "/" + "\(judgeItems[0].valueForKey("fullscore") as! NSNumber)" + "\n"
                             
-                            if((self.keyVisible && !self.isOver) || (self.isOver && self.viewOneWithAnswerKey)){                            totalString += "答案:" + (judgeItems[0].valueForKey("Key") as! String)
+                            if((self.keyVisible && !self.isOver) || (self.isOver && self.viewOneWithAnswerKey)){                            totalString += "答案:" + (judgeItems[0].valueForKey("key") as! String)
                             }
                             else{
                                 totalString += "标准答案未开放" + "\n"
                                 
                             }
-                            if(judgeItems[0].valueForKey("Message") as? String != nil && judgeItems[0].valueForKey("Message") as! String != "") {
-                                totalString += "信息:" + (judgeItems[0].valueForKey("Message") as! String)
+                            if(judgeItems[0].valueForKey("message") as? String != nil && judgeItems[0].valueForKey("message") as! String != "") {
+                                totalString += "信息:" + (judgeItems[0].valueForKey("message") as! String)
                             }
                             self.resultTextView = UITextView(frame: CGRectMake(10, 0, SCREEN_WIDTH - 20, 200))
                             //设置字体
                             let totalAttriString = NSMutableAttributedString(string: totalString)
                             let range = NSMakeRange(3, 2)
-                            if(judgeItems[0].valueForKey("Right") as! Bool == true){
+                            if(judgeItems[0].valueForKey("right") as! Bool == true){
                                 totalAttriString.addAttribute(NSForegroundColorAttributeName, value: UIColor.greenColor(), range: range)
                             }else{
                                 totalAttriString.addAttribute(NSForegroundColorAttributeName, value: UIColor.redColor(), range: range)

@@ -79,6 +79,19 @@ class ChangeSexViewController: UIViewController {
         var cls = ""
         var name = ""
         var gender = ""
+        var QQNumber = ""
+        var postCode = ""
+        var address = ""
+        if(userDefault.valueForKey("QQNumber") as? String != nil && userDefault.valueForKey("QQNumber") as! String != ""){
+            QQNumber = userDefault.valueForKey("QQNumber") as! String
+        }
+        if(userDefault.valueForKey("postCode") as? String != nil && userDefault.valueForKey("postCode") as! String != ""){
+            postCode = userDefault.valueForKey("postCode") as! String
+        }
+        if(userDefault.valueForKey("address") as? String != nil && userDefault.valueForKey("address") as! String != ""){
+            address = userDefault.valueForKey("address") as! String
+        }
+
         if(userDefault.valueForKey("email") as? String != nil && userDefault.valueForKey("email") as! String != ""){
             email = userDefault.valueForKey("email") as! String
         }
@@ -104,7 +117,10 @@ class ChangeSexViewController: UIViewController {
             "cls": cls,
             "phone":phone,
             "email": email,
-            "avtarurl":avtarurl]          //进行base64字符串加密
+            "avtarurl":avtarurl,
+            "qq":QQNumber,
+            "zipcode":postCode,
+            "addr":address]          //进行base64字符串加密
         var result = String()
         do { let parameterData = try NSJSONSerialization.dataWithJSONObject(dicParam, options: NSJSONWritingOptions.PrettyPrinted)
             

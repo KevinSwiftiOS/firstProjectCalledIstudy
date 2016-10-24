@@ -150,7 +150,6 @@ class PeerAssessmentViewController: UIViewController ,UITableViewDataSource,UITa
                 }
             case .Failure(_):
                 ProgressHUD.showError("请求失败")
-                print(2)
                 dispatch_async(dispatch_get_main_queue(), {
                     self.items = NSArray()
                     self.tableView?.mj_header.endRefreshing()

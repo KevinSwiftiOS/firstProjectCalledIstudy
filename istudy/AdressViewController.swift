@@ -9,6 +9,8 @@
 import UIKit
 import CoreLocation
 import MapKit
+import Alamofire
+import SwiftyJSON
 class AdressViewController: UIViewController,CLLocationManagerDelegate,HZAreaPickerDelegate,UITextFieldDelegate{
     @IBOutlet weak var customBtn:UIButton!
     @IBOutlet weak var systemBtn:UIButton!
@@ -73,7 +75,83 @@ class AdressViewController: UIViewController,CLLocationManagerDelegate,HZAreaPic
          self.userDefault.setValue(self.address, forKey: "address")
         self.navigationController?.popViewControllerAnimated(true)
         ProgressHUD.showSuccess("保存成功")
-    }
+        let userDefault = NSUserDefaults.standardUserDefaults()
+        var email = ""
+        var phone = ""
+        var avtarurl = ""
+        var cls = ""
+        var name = ""
+        var gender = ""
+        var QQNumber = ""
+        var postCode = ""
+        var address = ""
+        if(userDefault.valueForKey("QQNumber") as? String != nil && userDefault.valueForKey("QQNumber") as! String != ""){
+            QQNumber = userDefault.valueForKey("QQNumber") as! String
+        }
+        if(userDefault.valueForKey("postCode") as? String != nil && userDefault.valueForKey("postCode") as! String != ""){
+            postCode = userDefault.valueForKey("postCode") as! String
+        }
+        if(userDefault.valueForKey("address") as? String != nil && userDefault.valueForKey("address") as! String != ""){
+            address = userDefault.valueForKey("address") as! String
+        }
+        
+        if(userDefault.valueForKey("email") as? String != nil && userDefault.valueForKey("email") as! String != ""){
+            email = userDefault.valueForKey("email") as! String
+        }
+        if(userDefault.valueForKey("phone") as? String != nil && userDefault.valueForKey("phone") as! String != ""){
+            phone = userDefault.valueForKey("phone") as! String
+        }
+        if(userDefault.valueForKey("avtarurl") as? String != nil && userDefault.valueForKey("avtarurl") as! String != ""){
+            avtarurl = userDefault.valueForKey("avtarurl") as! String
+        }
+        if(userDefault.valueForKey("cls") as? String != nil && userDefault.valueForKey("cls") as! String != ""){
+            cls = userDefault.valueForKey("cls") as! String
+        }
+        if(userDefault.valueForKey("name") as? String != nil && userDefault.valueForKey("name") as! String != ""){
+            name = userDefault.valueForKey("name") as! String
+        }
+        if(userDefault.valueForKey("gender") as? String != nil && userDefault.valueForKey("gender") as! String != ""){
+            gender = userDefault.valueForKey("gender") as! String
+        }
+        
+        let dicParam:[String:AnyObject] = [
+            "name":name,
+            "gender":gender,
+            "cls": cls,
+            "phone":phone,
+            "email": email,
+            "avtarurl":avtarurl,
+            "qq":QQNumber,
+            "zipcode":postCode,
+            "addr":address]
+        var result = String()
+        do { let parameterData = try NSJSONSerialization.dataWithJSONObject(dicParam, options: NSJSONWritingOptions.PrettyPrinted)
+            
+            result = parameterData.base64EncodedStringWithOptions(.Encoding64CharacterLineLength)
+        }catch{
+            ProgressHUD.showError("保存失败")
+        }
+        let parameter:[String:AnyObject] = ["authtoken":userDefault.valueForKey("authtoken") as! String,"data":result]
+        Alamofire.request(.POST, "http://dodo.hznu.edu.cn/api/saveprofile", parameters: parameter, encoding: ParameterEncoding.URL, headers: nil).responseJSON { (response) in
+            switch response.result{
+            case .Success(let Value):
+                let json = JSON(Value)
+                
+                if(json["retcode"].number == 0){
+                    ProgressHUD.showSuccess("保存成功")
+                    self.navigationController?.popViewControllerAnimated(true)
+                }else{
+                    ProgressHUD.showError("保存失败")
+                    print(json["retcode"].number)
+                }
+            case .Failure(_):ProgressHUD.showError("保存失败")
+            }
+        }
+        
+    
+
+}
+
     //当距离改变的时候回调用下面的代码
     func locationManager(manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         let currLocation = locations.last! as CLLocation

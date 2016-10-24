@@ -140,6 +140,7 @@ var questions = NSMutableArray()
                         for tempOut in 0 ..< self.items.count{
                             let dic1 = NSMutableDictionary()
                             dic1.setObject(self.items[tempOut].valueForKey("id") as! NSNumber, forKey: "questionid")
+                            print(self.items[tempOut].valueForKey("answerext")?.string)
                             if(self.items[tempOut].valueForKey("comments") as? String != nil &&
                                 self.items[tempOut].valueForKey("comments") as! String != ""){
                                     dic1.setObject(self.items[tempOut].valueForKey("comments") as! String, forKey: "comments")
