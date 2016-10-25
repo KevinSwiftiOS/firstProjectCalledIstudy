@@ -306,6 +306,7 @@ class TranslateViewController: UIViewController{
             switch response.result{
             case .Success(let Value):
                 let json = JSON(Value)
+               
                 if(json["retcode"].number != 0){
                     ProgressHUD.showError("请求失败")
                     print(json["retcode"].number)
@@ -324,26 +325,30 @@ class TranslateViewController: UIViewController{
                         self.view.addGestureRecognizer(rightSwipe)
                         self.self.leftBtn?.enabled = true
                         self.rightBtn?.enabled = true
-                        var desString = ""
-                        let tempItem = self.totalItems[self.kindOfQusIndex].valueForKey("questions") as! NSArray
-                        switch self.totalItems[self.kindOfQusIndex].valueForKey("type") as! String{
-                        case "JUDGE":
-                            desString = "本大题共" + "\(tempItem.count)" + "小题,请从每小题中选择正确或者错误的一项"
-                        case "SINGLE_CHIOCE":
-                            desString = "本大题共" + "\(tempItem.count)" + "小题,请从每小题给出的选项中选择出正确的一项"
-                        case "MULIT_CHIOCE":
-                            desString = "本大题共" + "\(tempItem.count)" + "小题,请从每小题给出的选项中选择出正确的多项"
-                        case "FILL_BLANK","PROGRAM_FILL_BLANK":
-                            desString = "本大题共" + "\(tempItem.count)" + "小题,请填写符合题意的内容"
-                        case "COMPLEX":
-                            desString = "本大题共" + "\(tempItem.count)" + "小题, 请选择或者填写正确的内容"
-                        case "PROGRAM_DESIGN","PROGRAM_CORRECT":
-                            desString = "本大题共" + "\(tempItem.count)" + "小题,请编写程序"
-                        case "DESIGN":
-                            desString = "本大题共" + "\(tempItem.count)" + "小题,请添加文字或者图片"
-                        default:
-                            break
-                        }
+                       
+//                        let tempItem = self.totalItems[self.kindOfQusIndex].valueForKey("questions") as! NSArray
+                         let desString = self.totalItems[self.kindOfQusIndex].valueForKey("desc") as! String
+                      
+//                        switch self.totalItems[self.kindOfQusIndex].valueForKey("type") as! String{
+//                        case "JUDGE":
+//                            
+//                            desString = "本大题共" + "\(tempItem.count)" + "小题,请从每小题中选择正确或者错误的一项"
+//                        case "SINGLE_CHIOCE":
+//                            desString = "本大题共" + "\(tempItem.count)" + "小题,请从每小题给出的选项中选择出正确的一项"
+//                        case "MULIT_CHIOCE":
+//                            desString = "本大题共" + "\(tempItem.count)" + "小题,请从每小题给出的选项中选择出正确的多项"
+//                        case "FILL_BLANK","PROGRAM_FILL_BLANK":
+//                            desString = "本大题共" + "\(tempItem.count)" + "小题,请填写符合题意的内容"
+//                        case "COMPLEX":
+//                            desString = "本大题共" + "\(tempItem.count)" + "小题, 请选择或者填写正确的内容"
+//                        case "PROGRAM_DESIGN","PROGRAM_CORRECT":
+//                            desString = "本大题共" + "\(tempItem.count)" + "小题,请编写程序"
+//                        case "DESIGN":
+//                            desString = "本大题共" + "\(tempItem.count)" + "小题,请添加文字或者图片"
+//                        default:
+//                            break
+                        
+                      //  }
                         
                         let dic = [NSFontAttributeName:UIFont.boldSystemFontOfSize(15.0),
                             NSForegroundColorAttributeName:UIColor.grayColor()]

@@ -255,7 +255,6 @@ class MyHomeWorkViewController: UIViewController,UITableViewDataSource,UITableVi
             switch response.result{
             case .Success(let Value):
              let json = JSON(Value)
-             
                 if (json["retcode"].number != 0){
                     ProgressHUD.showError("请求失败")
                     self.items = NSArray()
