@@ -30,13 +30,13 @@
 		<true/>
 	</dict>
 	<key>NSCameraUsageDescription</key>
-	<string></string>
+	<string>应用程序访问您的相机</string>
 	<key>NSLocationAlwaysUsageDescription</key>
 	<string>应用程序始终使用定位服务来进行导航</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>使用应用程期间，可以使用定位服务</string>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string></string>
+	<string>应用程序访问您的相册</string>
 	<key>UIAppFonts</key>
 	<array/>
 	<key>UIMainStoryboardFile</key>
