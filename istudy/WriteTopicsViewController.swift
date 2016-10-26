@@ -91,12 +91,12 @@ class WriteTopicsViewController: UIViewController,UICollectionViewDelegate,UICol
             
         }
     }
-    //每张图片转化成base64的字符串
-    func imageToBae64(image:UIImage) -> String{
-        let data = UIImageJPEGRepresentation(image, 0.5)
-        let encodeString = data?.base64EncodedStringWithOptions(NSDataBase64EncodingOptions.Encoding64CharacterLineLength)
-        return encodeString!
-    }
+//    //每张图片转化成base64的字符串
+//    func imageToBae64(image:UIImage) -> String{
+//        let data = UIImageJPEGRepresentation(image, 0.5)
+//        let encodeString = data?.base64EncodedStringWithOptions(NSDataBase64EncodingOptions.Encoding64CharacterLineLength)
+//        return encodeString!
+//    }
     //发出一个帖子后进行刷新列表
     @IBAction func send(sender:UIButton){
         let userDefault = NSUserDefaults.standardUserDefaults()
@@ -109,12 +109,50 @@ class WriteTopicsViewController: UIViewController,UICollectionViewDelegate,UICol
         
         //循环将图片数组中的值取出 转化成html格式
         for i in 0 ..< self.photos.count{
-        let base64String = imageToBae64(self.photos[i] as! UIImage)
-            let imgHtml = "<img"  +  " src = " + "\"" +  "data:image/jpg;base64," + base64String +  "\"" + "/>"
-            
-            tempHtmlString += imgHtml
+            let data = UIImageJPEGRepresentation(self.photos[i] as! UIImage, 0.5)
+            let string = "http://dodo.hznu.edu.cn/api/upfile?authtoken=" +
+                (userDefault.valueForKey("authtoken") as! String) + "&type=3";
+            Alamofire.upload(.POST, string, multipartFormData: { (formData) in
+                formData.appendBodyPart(data: data!, name: "name", fileName: "StationImage.jpg", mimeType: "image/jpeg")
+            }) { (encodingResult) in
+                switch encodingResult {
+                case .Success(let upload, _, _):
+                    //print((upload.request?.allHTTPHeaderFields))
+                    upload.responseJSON(completionHandler: { (response) in
+                        switch response.result{
+                        case .Success(let Value):
+                            let json = JSON(Value)
+                            if(json["retcode"].number != 0){
+                                ProgressHUD.showError("发送失败")
+                            }else{
+                                
+                                if(json["info"]["succ"].bool == false){
+                                    ProgressHUD.showError("发送失败")
+                                }else{
+                                    dispatch_async(dispatch_get_main_queue(), {
+                                        let imageUrl = "<img src = " + "\""  +   json["info"]["uploadedurl"].string! +  "\"" + "/>"
+                                        tempHtmlString += imageUrl
+                                        if(i == self.photos.count - 1){
+                                            
+                                          self.sendTopic(tempHtmlString, authtoken: authtoken)
+                                        }
+                                    })
+                                }
+                            }
+                        case .Failure(_):
+                            print(2)
+                            ProgressHUD.showError("发送失败")
+                        }
+                    })
+                case .Failure(_):
+                    ProgressHUD.showError("发送失败")
+                    print(3)
+                }
+            }
         }
-        
+    }
+    //发帖的函数
+    func sendTopic(tempHtmlString:String,authtoken:String){
         let subject = self.titleTextField.text
         if(subject == "" || tempHtmlString == ""){
             ProgressHUD.showError("发帖不能为空")
@@ -129,7 +167,6 @@ class WriteTopicsViewController: UIViewController,UICollectionViewDelegate,UICol
         do{
             var paramData = NSData()
             paramData = try NSJSONSerialization.dataWithJSONObject(dic, options: NSJSONWritingOptions.PrettyPrinted)
-            
             result = paramData.base64EncodedStringWithOptions(NSDataBase64EncodingOptions.Encoding64CharacterLineLength)
             
         }catch{
@@ -138,7 +175,6 @@ class WriteTopicsViewController: UIViewController,UICollectionViewDelegate,UICol
         let paramDic:[String:AnyObject] = ["authtoken":authtoken,
                                            "postype":"1",
                                            "data":result]
-        
         Alamofire.request(.POST, "http://dodo.hznu.edu.cn/api/forumpost", parameters: paramDic, encoding: ParameterEncoding.URL, headers: nil).responseJSON { (response) in
             switch response.result{
             case .Failure(_):
@@ -157,6 +193,7 @@ class WriteTopicsViewController: UIViewController,UICollectionViewDelegate,UICol
         }
         }
     }
+
     //collectionView中的一些代理
     func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
         return 1

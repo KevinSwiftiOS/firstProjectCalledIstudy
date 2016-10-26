@@ -168,13 +168,50 @@ self.view.setNeedsLayout()
         content = self.writeTextView.text
         //转换成base64字符串
         for i in 0 ..< self.photos.count{
-            
-            let base64String = imageToBae64(self.photos[i] as! UIImage)
-            let imgHtml = "<img" + " src = " + "\"" +  "data:image/jpg;base64," + base64String +  "\"" + "/>"
-            
-            content += imgHtml
-
+            let data = UIImageJPEGRepresentation(self.photos[i] as! UIImage, 0.5)
+            let string = "http://dodo.hznu.edu.cn/api/upfile?authtoken=" +
+                (userDefault.valueForKey("authtoken") as! String) + "&type=3";
+            Alamofire.upload(.POST, string, multipartFormData: { (formData) in
+                formData.appendBodyPart(data: data!, name: "name", fileName: "StationImage.jpg", mimeType: "image/jpeg")
+            }) { (encodingResult) in
+                switch encodingResult {
+                case .Success(let upload, _, _):
+                    //print((upload.request?.allHTTPHeaderFields))
+                    upload.responseJSON(completionHandler: { (response) in
+                        switch response.result{
+                        case .Success(let Value):
+                            let json = JSON(Value)
+                            if(json["retcode"].number != 0){
+                                ProgressHUD.showError("发送失败")
+                            }else{
+                                
+                                if(json["info"]["succ"].bool == false){
+                                    ProgressHUD.showError("发送失败")
+                                }else{
+                                    dispatch_async(dispatch_get_main_queue(), {
+                                        let imageUrl = "<img src = " + "\""  +   json["info"]["uploadedurl"].string! +  "\"" + "/>"
+                                        content += imageUrl
+                                        if(i == self.photos.count - 1){
+                                        
+                                          self.sendWithPerson(content, subject: subject!, authtoken: authtoken)
+                                        }
+                                    })
+                                }
+                            }
+                        case .Failure(_):
+                            print(2)
+                            ProgressHUD.showError("发送失败")
+                        }
+                    })
+                case .Failure(_):
+                    ProgressHUD.showError("发送失败")
+                    print(3)
+                }
+            }
         }
+    }
+        //添加联系人
+    func sendWithPerson(content:String,subject:String,authtoken:String) {
         var receives = ""
         //直接全部添加联系人
         if(self.receiveIds.count > 0){
@@ -196,13 +233,13 @@ self.view.setNeedsLayout()
         
         var  dic = [String:AnyObject]()
         if(parentcode == "" ){
-         dic = ["subject":subject!,
+         dic = ["subject":subject,
                 "parentcode":"",
                 "content":content,
                 "receives":receives
           ]
         }else{
-            dic = ["subject":subject!,
+            dic = ["subject":subject,
                    "parentcode":self.parentcode,
                    "content":content,
                    "receives":receives
@@ -241,6 +278,7 @@ Alamofire.request(.POST, "http://dodo.hznu.edu.cn/api/messagesend", parameters: 
         )
         }
 }
+    
     //添加照片的按钮
     @IBAction func addPhoto(sender:UIButton){
         let photoPicker = AJPhotoPickerViewController()

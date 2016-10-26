@@ -144,10 +144,54 @@ class ReplyTopicViewController: UIViewController,UITableViewDelegate,UITableView
         
         var content:String = self.writeTextView!.text
         for i in 0 ..< self.photos.count{
-                   let base64String = imageToBae64(self.photos[i] as! UIImage)
-            let imgHtml = "<img"  +  " src = " + "\"" +  "data:image/jpg;base64," + base64String +  "\"" + "/>"
-            content += imgHtml
+            let data = UIImageJPEGRepresentation(self.photos[i] as! UIImage, 0.5)
+            let string = "http://dodo.hznu.edu.cn/api/upfile?authtoken=" +
+                (userDefault.valueForKey("authtoken") as! String) + "&type=3";
+            Alamofire.upload(.POST, string, multipartFormData: { (formData) in
+                formData.appendBodyPart(data: data!, name: "name", fileName: "StationImage.jpg", mimeType: "image/jpeg")
+            }) { (encodingResult) in
+                switch encodingResult {
+                case .Success(let upload, _, _):
+                    //print((upload.request?.allHTTPHeaderFields))
+                    upload.responseJSON(completionHandler: { (response) in
+                        switch response.result{
+                        case .Success(let Value):
+                            let json = JSON(Value)
+                            if(json["retcode"].number != 0){
+                                ProgressHUD.showError("发送失败")
+                            }else{
+                                
+                                if(json["info"]["succ"].bool == false){
+                                    ProgressHUD.showError("发送失败")
+                                }else{
+                                    dispatch_async(dispatch_get_main_queue(), {
+                                        let imageUrl = "<img src = " + "\""  +   json["info"]["uploadedurl"].string! +  "\"" + "/>"
+                                         content += imageUrl
+                                        if(i == self.photos.count - 1){
+                                            
+                                            self.finalRepley(content, authtoken: authtoken)
+                                        }
+                                    })
+                                }
+                            }
+                        case .Failure(_):
+                            print(2)
+                            ProgressHUD.showError("发送失败")
+                        }
+                    })
+                case .Failure(_):
+                    ProgressHUD.showError("发送失败")
+                    print(3)
+                }
+            }
+         
         }
+    }
+    
+        
+        
+        //最终的回复
+        func finalRepley(content:String,authtoken:String){
         let dic:[String:AnyObject] = ["subject":"",
                                       "parentid":"\(self.id)",
                                       "content":content,
@@ -171,6 +215,9 @@ class ReplyTopicViewController: UIViewController,UITableViewDelegate,UITableView
                                            "postype":"2",
                                            "data":result]
         
+            
+            
+            
         Alamofire.request(.POST, "http://dodo.hznu.edu.cn/api/forumpost", parameters: paramDic, encoding: ParameterEncoding.URL, headers: nil).responseJSON { (response) in
             switch response.result{
             case .Failure(_):

@@ -211,47 +211,90 @@ class SubjectiveQusViewController: UIViewController,AJPhotoPickerProtocol,UINavi
         //    self.answerTextView.hidden = true
         var allAnswer = ""
         allAnswer = self.selfAnswers[index] as! String
-        var tempHtmlString = ""
-        tempHtmlString = self.answerTextView.text
+      
+     allAnswer  += self.answerTextView.text
         
         //循环将图片数组中的值取出 转化成html格式
+     
         for i in 0 ..< self.answerPhotos.count{
-            let widthAndHeight = " width = " + "\(50.123)" + " height = " + "\(50.123)"
+            let data = UIImageJPEGRepresentation(self.answerPhotos[i] as! UIImage, 0.5)
+            //Alamofire进行上传
+            let userDefault = NSUserDefaults.standardUserDefaults()
+            //url
+            //id标识符
+            //json字符串转译 还有点出错
+//            let id = ["testid":"\(testid)",
+//                          "questionid":"\(self.items[index].valueForKey("id") as! NSNumber)"]
+//            var jsonData = NSData()
+//            do{ jsonData = try NSJSONSerialization.dataWithJSONObject(id, options: NSJSONWritingOptions.PrettyPrinted)
+//            }catch{
+//                print("error")
+//            }
+           
+            let string = "http://dodo.hznu.edu.cn/api/upfile?authtoken=" +
+                (userDefault.valueForKey("authtoken") as! String) + "&type=2";
+            Alamofire.upload(.POST, string, multipartFormData: { (formData) in
+                formData.appendBodyPart(data: data!, name: "name", fileName: "answerImage.jpg", mimeType: "image/jpeg")
+            }) { (encodingResult) in
+                switch encodingResult {
+                case .Success(let upload, _, _):
+                    //print((upload.request?.allHTTPHeaderFields))
+                    upload.responseJSON(completionHandler: { (response) in
+                        switch response.result{
+                        case .Success(let Value):
+                            let json = JSON(Value)
+                            if(json["retcode"].number != 0){
+                                ProgressHUD.showError("保存失败")
+                            }else{
+                                
+                                if(json["info"]["succ"].bool == false){
+                                    ProgressHUD.showError("保存失败")
+                                }else{
+                                  dispatch_async(dispatch_get_main_queue(), {
+                                        allAnswer += "<img src = " + "\""  +   json["info"]["uploadedurl"].string! +  "\"" + "/>"
+                                    if(i == self.answerPhotos.count - 1){
+                                       
+                                        self.collectionView!.hidden = true
+                                        self.answerTextView.hidden = true
+                                        
+                                        self.answerWebView.hidden = false
+                                        //转化成html的格式
+                                        
+                                        self.selfAnswers.replaceObjectAtIndex(self.index, withObject: allAnswer)
+                                        self.answerWebView.loadHTMLString(imageDecString + (self.selfAnswers[self.index] as! String) , baseURL: nil)
+                                        
+                                        //数组清空
+                                        self.answerPhotos = NSMutableArray()
+                                        self.answerTextView.text = ""
+                                        self.collectionView.reloadData()
+                                        //一个个来加载控件
+                                        let tap = UITapGestureRecognizer(target: self, action: #selector(SubjectiveQusViewController.webViewShowBig(_:)))
+                                        tap.delegate = self
+                                        self.answerWebView.userInteractionEnabled = true
+                                        self.answerWebView.addGestureRecognizer(tap)
+                                          self.postAnswer()
 
-            let base64String = imageToBae64(self.answerPhotos[i] as! UIImage)
-            let imgHtml = "<img"  + widthAndHeight +  " src = " + "\"" +  "data:image/jpg;base64," + base64String +  "\"" + "/>"
-            
-            tempHtmlString += imgHtml
-        }
-        allAnswer += tempHtmlString
-        //        self.collectionView!.hidden = true
-        //        self.answerTextView.hidden = true
-        //
-        //        self.answerWebView.hidden = false
-        //转化成html的格式
+                                    }
+                                  })
+                                    }
+                            }
+                        case .Failure(_):
+                            print(2)
+                            ProgressHUD.showError("保存失败")
+                        }
+                    })
+                case .Failure(_):
+                    ProgressHUD.showError("保存失败")
+                    print(3)
+                }
+}
+            }
+    
         
-        self.selfAnswers.replaceObjectAtIndex(index, withObject: allAnswer)
         
-        self.answerWebView.loadHTMLString(imageDecString + (self.selfAnswers[index] as! String) , baseURL: nil)
-        //数组清空
-        self.answerPhotos = NSMutableArray()
-        self.answerTextView.text = ""
-        self.collectionView.reloadData()
-        //一个个来加载控件
-        let tap = UITapGestureRecognizer(target: self, action: #selector(SubjectiveQusViewController.webViewShowBig(_:)))
-        tap.delegate = self
-        self.answerWebView.userInteractionEnabled = true
-        self.answerWebView.addGestureRecognizer(tap)
-        
-        self.postAnswer()
     }
-    //每张图片转化成base64的字符串
-    func imageToBae64(image:UIImage) -> String{
-        let data = UIImageJPEGRepresentation(image, 0.5)
-        let encodeString = data?.base64EncodedStringWithOptions(NSDataBase64EncodingOptions.Encoding64CharacterLineLength)
-        return encodeString!
-    }
-    //重置
+   
+      //重置
     func  resetAnswer(sender:UIButton){
         //html字符串为空即可
         let resetAlertView = UIAlertController(title: nil, message: "确定重置吗", preferredStyle: UIAlertControllerStyle.Alert)
@@ -414,6 +457,7 @@ class SubjectiveQusViewController: UIViewController,AJPhotoPickerProtocol,UINavi
         for i in 0 ..< assets.count {
             let asset = assets[i]
             let tempImage = UIImage(CGImage: asset.defaultRepresentation().fullScreenImage().takeUnretainedValue())
+            
             self.answerPhotos.addObject(tempImage)
         }
         picker.dismissViewControllerAnimated(true, completion: nil)
