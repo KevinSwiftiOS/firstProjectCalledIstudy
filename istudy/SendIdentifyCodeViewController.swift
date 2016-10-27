@@ -135,8 +135,7 @@ class SendIdentifyCodeViewController: UIViewController {
                     
                     ProgressHUD.showSuccess("已发送")
                 }else{
-                    ProgressHUD.showError("邮箱无效")
-                }
+                     ProgressHUD.showError(json["message"].string)                }
             }
         })
         

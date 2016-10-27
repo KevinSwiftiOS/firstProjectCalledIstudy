@@ -74,7 +74,7 @@ let height = NSInteger(webView.stringByEvaluatingJavaScriptFromString("document.
         view!.userInteractionEnabled = canTap
         
         //发送通知
-        NSNotificationCenter.defaultCenter().postNotificationName("ComplexChoicewebViewHeight", object: self, userInfo: nil)
+NSNotificationCenter.defaultCenter().postNotificationName("ComplexChoicewebViewHeight", object: self, userInfo: nil)
     }
     func tap(sender:UITapGestureRecognizer){
         var pt = CGPoint()

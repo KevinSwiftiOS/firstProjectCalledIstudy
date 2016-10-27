@@ -223,17 +223,25 @@ class SubjectiveQusViewController: UIViewController,AJPhotoPickerProtocol,UINavi
             //url
             //id标识符
             //json字符串转译 还有点出错
-//            let id = ["testid":"\(testid)",
-//                          "questionid":"\(self.items[index].valueForKey("id") as! NSNumber)"]
-//            var jsonData = NSData()
-//            do{ jsonData = try NSJSONSerialization.dataWithJSONObject(id, options: NSJSONWritingOptions.PrettyPrinted)
-//            }catch{
-//                print("error")
-//            }
-           
-            let string = "http://dodo.hznu.edu.cn/api/upfile?authtoken=" +
-                (userDefault.valueForKey("authtoken") as! String) + "&type=2";
-            Alamofire.upload(.POST, string, multipartFormData: { (formData) in
+            let id:NSMutableDictionary = ["testid":"\(testid)",
+                          "questionid":"\(self.items[index].valueForKey("id") as! NSNumber)"]
+            var jsonData = NSData()
+            do{ jsonData = try NSJSONSerialization.dataWithJSONObject(id, options: NSJSONWritingOptions.PrettyPrinted)
+            }catch{
+                print("error")
+            }
+            let authtoken = userDefault.valueForKey("authtoken") as! String
+            var jsonString = String(data: jsonData, encoding: NSUTF8StringEncoding)
+            jsonString = jsonString?.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceCharacterSet())
+          
+            jsonString = jsonString?.stringByReplacingOccurrencesOfString("\n", withString: "")
+            let paramDic:[String:AnyObject] = ["data":jsonString!]
+            let request = NSMutableURLRequest(URL: NSURL(string:  "http://dodo.hznu.edu.cn/api/upfile?authtoken=" + authtoken + "&type=2")!)
+            request.HTTPMethod = "POST"
+            
+        
+            let requestCov:NSMutableURLRequest  = (ParameterEncoding.URL.encode(request, parameters: paramDic)).0
+            Alamofire.upload(requestCov, multipartFormData: { (formData) in
                 formData.appendBodyPart(data: data!, name: "name", fileName: "answerImage.jpg", mimeType: "image/jpeg")
             }) { (encodingResult) in
                 switch encodingResult {
@@ -242,16 +250,22 @@ class SubjectiveQusViewController: UIViewController,AJPhotoPickerProtocol,UINavi
                     upload.responseJSON(completionHandler: { (response) in
                         switch response.result{
                         case .Success(let Value):
+                            
                             let json = JSON(Value)
                             if(json["retcode"].number != 0){
+                                print(json["retcode"].number)
                                 ProgressHUD.showError("保存失败")
+                                print(2323232323232)
                             }else{
                                 
                                 if(json["info"]["succ"].bool == false){
+                                    print(3232)
+                                    
                                     ProgressHUD.showError("保存失败")
                                 }else{
                                   dispatch_async(dispatch_get_main_queue(), {
-                                        allAnswer += "<img src = " + "\""  +   json["info"]["uploadedurl"].string! +  "\"" + "/>"
+                                 
+                                        allAnswer += "<div><img src = " + "\""  +   json["info"]["uploadedurl"].string! +  "\"" + "/></div>"
                                     if(i == self.answerPhotos.count - 1){
                                        
                                         self.collectionView!.hidden = true
@@ -352,7 +366,7 @@ class SubjectiveQusViewController: UIViewController,AJPhotoPickerProtocol,UINavi
             case .Success(let Value):
                 let json = JSON(Value)
                 if(json["retcode"].number! != 0){
-                    ProgressHUD.showError("保存失败")
+                     ProgressHUD.showError(json["message"].string)
                     print(json["retcode"].number)
                 }else{
                     ProgressHUD.showSuccess("保存成功")

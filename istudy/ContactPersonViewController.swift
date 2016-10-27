@@ -296,7 +296,7 @@ class ContactPersonViewController: UIViewController,UITableViewDelegate,UITableV
              
                 if(json["retcode"].number != 0){
                     self.items = NSArray()
-                    ProgressHUD.showError("请求失败")
+                     ProgressHUD.showError(json["message"].string)
                    
                     dispatch_async(dispatch_get_main_queue(), {
                         self.contactPersonTableView?.mj_header.endRefreshing()

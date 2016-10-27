@@ -146,7 +146,7 @@ class ReplyTopicViewController: UIViewController,UITableViewDelegate,UITableView
         for i in 0 ..< self.photos.count{
             let data = UIImageJPEGRepresentation(self.photos[i] as! UIImage, 0.5)
             let string = "http://dodo.hznu.edu.cn/api/upfile?authtoken=" +
-                (userDefault.valueForKey("authtoken") as! String) + "&type=3";
+                (userDefault.valueForKey("authtoken") as! String);
             Alamofire.upload(.POST, string, multipartFormData: { (formData) in
                 formData.appendBodyPart(data: data!, name: "name", fileName: "StationImage.jpg", mimeType: "image/jpeg")
             }) { (encodingResult) in
@@ -165,7 +165,7 @@ class ReplyTopicViewController: UIViewController,UITableViewDelegate,UITableView
                                     ProgressHUD.showError("发送失败")
                                 }else{
                                     dispatch_async(dispatch_get_main_queue(), {
-                                        let imageUrl = "<img src = " + "\""  +   json["info"]["uploadedurl"].string! +  "\"" + "/>"
+                                        let imageUrl = "<div><img src = " + "\""  +   json["info"]["uploadedurl"].string! +  "\"" + "/></div>"
                                          content += imageUrl
                                         if(i == self.photos.count - 1){
                                             
@@ -226,7 +226,8 @@ class ReplyTopicViewController: UIViewController,UITableViewDelegate,UITableView
             case .Success(let Value):
                 let json = JSON(Value)
                 if(json["retcode"].number != 0){
-                    ProgressHUD.showError("发送失败")
+                    ProgressHUD.showError(json["message"].string)
+                    
                     print(json["retcode"].number)
                 }else{
                     ProgressHUD.showSuccess("发送成功")
@@ -267,7 +268,7 @@ class ReplyTopicViewController: UIViewController,UITableViewDelegate,UITableView
             case .Success(let Value):
                 let json = JSON(Value)
                 if(json["retcode"].number != 0){
-                    ProgressHUD.showError("请求失败")
+                     ProgressHUD.showError(json["message"].string)
                     dispatch_async(dispatch_get_main_queue(), {
                         self.replyListTableView?.emptyDataSetSource = self
                         self.items = NSArray()

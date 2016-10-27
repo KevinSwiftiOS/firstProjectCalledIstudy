@@ -510,7 +510,7 @@ class ComplexQusViewController: UIViewController,UITableViewDelegate,UITableView
         self.goOVerBtn?.enabled = true
         self.saveBtn?.enabled = true
         let height = NSInteger(webView.stringByEvaluatingJavaScriptFromString("document.body.offsetHeight")!)
-        self.subWebViewHeight = CGFloat(height!) + 5
+        self.subWebViewHeight = CGFloat(height!) + 20
         var frame = webView.frame
         frame.size.height = self.subWebViewHeight
         webView.frame = frame
@@ -741,7 +741,7 @@ class ComplexQusViewController: UIViewController,UITableViewDelegate,UITableView
             case .Success(let Value):
                 let json = JSON(Value)
                 if(json["retcode"].number! != 0){
-                    ProgressHUD.showError("保存失败")
+                    ProgressHUD.showError(json["message"].string)
                     print(json["retcode"].number)
                 }else{
                    
@@ -789,7 +789,7 @@ class ComplexQusViewController: UIViewController,UITableViewDelegate,UITableView
             
         //    self.subTableViewToTop.constant = -100
             if(cell.Custag == self.cellHeights.count - 1){
-                self.subTableViewToTop.constant = 0
+                self.subTableViewToTop.constant = -10
 //                let y = 64 + 21 + 4 + SCREEN_HEIGHT * 0.4 + 21 + 5 + 21 + 21
 //                self.tableView.frame = CGRectMake(0, y, SCREEN_WIDTH, SCREEN_HEIGHT - 40 - y)
                 

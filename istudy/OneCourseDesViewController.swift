@@ -251,7 +251,7 @@ self.courseDataCollectionView!.emptyDataSetDelegate = self
                         self.infoTableView!.reloadData()
                     })
                 }else{
-                    ProgressHUD.showError("请求失败")
+                   ProgressHUD.showError(json["message"].string)
                     self.items = NSArray()
                     dispatch_async(dispatch_get_main_queue(), {
                         self.infoTableView?.mj_header.endRefreshing()

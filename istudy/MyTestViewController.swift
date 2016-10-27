@@ -158,7 +158,7 @@ self.testTableView?.emptyDataSetDelegate = self
                         self.testTableView?.mj_header.endRefreshing()
                          self.testTableView?.emptyDataSetSource = self
                         self.testTableView?.reloadData()
-                        ProgressHUD.showError("请求失败")
+                        ProgressHUD.showError(json["message"].string)
                     })
                  
                     

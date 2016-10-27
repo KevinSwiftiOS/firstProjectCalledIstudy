@@ -62,7 +62,7 @@ class SecuritySettingsViewController: UIViewController {
                         self.navigationController?.popViewControllerAnimated(true)
                    
                     }else{
-                        ProgressHUD.showError("设置失败")
+                        ProgressHUD.showError(json["message"].string)
                         print(json["retcode"].number)
                     }
                 case .Failure(_):

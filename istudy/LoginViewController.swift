@@ -64,7 +64,7 @@ Alamofire.request(.POST, "http://dodo.hznu.edu.cn/api/login", parameters: self.d
             case .Success(let data):
                 let json = JSON(data)
                 if(json["retcode"].int != 0){
-                    ProgressHUD.showError("登录失败")
+                   ProgressHUD.showError(json["message"].string)
                     print(json["retcode"].number)
                 }else{
                  

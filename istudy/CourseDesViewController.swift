@@ -276,16 +276,19 @@ sender.setTitleColor(UIColor.whiteColor(), forState: .Normal)
                     switch response.result{
                     case .Success(let data):
                         let json = JSON(data)
+                        
                         if(json["retcode"].number != 0){
                             if(json["retcode"].number == 12){
-                                ProgressHUD.showError("请重新登录")
+                                ProgressHUD.showError(json["message"].string)
                             }else{
-                            ProgressHUD.showError("请求失败")
+                                ProgressHUD.showError(json["message"].string)
+
                             }
                             self.courseDesTableView?.mj_header.endRefreshing()
                             self.items = NSArray()
                             self.courseDesTableView?.reloadData()
                         }else{
+                         
                             userDefault.setValue(json["authtoken"].string, forKey: "authtoken")
                       
                             //设置名字 名字和账号是不一样的
@@ -306,7 +309,7 @@ sender.setTitleColor(UIColor.whiteColor(), forState: .Normal)
                                 switch response.result{
                                 case .Success(let value):
                                     let json = JSON(value)
-                                    if(json["retcode"].number == 0){
+                                        if(json["retcode"].number == 0){
                                         self.courseDesTableView?.emptyDataSetSource = self
                                         self.items = json["items"].arrayObject! as NSArray
                                         
@@ -319,7 +322,7 @@ sender.setTitleColor(UIColor.whiteColor(), forState: .Normal)
                                         //})
                                     }else{
                                         print(json["retcode"].number)
-                                        ProgressHUD.showError("请求失败")
+                                        ProgressHUD.showError(json["message"].string)
                                         self.items = NSArray()
                                         dispatch_async(dispatch_get_main_queue(), {
                                             self.courseDesTableView?.emptyDataSetSource = self
@@ -331,7 +334,8 @@ sender.setTitleColor(UIColor.whiteColor(), forState: .Normal)
                                         
                                     }
                                 case .Failure(_):
-                                    ProgressHUD.showError("请求失败")
+                                    ProgressHUD.showError(json["message"].string)
+
                                     self.items = NSArray()
                                     dispatch_async(dispatch_get_main_queue(), {
                                         self.courseDesTableView?.mj_header.endRefreshing()
@@ -345,7 +349,7 @@ sender.setTitleColor(UIColor.whiteColor(), forState: .Normal)
 
                         }
                     case .Failure(_):
-                    ProgressHUD.showError("请求失败")
+                   ProgressHUD.showError("请求失败")
                     self.courseDesTableView?.mj_header.endRefreshing()
                     self.items = NSArray()
                     self.courseDesTableView?.emptyDataSetSource = self

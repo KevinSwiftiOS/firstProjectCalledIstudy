@@ -189,7 +189,7 @@ self.view.setNeedsLayout()
                                     ProgressHUD.showError("发送失败")
                                 }else{
                                     dispatch_async(dispatch_get_main_queue(), {
-                                        let imageUrl = "<img src = " + "\""  +   json["info"]["uploadedurl"].string! +  "\"" + "/>"
+                                        let imageUrl = "<div><img src = " + "\""  +   json["info"]["uploadedurl"].string! +  "\"" + "/></div>"
                                         content += imageUrl
                                         if(i == self.photos.count - 1){
                                         
@@ -266,7 +266,8 @@ Alamofire.request(.POST, "http://dodo.hznu.edu.cn/api/messagesend", parameters: 
             case .Success(let Value):
                 let json = JSON(Value)
                 if(json["retcode"].number != 0){
-                    ProgressHUD.showError("发送失败")
+                    ProgressHUD.showError(json["message"].string)
+                    
                     print(json["retcode"].number)
                 }else{
                     ProgressHUD.showSuccess("发送成功")

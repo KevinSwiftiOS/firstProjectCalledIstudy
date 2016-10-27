@@ -85,7 +85,7 @@ class writeEmialOrMobilePhoneViewController: UIViewController {
                             sendIdentifyVC.email = emailText!
                             self.navigationController?.pushViewController(sendIdentifyVC, animated: true)
                         }else{
-                            ProgressHUD.showError("邮箱无效")
+                             ProgressHUD.showError(json["message"].string)
                         }
                     }
                 })

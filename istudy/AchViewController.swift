@@ -248,6 +248,9 @@ class AchViewController: UIViewController,UICollectionViewDelegate,UICollectionV
                     ProgressHUD.showError("请求失败")
                 case .Success(let Value):
                     let json = JSON(Value)
+                    if(json["retcode"].number != 0){
+                         ProgressHUD.showError(json["message"].string)
+                    }else{
                     dispatch_async(dispatch_get_main_queue(), {
                         
                         self.achCollectionView.userInteractionEnabled = true
@@ -257,6 +260,7 @@ class AchViewController: UIViewController,UICollectionViewDelegate,UICollectionV
                         self.totalItems = json["items"].arrayObject! as NSArray
                         self.achCollectionView.reloadData()
                     })
+                }
                 }
             })
         }

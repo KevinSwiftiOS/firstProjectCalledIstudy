@@ -132,7 +132,7 @@ class PeerAssessmentViewController: UIViewController ,UITableViewDataSource,UITa
              
                 if(json["retcode"].number != 0){
                     print(json["retcode"].number)
-                    ProgressHUD.showError("请求失败")
+                    ProgressHUD.showError(json["message"].string)
                     dispatch_async(dispatch_get_main_queue(), {
                         self.items = NSArray()
                         self.tableView?.mj_header.endRefreshing()

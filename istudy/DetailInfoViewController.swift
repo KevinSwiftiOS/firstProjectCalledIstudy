@@ -31,7 +31,7 @@ class DetailInfoViewController: UIViewController,UIWebViewDelegate{
             case .Success(let Value):
                 let json = JSON(Value)
                 if(json["retcode"] != 0){
-                    ProgressHUD.showError("请求失败")
+                     ProgressHUD.showError(json["message"].string)
                 }else{
                     dispatch_async(dispatch_get_main_queue(), {
                         

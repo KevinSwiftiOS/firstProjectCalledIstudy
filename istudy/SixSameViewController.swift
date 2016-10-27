@@ -267,7 +267,7 @@ if(match == true){
                     ProgressHUD.showSuccess("保存成功")
                      self.navigationController?.popViewControllerAnimated(true)
                 }else{
-                    ProgressHUD.showError("保存失败")
+                    ProgressHUD.showError(json["message"].string)
                     userDefault.setValue(self.beforeValue, forKey: self.dic[self.title!]!)
                     print(json["retcode"].number)
                 }

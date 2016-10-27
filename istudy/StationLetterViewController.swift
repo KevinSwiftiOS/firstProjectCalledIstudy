@@ -33,7 +33,7 @@ var  diviseView:UIView?
     var isOut = false
     var inDic = [String:AnyObject]()
     var outDic = [String:AnyObject]()
-    var items = NSArray()
+    var items = NSMutableArray()
     var isFromWriteVC = false
     //收件箱发件箱 tableView的加载
     override func viewDidLoad() {
@@ -150,10 +150,47 @@ var  diviseView:UIView?
         if(isOut){
             readEmailVC.isOut = true
         }
+        readEmailVC.id = self.items[indexPath.row].valueForKey("id") as! NSInteger
         self.navigationController?.pushViewController(readEmailVC, animated: true)
         
         tableView.reloadData()
     }
+    //删除的按钮
+    func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
+        return true
+    }
+    func tableView(tableView: UITableView, editingStyleForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCellEditingStyle {
+           return UITableViewCellEditingStyle.Delete
+    }
+    func tableView(tableView: UITableView, canMoveRowAtIndexPath indexPath: NSIndexPath) -> Bool {
+        return true
+    }
+    func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
+        if(editingStyle == .Delete){
+          
+            //删除短信
+            let userDefault = NSUserDefaults.standardUserDefaults()
+            let authtoken = userDefault.valueForKey("authtoken") as! String
+            let paramDic:[String:AnyObject]! = ["authtoken":authtoken,"msgid":self.items[indexPath.row].valueForKey("id") as! NSInteger]
+            Alamofire.request(.POST, "http://dodo.hznu.edu.cn/api/messagedelete", parameters: paramDic, encoding: ParameterEncoding.URL, headers: nil).responseJSON { (response) in
+                switch response.result{
+                case .Success(_):
+                    dispatch_async(dispatch_get_main_queue(), {
+                        self.items.removeObjectAtIndex(indexPath.row)
+                        tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Left)
+                        self.stationLetterTableView!.emptyDataSetSource = self
+                    })
+                  
+                    break;
+                case .Failure(_):
+                    print("删除失败")
+                }
+            }
+
+        }
+    }
+    
+    //删除
     
     //跟换tableView的内容
     var isShow = false
@@ -242,7 +279,7 @@ var  diviseView:UIView?
                
             case .Failure(_):
                 ProgressHUD.showError("请求失败")
-                self.items = NSArray()
+                self.items = NSMutableArray()
                 dispatch_async(dispatch_get_main_queue(), {
                     self.stationLetterTableView!.emptyDataSetSource = self
                     
@@ -255,8 +292,8 @@ var  diviseView:UIView?
                 
                 if(json["retcode"].number != 0){
                     print(json["retcode"])
-                    ProgressHUD.showError("请求失败")
-                    self.items = NSArray()
+                     ProgressHUD.showError(json["message"].string)
+                    self.items = NSMutableArray()
                     dispatch_async(dispatch_get_main_queue(), {
                         self.stationLetterTableView!.emptyDataSetSource = self
                         
@@ -265,7 +302,7 @@ var  diviseView:UIView?
                     })
                     
                 }else{
-                    self.items = json["items"].arrayObject! as NSArray
+                    self.items =  NSMutableArray(array: json["items"].arrayObject! as NSArray)
                     dispatch_async(dispatch_get_main_queue(), {
                         self.stationLetterTableView?.mj_header.endRefreshing()
                         if(self.items.count == 0){

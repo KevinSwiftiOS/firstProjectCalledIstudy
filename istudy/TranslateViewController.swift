@@ -308,7 +308,7 @@ class TranslateViewController: UIViewController{
                 let json = JSON(Value)
                
                 if(json["retcode"].number != 0){
-                    ProgressHUD.showError("请求失败")
+                  ProgressHUD.showError(json["message"].string)
                     print(json["retcode"].number)
                 }else{
                     dispatch_async(dispatch_get_main_queue(), {
@@ -327,6 +327,7 @@ class TranslateViewController: UIViewController{
                         self.rightBtn?.enabled = true
                        
 //                        let tempItem = self.totalItems[self.kindOfQusIndex].valueForKey("questions") as! NSArray
+                      
                          let desString = self.totalItems[self.kindOfQusIndex].valueForKey("desc") as! String
                       
 //                        switch self.totalItems[self.kindOfQusIndex].valueForKey("type") as! String{

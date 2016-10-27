@@ -103,7 +103,7 @@ var questions = NSMutableArray()
                 let json = JSON(Value)
                                               if(json["retcode"].number != 0){
                     print(json["retcode"].number)
-                ProgressHUD.showError("评论失败")
+                 ProgressHUD.showError(json["message"].string)
                 }else{
                     ProgressHUD.showSuccess("评论成功")
           

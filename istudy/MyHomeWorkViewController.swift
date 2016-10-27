@@ -256,7 +256,7 @@ class MyHomeWorkViewController: UIViewController,UITableViewDataSource,UITableVi
             case .Success(let Value):
              let json = JSON(Value)
                 if (json["retcode"].number != 0){
-                    ProgressHUD.showError("请求失败")
+                    ProgressHUD.showError(json["message"].string)
                     self.items = NSArray()
                     dispatch_async(dispatch_get_main_queue(), {
                         self.tableView?.mj_header.endRefreshing()

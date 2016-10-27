@@ -74,7 +74,7 @@ class AdressViewController: UIViewController,CLLocationManagerDelegate,HZAreaPic
         //做save的一些事情
          self.userDefault.setValue(self.address, forKey: "address")
         self.navigationController?.popViewControllerAnimated(true)
-        ProgressHUD.showSuccess("保存成功")
+       
         let userDefault = NSUserDefaults.standardUserDefaults()
         var email = ""
         var phone = ""
@@ -141,7 +141,7 @@ class AdressViewController: UIViewController,CLLocationManagerDelegate,HZAreaPic
                     ProgressHUD.showSuccess("保存成功")
                     self.navigationController?.popViewControllerAnimated(true)
                 }else{
-                    ProgressHUD.showError("保存失败")
+                    ProgressHUD.showError(json["message"].string)
                     print(json["retcode"].number)
                 }
             case .Failure(_):ProgressHUD.showError("保存失败")

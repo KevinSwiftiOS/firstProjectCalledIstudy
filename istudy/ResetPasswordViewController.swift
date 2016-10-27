@@ -51,6 +51,8 @@ class ResetPasswordViewController: UIViewController {
                     let mainVC = sb.instantiateViewControllerWithIdentifier("tabBarVC") as! UITabBarController
                     self.presentViewController(mainVC, animated: true, completion: nil)
                     
+                }else{
+                     ProgressHUD.showError(json["message"].string)
                 }
             case .Failure(_):
                 ProgressHUD.showError("重置失败")

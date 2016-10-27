@@ -242,7 +242,7 @@ class DiscussViewController: UIViewController,UITableViewDelegate,UITableViewDat
                 
                 if(json["retcode"].number != 0){
                     
-                    ProgressHUD.showError("请求失败")
+                     ProgressHUD.showError(json["message"].string)
                 }else{
                     
                     //遍历循环取到的item随后更新列表即可

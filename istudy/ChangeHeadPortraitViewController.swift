@@ -208,7 +208,7 @@ class ChangeHeadPortraitViewController: UIViewController,UITableViewDelegate,UIT
                     ProgressHUD.showSuccess("保存成功")
                     self.navigationController?.popViewControllerAnimated(true)
                 }else{
-                    ProgressHUD.showError("保存失败")
+                   ProgressHUD.showError(json["message"].string)
                     print(json["retcode"].number)
                 }
             case .Failure(_):ProgressHUD.showError("保存失败")

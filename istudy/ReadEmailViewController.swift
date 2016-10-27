@@ -38,7 +38,8 @@ class ReadEmailViewController: UIViewController,UIGestureRecognizerDelegate{
     //发信人的名字和id 单独回复的时候有用
     var senderId = NSInteger()
     var senderName = ""
-    
+    //短信id 
+    var id = NSInteger()
     @IBOutlet weak var replyToOneBtn:UIButton?
    
     override func viewDidLoad() {
@@ -114,5 +115,22 @@ class ReadEmailViewController: UIViewController,UIGestureRecognizerDelegate{
     }
     override func viewWillDisappear(animated: Bool) {
         ProgressHUD.dismiss()
+    }
+    //返回已读标记
+    override func viewWillAppear(animated: Bool) {
+    
+     let userDefault = NSUserDefaults.standardUserDefaults()
+        let authtoken = userDefault.valueForKey("authtoken") as! String
+        let paramDic:[String:AnyObject]? = ["authtoken":authtoken,"msgid":id]
+        Alamofire.request(.POST, "http://dodo.hznu.edu.cn/api/messagereaded", parameters: paramDic, encoding: ParameterEncoding.URL, headers: nil).responseJSON { (response) in
+            switch response.result{
+            case .Success(_): break
+               
+             
+            case .Failure(_):
+                print("阅读失败")
+            
+        }
+    }
     }
 }

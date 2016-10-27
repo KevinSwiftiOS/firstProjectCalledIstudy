@@ -130,7 +130,7 @@ if(self.items[indexPath.row].valueForKey("hupingtime") as? String != nil &&
                 
                 if(json["retcode"].number != 0){
                  
-                    ProgressHUD.showError("请求失败")
+                   ProgressHUD.showError(json["message"].string)
                     dispatch_async(dispatch_get_main_queue(), {
                         self.items = NSArray()
                                                 self.tableView?.emptyDataSetSource = self

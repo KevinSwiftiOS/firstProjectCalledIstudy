@@ -219,7 +219,7 @@ UISearchControllerDelegate,UISearchResultsUpdating,DZNEmptyDataSetSource,DZNEmpt
                 let json = JSON(Value)
                 
                 if(json["retcode"].number != 0){
-                    ProgressHUD.showError("获取失败")
+                   ProgressHUD.showError(json["message"].string)
                     dispatch_async(dispatch_get_main_queue(), {
                         self.studyMaterialsTableView?.mj_header.endRefreshing()
                         self.items = NSMutableArray()

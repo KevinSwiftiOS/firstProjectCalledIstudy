@@ -369,7 +369,7 @@ class JudgeQueViewController: UIViewController,UIWebViewDelegate,UITableViewDele
             case .Success(let Value):
                 let json = JSON(Value)
                 if(json["retcode"].number! != 0){
-                    ProgressHUD.showError("保存失败")
+                     ProgressHUD.showError(json["message"].string)
                     print(json["retcode"].number)
                 }else{
                     ProgressHUD.showSuccess("保存成功")
