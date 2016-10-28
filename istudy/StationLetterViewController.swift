@@ -63,9 +63,8 @@ var  diviseView:UIView?
         self.stationLetterTableView?.dataSource = self
         self.stationLetterTableView?.delegate = self
         self.stationLetterTableView?.tableFooterView = UIView()
-        self.stationLetterTableView?.mj_header = MJRefreshNormalHeader(refreshingTarget: self, refreshingAction: #selector(StationLetterViewController.headerRefresh))
-        self.stationLetterTableView?.mj_header.beginRefreshing()
-        self.topView?.alpha = 0.0
+    
+               self.topView?.alpha = 0.0
         //这个依据情况而定
         
         self.sentBox?.addTarget(self, action: #selector(StationLetterViewController.selectedSentBox(_:)), forControlEvents: .TouchUpInside)
@@ -317,7 +316,9 @@ var  diviseView:UIView?
         }
     }
     override func viewWillAppear(animated: Bool) {
-        
+            self.stationLetterTableView?.mj_header = MJRefreshNormalHeader(refreshingTarget: self, refreshingAction: #selector(StationLetterViewController.headerRefresh))
+        self.stationLetterTableView?.mj_header.beginRefreshing()
+
         self.isShow = false
         self.stationLetterTableView?.userInteractionEnabled = !isShow
     }

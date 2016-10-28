@@ -15,12 +15,15 @@ class ReadEmailViewController: UIViewController,UIGestureRecognizerDelegate{
    //下面的两个按钮 
     var tap = UITapGestureRecognizer()
     @IBOutlet weak var writeBtn:UIButton!
+    //删除信件的button
+    @IBOutlet weak var deleteBtn:UIButton!
     //是发件箱的话 下面回复所有和回复的键消失
     var isOut = false
      var tempReceiveArray = NSArray()
     @IBOutlet weak var webView:UIWebView?
     @IBOutlet weak var subjectLabel:UILabel?
     @IBOutlet weak var btmView:UIView!
+
     var textView = UITextView()
     var trushBtn = UIButton()
     //邮件的题目
@@ -51,6 +54,8 @@ class ReadEmailViewController: UIViewController,UIGestureRecognizerDelegate{
         //receiveid和recevieName 进行标示
         writeBtn.setFAIcon(FAType.FAEdit, iconSize: 30, forState: .Normal)
         replyToOneBtn?.setFAIcon(FAType.FAReply, iconSize: 30, forState: .Normal)
+        deleteBtn.setFAIcon(FAType.FATrash, iconSize: 30, forState: .Normal)
+        self.view.bringSubviewToFront(self.deleteBtn)
     self.view.bringSubviewToFront(self.writeBtn)
     self.automaticallyAdjustsScrollViewInsets = false
     self.tabBarController?.tabBar.hidden = true
@@ -61,7 +66,8 @@ class ReadEmailViewController: UIViewController,UIGestureRecognizerDelegate{
         self.webView?.userInteractionEnabled = true
         self.webView?.addGestureRecognizer(tap)
         self.tap.delegate = self
-     
+     //添加删除信件的功能
+        self.deleteBtn.addTarget(self, action: #selector(ReadEmailViewController.deleteLetter), forControlEvents: .TouchUpInside)
     }
     //点击图片时候的放大
     func gestureRecognizer(gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWithGestureRecognizer otherGestureRecognizer: UIGestureRecognizer) -> Bool {
@@ -132,5 +138,23 @@ class ReadEmailViewController: UIViewController,UIGestureRecognizerDelegate{
             
         }
     }
+    }
+    //删除信件
+    func deleteLetter() {
+        let userDefault = NSUserDefaults.standardUserDefaults()
+        let authtoken = userDefault.valueForKey("authtoken") as! String
+        let dic:[String:AnyObject] = ["authtoken":authtoken,"msgid":id]
+        Alamofire.request(.POST, "http://dodo.hznu.edu.cn/api/messagedelete", parameters: dic, encoding: ParameterEncoding.URL, headers: nil).responseJSON { (response) in
+            switch response.result{
+            case .Success(let Value):
+                let json = JSON(Value)
+                if(json["retcode"].number == 0) {
+                    ProgressHUD.showSuccess(json["message"].string)
+                    self.navigationController?.popViewControllerAnimated(true)
+                }
+            case .Failure(_):
+                ProgressHUD.showError("删除失败")
+            }
+        }
     }
 }
