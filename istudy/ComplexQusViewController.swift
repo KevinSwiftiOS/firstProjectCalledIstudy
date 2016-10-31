@@ -789,7 +789,7 @@ class ComplexQusViewController: UIViewController,UITableViewDelegate,UITableView
             
         //    self.subTableViewToTop.constant = -100
             if(cell.Custag == self.cellHeights.count - 1){
-                self.subTableViewToTop.constant = -10
+                self.subTableViewToTop.constant = -50
 //                let y = 64 + 21 + 4 + SCREEN_HEIGHT * 0.4 + 21 + 5 + 21 + 21
 //                self.tableView.frame = CGRectMake(0, y, SCREEN_WIDTH, SCREEN_HEIGHT - 40 - y)
                 
@@ -846,7 +846,7 @@ self.tableView.beginUpdates()
         self.qusDesWebView?.addGestureRecognizer(leftSwipe)
         self.qusDesWebView?.addGestureRecognizer(rightSwipe)
         UIView.animateWithDuration(0.3) {
-            self.subTableViewToTop.constant = 0
+            self.subTableViewToTop.constant = -50
             
             self.view.setNeedsLayout()
             

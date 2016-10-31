@@ -163,7 +163,7 @@ class WriteTopicsViewController: UIViewController,UICollectionViewDelegate,UICol
                                       "forumtypeid":"",
                                       "projectid":"\(self.projectid)"]
         var result = String()
-        //先转化成data数据流 随后再转化成base64的字符串
+        //如今都已转换成为图片上传服务器进行处理
         do{
             var paramData = NSData()
             paramData = try NSJSONSerialization.dataWithJSONObject(dic, options: NSJSONWritingOptions.PrettyPrinted)
