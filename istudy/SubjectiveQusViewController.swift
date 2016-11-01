@@ -173,6 +173,8 @@ class SubjectiveQusViewController: UIViewController,AJPhotoPickerProtocol,UINavi
     //初始化界面
     func initView() {
         //加载界面的时候
+      
+        
         for view in (self.contentScrollView?.subviews)!{
             view.removeFromSuperview()
         }
@@ -640,6 +642,9 @@ class SubjectiveQusViewController: UIViewController,AJPhotoPickerProtocol,UINavi
     }
     var resetBtnAndQusHeight:CGFloat = 0.0
     func webViewDidFinishLoad(webView: UIWebView) {
+        if(self.items[index].valueForKey("designanswermode")?.integerValue == 1){
+            ProgressHUD.showError("不支持文件上传,请登录网站回答本题")
+        }
         let height = NSInteger(webView.stringByEvaluatingJavaScriptFromString("document.body.offsetHeight")!)
         
         var NewFrame = webView.frame
@@ -694,7 +699,7 @@ class SubjectiveQusViewController: UIViewController,AJPhotoPickerProtocol,UINavi
         let currentDate = NSDate()
         //判断是支持附件上传的题目还是可以图文上传的题目
         if(self.items[index].valueForKey("designanswermode")?.integerValue == 1){
-            ProgressHUD.showError("不支持文件上传,请登录网站回答本题")
+           
         }
         let result:NSComparisonResult = currentDate.compare(endDate)
         if (result == .OrderedAscending && self.items[index].valueForKey("designanswermode")?.integerValue == 0){

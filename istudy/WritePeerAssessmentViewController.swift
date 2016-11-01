@@ -10,9 +10,10 @@ import UIKit
 import Alamofire
 import SwiftyJSON
 import Font_Awesome_Swift
+import QuickLook
 //闭包来传值
 typealias send_index = (index:NSInteger) -> Void
-class WritePeerAssessmentViewController: UIViewController,UIWebViewDelegate,UIPickerViewDelegate,UIPickerViewDataSource,UITextViewDelegate,UIGestureRecognizerDelegate{
+class WritePeerAssessmentViewController: UIViewController,UIWebViewDelegate,UIPickerViewDelegate,UIPickerViewDataSource,UITextViewDelegate,UIGestureRecognizerDelegate,QLPreviewControllerDataSource,QLPreviewControllerDelegate{
     //键盘出现时的操作
     var tap = UITapGestureRecognizer()
     var aboveCommentTextHeight = CGFloat()
@@ -32,15 +33,19 @@ class WritePeerAssessmentViewController: UIViewController,UIWebViewDelegate,UIPi
     var totalHeight = CGFloat()
 var questions = NSMutableArray()
   //评论的是第几个
-    var items = NSArray()
+    var items = NSMutableArray()
     var usertestid = NSInteger()
-    var index = 0 
+    var index = 0
+    var filePath = ""
+    //判断是不是文件
+    var answerIsFile = false
 //加载视图的一些代理
     override func viewDidLoad() {
         super.viewDidLoad()
         let diveseView = UIView(frame: CGRectMake(0,SCREEN_HEIGHT * 0.8 - 30,SCREEN_WIDTH,1))
         diveseView.layer.borderWidth = 1.0
         self.view.addSubview(diveseView)
+        
         ShowBigImageFactory.topViewEDit(self.btmView)
         //加左右的按钮
         leftBtn?.tag = 1
@@ -96,12 +101,11 @@ var questions = NSMutableArray()
         }
         let parameter:[String:AnyObject] = ["authtoken":userDefault.valueForKey("authtoken") as! String,"data":result]
        
-        
         Alamofire.request(.POST, "http://dodo.hznu.edu.cn/api/submithuping", parameters: parameter, encoding: ParameterEncoding.URL, headers: nil).responseJSON { (response) in
             switch response.result{
             case .Success(let Value):
                 let json = JSON(Value)
-                                              if(json["retcode"].number != 0){
+                if(json["retcode"].number != 0){
                     print(json["retcode"].number)
                  ProgressHUD.showError(json["message"].string)
                 }else{
@@ -136,7 +140,7 @@ var questions = NSMutableArray()
                     //实际上这里就是把他的字典全部拿到 在改变评论的时候就直接在字典里面进行修改即可
                     dispatch_async(dispatch_get_main_queue(), {
                         ProgressHUD.dismiss()
-                        self.items = json["items"].arrayObject! as NSArray
+                        self.items = NSMutableArray(array:  json["items"].arrayObject!)
                         for tempOut in 0 ..< self.items.count{
                             let dic1 = NSMutableDictionary()
                             dic1.setObject(self.items[tempOut].valueForKey("id") as! NSNumber, forKey: "questionid")
@@ -148,7 +152,7 @@ var questions = NSMutableArray()
                                    dic1.setObject("", forKey: "comments")
                             }
                         dic1.setObject(0, forKey: "isauthorvisible")
-                            let rules = self.items[tempOut].valueForKey("rules") as! NSArray
+                            let rules = NSMutableArray(array:  self.items[tempOut].valueForKey("rules")! as! [AnyObject])
                             let arr1 = NSMutableArray()
                             for tempIn in 0 ..< rules.count{
                                 let dic2 = NSMutableDictionary()
@@ -185,6 +189,21 @@ var questions = NSMutableArray()
         webView.frame = frame
         self.scrollView.addSubview(webView)
         let webScrollView = webView.subviews[0] as! UIScrollView
+        //如果是一个评论文件的话 本次学生答案是没有的 因此添加一个按钮 来提供学生进行下载
+        if(self.items[index].valueForKey("answerext") as? String != nil
+            && self.items[index].valueForKey("answerext") as! String != ""){
+            let showFileBtn = UIButton(frame:CGRect(x: 20, y: totalHeight + 5, width: 200, height: 30))
+            totalHeight += 40
+            self.scrollView.addSubview(showFileBtn)
+           showFileBtn.addTarget(self, action: #selector(WritePeerAssessmentViewController.clickToSeeAnswer), forControlEvents: .TouchUpInside)
+            showFileBtn.tag = 888888
+            showFileBtn.setTitle("请点击下载评论", forState: .Normal)
+            showFileBtn.layer.cornerRadius = 2.0
+            showFileBtn.layer.masksToBounds = true
+            showFileBtn.backgroundColor = RGB(0, g: 153, b: 255)
+            showFileBtn.tintColor = UIColor.whiteColor()
+        }
+        
         webScrollView.contentSize = CGSizeMake(SCREEN_WIDTH, CGFloat(height!))
         tap.delegate = self
         tap.addTarget(self, action: #selector(WritePeerAssessmentViewController.showBig(_:)))
@@ -311,14 +330,22 @@ var questions = NSMutableArray()
     }
     //初始化视图
     func initView() {
+        filePath = ""
         for view in self.scrollView.subviews{
             view.removeFromSuperview()
         }
-        var totalString = self.items[index].valueForKey("content") as! String + "学生答案:" + "<br>"
+        var totalString = self.items[index].valueForKey("content") as! String + "<br>学生答案:" + "<br>"
         if(self.items[index].valueForKey("answer") as? String != nil && self.items[index].valueForKey("answer") as! String != ""){
             totalString += "<pre>" + (self.items[index].valueForKey("answer") as! String)
             + "</pre>"
+        }else if(self.items[index].valueForKey("answerext") as? String != nil
+            && self.items[index].valueForKey("answerext") as! String != ""
+            ){
+    
+          //如果是image就直接显现出来 不用下载
+            
         }else{
+        
             totalString += "无学生答案"
         }
         self.currentQusLabel.text = "\(self.index + 1)" + "/"  +  "\(self.items.count)"
@@ -444,5 +471,83 @@ var questions = NSMutableArray()
     @IBAction func PickerViewResign(sender: UIControl) {
         pickerView.hidden = true
     }
+    //查看学生答案的按钮
+    func clickToSeeAnswer() {
+        //沙盒
+        let doc = NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true)
+      self.filePath = doc[0] + "/" + self.diviseUrl((self.items[self.index].valueForKey("answerext") as! String))
+        if(fileExist(filePath)){
+            let qlVC = QLPreviewController()
+            qlVC.delegate = self
+            qlVC.dataSource = self
+            
+            self.navigationController?.pushViewController(qlVC, animated: true)
+
+        }else{
+            ProgressHUD.show("正在下载中")
+            let destination = Alamofire.Request.suggestedDownloadDestination(directory: .DocumentDirectory, domain: .UserDomainMask)
+            Alamofire.download(.GET, NSURL(string: self.items[index].valueForKey("answerext") as! String)!, destination: destination).progress { (bytesRead, totalBytesRead, totalBytesExpectedToRead) in
+                }.response { (request, response, _, error) in
+                    if(error == nil){
+                        ProgressHUD.showSuccess("下载成功")
+                        self.filePath = doc[0] + "/" + self.diviseUrl((self.items[self.index].valueForKey("answerext") as! String))
+                        let qlVC = QLPreviewController()
+                        qlVC.delegate = self
+                        qlVC.dataSource = self
+                        
+                        self.navigationController?.pushViewController(qlVC, animated: true)
+                        
+                        
+                    }else{
+                        ProgressHUD.showError("下载失败")
+                        print(2323232)
+                    }
+
+            
+        }
+        }
+    }
+    func numberOfPreviewItemsInPreviewController(controller: QLPreviewController) -> Int {
+        return 1
+    }
+    func previewController(controller: QLPreviewController, previewItemAtIndex index: Int) -> QLPreviewItem {
+        let fileUrl = NSURL(fileURLWithPath: self.filePath)
+        return fileUrl
+    }
+    func previewController(controller: QLPreviewController, shouldOpenURL url: NSURL, forPreviewItem item: QLPreviewItem) -> Bool {
+        return true
+    }
+
+    //判断文件是否存在
+    func fileExist(fileUrl:String) -> Bool{
+        let fileManager = NSFileManager.defaultManager()
+        if(fileManager.fileExistsAtPath(fileUrl)){
+            return true
+        }
+        return false
+    }
+    //记录字符串 随后进行截取
+    func diviseUrl(urlString:String) -> String{
+        var tempString = ""
+        var cnt = 0
+        var i = 0
+        while i < urlString.characters.count{
+            let index = urlString.startIndex.advancedBy(i)
+            if(urlString[index] == "/"){
+                cnt += 1
+            }
+            if(cnt == 8){
+                break
+                
+            }
+            i += 1
+        }
+        for j in i + 1 ..< urlString.characters.count{
+            let index = urlString.startIndex.advancedBy(j)
+            tempString.append(urlString[index])
+        }
+        return tempString
+    }
     
+
 }

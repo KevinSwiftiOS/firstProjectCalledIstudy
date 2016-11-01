@@ -88,6 +88,8 @@ if(self.items[indexPath.row].valueForKey("hupingtime") as? String != nil &&
             }
       
         cell.peerBtn?.addTarget(self, action: #selector(DetailPeerAssementViewController.goToPeer(_:)), forControlEvents: .TouchUpInside)
+            //设置tag额
+            cell.peerBtn.tag = indexPath.row
             cell.peerBtn.layer.cornerRadius = 6.0
             cell.peerBtn.layer.masksToBounds = true
         }
