@@ -20,25 +20,84 @@ func RGB(r:Float,g:Float,b:Float) -> UIColor{
 let imageDecString = "<head><style>p{font-size: 17px;font-family: " + "\"" + "宋体" + "\"" +  "}" + "img{width: 50.123px;height:50.123px}" +  "</style></head>" +  "" +  "<p>"
 //分割文件的字符串
 //记录字符串 随后进行截取
-func diviseFileUrl(urlString:String) -> String{
-    var tempString = ""
-var cnt = 0
-var i = 0
-while i < urlString.characters.count{
-    let index = urlString.startIndex.advancedBy(i)
-    if(urlString[index] == "/"){
-        cnt += 1
+//分割文件路径上传的url
+func diviseUrl(urlString:String) -> (String,String){
+    var tempUrlString = urlString
+    //先统计总共有几个/
+    tempUrlString = tempUrlString.stringByReplacingOccurrencesOfString("http://dodo.hznu.edu.cn/", withString: "")
+    var totalSlash = 0
+    for i in 0 ..< tempUrlString.characters.count{
+        let index = tempUrlString.startIndex.advancedBy(i)
+        if(tempUrlString[index] == "/"){
+            totalSlash += 1
+        }
     }
-    if(cnt == 6){
-        break
-        
+    //分割前面一段文件路径名的字符
+    var fileString = ""
+    var cnt = 0
+    var i = 0
+    while i <  tempUrlString.characters.count{
+        let index = tempUrlString.startIndex.advancedBy(i)
+        if(tempUrlString[index] == "/"){
+            //判断是否到达最后一个
+            cnt += 1
+            if(cnt == totalSlash){
+                break
+            }
+        }
+        //始终是要加上的
+        fileString.append(tempUrlString[index])
+        i += 1
     }
-    i += 1
+    //文件名字的提取
+    var fileNameString = ""
+    for j in i + 1 ..< tempUrlString.characters.count{
+        let index = tempUrlString.startIndex.advancedBy(j)
+        fileNameString.append(tempUrlString[index])
+    }
+    //将中文转换成乱码
+    fileString = fileString.stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.URLFragmentAllowedCharacterSet())!
+    fileNameString = fileNameString.stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.URLFragmentAllowedCharacterSet())!
+    return(fileString,fileNameString)
 }
-for j in i + 1 ..< urlString.characters.count{
-    let index = urlString.startIndex.advancedBy(j)
-    tempString.append(urlString[index])
+
+//创建文件夹
+//创建文件夹
+func creathDir(fileURLString:String) {
+    let path = NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true)[0]
+    let str = NSString(string: path)
+    let fileUrl = str.stringByAppendingPathComponent(fileURLString)
+    
+    let fileManager = NSFileManager.defaultManager()
+    if(!fileManager.fileExistsAtPath(fileUrl)) {
+        do{  try fileManager.createDirectoryAtPath(fileUrl, withIntermediateDirectories: true, attributes: nil)
+        }catch{
+            print("创建文件失败")
+        }
+    }
 }
-   return tempString
+//判断文件是否存在
+func existFile(fileString:String) -> String{
+    let path = NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true)[0]
+    let str = NSString(string: path)
+    let fileUrl = str.stringByAppendingString("/" + fileString)
+    let fileManager = NSFileManager.defaultManager()
+    if(fileManager.fileExistsAtPath(fileUrl)){
+        return fileUrl
+    }
+    return ""
 }
+//问价下载时候的url路径
+func createURLInDownLoad(url:String) -> NSURL{
+    let (fileString,fileNameString) = diviseUrl(url)
+    
+    
+    let fileManager = NSFileManager.defaultManager()
+     let directoryURL = fileManager.URLsForDirectory(.DocumentDirectory,inDomains: .UserDomainMask)[0]
+    //随后url加文件名
+  return   directoryURL.URLByAppendingPathComponent(fileString + "/" + fileNameString)!
+
+}
+
+
 

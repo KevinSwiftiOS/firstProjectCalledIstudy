@@ -108,6 +108,7 @@ class WriteTopicsViewController: UIViewController,UICollectionViewDelegate,UICol
         tempHtmlString = self.writeTextView.text
         
         //循环将图片数组中的值取出 转化成html格式
+        if(self.photos.count > 0){
         for i in 0 ..< self.photos.count{
             let data = UIImageJPEGRepresentation(self.photos[i] as! UIImage, 0.5)
             let string = "http://dodo.hznu.edu.cn/api/upfile?authtoken=" +
@@ -131,6 +132,7 @@ class WriteTopicsViewController: UIViewController,UICollectionViewDelegate,UICol
                                 }else{
                                     dispatch_async(dispatch_get_main_queue(), {
                                         let imageUrl = "<div><img src = " + "\""  +   json["info"]["uploadedurl"].string! +  "\"" + "/></div>"
+                                        print(tempHtmlString)
                                         tempHtmlString += imageUrl
                                         if(i == self.photos.count - 1){
                                             
@@ -149,6 +151,9 @@ class WriteTopicsViewController: UIViewController,UICollectionViewDelegate,UICol
                     print(3)
                 }
             }
+        }
+        }else{
+            self.sendTopic(tempHtmlString, authtoken: authtoken)
         }
     }
     //发帖的函数

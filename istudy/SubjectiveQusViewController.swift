@@ -1,16 +1,11 @@
-//
-//  SubjectiveQusViewController.swift
-//  istudy
-//
-//  Created by hznucai on 16/3/16.
-//  Copyright © 2016年 hznucai. All rights reserved.
-//
+
 
 import UIKit
 import Alamofire
 import SwiftyJSON
 import Font_Awesome_Swift
-class SubjectiveQusViewController: UIViewController,AJPhotoPickerProtocol,UINavigationControllerDelegate,UIImagePickerControllerDelegate,BlurEffectMenuDelegate,UIGestureRecognizerDelegate,UICollectionViewDelegate,UICollectionViewDelegateFlowLayout,UICollectionViewDataSource,UIWebViewDelegate{
+import QuickLook
+class SubjectiveQusViewController: UIViewController,AJPhotoPickerProtocol,UINavigationControllerDelegate,UIImagePickerControllerDelegate,BlurEffectMenuDelegate,UIGestureRecognizerDelegate,UICollectionViewDelegate,UICollectionViewDelegateFlowLayout,UICollectionViewDataSource,UIWebViewDelegate,UITableViewDelegate,UITableViewDataSource,QLPreviewControllerDataSource,QLPreviewControllerDelegate{
     //记录date和阅卷是否开启 和阅卷的时候答案是否可见等等
     var endDate = NSDate()
     //是否可以阅卷
@@ -21,17 +16,19 @@ class SubjectiveQusViewController: UIViewController,AJPhotoPickerProtocol,UINavi
     var tap = UITapGestureRecognizer()
     var tap1 = UITapGestureRecognizer()
     var tap2 = UITapGestureRecognizer()
-    
     var imagePicker:AJPhotoPickerViewController!
     var isFromOtherKindQus = false
     //记录当前是第几个题型
     //从其他题型跳转过来的
+      var filePath = NSURL()
     var kindOfQusIndex = NSInteger()
     var id = NSInteger()
     var testid = NSInteger()
     var totalItems = NSArray()
     var items = NSArray()
     var totalKindOfQus = NSInteger()
+    var fileItems = NSMutableArray()
+    var answerFilesItems = NSMutableArray()
     var isOver = false
     //添加图片和文字的按钮 和 重置的按钮
     @IBOutlet weak var qusKind:UILabel?
@@ -54,7 +51,6 @@ class SubjectiveQusViewController: UIViewController,AJPhotoPickerProtocol,UINavi
     @IBOutlet weak var btmView:UIView!
     var menu:BlurEffectMenu!
     let  cameraPicker = UIImagePickerController()
-    
     //记录当前在第几页和总共的页数
     var index:NSInteger = 0
     var answerPhotos = NSMutableArray()
@@ -63,12 +59,11 @@ class SubjectiveQusViewController: UIViewController,AJPhotoPickerProtocol,UINavi
     override func viewDidLoad() {
         super.viewDidLoad()
         ShowBigImageFactory.topViewEDit(self.btmView)
-        
         //顶部加条线
         //设置阴影效果
         ShowBigImageFactory.topViewEDit(self.topView!)
-        
-        self.contentScrollView?.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(SubjectiveQusViewController.contResign)))
+//    self.contentScrollView?.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(SubjectiveQusViewController.contResign)))
+        self.contentScrollView?.keyboardDismissMode = .OnDrag
         self.view.endEditing(true)
         UIApplication.sharedApplication().keyWindow?.endEditing(true)
         self.collectionView?.delegate = self
@@ -78,11 +73,9 @@ class SubjectiveQusViewController: UIViewController,AJPhotoPickerProtocol,UINavi
         self.tap1 = UITapGestureRecognizer(target: self, action: #selector(SubjectiveQusViewController.webViewShowBig(_:)))
         self.tap2 = UITapGestureRecognizer(target: self, action: #selector(SubjectiveQusViewController.webViewShowBig(_:)))
         self.tap2.delegate = self
-    
         self.automaticallyAdjustsScrollViewInsets = false
         //backBtn和submitBtn
         let backBtn = UIButton(frame: CGRectMake(0,0,43,43))
-        
         backBtn.contentHorizontalAlignment = .Left
         backBtn.tag = 1
         backBtn.setTitle("返回", forState: .Normal)
@@ -126,8 +119,6 @@ class SubjectiveQusViewController: UIViewController,AJPhotoPickerProtocol,UINavi
                 self.selfAnswers.addObject("")
             }
         }
-        
-        
         self.initView()
         backBtn.setFAIcon(FAType.FAArrowLeft, iconSize: 25, forState: .Normal)
         actBtn.setFAIcon(FAType.FABook, iconSize: 25, forState: .Normal)
@@ -144,13 +135,10 @@ class SubjectiveQusViewController: UIViewController,AJPhotoPickerProtocol,UINavi
         vc.viewOneWithAnswerKey = self.viewOneWithAnswerKey
         self.navigationController?.pushViewController(vc, animated: true)
     }
-    
     //返回试卷列表或者根视图
     func back(sender:UIButton) {
-        
         if(sender.tag == 1) {
             let vc = UIStoryboard(name: "OneCourse", bundle: nil).instantiateViewControllerWithIdentifier("MyHomeWorkVC") as! MyHomeWorkViewController
-            
             for temp in (self.navigationController?.viewControllers)!{
                 if(temp .isKindOfClass(vc.classForCoder)){
                     self.navigationController?.popToViewController(temp, animated: true)
@@ -169,12 +157,15 @@ class SubjectiveQusViewController: UIViewController,AJPhotoPickerProtocol,UINavi
         
         
     }
-    
     //初始化界面
     func initView() {
+        filePath = NSURL()
         //加载界面的时候
-      
-        
+        //初始化内容
+        self.fileItems.removeAllObjects()
+        self.answerFilesItems.removeAllObjects()
+        self.answerPhotos.removeAllObjects()
+        self.answerTextView.text = ""
         for view in (self.contentScrollView?.subviews)!{
             view.removeFromSuperview()
         }
@@ -185,7 +176,6 @@ class SubjectiveQusViewController: UIViewController,AJPhotoPickerProtocol,UINavi
         self.qusKind?.text = self.totalItems[kindOfQusIndex].valueForKey("title") as! String +  "(" +
              "\(index + 1)" + "/" + "\(self.items.count)" + ")"
         self.currentQus!.text =  "\(self.items[index].valueForKey("totalscore") as! NSNumber)" + "分"
-        
         tap.delegate = self
         self.qusDes.addGestureRecognizer(tap)
         tap1.delegate = self
@@ -194,8 +184,7 @@ class SubjectiveQusViewController: UIViewController,AJPhotoPickerProtocol,UINavi
         self.answerWebView.tag = 1
         self.answerWebView.addGestureRecognizer(tap1)
     }
-    
-    override func didReceiveMemoryWarning() {
+override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
@@ -210,16 +199,15 @@ class SubjectiveQusViewController: UIViewController,AJPhotoPickerProtocol,UINavi
     //保存的代码
     func save(sender:UIButton){
         //save的时候转化成为html的格式 随后answerTextView和imageView进行初始化影藏
-        //    self.answerTextView.hidden = true
-        var allAnswer = ""
+       var allAnswer = ""
         allAnswer = self.selfAnswers[index] as! String
       
      allAnswer  += self.answerTextView.text
         
-        //循环将图片数组中的值取出 转化成html格式
-     
+    //循环将图片数组中的值取出 转化成html格式 没有图片的话也要上传 这里以前有Bug
+        if(self.answerPhotos.count > 0){
         for i in 0 ..< self.answerPhotos.count{
-            let data = UIImageJPEGRepresentation(self.answerPhotos[i] as! UIImage, 0.5)
+           
             //Alamofire进行上传
             let userDefault = NSUserDefaults.standardUserDefaults()
             //url
@@ -240,7 +228,7 @@ class SubjectiveQusViewController: UIViewController,AJPhotoPickerProtocol,UINavi
             let paramDic:[String:AnyObject] = ["data":jsonString!]
             let request = NSMutableURLRequest(URL: NSURL(string:  "http://dodo.hznu.edu.cn/api/upfile?authtoken=" + authtoken + "&type=2")!)
             request.HTTPMethod = "POST"
-            
+             let data = UIImageJPEGRepresentation(self.answerPhotos[i] as! UIImage, 0.5)
         
             let requestCov:NSMutableURLRequest  = (ParameterEncoding.URL.encode(request, parameters: paramDic)).0
             Alamofire.upload(requestCov, multipartFormData: { (formData) in
@@ -253,7 +241,7 @@ class SubjectiveQusViewController: UIViewController,AJPhotoPickerProtocol,UINavi
                         switch response.result{
                         case .Success(let Value):
                             
-                            let json = JSON(Value)
+                    let json = JSON(Value)
                             if(json["retcode"].number != 0){
                                 print(json["retcode"].number)
                                 ProgressHUD.showError("保存失败")
@@ -267,15 +255,10 @@ class SubjectiveQusViewController: UIViewController,AJPhotoPickerProtocol,UINavi
                                 }else{
                                   dispatch_async(dispatch_get_main_queue(), {
                                  
-                                        allAnswer += "<div><img src = " + "\""  +   json["info"]["uploadedurl"].string! +  "\"" + "/></div>"
+                                        allAnswer += "<img src = " + "\""  +   json["info"]["uploadedurl"].string! +  "\"" + "/>"
                                     if(i == self.answerPhotos.count - 1){
                                        
-                                        self.collectionView!.hidden = true
-                                        self.answerTextView.hidden = true
-                                        
-                                        self.answerWebView.hidden = false
                                         //转化成html的格式
-                                        
                                         self.selfAnswers.replaceObjectAtIndex(self.index, withObject: allAnswer)
                                         self.answerWebView.loadHTMLString(imageDecString + (self.selfAnswers[self.index] as! String) , baseURL: nil)
                                         
@@ -306,7 +289,12 @@ class SubjectiveQusViewController: UIViewController,AJPhotoPickerProtocol,UINavi
 }
             }
     
-        
+        }else{
+            self.selfAnswers.replaceObjectAtIndex(self.index, withObject: allAnswer)
+            self.postAnswer()
+            self.answerTextView.text = ""
+             self.answerWebView.loadHTMLString(imageDecString + (self.selfAnswers[self.index] as! String) , baseURL: nil)
+        }
         
     }
    
@@ -318,17 +306,12 @@ class SubjectiveQusViewController: UIViewController,AJPhotoPickerProtocol,UINavi
             self.selfAnswers.replaceObjectAtIndex(self.index, withObject: "")
             self.answerPhotos.removeAllObjects()
             self.answerTextView.text = ""
-            //            self.answerTextView.hidden = true
-            //            self.answerWebView.hidden = false
-            //            self.collectionView.hidden = true
-            self.collectionView.reloadData()
+          self.collectionView.reloadData()
             self.answerTextView.resignFirstResponder()
             self.answerWebView.loadHTMLString("", baseURL: nil)
-            
-            self.postAnswer()
+           self.postAnswer()
             let  tempAnswerString = "<html><head><style>P{text-align:center;vertical-align: middle;font-size: 17px;font-family: " + "\"" + "宋体" + "\"" +  "}</style></head><body><p>无作业信息</p></body></html>"
-            
-            self.answerWebView.loadHTMLString(tempAnswerString, baseURL: nil)
+    self.answerWebView.loadHTMLString(tempAnswerString, baseURL: nil)
             
         }
         let cancelAction = UIAlertAction(title: "取消", style: UIAlertActionStyle.Destructive, handler: nil)
@@ -400,9 +383,8 @@ class SubjectiveQusViewController: UIViewController,AJPhotoPickerProtocol,UINavi
     //确实点击了某到题目的时候
     func blurEffectMenu(menu: BlurEffectMenu!, didTapOnItem item: BlurEffectMenuItem!) {
         //将answerWebView的隐藏 随后出现两个控件 一个用来添加文字 一个用来添加图片
-        //   self.answerWebView.hidden = true
+       
         if(item.title == "添加图片"){
-            //    self.answerPhotos = NSMutableArray()
             self.imagePicker = AJPhotoPickerViewController()
             //设置最大的数量
             imagePicker.maximumNumberOfSelection = 6
@@ -419,11 +401,9 @@ class SubjectiveQusViewController: UIViewController,AJPhotoPickerProtocol,UINavi
         if(item.title == "添加文字"){
             self.answerTextView.becomeFirstResponder()
             self.answerTextView.becomeFirstResponder()
-            menu.dismissViewControllerAnimated(true, completion: nil)
+menu.dismissViewControllerAnimated(true, completion: nil)
         }
-        
-        
-    }
+        }
     //当选择超过最大比重时
     func photoPickerDidMaximum(picker: AJPhotoPickerViewController!) {
         ProgressHUD.showError("已超过最大选择数")
@@ -432,13 +412,9 @@ class SubjectiveQusViewController: UIViewController,AJPhotoPickerProtocol,UINavi
     func photoPickerDidCancel(picker: AJPhotoPickerViewController!) {
         picker.dismissViewControllerAnimated(true, completion: nil)
         menu.dismissViewControllerAnimated(true, completion: nil)
-        //        self.answerWebView.hidden = false
-        //        self.collectionView.hidden = true
-        //        self.answerTextView.hidden = true
-    }
+     }
     //当点击了照相机的时候
     func photoPickerTapCameraAction(picker: AJPhotoPickerViewController!) {
-        
         if (UIImagePickerController.availableMediaTypesForSourceType(.Camera) != nil){
             cameraPicker.sourceType = .Camera
             cameraPicker.delegate = self
@@ -454,9 +430,7 @@ class SubjectiveQusViewController: UIViewController,AJPhotoPickerProtocol,UINavi
         picker.dismissViewControllerAnimated(true, completion: nil)
         self.imagePicker.dismissViewControllerAnimated(true, completion: nil)
         menu.dismissViewControllerAnimated(true, completion: nil)
-        //        self.answerTextView.hidden = true
-        //        self.answerWebView.hidden = true
-        //        self.collectionView?.hidden = false
+
         self.collectionView?.reloadData()
     }
     //退出照相机的时候
@@ -464,31 +438,23 @@ class SubjectiveQusViewController: UIViewController,AJPhotoPickerProtocol,UINavi
         picker.dismissViewControllerAnimated(true, completion: nil)
         self.imagePicker.dismissViewControllerAnimated(true, completion: nil)
         menu.dismissViewControllerAnimated(true, completion: nil)
-        //        self.answerTextView.hidden = true
-        //        self.answerWebView.hidden = false
-        //        self.collectionView?.hidden = true
+      
     }
     //当选择好相册后 更新scrollView
     func photoPicker(picker: AJPhotoPickerViewController!, didSelectAssets assets: [AnyObject]!) {
         for i in 0 ..< assets.count {
             let asset = assets[i]
             let tempImage = UIImage(CGImage: asset.defaultRepresentation().fullScreenImage().takeUnretainedValue())
-            
             self.answerPhotos.addObject(tempImage)
         }
         picker.dismissViewControllerAnimated(true, completion: nil)
         menu.dismissViewControllerAnimated(true, completion: nil)
-        //        self.collectionView?.hidden = false
-        //        self.answerWebView.hidden = true
-        //        self.answerTextView.hidden = true
-        
-        self.collectionView?.reloadData()
+       self.collectionView?.reloadData()
         
     }
     
     //图片编辑
     func editOrShow(sender:UIButton){
-        
         let alert = UIAlertController(title: nil, message: nil, preferredStyle: UIAlertControllerStyle.ActionSheet)
         let showAction = UIAlertAction(title: "预览", style: UIAlertActionStyle.Default) { (UIAlertAction) -> Void in
             
@@ -506,14 +472,12 @@ class SubjectiveQusViewController: UIViewController,AJPhotoPickerProtocol,UINavi
         }
         
         let cropAction = UIAlertAction(title: "编辑", style: UIAlertActionStyle.Default) { (UIAlertAction) -> Void in
-            
             let cropVC = UIStoryboard(name: "Problem", bundle: nil).instantiateViewControllerWithIdentifier("cropVC") as! CropAndRotateViewController
             cropVC.image = (self.answerPhotos[(sender.tag)] as! UIImage)
             alert.dismissViewControllerAnimated(true, completion: nil)
             self.navigationController?.pushViewController(cropVC, animated: true)
             cropVC.callBack = {(image:UIImage) -> Void in
                 weak var wself = self
-                
                 wself?.answerPhotos.replaceObjectAtIndex((sender.tag), withObject: image)
                 wself?.collectionView?.reloadData()
             }
@@ -554,8 +518,7 @@ class SubjectiveQusViewController: UIViewController,AJPhotoPickerProtocol,UINavi
                 vc.keyVisible = self.keyVisible
                 vc.viewOneWithAnswerKey = self.viewOneWithAnswerKey
                 self.navigationController?.pushViewController(vc, animated: false)
-                
-            }
+                }
         }
         if sender.direction == .Right{
             if self.index != 0{
@@ -583,9 +546,8 @@ class SubjectiveQusViewController: UIViewController,AJPhotoPickerProtocol,UINavi
     }
     func keyboardWillHideNotification(notification:NSNotification){
         UIView.animateWithDuration(0.3) {
-            self.contentScrollView?.contentOffset = CGPointMake(0, 0)
-            
-        }
+//            self.contentScrollView?.contentOffset = CGPointMake(0, 0)
+            }
     }
     
     
@@ -642,11 +604,8 @@ class SubjectiveQusViewController: UIViewController,AJPhotoPickerProtocol,UINavi
     }
     var resetBtnAndQusHeight:CGFloat = 0.0
     func webViewDidFinishLoad(webView: UIWebView) {
-        if(self.items[index].valueForKey("designanswermode")?.integerValue == 1){
-            ProgressHUD.showError("不支持文件上传,请登录网站回答本题")
-        }
+      print(self.items)
         let height = NSInteger(webView.stringByEvaluatingJavaScriptFromString("document.body.offsetHeight")!)
-        
         var NewFrame = webView.frame
         NewFrame.size.height = CGFloat(height!) + 5
         webView.frame = NewFrame
@@ -665,7 +624,6 @@ class SubjectiveQusViewController: UIViewController,AJPhotoPickerProtocol,UINavi
         self.rightBtn.tag = 2
         self.leftBtn.addTarget(self, action: #selector(SubjectiveQusViewController.changeIndex(_:)), forControlEvents: .TouchUpInside)
         self.rightBtn.addTarget(self, action: #selector(SubjectiveQusViewController.changeIndex(_:)), forControlEvents: .TouchUpInside)
-        
         totalHeight += 35
         self.resetBtnAndQusHeight = totalHeight
         //比较日期 加载不同的控件
@@ -673,6 +631,37 @@ class SubjectiveQusViewController: UIViewController,AJPhotoPickerProtocol,UINavi
         self.answerWebView.addGestureRecognizer(tap1)
         self.answerWebView.tag = 1
         self.answerWebView.userInteractionEnabled = true
+     
+    //要查看本题目是否有附件
+        if(self.items[index].valueForKey("files") as? NSArray != nil &&
+            (self.items[index].valueForKey("files") as! NSArray).count > 0){
+            self.fileItems = NSMutableArray(array:  self.items[index].valueForKey("files") as! NSArray)
+            let FileLabel = UILabel(frame:  CGRectMake(5, self.totalHeight + 2, SCREEN_WIDTH - 10, 30))
+            FileLabel.text = "附件区"
+            self.totalHeight += 32
+     //增加附件区
+            let filesTableView = UITableView(frame: CGRectMake(5, self.totalHeight + 2, SCREEN_WIDTH - 10, 100))
+            filesTableView.tag = 1
+            filesTableView.delegate = self
+            filesTableView.dataSource = self
+            filesTableView.tableFooterView = UIView()
+            self.totalHeight += 110
+         self.contentScrollView?.addSubview(FileLabel)
+            self.contentScrollView?.addSubview(filesTableView)
+        }
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
         
         
         //有没有答案的选择
@@ -697,12 +686,9 @@ class SubjectiveQusViewController: UIViewController,AJPhotoPickerProtocol,UINavi
         self.contentScrollView?.addSubview(self.answerWebView)
         
         let currentDate = NSDate()
-        //判断是支持附件上传的题目还是可以图文上传的题目
-        if(self.items[index].valueForKey("designanswermode")?.integerValue == 1){
-           
-        }
+     
         let result:NSComparisonResult = currentDate.compare(endDate)
-        if (result == .OrderedAscending && self.items[index].valueForKey("designanswermode")?.integerValue == 0){
+        if (result == .OrderedAscending){
             self.isOver = false
             //加载textView 和 collectionView
             let answerTextLabel = UILabel(frame: CGRectMake(5, totalHeight, SCREEN_WIDTH, 21))
@@ -728,6 +714,7 @@ class SubjectiveQusViewController: UIViewController,AJPhotoPickerProtocol,UINavi
             self.collectionView.layer.borderColor = UIColor.grayColor().CGColor
             self.answerTextView.layer.borderWidth = 0.3
             self.answerTextView.layer.borderColor = UIColor.grayColor().CGColor
+       ProgressHUD.dismiss()
         }else{
             self.isOver = true
             // totalHeight += 155
@@ -777,13 +764,50 @@ class SubjectiveQusViewController: UIViewController,AJPhotoPickerProtocol,UINavi
             standAnswerWebView.addGestureRecognizer(self.tap2)
             standAnswerWebView.userInteractionEnabled = true
             standAnswerWebView.tag = 3
-        }
-        self.contentScrollView?.contentSize = CGSizeMake(SCREEN_WIDTH, totalHeight + 20)
         ProgressHUD.dismiss()
+        }
+      
+      
+        //判断是支持附件上传的题目还是可以图文上传的题目
+        if(self.items[index].valueForKey("designanswermode")?.integerValue == 1 && self.isOver == false){
+            let alertC = UIAlertController(title: "提醒", message: "该题目不支持在手机上做,请到PC上传文件", preferredStyle: .Alert)
+            let action = UIAlertAction(title: "确定", style: .Default, handler: { (alert:UIAlertAction) in
+                alertC.dismissViewControllerAnimated(true, completion: nil)
+            })
+            alertC.addAction(action)
+            self.presentViewController(alertC, animated: true, completion: nil)
+            self.answerTextView.editable = false
+            self.addBtn.enabled = false
+            self.saveBtn.enabled = false
+            self.resetBtn.enabled = false
+        }
+        //判断学生的答案是否是文件
+        if(self.items[index].valueForKey("answerfiles") as? NSArray != nil &&
+            (self.items[index].valueForKey("answerfiles") as! NSArray).count > 0){
+            
+   self.answerFilesItems = NSMutableArray(array:  self.items[index].valueForKey("answerfiles") as! NSArray)
+        
+            let answerFilesLabel = UILabel(frame:  CGRectMake(5, self.totalHeight + 2, SCREEN_WIDTH - 10, 30))
+            answerFilesLabel.text = "学生答案附件区"
+            self.totalHeight += 32
+            //增加附件区
+            let answerFilesTableView = UITableView(frame: CGRectMake(5, self.totalHeight + 2, SCREEN_WIDTH - 10, 100))
+            answerFilesTableView.tag = 2
+            answerFilesTableView.delegate = self
+            answerFilesTableView.dataSource = self
+            self.contentScrollView?.addSubview(answerFilesLabel)
+            self.contentScrollView?.addSubview(answerFilesTableView)
+            self.totalHeight += 110
+        
+           answerFilesTableView.tableFooterView = UIView()
+        
+        
+        
+        }
+          self.contentScrollView?.contentSize = CGSizeMake(SCREEN_WIDTH, totalHeight + 20)
     }
     //看内存有没有释放掉
     deinit{
-        print("SubjectvcDeinit")
     }
     override func viewWillDisappear(animated: Bool) {
         ProgressHUD.dismiss()
@@ -845,4 +869,123 @@ class SubjectiveQusViewController: UIViewController,AJPhotoPickerProtocol,UINavi
         self.nextResponder()?.touchesBegan(touches, withEvent: event)
         super.touchesBegan(touches, withEvent: event)
     }
-}
+    //tableView的代理
+    func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+        return 1
+    }
+    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        if(tableView.tag == 1){
+        return self.fileItems.count
+        }else{
+            return self.answerFilesItems.count
+        }
+    }
+    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+        if(tableView.tag == 1){
+            let identifer = "filescell"
+            var cell : UITableViewCell? = tableView.dequeueReusableCellWithIdentifier(identifer)
+            
+            if cell == nil {
+                cell = UITableViewCell(style: UITableViewCellStyle.Subtitle, reuseIdentifier: identifer)
+            }
+            cell!.textLabel?.text = self.fileItems[indexPath.row].valueForKey("name")
+                as? String
+            cell!.detailTextLabel?.text = self.fileItems[indexPath.row].valueForKey("size") as? String
+            return cell!
+            
+        }else{
+            let identifer = "answerFilescell"
+            var cell : UITableViewCell? = tableView.dequeueReusableCellWithIdentifier(identifer)
+            
+            if cell == nil {
+                cell = UITableViewCell(style: UITableViewCellStyle.Subtitle, reuseIdentifier: identifer)
+            }
+            cell!.textLabel?.text = self.answerFilesItems[indexPath.row].valueForKey("name")
+                as? String
+            cell!.detailTextLabel?.text = self.answerFilesItems[indexPath.row].valueForKey("size") as? String
+            return cell!
+
+        }
+    }
+
+func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        tableView.deselectRowAtIndexPath(indexPath, animated: true)
+        var fileDic = NSDictionary()
+        //进行文件的下载和预览
+        if(tableView.tag == 1) {
+            fileDic = self.fileItems[indexPath.row] as! NSDictionary
+        }else{
+            fileDic = self.answerFilesItems[indexPath.row] as! NSDictionary
+    }
+        var fileUrl = fileDic.valueForKey("url") as! String
+    //中文转码
+    fileUrl = fileUrl.stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.URLFragmentAllowedCharacterSet())!
+
+        //1分割字符串
+        let (fileString,_) = diviseUrl(fileUrl)
+        //2创建文件夹
+        creathDir(fileString)
+        //3判断文件是否存在
+        var fileName = fileDic.valueForKey("name") as! String
+        fileName = fileName.stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.URLFragmentAllowedCharacterSet())!
+        let path = fileString + "/" + fileName
+        if(existFile(path) != ""){
+            self.filePath = NSURL(fileURLWithPath: existFile(path))
+            let qlVC = QLPreviewController()
+            qlVC.delegate = self
+            qlVC.dataSource = self
+            self.navigationController?.pushViewController(qlVC, animated: true)
+        }
+        else{
+            ProgressHUD.show("正在下载中")
+            //文件路径名的问题 找到一个Bug
+            
+            Alamofire.download(.GET, (fileUrl)) {
+                temporaryURL,response
+                in
+                if(response.statusCode == 200){
+                    var pathString = fileString + "/" + response.suggestedFilename!
+                       pathString = pathString.stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.URLFragmentAllowedCharacterSet())!
+                    let path1 = NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true)[0]
+                    let str = NSString(string: path1)
+                    let fileUrl = str.stringByAppendingPathComponent(pathString)
+                    
+                    
+                    
+                    let path = NSURL(fileURLWithPath: String(fileUrl))
+                    dispatch_async(dispatch_get_main_queue(), {
+                        ProgressHUD.showSuccess("下载成功")
+                        
+                        self.filePath = path
+                        let qlVC = QLPreviewController()
+                        qlVC.dataSource = self
+                        qlVC.delegate = self
+                      
+                        self.navigationController?.pushViewController(qlVC, animated: true)
+                    })
+                    return path
+                }
+                else{
+                    print(response.statusCode)
+                    ProgressHUD.showError("下载失败")
+                    return NSURL()
+                }
+                
+            }
+            
+        }
+
+        
+    }
+    func numberOfPreviewItemsInPreviewController(controller: QLPreviewController) -> Int {
+        return 1
+    }
+    func previewController(controller: QLPreviewController, previewItemAtIndex index: Int) -> QLPreviewItem {
+        
+        return self.filePath
+    }
+    func previewController(controller: QLPreviewController, shouldOpenURL url: NSURL, forPreviewItem item: QLPreviewItem) -> Bool {
+        
+        return true
+    }
+    }

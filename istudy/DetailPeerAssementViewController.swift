@@ -129,13 +129,13 @@ if(self.items[indexPath.row].valueForKey("hupingtime") as? String != nil &&
                                   })
             case .Success(let Value):
                 let json = JSON(Value)
-                
+                print(json)
                 if(json["retcode"].number != 0){
-                 
+                    
                    ProgressHUD.showError(json["message"].string)
                     dispatch_async(dispatch_get_main_queue(), {
                         self.items = NSArray()
-                                                self.tableView?.emptyDataSetSource = self
+                    self.tableView?.emptyDataSetSource = self
                         
                         self.tableView?.reloadData()
                     })

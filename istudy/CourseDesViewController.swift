@@ -290,7 +290,7 @@ sender.setTitleColor(UIColor.whiteColor(), forState: .Normal)
                         }else{
                          
                             userDefault.setValue(json["authtoken"].string, forKey: "authtoken")
-                      
+                      print(json["authtoken"].string)
                             //设置名字 名字和账号是不一样的
                             userDefault.setValue(json["info"]["name"].string, forKey: "name")
                             userDefault.setValue(json["info"]["gender"].string, forKey: "gender")

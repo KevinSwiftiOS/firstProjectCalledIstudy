@@ -167,6 +167,7 @@ self.view.setNeedsLayout()
         var content = ""
         content = self.writeTextView.text
         //转换成base64字符串
+        if(self.photos.count > 0) {
         for i in 0 ..< self.photos.count{
             let data = UIImageJPEGRepresentation(self.photos[i] as! UIImage, 0.5)
             let string = "http://dodo.hznu.edu.cn/api/upfile?authtoken=" +
@@ -208,6 +209,12 @@ self.view.setNeedsLayout()
                     print(3)
                 }
             }
+        }
+        }else{
+            
+            
+            
+            self.sendWithPerson(content, subject: subject!, authtoken: authtoken)
         }
     }
         //添加联系人

@@ -16,7 +16,7 @@ import QuickLook
 class StudyMaterialViewController: UIViewController,UITableViewDelegate,UITableViewDataSource,
 UISearchControllerDelegate,UISearchResultsUpdating,DZNEmptyDataSetSource,DZNEmptyDataSetDelegate,QLPreviewControllerDataSource,QLPreviewControllerDelegate{
     //courseID
-    var filePath = ""
+    var filePath = NSURL()
     var courseId = NSInteger()
     var filterItems = NSMutableArray()
     var sc = UISearchController(searchResultsController: nil)
@@ -24,9 +24,9 @@ UISearchControllerDelegate,UISearchResultsUpdating,DZNEmptyDataSetSource,DZNEmpt
     @IBOutlet weak var studyMaterialsTableView:UITableView?
     //应该接受到一个url 和每份资料的标题等
     var items = NSMutableArray()
-       override func viewDidLoad() {
+    override func viewDidLoad() {
         super.viewDidLoad()
-               self.automaticallyAdjustsScrollViewInsets = false
+        self.automaticallyAdjustsScrollViewInsets = false
         self.studyMaterialsTableView?.delegate = self
         self.studyMaterialsTableView?.dataSource = self
         self.studyMaterialsTableView?.tableFooterView = UIView()
@@ -66,140 +66,117 @@ UISearchControllerDelegate,UISearchResultsUpdating,DZNEmptyDataSetSource,DZNEmpt
             as! StudyMaterialTableViewCell
         if(!sc.active){
             if(indexPath.row < self.items.count){
-            cell.fileNameLalel.text = self.items[indexPath.row].valueForKey("filename") as? String
-            var typeString = "类型:"
-            typeString += (self.items[indexPath.row].valueForKey("extensions") as? String)!
-            var createTimeString = "创建时间:"
-            createTimeString += self.items[indexPath.row].valueForKey("datecreated") as! String
-            var filesizeString = "文件大小:"
-            filesizeString += self.items[indexPath.row].valueForKey("filesize") as! String
-            cell.totalLabel.text = typeString + " " + createTimeString + " " + filesizeString
-            //文件类型头像的不同
-            switch  self.items[indexPath.row].valueForKey("extensions") as! String {
-            case "pdf":
-                cell.typeImageView.image = UIImage(named: "pdf")
-            case "ppt","pptx":
-                cell.typeImageView.image = UIImage(named: "ppt")
-            case "doc","docx":
-                cell.typeImageView.image = UIImage(named: "word")
-            case "xls","xlsx":
-                cell.typeImageView.image = UIImage(named: "Excel")
-            default:
-                cell.typeImageView.image = UIImage(named: "zip")
-            }
+                cell.fileNameLalel.text = self.items[indexPath.row].valueForKey("filename") as? String
+                var typeString = "类型:"
+                typeString += (self.items[indexPath.row].valueForKey("extensions") as? String)!
+                var createTimeString = "创建时间:"
+                createTimeString += self.items[indexPath.row].valueForKey("datecreated") as! String
+                var filesizeString = "文件大小:"
+                filesizeString += self.items[indexPath.row].valueForKey("filesize") as! String
+                cell.totalLabel.text = typeString + " " + createTimeString + " " + filesizeString
+                //文件类型头像的不同
+                switch  self.items[indexPath.row].valueForKey("extensions") as! String {
+                case "pdf":
+                    cell.typeImageView.image = UIImage(named: "pdf")
+                case "ppt","pptx":
+                    cell.typeImageView.image = UIImage(named: "ppt")
+                case "doc","docx":
+                    cell.typeImageView.image = UIImage(named: "word")
+                case "xls","xlsx":
+                    cell.typeImageView.image = UIImage(named: "Excel")
+                default:
+                    cell.typeImageView.image = UIImage(named: "zip")
+                }
             }
         }else{
             if(indexPath.row < self.filterItems.count){
-            //自定义tableViewCell
-            cell.fileNameLalel.text = self.filterItems[indexPath.row].valueForKey("filename") as? String
-            var typeString = "类型:"
-            typeString += (self.filterItems[indexPath.row].valueForKey("extensions") as? String)!
-            var createTimeString = "创建时间:"
-            createTimeString += self.filterItems[indexPath.row].valueForKey("datecreated") as! String
-            var filesizeString = "文件大小:"
-            filesizeString += self.filterItems[indexPath.row].valueForKey("filesize") as! String
-            cell.totalLabel.text = typeString + " " + createTimeString + " " + filesizeString
-            //文件类型头像的不同
-            switch  self.filterItems[indexPath.row].valueForKey("extensions") as! String {
-            case "pdf":
-                cell.typeImageView.image = UIImage(named: "pdf")
-            case "ppt","pptx":
-                cell.typeImageView.image = UIImage(named: "ppt")
-            case "doc","docx":
-                cell.typeImageView.image = UIImage(named: "word")
-            case "xls","xlsx":
-                cell.typeImageView.image = UIImage(named: "Excel")
-            default:
-                cell.typeImageView.image = UIImage(named: "zip")
+                //自定义tableViewCell
+                cell.fileNameLalel.text = self.filterItems[indexPath.row].valueForKey("filename") as? String
+                var typeString = "类型:"
+                typeString += (self.filterItems[indexPath.row].valueForKey("extensions") as? String)!
+                var createTimeString = "创建时间:"
+                createTimeString += self.filterItems[indexPath.row].valueForKey("datecreated") as! String
+                var filesizeString = "文件大小:"
+                filesizeString += self.filterItems[indexPath.row].valueForKey("filesize") as! String
+                cell.totalLabel.text = typeString + " " + createTimeString + " " + filesizeString
+                //文件类型头像的不同
+                switch  self.filterItems[indexPath.row].valueForKey("extensions") as! String {
+                case "pdf":
+                    cell.typeImageView.image = UIImage(named: "pdf")
+                case "ppt","pptx":
+                    cell.typeImageView.image = UIImage(named: "ppt")
+                case "doc","docx":
+                    cell.typeImageView.image = UIImage(named: "word")
+                case "xls","xlsx":
+                    cell.typeImageView.image = UIImage(named: "Excel")
+                default:
+                    cell.typeImageView.image = UIImage(named: "zip")
+                }
             }
-        }
         }
         return cell
     }
     //当选择这个文件后 先判断沙盒里面是否存在这个文件 有就直接打开 没有就先下载 随后打开
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        
         tableView.deselectRowAtIndexPath(indexPath, animated: true)
-        let doc = NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true)
-   
-
+        //文件路径名
+        var fileUrl = ""
         if(!sc.active){
-            //判断是否存在这个文件
-            //不能打开rar还有DIR文件
-            filePath = doc[0] + "/" + diviseFileUrl((self.items[indexPath.row].valueForKey("url") as? String)!)
-            if(fileExist(filePath)){
-                let qlVC = QLPreviewController()
-                qlVC.delegate = self
-                qlVC.dataSource = self
-
-                self.navigationController?.pushViewController(qlVC, animated: true)
-            }
-            else{
-                   ProgressHUD.show("正在下载中")
-                //tableView不可点击 并且有提示框提示下载多少
-            tableView.userInteractionEnabled = false
-                let destination = Alamofire.Request.suggestedDownloadDestination(directory: .DocumentDirectory, domain: .UserDomainMask)
-                Alamofire.download(.GET, NSURL(string: self.items[indexPath.row].valueForKey("url") as! String)!, destination: destination).progress { (bytesRead, totalBytesRead, totalBytesExpectedToRead) in
-                 
-                    }.response { (request, response, _, error) in
-                        if(error == nil){
-                            let qlVC = QLPreviewController()
-                            qlVC.delegate = self
-                            qlVC.dataSource = self
-
-                            ProgressHUD.showSuccess("下载成功")
-                            tableView.userInteractionEnabled = true
-                            self.filePath = doc[0] + "/" + diviseFileUrl((self.items[indexPath.row].valueForKey("url") as? String)!)
-                            self.navigationController?.pushViewController(qlVC, animated: true)
-                            
-                        }else{
-                               tableView.userInteractionEnabled = true
-                            ProgressHUD.showError("下载失败")
-                        }
-                }
-            }
+            fileUrl = self.items[indexPath.row].valueForKey("url") as! String
+        }else{
+            fileUrl = self.filterItems[indexPath.row].valueForKey("url") as! String
+        }
+        //1分割字符串
+        let (fileString,fileNameString) = diviseUrl(fileUrl)
+        //2创建文件夹
+        creathDir(fileString)
+        //3判断文件是否存在
+        let path = fileString + "/" + fileNameString
+        if(existFile(path) != ""){
+            self.filePath = NSURL(fileURLWithPath: existFile(path))
+            let qlVC = QLPreviewController()
+            qlVC.delegate = self
+            qlVC.dataSource = self
+            self.navigationController?.pushViewController(qlVC, animated: true)
         }
         else{
-            //要把搜索条拿掉
-            
-            filePath = doc[0] + "/" + diviseFileUrl((self.filterItems[indexPath.row].valueForKey("url") as? String)!)
-            if(fileExist(filePath)){
-                self.sc.active = false
-                let qlVC = QLPreviewController()
-                qlVC.delegate = self
-                qlVC.dataSource = self
-
-                self.navigationController?.pushViewController(qlVC, animated: true)
-            }
-            else{
-                   ProgressHUD.show("正在下载中")
-                let destination = Alamofire.Request.suggestedDownloadDestination(directory: .DocumentDirectory, domain: .UserDomainMask)
-                Alamofire.download(.GET, NSURL(string: self.filterItems[indexPath.row].valueForKey("url") as! String)!, destination: destination).progress { (bytesRead, totalBytesRead, totalBytesExpectedToRead) in
-                    }.response { (request, response, _, error) in
-                        if(error == nil){
-                            ProgressHUD.showSuccess("下载成功")
-                            self.filePath = doc[0] + "/" + diviseFileUrl((self.filterItems[indexPath.row].valueForKey("url") as? String)!)
-                            self.sc.active = false
-                            let qlVC = QLPreviewController()
-                            qlVC.delegate = self
-                            qlVC.dataSource = self
-
-                            self.navigationController?.pushViewController(qlVC, animated: true)
-                            
-                            
-                        }else{
-                            ProgressHUD.showError("下载失败")
-                        }
+            ProgressHUD.show("正在下载中")
+            //tableView不可点击 并且有提示框提示下载多少
+            tableView.userInteractionEnabled = false
+            Alamofire.download(.GET, (fileUrl)) {
+                temporaryURL,response
+                in
+                if(response.statusCode == 200){
+                    let path = createURLInDownLoad(fileUrl)
+                    dispatch_async(dispatch_get_main_queue(), {
+                 
+                        tableView.userInteractionEnabled = true
+                        ProgressHUD.showSuccess("下载成功")
+                        self.sc.active = false
+                        self.filePath = path
+                        let qlVC = QLPreviewController()
+                        qlVC.delegate = self
+                        qlVC.dataSource = self
+                        self.navigationController?.pushViewController(qlVC, animated: true)
+                    })
+                    return path
+                    
+                }else{
+                    print(response.statusCode)
+                    ProgressHUD.showError("下载失败")
+                    return NSURL()
                 }
+                
             }
         }
+        
     }
     func numberOfPreviewItemsInPreviewController(controller: QLPreviewController) -> Int {
         return 1
     }
     func previewController(controller: QLPreviewController, previewItemAtIndex index: Int) -> QLPreviewItem {
-        let fileUrl = NSURL(fileURLWithPath: self.filePath)
-        return fileUrl
+        
+        return filePath
     }
     func previewController(controller: QLPreviewController, shouldOpenURL url: NSURL, forPreviewItem item: QLPreviewItem) -> Bool {
         return true
@@ -217,9 +194,8 @@ UISearchControllerDelegate,UISearchResultsUpdating,DZNEmptyDataSetSource,DZNEmpt
             switch response.result{
             case .Success(let Value):
                 let json = JSON(Value)
-                
                 if(json["retcode"].number != 0){
-                   ProgressHUD.showError(json["message"].string)
+                    ProgressHUD.showError(json["message"].string)
                     dispatch_async(dispatch_get_main_queue(), {
                         self.studyMaterialsTableView?.mj_header.endRefreshing()
                         self.items = NSMutableArray()
@@ -290,13 +266,5 @@ UISearchControllerDelegate,UISearchResultsUpdating,DZNEmptyDataSetSource,DZNEmpt
     }
     func emptyDataSetShouldAllowScroll(scrollView: UIScrollView!) -> Bool {
         return true
-    }
-    //判断文件是否存在
-    func fileExist(fileUrl:String) -> Bool{
-        let fileManager = NSFileManager.defaultManager()
-        if(fileManager.fileExistsAtPath(fileUrl)){
-            return true
-        }
-        return false
     }
 }
