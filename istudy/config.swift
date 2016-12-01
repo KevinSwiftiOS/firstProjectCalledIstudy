@@ -21,7 +21,7 @@ let imageDecString = "<head><style>p{font-size: 17px;font-family: " + "\"" + "�
 //分割文件的字符串
 //记录字符串 随后进行截取
 //分割文件路径上传的url
-func diviseUrl(urlString:String) -> (String,String){
+func diviseUrl(urlString:String) -> (String){
     var tempUrlString = urlString
     //先统计总共有几个/
     tempUrlString = tempUrlString.stringByReplacingOccurrencesOfString("http://dodo.hznu.edu.cn/", withString: "")
@@ -58,16 +58,13 @@ func diviseUrl(urlString:String) -> (String,String){
     //将中文转换成乱码
     fileString = fileString.stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.URLFragmentAllowedCharacterSet())!
     fileNameString = fileNameString.stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.URLFragmentAllowedCharacterSet())!
-    return(fileString,fileNameString)
+    return(fileString)
 }
-
-//创建文件夹
 //创建文件夹
 func creathDir(fileURLString:String) {
     let path = NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true)[0]
     let str = NSString(string: path)
     let fileUrl = str.stringByAppendingPathComponent(fileURLString)
-    
     let fileManager = NSFileManager.defaultManager()
     if(!fileManager.fileExistsAtPath(fileUrl)) {
         do{  try fileManager.createDirectoryAtPath(fileUrl, withIntermediateDirectories: true, attributes: nil)
@@ -87,15 +84,14 @@ func existFile(fileString:String) -> String{
     }
     return ""
 }
-//问价下载时候的url路径
-func createURLInDownLoad(url:String) -> NSURL{
-    let (fileString,fileNameString) = diviseUrl(url)
-    
+//文件下载时候的url路径
+func createURLInDownLoad(fileUrl:String,fileName:String) -> NSURL{
+//    let (fileString,fileNameString) = diviseUrl(url)
     
     let fileManager = NSFileManager.defaultManager()
      let directoryURL = fileManager.URLsForDirectory(.DocumentDirectory,inDomains: .UserDomainMask)[0]
     //随后url加文件名
-  return   directoryURL.URLByAppendingPathComponent(fileString + "/" + fileNameString)!
+  return   directoryURL.URLByAppendingPathComponent(fileUrl + "/" + fileName)!
 
 }
 

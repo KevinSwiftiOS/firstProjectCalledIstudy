@@ -9,6 +9,7 @@
 import UIKit
 import Alamofire
 import SwiftyJSON
+import QuickLook
 import Font_Awesome_Swift
 class ComplexQusViewController: UIViewController,UITableViewDelegate,UITableViewDataSource ,UIWebViewDelegate,UIGestureRecognizerDelegate{
     //几个手势 为了键盘的bug

@@ -143,6 +143,7 @@ class ReplyTopicViewController: UIViewController,UITableViewDelegate,UITableView
         //内容
         
         var content:String = self.writeTextView!.text
+        if(self.photos.count > 0){
         for i in 0 ..< self.photos.count{
             let data = UIImageJPEGRepresentation(self.photos[i] as! UIImage, 0.5)
             let string = "http://dodo.hznu.edu.cn/api/upfile?authtoken=" +
@@ -185,6 +186,9 @@ class ReplyTopicViewController: UIViewController,UITableViewDelegate,UITableView
                 }
             }
          
+        }
+        }else{
+             self.finalRepley(content, authtoken: authtoken)
         }
     }
     

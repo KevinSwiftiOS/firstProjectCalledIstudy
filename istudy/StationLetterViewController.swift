@@ -11,6 +11,7 @@ import SwiftyJSON
 import Alamofire
 import Font_Awesome_Swift
 import DZNEmptyDataSet
+import QuickLook
 class StationLetterViewController: UIViewController,UITableViewDelegate,UITableViewDataSource,DZNEmptyDataSetSource,DZNEmptyDataSetDelegate{
     
     @IBOutlet weak var moreChioice: UIBarButtonItem?
@@ -182,7 +183,7 @@ var  diviseView:UIView?
                   
                     break;
                 case .Failure(_):
-                    print("删除失败")
+                ProgressHUD.showError("删除失败")
                 }
             }
 
@@ -290,7 +291,7 @@ var  diviseView:UIView?
                 let json = JSON(Value)
                 
                 if(json["retcode"].number != 0){
-                    print(json["retcode"])
+                  //  print(json["retcode"])
                      ProgressHUD.showError(json["message"].string)
                     self.items = NSMutableArray()
                     dispatch_async(dispatch_get_main_queue(), {

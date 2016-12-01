@@ -9,7 +9,9 @@ import UIKit
 import Alamofire
 import SwiftyJSON
 import Font_Awesome_Swift
-class JudgeQueViewController: UIViewController,UIWebViewDelegate,UITableViewDelegate,UITableViewDataSource,UIGestureRecognizerDelegate{
+import QuickLook
+class JudgeQueViewController: UIViewController,UIWebViewDelegate,UITableViewDelegate,UITableViewDataSource,UIGestureRecognizerDelegate,
+QLPreviewControllerDelegate,QLPreviewControllerDataSource{
     //和choiceQus基本上是一致的
     //有没有超过指定的日期
     var isOver = false
@@ -51,7 +53,9 @@ class JudgeQueViewController: UIViewController,UIWebViewDelegate,UITableViewDele
     //每道题目选择的答案
     var selectedAnswer = NSMutableArray()
     //当在初始化的时候
-    
+    //带有附件的情况
+    var filePath = NSURL()
+    var fileItems = NSMutableArray()
     override func viewDidLoad() {
         
         super.viewDidLoad()
@@ -74,6 +78,7 @@ class JudgeQueViewController: UIViewController,UIWebViewDelegate,UITableViewDele
         self.tap.delegate = self
         
         //用tableView来呈现题目和选项
+        self.tableView?.tag = 1
         self.tableView?.delegate = self
         self.tableView?.dataSource = self
         //contentView添加手势
@@ -137,7 +142,7 @@ class JudgeQueViewController: UIViewController,UIWebViewDelegate,UITableViewDele
     }
     //移除所有通知
     deinit{
-        print("JudgeDeinit")
+   //     print("JudgeDeinit")
         NSNotificationCenter.defaultCenter().removeObserver(self)
     }
     func showAct(){
@@ -200,7 +205,7 @@ class JudgeQueViewController: UIViewController,UIWebViewDelegate,UITableViewDele
                     let json = JSON(Value)
                     if(json["info"]["success"].bool != true){
                         ProgressHUD.showError("阅卷失败")
-                        print("阅卷失败")
+           //             print("阅卷失败")
                     }
                     else{
                         let judgeItems = json["info"]["points"].arrayObject! as NSArray
@@ -323,6 +328,15 @@ class JudgeQueViewController: UIViewController,UIWebViewDelegate,UITableViewDele
     }
     
     func initView() {
+        //文件数组
+        filePath = NSURL()
+        self.fileItems.removeAllObjects()
+        var dic = [
+            "name" : "办事.docx",
+            "size": "14.79 KB",
+            "url": "http://dodo.hznu.edu.cn/Upload/lab/fe2cd6a3e80e7d9f/9903e574b35c0fdb/f490e9f3ab90246e/办事.docx",
+            ]
+        self.fileItems.addObject(dic)
         self.kindOfQuesLabel?.text = self.totalItems[kindOfQusIndex].valueForKey("title") as! String + "(" +
             "\(index + 1)" + "/" + "\(self.items.count)" + ")"
         self.currentQus?.text = "\(self.items[index].valueForKey("totalscore") as! NSNumber)" + "分"
@@ -339,10 +353,64 @@ class JudgeQueViewController: UIViewController,UIWebViewDelegate,UITableViewDele
         }
     }
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        if(tableView.tag == 1){
        tableView.deselectRowAtIndexPath(indexPath, animated: true)
         self.answers.replaceObjectAtIndex(index, withObject: self.tempArray[indexPath.row].uppercaseString)
         tableView.reloadData()
         self.postAnswer()
+        }else{
+            tableView.deselectRowAtIndexPath(indexPath, animated: true)
+            let fileDic = self.fileItems[indexPath.row] as! NSDictionary
+            var fileUrl = fileDic.valueForKey("url") as! String
+            let fileName = fileDic.valueForKey("name") as! String
+            //中文转码
+            fileUrl = fileUrl.stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.URLFragmentAllowedCharacterSet())!
+            
+            //1分割字符串
+            let (fileString) = diviseUrl(fileUrl)
+            //2创建文件夹
+            creathDir(fileString)
+            let path = fileString + "/" + fileName
+            if(existFile(path) != ""){
+                self.filePath = NSURL(fileURLWithPath: existFile(path))
+                let qlVC = QLPreviewController()
+                qlVC.delegate = self
+                qlVC.dataSource = self
+                self.navigationController?.pushViewController(qlVC, animated: true)
+            }
+            else{
+                ProgressHUD.show("正在下载中")
+                //文件路径名的问题 找到一个Bug
+                
+                Alamofire.download(.GET, (fileUrl)) {
+                    temporaryURL,response
+                    in
+                    if(response.statusCode == 200){
+                        let path = createURLInDownLoad(fileString,fileName: fileName)
+                        dispatch_async(dispatch_get_main_queue(), {
+                            ProgressHUD.showSuccess("下载成功")
+                            
+                            self.filePath = path
+                            let qlVC = QLPreviewController()
+                            qlVC.dataSource = self
+                            qlVC.delegate = self
+                            
+                            self.navigationController?.pushViewController(qlVC, animated: true)
+                        })
+                        return path
+                    }
+                    else{
+                        
+                        ProgressHUD.showError("下载失败")
+                        return NSURL()
+                    }
+                    
+                }
+                
+            }
+            
+
+        }
     }
     //向服务器传送答案
     func postAnswer() {
@@ -364,13 +432,13 @@ class JudgeQueViewController: UIViewController,UIWebViewDelegate,UITableViewDele
         Alamofire.request(.POST, "http://dodo.hznu.edu.cn/api/submitquestion", parameters: parameter, encoding: ParameterEncoding.URL, headers: nil).responseJSON { (response) in
             switch response.result{
             case .Failure(_):
-                print(1)
+              //  print(1)
                 ProgressHUD.showError("保存失败")
             case .Success(let Value):
                 let json = JSON(Value)
                 if(json["retcode"].number! != 0){
                      ProgressHUD.showError(json["message"].string)
-                    print(json["retcode"].number)
+   //                 print(json["retcode"].number)
                 }else{
                     ProgressHUD.showSuccess("保存成功")
                 }
@@ -391,19 +459,49 @@ class JudgeQueViewController: UIViewController,UIWebViewDelegate,UITableViewDele
         let width = NSInteger(webView.stringByEvaluatingJavaScriptFromString("document.body.scrollWidth")!)
         scrollView.contentSize = CGSizeMake(CGFloat(width!), 0)
         scrollView.showsVerticalScrollIndicator = false
-        let tableHeaderView = UIView(frame:CGRectMake(0,0,SCREEN_WIDTH,frame.size.height + 1))
-        let borderView = UIView(frame: CGRectMake(0,frame.size.height,SCREEN_WIDTH,0.3))
+        var totalHeight = frame.size.height
+        var filesTableView = UITableView()
+        var FileLabel = UILabel()
+        //判断当前是否有附件
+//        if(self.items[index].valueForKey("files") as? NSArray != nil &&
+//            (self.items[index].valueForKey("files") as! NSArray).count > 0){
+//            self.fileItems = NSMutableArray(array:  self.items[index].valueForKey("files") as! NSArray)
+            FileLabel = UILabel(frame:  CGRectMake(5, totalHeight + 2, SCREEN_WIDTH - 10, 30))
+            FileLabel.text = "附件区(共" + "\(self.fileItems.count)" + "个)"
+            totalHeight += 32
+            //增加附件区
+            filesTableView = UITableView(frame: CGRectMake(5, totalHeight + 2, SCREEN_WIDTH - 10, 40))
+            filesTableView.tag = 2
+            filesTableView.delegate = self
+            filesTableView.dataSource = self
+            filesTableView.tableFooterView = UIView()
+            totalHeight += 40
+            
+      //  }
+        
+        let tableHeaderView = UIView(frame:CGRectMake(0,0,SCREEN_WIDTH,totalHeight + 1))
+        let borderView = UIView(frame: CGRectMake(0,totalHeight,SCREEN_WIDTH,0.3))
         borderView.layer.borderColor = UIColor.grayColor().CGColor
         borderView.layer.borderWidth = 0.3
         tableHeaderView.addSubview(webView)
+//        if(self.items[index].valueForKey("files") as? NSArray != nil &&
+//            (self.items[index].valueForKey("files") as! NSArray).count > 0){
+            tableHeaderView.addSubview(FileLabel)
+            tableHeaderView.addSubview(filesTableView)
+    //    }
         tableHeaderView.addSubview(borderView)
-
         webView.addGestureRecognizer(tap)
-        self.tableView?.tableHeaderView = tableHeaderView
-
-        //加一条线
         
-        webView.addGestureRecognizer(tap)
+        
+        
+        
+        
+        
+        
+        
+        
+        self.tableView?.tableHeaderView = tableHeaderView
+        
         //比较日期 若是已经过了期限 就把阅卷的结果拿出来
         //进行比较
         let currentDate = NSDate()
@@ -435,12 +533,17 @@ class JudgeQueViewController: UIViewController,UIWebViewDelegate,UITableViewDele
         return 1
     }
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        if(tableView.tag == 1) {
         return 2
+    }else{
+    return self.fileItems.count
+    }
     }
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         return 40
     }
        func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+        if(tableView.tag == 1){
         let cell = tableView.dequeueReusableCellWithIdentifier("JudgeCell") as! JudgeQusTableViewCell
         if(indexPath.row < 2){
             
@@ -468,6 +571,19 @@ class JudgeQueViewController: UIViewController,UIWebViewDelegate,UITableViewDele
   
         }
         return cell
+        }else{
+            let identifer = "filescell"
+            var cell : UITableViewCell? = tableView.dequeueReusableCellWithIdentifier(identifer)
+            
+            if cell == nil {
+                cell = UITableViewCell(style: UITableViewCellStyle.Subtitle, reuseIdentifier: identifer)
+            }
+            cell!.textLabel?.text = self.fileItems[indexPath.row].valueForKey("name")
+                as? String
+            cell!.detailTextLabel?.text = self.fileItems[indexPath.row].valueForKey("size") as? String
+            return cell!
+
+        }
     }
     func gestureRecognizerShouldBegin(gestureRecognizer: UIGestureRecognizer) -> Bool {
         
@@ -537,4 +653,17 @@ class JudgeQueViewController: UIViewController,UIWebViewDelegate,UITableViewDele
             self.initView()
         }
     }
+    //查看附件
+    func numberOfPreviewItemsInPreviewController(controller: QLPreviewController) -> Int {
+        return 1
+    }
+    func previewController(controller: QLPreviewController, previewItemAtIndex index: Int) -> QLPreviewItem {
+        
+        return self.filePath
+    }
+    func previewController(controller: QLPreviewController, shouldOpenURL url: NSURL, forPreviewItem item: QLPreviewItem) -> Bool {
+        
+        return true
+    }
+
 }

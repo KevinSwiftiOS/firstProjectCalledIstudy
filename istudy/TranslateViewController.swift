@@ -309,7 +309,7 @@ class TranslateViewController: UIViewController{
                
                 if(json["retcode"].number != 0){
                   ProgressHUD.showError(json["message"].string)
-                    print(json["retcode"].number)
+                  //  print(json["retcode"].number)
                 }else{
                     dispatch_async(dispatch_get_main_queue(), {
                         ProgressHUD.dismiss()
@@ -367,7 +367,7 @@ class TranslateViewController: UIViewController{
         ProgressHUD.dismiss()
     }
     deinit{
-        print("TranslateDeinit")
+      //  print("TranslateDeinit")
     }
     func changeIndex(sender:UIButton){
         //先判断手势

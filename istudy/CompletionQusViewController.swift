@@ -10,7 +10,8 @@ import UIKit
 import Alamofire
 import SwiftyJSON
 import Font_Awesome_Swift
-class CompletionQusViewController: UIViewController,UITextFieldDelegate,UIWebViewDelegate,UITableViewDelegate,UITableViewDataSource,UIGestureRecognizerDelegate{
+import QuickLook
+class CompletionQusViewController: UIViewController,UITextFieldDelegate,UIWebViewDelegate,UITableViewDelegate,UITableViewDataSource,UIGestureRecognizerDelegate,QLPreviewControllerDelegate,QLPreviewControllerDataSource{
     //手势
     var rightSwap = UISwipeGestureRecognizer()
     var leftSwap = UISwipeGestureRecognizer()
@@ -62,6 +63,11 @@ class CompletionQusViewController: UIViewController,UITextFieldDelegate,UIWebVie
     var oneQusAnswers = NSMutableArray()
     //当前在第几道题目 总共有几道题目
     var index = 0
+    
+    
+    //带有附件的情况
+    var filePath = NSURL()
+    var fileItems = NSMutableArray()
     override func viewDidLoad() {
         super.viewDidLoad()
         ShowBigImageFactory.topViewEDit(self.btmView)
@@ -86,8 +92,10 @@ class CompletionQusViewController: UIViewController,UITextFieldDelegate,UIWebVie
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(CompletionQusViewController.completionHeight(_:)), name: "CompletionWebViewHeight", object: nil)
         //获得自己填的答案的通知
         NSNotificationCenter.defaultCenter().addObserver(self, selector:#selector(CompletionQusViewController.AssembleCompletionAnswer(_:)), name: "CompletionAnswer", object: nil)
+        self.tableView!.tag = 1
       self.tableView?.delegate = self
         self.tableView?.dataSource = self
+        
         let backBtn = UIButton(frame: CGRectMake(0,0,43,43))
         backBtn.contentHorizontalAlignment = .Left
         backBtn.setTitle("返回", forState: .Normal)
@@ -145,7 +153,7 @@ class CompletionQusViewController: UIViewController,UITextFieldDelegate,UIWebVie
     }
     //移除所有通知
     deinit{
-        print("CompletDeinit")
+     //   print("CompletDeinit")
           NSNotificationCenter.defaultCenter().removeObserver(self)
     }
     override func didReceiveMemoryWarning() {
@@ -225,13 +233,13 @@ class CompletionQusViewController: UIViewController,UITextFieldDelegate,UIWebVie
         Alamofire.request(.POST, "http://dodo.hznu.edu.cn/api/submitquestion", parameters: parameter, encoding: ParameterEncoding.URL, headers: nil).responseJSON { (response) in
             switch response.result{
             case .Failure(_):
-                print(1)
+            //    print(1)
                 ProgressHUD.showError("保存失败")
             case .Success(let Value):
                 let json = JSON(Value)
                 if(json["retcode"].number! != 0){
                     ProgressHUD.showError(json["message"].string)
-                    print(json["retcode"].number)
+           //         print(json["retcode"].number)
                 }else{
                     if(self.displayMarkingArray[self.index] as! NSInteger == 1){
                         self.Over()
@@ -285,7 +293,7 @@ class CompletionQusViewController: UIViewController,UITextFieldDelegate,UIWebVie
                     let json = JSON(Value)
                     if(json["info"]["success"].bool != true){
                         ProgressHUD.showError("阅卷失败")
-                        print("阅卷失败")
+           //             print("阅卷失败")
                     }
                     else{
                         let judgeItems = json["info"]["points"].arrayObject! as NSArray
@@ -424,6 +432,9 @@ class CompletionQusViewController: UIViewController,UITextFieldDelegate,UIWebVie
     //初始化界面
     //拆分组装标准答案 就有几个cell
     func initView(){
+        filePath = NSURL()
+        self.fileItems.removeAllObjects()
+      
         self.tableHeaderWebViewHeight = 0
         self.currentQus?.text = "\(self.items[index].valueForKey("totalscore") as! NSNumber)" + "分"
         self.qusScore?.text = self.totalitems[kindOfQusIndex].valueForKey("title") as! String + "(" +  "\(self.index + 1)" + "/" + "\(self.items.count)" + ")"
@@ -513,8 +524,38 @@ class CompletionQusViewController: UIViewController,UITextFieldDelegate,UIWebVie
        self.saveBtn?.enabled = true
         self.goOVerBtn?.enabled = true
         self.resetBtn?.enabled = true
-        self.tableView?.tableHeaderView = self.queDes
-        self.tableView?.tableFooterView = UIView()
+        var totalHeight =   webView.frame.size.height
+        var filesTableView = UITableView()
+        var FileLabel = UILabel()
+        //判断当前是否有附件
+        if(self.items[index].valueForKey("files") as? NSArray != nil &&
+            (self.items[index].valueForKey("files") as! NSArray).count > 0){
+            self.fileItems = NSMutableArray(array:  self.items[index].valueForKey("files") as! NSArray)
+            FileLabel = UILabel(frame:  CGRectMake(5, totalHeight + 2, SCREEN_WIDTH - 10, 30))
+            FileLabel.text = "附件区(共" + "\(self.fileItems.count)" + "个)"
+            totalHeight += 32
+            //增加附件区
+            filesTableView = UITableView(frame: CGRectMake(5, totalHeight + 2, SCREEN_WIDTH - 10, 32))
+            filesTableView.tag = 2
+            filesTableView.delegate = self
+            filesTableView.dataSource = self
+            filesTableView.tableFooterView = UIView()
+            totalHeight += 32
+            
+        }
+        
+        let tableHeaderView = UIView(frame:CGRectMake(0,0,SCREEN_WIDTH,totalHeight + 1))
+        let borderView = UIView(frame: CGRectMake(0,totalHeight,SCREEN_WIDTH,0.3))
+        borderView.layer.borderColor = UIColor.grayColor().CGColor
+        borderView.layer.borderWidth = 0.3
+        tableHeaderView.addSubview(webView)
+        if(self.items[index].valueForKey("files") as? NSArray != nil &&
+            (self.items[index].valueForKey("files") as! NSArray).count > 0){
+            tableHeaderView.addSubview(FileLabel)
+            tableHeaderView.addSubview(filesTableView)
+        }
+        tableHeaderView.addSubview(borderView)
+        self.tableView?.tableHeaderView = tableHeaderView
         //比较日期 若是已经过了期限 就把阅卷的结果拿出来
         //进行比较
         let currentDate = NSDate()
@@ -550,6 +591,7 @@ class CompletionQusViewController: UIViewController,UITextFieldDelegate,UIWebVie
         return 1
     }
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+        if(tableView.tag == 1){
         let cell = CompletionTableViewCell(style: .Default, reuseIdentifier: "CompletionTableViewCell")
         if(indexPath.row < self.cellHeights.count){
             //加载有没有提醒 就是blank
@@ -604,10 +646,27 @@ class CompletionQusViewController: UIViewController,UITextFieldDelegate,UIWebVie
             cell.selectionStyle = .None
         }
         return cell
+        }else{
+            let identifer = "filescell"
+            var cell : UITableViewCell? = tableView.dequeueReusableCellWithIdentifier(identifer)
+            
+            if cell == nil {
+                cell = UITableViewCell(style: UITableViewCellStyle.Subtitle, reuseIdentifier: identifer)
+            }
+            cell!.textLabel?.text = self.fileItems[indexPath.row].valueForKey("name")
+                as? String
+            cell!.detailTextLabel?.text = self.fileItems[indexPath.row].valueForKey("size") as? String
+            return cell!
+
+        }
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        if(tableView.tag == 1){
         return cellHeights.count
+        }else{
+            return fileItems.count
+        }
     }
     //键盘高度的整合
     func completionHeight(sender:NSNotification){
@@ -626,10 +685,14 @@ class CompletionQusViewController: UIViewController,UITextFieldDelegate,UIWebVie
     }
 
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+        if(tableView.tag == 1){
         if(indexPath.row < cellHeights.count){
             return CGFloat(cellHeights[indexPath.row] as! NSNumber)
         }else{
             return 0
+        }
+        }else{
+            return 30
         }
     }
     //组装答案
@@ -710,4 +773,70 @@ class CompletionQusViewController: UIViewController,UITextFieldDelegate,UIWebVie
     
     }
 }
+    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        if(tableView.tag == 2){
+        tableView.deselectRowAtIndexPath(indexPath, animated: true)
+        let fileDic = self.fileItems[indexPath.row] as! NSDictionary
+        var fileUrl = fileDic.valueForKey("url") as! String
+        let fileName = fileDic.valueForKey("name") as! String
+        //中文转码
+        fileUrl = fileUrl.stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.URLFragmentAllowedCharacterSet())!
+        
+        //1分割字符串
+        let (fileString) = diviseUrl(fileUrl)
+        //2创建文件夹
+        creathDir(fileString)
+        let path = fileString + "/" + fileName
+        if(existFile(path) != ""){
+            self.filePath = NSURL(fileURLWithPath: existFile(path))
+            let qlVC = QLPreviewController()
+            qlVC.delegate = self
+            qlVC.dataSource = self
+            self.navigationController?.pushViewController(qlVC, animated: true)
+        }
+        else{
+            ProgressHUD.show("正在下载中")
+            //文件路径名的问题 找到一个Bug
+            
+            Alamofire.download(.GET, (fileUrl)) {
+                temporaryURL,response
+                in
+                if(response.statusCode == 200){
+                    let path = createURLInDownLoad(fileString,fileName: fileName)
+                    dispatch_async(dispatch_get_main_queue(), {
+                        ProgressHUD.showSuccess("下载成功")
+                        
+                        self.filePath = path
+                        let qlVC = QLPreviewController()
+                        qlVC.dataSource = self
+                        qlVC.delegate = self
+                        
+                        self.navigationController?.pushViewController(qlVC, animated: true)
+                    })
+                    return path
+                }
+                else{
+                    
+                    ProgressHUD.showError("下载失败")
+                    return NSURL()
+                }
+                
+            }
+            
+        }
+        }
+        }
+    //查看附件
+    func numberOfPreviewItemsInPreviewController(controller: QLPreviewController) -> Int {
+        return 1
+    }
+    func previewController(controller: QLPreviewController, previewItemAtIndex index: Int) -> QLPreviewItem {
+        
+        return self.filePath
+    }
+    func previewController(controller: QLPreviewController, shouldOpenURL url: NSURL, forPreviewItem item: QLPreviewItem) -> Bool {
+        
+        return true
+    }
+
 }

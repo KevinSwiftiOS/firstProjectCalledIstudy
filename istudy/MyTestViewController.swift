@@ -162,7 +162,7 @@ self.testTableView?.emptyDataSetDelegate = self
                     })
                  
                     
-                    print(json["retcode"])
+                   // print(json["retcode"])
                 }else{
                     dispatch_async(dispatch_get_main_queue(), {
                         self.testDataArray = json["items"].arrayObject! as NSArray

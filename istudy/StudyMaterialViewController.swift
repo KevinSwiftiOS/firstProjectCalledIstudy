@@ -120,18 +120,26 @@ UISearchControllerDelegate,UISearchResultsUpdating,DZNEmptyDataSetSource,DZNEmpt
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         tableView.deselectRowAtIndexPath(indexPath, animated: true)
         //文件路径名
-        var fileUrl = ""
+        var fileDic = NSDictionary()
+        
+        
+        
+        
+        
         if(!sc.active){
-            fileUrl = self.items[indexPath.row].valueForKey("url") as! String
+            fileDic = self.items[indexPath.row] as! NSDictionary
         }else{
-            fileUrl = self.filterItems[indexPath.row].valueForKey("url") as! String
+            fileDic = self.filterItems[indexPath.row] as! NSDictionary
         }
+        var fileUrl = fileDic.valueForKey("url") as! String
+        let fileName = fileDic.valueForKey("filename") as! String
+        fileUrl =  fileUrl.stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.URLFragmentAllowedCharacterSet())!
         //1分割字符串
-        let (fileString,fileNameString) = diviseUrl(fileUrl)
+        let (fileString) = diviseUrl(fileUrl)
         //2创建文件夹
         creathDir(fileString)
         //3判断文件是否存在
-        let path = fileString + "/" + fileNameString
+        let path = fileString + "/" + fileName
         if(existFile(path) != ""){
             self.filePath = NSURL(fileURLWithPath: existFile(path))
             let qlVC = QLPreviewController()
@@ -143,11 +151,14 @@ UISearchControllerDelegate,UISearchResultsUpdating,DZNEmptyDataSetSource,DZNEmpt
             ProgressHUD.show("正在下载中")
             //tableView不可点击 并且有提示框提示下载多少
             tableView.userInteractionEnabled = false
+            
+            
+            
             Alamofire.download(.GET, (fileUrl)) {
                 temporaryURL,response
                 in
                 if(response.statusCode == 200){
-                    let path = createURLInDownLoad(fileUrl)
+                    let path = createURLInDownLoad(fileString,fileName: fileName)
                     dispatch_async(dispatch_get_main_queue(), {
                  
                         tableView.userInteractionEnabled = true
@@ -162,7 +173,7 @@ UISearchControllerDelegate,UISearchResultsUpdating,DZNEmptyDataSetSource,DZNEmpt
                     return path
                     
                 }else{
-                    print(response.statusCode)
+                  //  print(response.statusCode)
                     ProgressHUD.showError("下载失败")
                     return NSURL()
                 }
@@ -202,7 +213,7 @@ UISearchControllerDelegate,UISearchResultsUpdating,DZNEmptyDataSetSource,DZNEmpt
                         self.studyMaterialsTableView?.emptyDataSetSource = self
                         self.studyMaterialsTableView?.reloadData()
                     })
-                    print(json["retcode"].numberValue)
+                  //  print(json["retcode"].numberValue)
                 }else{
                     dispatch_async(dispatch_get_main_queue(), {
                         self.studyMaterialsTableView?.mj_header.endRefreshing()
@@ -249,7 +260,7 @@ UISearchControllerDelegate,UISearchResultsUpdating,DZNEmptyDataSetSource,DZNEmpt
     }
     
     deinit{
-        print("StudyMaterialDeinit")
+       
         self.sc.view.removeFromSuperview()
     }
     //当该界面消失的时候 应该progress.dismiss

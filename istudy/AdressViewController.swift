@@ -142,7 +142,7 @@ class AdressViewController: UIViewController,CLLocationManagerDelegate,HZAreaPic
                     self.navigationController?.popViewControllerAnimated(true)
                 }else{
                     ProgressHUD.showError(json["message"].string)
-                    print(json["retcode"].number)
+                   // print(json["retcode"].number)
                 }
             case .Failure(_):ProgressHUD.showError("保存失败")
             }

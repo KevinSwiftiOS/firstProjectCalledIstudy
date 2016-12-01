@@ -124,12 +124,12 @@ var match = false
                         }
                         
                     }catch{
-                        print("error")
+                       // print("error")
                     }
                 }
 
             }catch{
-                print("error")
+               // print("error")
             }
 if(match == true){
     self.saveProfile()
@@ -155,7 +155,7 @@ if(match == true){
                 }
 
             }catch{
-                print("error")
+                ProgressHUD.showError("填写邮箱格式错误")
             }
                   case "QQ":
             let QQPattern =
@@ -174,7 +174,7 @@ if(match == true){
                 }
 
             }catch{
-                print("error")
+              ProgressHUD.showError("填写QQ格式错误")
             }
            
         case "邮编":
@@ -192,7 +192,7 @@ if(match == true){
                                }
 
             }catch{
-                print("error")
+                ProgressHUD.showError("填写邮编格式错误")
             }
             
         default:break
@@ -269,7 +269,7 @@ if(match == true){
                 }else{
                     ProgressHUD.showError(json["message"].string)
                     userDefault.setValue(self.beforeValue, forKey: self.dic[self.title!]!)
-                    print(json["retcode"].number)
+                //    print(json["retcode"].number)
                 }
             case .Failure(_):
                  userDefault.setValue(self.beforeValue, forKey: self.dic[self.title!]!)

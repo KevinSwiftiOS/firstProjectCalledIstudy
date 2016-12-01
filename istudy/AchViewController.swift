@@ -151,7 +151,7 @@ class AchViewController: UIViewController,UICollectionViewDelegate,UICollectionV
                 vc.totalItems = self.totalItems
                 vc.testid = self.testid
                 vc.kindOfQusIndex = indexPath.section
-                 print(self.endDate)
+           //      print(self.endDate)
                  vc.endDate = self.endDate
                
              vc.items = self.totalItems[indexPath.section].valueForKey("questions") as! NSArray
@@ -268,6 +268,6 @@ class AchViewController: UIViewController,UICollectionViewDelegate,UICollectionV
         ProgressHUD.dismiss()
     }
     deinit{
-        print("AchDeinit")
+    //    print("AchDeinit")
     }
 }

@@ -10,7 +10,8 @@ import UIKit
 import Alamofire
 import SwiftyJSON
 import Font_Awesome_Swift
-class ProgramDesignViewController: UIViewController,UIWebViewDelegate,UIGestureRecognizerDelegate{
+import QuickLook
+class ProgramDesignViewController: UIViewController,UIWebViewDelegate,UIGestureRecognizerDelegate,UITableViewDelegate,UITableViewDataSource,QLPreviewControllerDataSource,QLPreviewControllerDelegate{
     var kindOfQusIndex = NSInteger()
     var totalKindOfQus = NSInteger()
     //阅卷后的结果界面
@@ -23,6 +24,9 @@ class ProgramDesignViewController: UIViewController,UIWebViewDelegate,UIGestureR
     var keyVisible = Bool()
     var viewOneWithAnswerKey = Bool()
     var isOver = Bool()
+    //带有附件的情况
+    var filePath = NSURL()
+    var fileItems = NSMutableArray()
     //问题
     @IBOutlet weak var btmView:UIView!
     @IBOutlet weak var contentScrollView:UIScrollView?
@@ -113,7 +117,7 @@ class ProgramDesignViewController: UIViewController,UIWebViewDelegate,UIGestureR
         XKeyBoard.registerKeyBoardHide(self)
         XKeyBoard.registerKeyBoardShow(self)
         //键盘消失 scrollView加手势
-        self.contentScrollView?.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(ProgramDesignViewController.resign as (ProgramDesignViewController) -> () -> ())))
+//        self.contentScrollView?.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(ProgramDesignViewController.resign as (ProgramDesignViewController) -> () -> ())))
         // Do any additional setup after loading the view.
         
         self.initView()
@@ -224,6 +228,7 @@ class ProgramDesignViewController: UIViewController,UIWebViewDelegate,UIGestureR
         let contentString = cssDesString + (self.items[index].valueForKey("content") as! String)
         self.qusDesWebView.loadHTMLString(contentString, baseURL: nil)
 
+    
     }
     @IBAction func goOver(sender:UIButton){
         //阅卷都是先保存 后阅卷
@@ -268,7 +273,7 @@ class ProgramDesignViewController: UIViewController,UIWebViewDelegate,UIGestureR
                     let json = JSON(Value)
                     if(json["info"]["success"].bool != true){
                         ProgressHUD.showError("阅卷失败")
-                        print("阅卷失败")
+                  //      print("阅卷失败")
                     }
                     else{
                         let judgeItems = json["info"]["points"].arrayObject! as NSArray
@@ -374,13 +379,13 @@ class ProgramDesignViewController: UIViewController,UIWebViewDelegate,UIGestureR
         Alamofire.request(.POST, "http://dodo.hznu.edu.cn/api/submitquestion", parameters: parameter, encoding: ParameterEncoding.URL, headers: nil).responseJSON { (response) in
             switch response.result{
             case .Failure(_):
-                print(1)
+            //    print(1)
                 ProgressHUD.showError("保存失败")
             case .Success(let Value):
                 let json = JSON(Value)
                 if(json["retcode"].number! != 0){
                     ProgressHUD.showError(json["message"].string)
-                    print(json["retcode"].number)
+         //           print(json["retcode"].number)
                 }else{
                     if(self.displayMarkingArray[self.index] as! NSInteger == 1) {
                         self.Over()
@@ -415,6 +420,43 @@ class ProgramDesignViewController: UIViewController,UIWebViewDelegate,UIGestureR
         self.webViewHeight = CGFloat(height!) + 15
         webView.addGestureRecognizer(tap)
         self.contentScrollView?.addSubview(webView)
+      //是否有文件
+        var filesTableView = UITableView()
+        var FileLabel = UILabel()
+        //判断当前是否有附件
+        if(self.items[index].valueForKey("files") as? NSArray != nil &&
+            (self.items[index].valueForKey("files") as! NSArray).count > 0){
+            self.fileItems = NSMutableArray(array:  self.items[index].valueForKey("files") as! NSArray)
+            FileLabel = UILabel(frame:  CGRectMake(5, self.webViewHeight + 2, SCREEN_WIDTH - 10, 30))
+            FileLabel.text = "附件区(共" + "\(self.fileItems.count)" + "个)"
+            self.webViewHeight += 32
+            //增加附件区
+            filesTableView = UITableView(frame: CGRectMake(5, self.webViewHeight + 2, SCREEN_WIDTH - 10, 32))
+            filesTableView.tag = 2
+            filesTableView.delegate = self
+            filesTableView.dataSource = self
+            filesTableView.tableFooterView = UIView()
+            self.webViewHeight += 40
+            
+    }
+
+        if(self.items[index].valueForKey("files") as? NSArray != nil &&
+            (self.items[index].valueForKey("files") as! NSArray).count > 0){
+            self.contentScrollView!.addSubview(FileLabel)
+            self.contentScrollView!.addSubview(filesTableView)
+        self.contentScrollView?.keyboardDismissMode = .OnDrag
+        }
+
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
         self.gooverBtn.enabled = true
         self.saveBtn?.enabled = true
         self.answerTextView?.userInteractionEnabled = true
@@ -454,7 +496,7 @@ class ProgramDesignViewController: UIViewController,UIWebViewDelegate,UIGestureR
     }
     //键盘出现和消失时的动作
     func keyboardWillHideNotification(notification:NSNotification){
-        self.contentScrollView?.contentOffset = CGPointMake(0, 0)
+      //  self.contentScrollView?.contentOffset = CGPointMake(0, 0)
         self.answerTextView?.contentInset = UIEdgeInsetsMake(0, 0, 0, 0)
     }
     func keyboardWillShowNotification(notification:NSNotification){
@@ -490,7 +532,7 @@ class ProgramDesignViewController: UIViewController,UIWebViewDelegate,UIGestureR
         }
     
     deinit{
-        print("ProgreamDeint")
+  //      print("ProgreamDeint")
     }
     override func viewWillDisappear(animated: Bool) {
         ProgressHUD.dismiss()
@@ -564,5 +606,92 @@ class ProgramDesignViewController: UIViewController,UIWebViewDelegate,UIGestureR
         
         
         }
+    //tableView和preview的代理
+    func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+        return 1
+    }
+    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+        let identifer = "filescell"
+        var cell : UITableViewCell? = tableView.dequeueReusableCellWithIdentifier(identifer)
+        
+        if cell == nil {
+            cell = UITableViewCell(style: UITableViewCellStyle.Subtitle, reuseIdentifier: identifer)
+        }
+        cell!.textLabel?.text = self.fileItems[indexPath.row].valueForKey("name")
+            as? String
+        cell!.detailTextLabel?.text = self.fileItems[indexPath.row].valueForKey("size") as? String
+        return cell!
+        
+
+    }
+    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        tableView.deselectRowAtIndexPath(indexPath, animated: true)
+        let fileDic = self.fileItems[indexPath.row] as! NSDictionary
+        var fileUrl = fileDic.valueForKey("url") as! String
+        let fileName = fileDic.valueForKey("name") as! String
+        //中文转码
+        fileUrl = fileUrl.stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.URLFragmentAllowedCharacterSet())!
+        
+        //1分割字符串
+        let (fileString) = diviseUrl(fileUrl)
+        //2创建文件夹
+        creathDir(fileString)
+        let path = fileString + "/" + fileName
+        if(existFile(path) != ""){
+            self.filePath = NSURL(fileURLWithPath: existFile(path))
+            let qlVC = QLPreviewController()
+            qlVC.delegate = self
+            qlVC.dataSource = self
+            self.navigationController?.pushViewController(qlVC, animated: true)
+        }
+        else{
+            ProgressHUD.show("正在下载中")
+            //文件路径名的问题 找到一个Bug
+            
+            Alamofire.download(.GET, (fileUrl)) {
+                temporaryURL,response
+                in
+                if(response.statusCode == 200){
+                    let path = createURLInDownLoad(fileString,fileName: fileName)
+                    dispatch_async(dispatch_get_main_queue(), {
+                        ProgressHUD.showSuccess("下载成功")
+                        
+                        self.filePath = path
+                        let qlVC = QLPreviewController()
+                        qlVC.dataSource = self
+                        qlVC.delegate = self
+                        
+                        self.navigationController?.pushViewController(qlVC, animated: true)
+                    })
+                    return path
+                }
+                else{
+                    
+                    ProgressHUD.showError("下载失败")
+                    return NSURL()
+                }
+                
+            }
+            
+        }
+
+    }
+    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return self.fileItems.count
+    }
+    //preView代理
+    //查看附件
+    func numberOfPreviewItemsInPreviewController(controller: QLPreviewController) -> Int {
+        return 1
+    }
+    func previewController(controller: QLPreviewController, previewItemAtIndex index: Int) -> QLPreviewItem {
+        
+        return self.filePath
+    }
+    func previewController(controller: QLPreviewController, shouldOpenURL url: NSURL, forPreviewItem item: QLPreviewItem) -> Bool {
+        
+        return true
+    }
+
 }
 

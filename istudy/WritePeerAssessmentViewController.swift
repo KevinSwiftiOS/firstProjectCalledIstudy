@@ -532,14 +532,16 @@ var questions = NSMutableArray()
     }
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
       tableView.deselectRowAtIndexPath(indexPath, animated: true)
-       let fileUrl = self.fileItems[indexPath.row].valueForKey("url") as! String
+       let fileDic = self.fileItems[indexPath.row] as! NSDictionary
+        var fileUrl = fileDic.valueForKey("url") as! String
+        let fileName = self.fileItems[indexPath.row].valueForKey("name") as! String
         //1分割字符串
-        let (fileString,_) = diviseUrl(fileUrl)
+        let fileString = diviseUrl(fileUrl)
         //2创建文件夹
         creathDir(fileString)
         //3判断文件是否存在
-        var fileName = self.fileItems[indexPath.row].valueForKey("name") as! String
-        fileName = fileName.stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.URLFragmentAllowedCharacterSet())!
+      
+        fileUrl = fileUrl.stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.URLFragmentAllowedCharacterSet())!
         let path = fileString + "/" + fileName
         if(existFile(path) != ""){
             self.filePath = NSURL(fileURLWithPath: existFile(path))
@@ -556,14 +558,7 @@ var questions = NSMutableArray()
             temporaryURL,response
             in
             if(response.statusCode == 200){
-             let pathString = fileString + "/" + response.suggestedFilename!
-                let path1 = NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true)[0]
-                let str = NSString(string: path1)
-                let fileUrl = str.stringByAppendingPathComponent(pathString)
-                
-
-            
-                let path = NSURL(fileURLWithPath: String(fileUrl))
+            let path = createURLInDownLoad(fileString,fileName: fileName)
                 dispatch_async(dispatch_get_main_queue(), {
                     ProgressHUD.showSuccess("下载成功")
               

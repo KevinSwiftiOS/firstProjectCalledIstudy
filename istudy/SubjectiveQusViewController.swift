@@ -218,7 +218,7 @@ override func didReceiveMemoryWarning() {
             var jsonData = NSData()
             do{ jsonData = try NSJSONSerialization.dataWithJSONObject(id, options: NSJSONWritingOptions.PrettyPrinted)
             }catch{
-                print("error")
+              ProgressHUD.showError("转码失败")
             }
             let authtoken = userDefault.valueForKey("authtoken") as! String
             var jsonString = String(data: jsonData, encoding: NSUTF8StringEncoding)
@@ -243,13 +243,13 @@ override func didReceiveMemoryWarning() {
                             
                     let json = JSON(Value)
                             if(json["retcode"].number != 0){
-                                print(json["retcode"].number)
-                                ProgressHUD.showError("保存失败")
-                                print(2323232323232)
+//                                print(json["retcode"].number)
+                                ProgressHUD.showError(json["message"].string)
+                                
                             }else{
                                 
                                 if(json["info"]["succ"].bool == false){
-                                    print(3232)
+                                   
                                     
                                     ProgressHUD.showError("保存失败")
                                 }else{
@@ -278,13 +278,13 @@ override func didReceiveMemoryWarning() {
                                     }
                             }
                         case .Failure(_):
-                            print(2)
+                           
                             ProgressHUD.showError("保存失败")
                         }
                     })
                 case .Failure(_):
                     ProgressHUD.showError("保存失败")
-                    print(3)
+                   
                 }
 }
             }
@@ -346,14 +346,13 @@ override func didReceiveMemoryWarning() {
         Alamofire.request(.POST, "http://dodo.hznu.edu.cn/api/submitquestion", parameters: parameter, encoding: ParameterEncoding.URL, headers: nil).responseJSON { (response) in
             switch response.result{
             case .Failure(_):
-                print(1)
+             
                 ProgressHUD.showError("保存失败")
             case .Success(let Value):
                 let json = JSON(Value)
                 if(json["retcode"].number! != 0){
                      ProgressHUD.showError(json["message"].string)
-                    print(json["retcode"].number)
-                }else{
+                                   }else{
                     ProgressHUD.showSuccess("保存成功")
                 }
             }
@@ -604,7 +603,7 @@ menu.dismissViewControllerAnimated(true, completion: nil)
     }
     var resetBtnAndQusHeight:CGFloat = 0.0
     func webViewDidFinishLoad(webView: UIWebView) {
-      print(self.items)
+      
         let height = NSInteger(webView.stringByEvaluatingJavaScriptFromString("document.body.offsetHeight")!)
         var NewFrame = webView.frame
         NewFrame.size.height = CGFloat(height!) + 5
@@ -635,7 +634,9 @@ menu.dismissViewControllerAnimated(true, completion: nil)
     //要查看本题目是否有附件
         if(self.items[index].valueForKey("files") as? NSArray != nil &&
             (self.items[index].valueForKey("files") as! NSArray).count > 0){
+            
             self.fileItems = NSMutableArray(array:  self.items[index].valueForKey("files") as! NSArray)
+            print(self.fileItems)
             let FileLabel = UILabel(frame:  CGRectMake(5, self.totalHeight + 2, SCREEN_WIDTH - 10, 30))
             FileLabel.text = "附件区"
             self.totalHeight += 32
@@ -918,16 +919,14 @@ func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSInde
             fileDic = self.answerFilesItems[indexPath.row] as! NSDictionary
     }
         var fileUrl = fileDic.valueForKey("url") as! String
+    let fileName = fileDic.valueForKey("name") as! String
     //中文转码
     fileUrl = fileUrl.stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.URLFragmentAllowedCharacterSet())!
 
         //1分割字符串
-        let (fileString,_) = diviseUrl(fileUrl)
+        let (fileString) = diviseUrl(fileUrl)
         //2创建文件夹
         creathDir(fileString)
-        //3判断文件是否存在
-        var fileName = fileDic.valueForKey("name") as! String
-        fileName = fileName.stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.URLFragmentAllowedCharacterSet())!
         let path = fileString + "/" + fileName
         if(existFile(path) != ""){
             self.filePath = NSURL(fileURLWithPath: existFile(path))
@@ -944,15 +943,7 @@ func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSInde
                 temporaryURL,response
                 in
                 if(response.statusCode == 200){
-                    var pathString = fileString + "/" + response.suggestedFilename!
-                       pathString = pathString.stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.URLFragmentAllowedCharacterSet())!
-                    let path1 = NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true)[0]
-                    let str = NSString(string: path1)
-                    let fileUrl = str.stringByAppendingPathComponent(pathString)
-                    
-                    
-                    
-                    let path = NSURL(fileURLWithPath: String(fileUrl))
+                let path = createURLInDownLoad(fileString,fileName: fileName)
                     dispatch_async(dispatch_get_main_queue(), {
                         ProgressHUD.showSuccess("下载成功")
                         
@@ -966,7 +957,7 @@ func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSInde
                     return path
                 }
                 else{
-                    print(response.statusCode)
+                    
                     ProgressHUD.showError("下载失败")
                     return NSURL()
                 }

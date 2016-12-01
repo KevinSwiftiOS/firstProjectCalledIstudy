@@ -126,18 +126,18 @@ class ChangeHeadPortraitViewController: UIViewController,UITableViewDelegate,UIT
                             }else{
                                 
                         userDefault.setValue(json["info"]["uploadedurl"].string, forKey: "avtarurl")
-                               print(json["info"]["uploadedurl"].string)
+                             //  print(json["info"]["uploadedurl"].string)
                         self.save()
                             }
                         }
                     case .Failure(_):
-                        print(2)
+                     //   print(2)
                         ProgressHUD.showError("保存失败")
                     }
                 })
             case .Failure(_):
                 ProgressHUD.showError("保存失败")
-                print(3)
+               // print(3)
             }
         }
     }
@@ -209,7 +209,7 @@ class ChangeHeadPortraitViewController: UIViewController,UITableViewDelegate,UIT
                     self.navigationController?.popViewControllerAnimated(true)
                 }else{
                    ProgressHUD.showError(json["message"].string)
-                    print(json["retcode"].number)
+                  //  print(json["retcode"].number)
                 }
             case .Failure(_):ProgressHUD.showError("保存失败")
             }

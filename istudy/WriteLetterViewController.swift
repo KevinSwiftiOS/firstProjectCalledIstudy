@@ -187,7 +187,7 @@ self.view.setNeedsLayout()
                             }else{
                                 
                                 if(json["info"]["succ"].bool == false){
-                                    ProgressHUD.showError("发送失败")
+                                    ProgressHUD.showError(json["message"].string)
                                 }else{
                                     dispatch_async(dispatch_get_main_queue(), {
                                         let imageUrl = "<div><img src = " + "\""  +   json["info"]["uploadedurl"].string! +  "\"" + "/></div>"
@@ -200,13 +200,13 @@ self.view.setNeedsLayout()
                                 }
                             }
                         case .Failure(_):
-                            print(2)
+                       //print(2)
                             ProgressHUD.showError("发送失败")
                         }
                     })
                 case .Failure(_):
                     ProgressHUD.showError("发送失败")
-                    print(3)
+                  //  print(3)
                 }
             }
         }
@@ -275,7 +275,7 @@ Alamofire.request(.POST, "http://dodo.hznu.edu.cn/api/messagesend", parameters: 
                 if(json["retcode"].number != 0){
                     ProgressHUD.showError(json["message"].string)
                     
-                    print(json["retcode"].number)
+                 //   print(json["retcode"].number)
                 }else{
                     ProgressHUD.showSuccess("发送成功")
                     self.navigationController?.popToRootViewControllerAnimated(true)

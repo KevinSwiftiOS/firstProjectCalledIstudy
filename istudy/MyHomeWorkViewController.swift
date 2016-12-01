@@ -313,7 +313,7 @@ class MyHomeWorkViewController: UIViewController,UITableViewDataSource,UITableVi
         self.tableView?.mj_header.hidden = false
     }
     deinit{
-        print("MyHomeWorkDeinit")
+       // print("MyHomeWorkDeinit")
 
         self.sc?.view.removeFromSuperview()
     }
