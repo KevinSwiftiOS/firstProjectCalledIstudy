@@ -702,6 +702,7 @@ class MultipleChoiceViewController: UIViewController,UIWebViewDelegate,UITableVi
 }
     //点击了附件
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        if(tableView.tag == 2){
        tableView.deselectRowAtIndexPath(indexPath, animated: true)
             let fileDic = self.fileItems[indexPath.row] as! NSDictionary
             var fileUrl = fileDic.valueForKey("url") as! String
@@ -751,7 +752,7 @@ class MultipleChoiceViewController: UIViewController,UIWebViewDelegate,UITableVi
                 }
                 
             }
-
+        }
         }
     
     //查看附件

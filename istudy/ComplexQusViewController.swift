@@ -11,7 +11,7 @@ import Alamofire
 import SwiftyJSON
 import QuickLook
 import Font_Awesome_Swift
-class ComplexQusViewController: UIViewController,UITableViewDelegate,UITableViewDataSource ,UIWebViewDelegate,UIGestureRecognizerDelegate{
+class ComplexQusViewController: UIViewController,UITableViewDelegate,UITableViewDataSource ,UIWebViewDelegate,UIGestureRecognizerDelegate,QLPreviewControllerDelegate,QLPreviewControllerDataSource{
     //几个手势 为了键盘的bug
     //每个题目的范围 
     var everySubQusRange = NSMutableArray()
@@ -58,6 +58,7 @@ class ComplexQusViewController: UIViewController,UITableViewDelegate,UITableView
     @IBOutlet weak var goOVerBtn:UIButton?
     @IBOutlet weak var subTopView:UIView?
     @IBOutlet weak var topView:UIView?
+    
     var totalItems = NSArray()
     //大题目
     var items = NSArray()
@@ -77,6 +78,11 @@ class ComplexQusViewController: UIViewController,UITableViewDelegate,UITableView
     var cellHeights = NSMutableArray()
     //填空题的话记录每道小题的答案
     var oneSubFillBlankSelfAnswerArray = NSMutableArray()
+    //带有附件的情况
+    var filePath = NSURL()
+    var fileItems = NSMutableArray()
+    //文件tableView
+    @IBOutlet weak var filesTableView:UITableView!
     override func viewDidLoad() {
         super.viewDidLoad()
         ShowBigImageFactory.topViewEDit(self.btmView)
@@ -88,7 +94,9 @@ class ComplexQusViewController: UIViewController,UITableViewDelegate,UITableView
         //设置左右的按钮
         leftBtn?.setFAText(prefixText: "", icon: FAType.FAArrowLeft, postfixText: "", size: 25, forState: .Normal)
         rightBtn?.setFAText(prefixText: "", icon: FAType.FAArrowRight, postfixText: "", size: 25, forState: .Normal)
-      //  self.tableView.keyboardDismissMode = .OnDrag
+    self.tableView.keyboardDismissMode = .OnDrag
+       //设置tag防止冲突
+        self.tableView.tag = 1
         //顶部加条线
         //设置阴影效果
         ShowBigImageFactory.topViewEDit(self.topView!)
@@ -220,6 +228,31 @@ class ComplexQusViewController: UIViewController,UITableViewDelegate,UITableView
     }
     //加载大题目的view
     func initView() {
+        
+        self.filesTableView.hidden = true
+        
+        
+        filePath = NSURL()
+        self.fileItems.removeAllObjects()
+               
+        var dic = [
+            "name" : "办事.docx",
+            "size": "14.79 KB",
+            "url": "http://dodo.hznu.edu.cn/Upload/lab/fe2cd6a3e80e7d9f/9903e574b35c0fdb/f490e9f3ab90246e/办事.docx",
+            ]
+        self.fileItems.addObject(dic)
+//        if(self.items[index].valueForKey("files") as? NSArray != nil &&
+//            (self.items[index].valueForKey("files") as! NSArray).count > 0){
+//            self.fileItems = NSMutableArray(array:  self.items[index].valueForKey("files") as! NSArray)
+    self.filesTableView.hidden = false
+        self.filesTableView.tag = 2
+            self.filesTableView.delegate = self
+            
+            self.filesTableView.dataSource = self
+        
+        
+        
+     //   }
         //初始化界面
         let contentString = cssDesString + (self.items[index].valueForKey("content") as! String)
         self.qusDesWebView?.loadHTMLString(contentString, baseURL: nil)
@@ -311,6 +344,7 @@ class ComplexQusViewController: UIViewController,UITableViewDelegate,UITableView
         //tableView的headerView 小题目的描述
         subWebView = UIWebView(frame: CGRectMake(0,0,SCREEN_WIDTH,1))
         self.tableView.tableHeaderView = subWebView
+      
         subWebView.delegate = self
         subWebView.loadHTMLString(self.subQusItems[subIndex].valueForKey("content") as! String, baseURL: nil)
         //初始化tableView总共有几格
@@ -501,6 +535,8 @@ class ComplexQusViewController: UIViewController,UITableViewDelegate,UITableView
         webView.frame = CGRectMake(0, 0, SCREEN_WIDTH, 1)
     }
     func webViewDidFinishLoad(webView: UIWebView) {
+        //小题目的题目描述加载完毕的时候
+        
         //左右滑动和上下滑动
         let scrollView = webView.subviews[0] as! UIScrollView
         let width = NSInteger(webView.stringByEvaluatingJavaScriptFromString("document.body.scrollWidth")!)
@@ -538,6 +574,7 @@ class ComplexQusViewController: UIViewController,UITableViewDelegate,UITableView
                 }
         
         self.tableView.reloadData()
+       
     }
     //tableView的代理
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
@@ -545,11 +582,15 @@ class ComplexQusViewController: UIViewController,UITableViewDelegate,UITableView
     }
     let tempOptionArray = ["a","b","c","d","e","f","g","h","i"]
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        if(tableView.tag == 1){
         return cellHeights.count
+        }else{
+        return self.fileItems.count
+        }
     }
     //cell要进行不同的判断 填空题时就加载textField 选择题时就加载webView
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        
+        if(tableView.tag == 1){
         //进行拆分每道题目的答案
         var oneQusSelfAnswer = self.oneQusSubSelfAnswers[subIndex] as! String
         //判断是不是空的字符串 随后判断是填空题 还是选择题
@@ -593,8 +634,9 @@ class ComplexQusViewController: UIViewController,UITableViewDelegate,UITableView
                 
             }
             return cell
+            }
             
-        }
+        
         else{
             let cell = ComplexCompletionTableViewCell(style: .Default, reuseIdentifier: "CompletionTableCell")
             if(indexPath.row < self.cellHeights.count){
@@ -649,7 +691,21 @@ class ComplexQusViewController: UIViewController,UITableViewDelegate,UITableView
             }
             return cell
         }
-        
+        }
+        else{
+            let identifer = "filescell"
+            var cell : UITableViewCell? = tableView.dequeueReusableCellWithIdentifier(identifer)
+            
+            if cell == nil {
+                cell = UITableViewCell(style: UITableViewCellStyle.Subtitle, reuseIdentifier: identifer)
+            }
+            cell!.textLabel?.text = self.fileItems[indexPath.row].valueForKey("name")
+                as? String
+            cell!.detailTextLabel?.text = self.fileItems[indexPath.row].valueForKey("size") as? String
+            return cell!
+            
+
+        }
     }
     //当选中了某个cell的时候 判断是单选题还是多选题 填空题是不可选择的
     func tap(sender:NSNotification){
@@ -689,10 +745,14 @@ class ComplexQusViewController: UIViewController,UITableViewDelegate,UITableView
     }
     //    //每个tableViewCell的高度
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+        if(tableView.tag == 1){
         if(indexPath.row < self.cellHeights.count){
             return CGFloat(cellHeights[indexPath.row] as! NSNumber)
         }else{
             return 0
+        }
+        }else{
+            return 40
         }
     }
     //
@@ -737,13 +797,13 @@ class ComplexQusViewController: UIViewController,UITableViewDelegate,UITableView
         Alamofire.request(.POST, "http://dodo.hznu.edu.cn/api/submitquestion", parameters: parameter, encoding: ParameterEncoding.URL, headers: nil).responseJSON { (response) in
             switch response.result{
             case .Failure(_):
-                print(1)
+            //    print(1)
                 ProgressHUD.showError("保存失败")
             case .Success(let Value):
                 let json = JSON(Value)
                 if(json["retcode"].number! != 0){
                     ProgressHUD.showError(json["message"].string)
-                    print(json["retcode"].number)
+        //            print(json["retcode"].number)
                 }else{
                    
                     if(self.disPlayMarkTextArray[self.subIndex] as? String != ""){
@@ -790,9 +850,9 @@ class ComplexQusViewController: UIViewController,UITableViewDelegate,UITableView
             
         //    self.subTableViewToTop.constant = -100
             if(cell.Custag == self.cellHeights.count - 1){
-                self.subTableViewToTop.constant = -50
+                self.subTableViewToTop.constant = 163
 //                let y = 64 + 21 + 4 + SCREEN_HEIGHT * 0.4 + 21 + 5 + 21 + 21
-//                self.tableView.frame = CGRectMake(0, y, SCREEN_WIDTH, SCREEN_HEIGHT - 40 - y)
+self.tableView.frame = CGRectMake(0, 21 + 100 + 40 + 2 + 21, SCREEN_WIDTH, SCREEN_HEIGHT - 21 - 100 - 40 - 21 - 30 - 2)
                 
             }
                 
@@ -806,7 +866,7 @@ self.tableView.beginUpdates()
     
     //在析构消失的时候必须除去所有通知
     deinit{
-        print("ComplexDeinit")
+  //      print("ComplexDeinit")
         NSNotificationCenter.defaultCenter().removeObserver(self)
     }
     
@@ -834,9 +894,10 @@ self.tableView.beginUpdates()
             totalTableViewHeight += CGFloat(self.cellHeights[i] as! NSNumber)
         }
         UIView.animateWithDuration(0.3) {
-         self.subTableViewToTop.constant = -(SCREEN_HEIGHT * 0.4) - 42
+       self.subTableViewToTop.constant = 0
             self.view.bringSubviewToFront(self.tableView)
             self.view.bringSubviewToFront(self.subTopView!)
+            self.view.updateConstraints()
         }
     }
     //键盘出现的时候的代理
@@ -847,9 +908,11 @@ self.tableView.beginUpdates()
         self.qusDesWebView?.addGestureRecognizer(leftSwipe)
         self.qusDesWebView?.addGestureRecognizer(rightSwipe)
         UIView.animateWithDuration(0.3) {
-            self.subTableViewToTop.constant = -50
-            
+              self.subTableViewToTop.constant = 163
+         //   self.subTableViewToTop.constant = -50
+            self.tableView.frame = CGRectMake(0, 21 + 100 + 40 + 2 + 21, SCREEN_WIDTH, SCREEN_HEIGHT - 21 - 100 - 40 - 21 - 30 - 2)
             self.view.setNeedsLayout()
+            self.view.updateConstraints()
             
         }
         
@@ -1227,4 +1290,73 @@ self.tableView.beginUpdates()
 //            })
 //    }
 //    }
+    //tablView点击了随后去查看文件
+    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        if(tableView.tag == 2){
+        tableView.deselectRowAtIndexPath(indexPath, animated: true)
+        let fileDic = self.fileItems[indexPath.row] as! NSDictionary
+        var fileUrl = fileDic.valueForKey("url") as! String
+        let fileName = fileDic.valueForKey("name") as! String
+        //中文转码
+        fileUrl = fileUrl.stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.URLFragmentAllowedCharacterSet())!
+        
+        //1分割字符串
+        let (fileString) = diviseUrl(fileUrl)
+        //2创建文件夹
+        creathDir(fileString)
+        let path = fileString + "/" + fileName
+        if(existFile(path) != ""){
+            self.filePath = NSURL(fileURLWithPath: existFile(path))
+            let qlVC = QLPreviewController()
+            qlVC.delegate = self
+            qlVC.dataSource = self
+            self.navigationController?.pushViewController(qlVC, animated: true)
+        }
+        else{
+            ProgressHUD.show("正在下载中")
+            //文件路径名的问题 找到一个Bug
+            
+            Alamofire.download(.GET, (fileUrl)) {
+                temporaryURL,response
+                in
+                if(response.statusCode == 200){
+                    let path = createURLInDownLoad(fileString,fileName: fileName)
+                    dispatch_async(dispatch_get_main_queue(), {
+                        ProgressHUD.showSuccess("下载成功")
+                        
+                        self.filePath = path
+                        let qlVC = QLPreviewController()
+                        qlVC.dataSource = self
+                        qlVC.delegate = self
+                        
+                        self.navigationController?.pushViewController(qlVC, animated: true)
+                    })
+                    return path
+                }
+                else{
+                    
+                    ProgressHUD.showError("下载失败")
+                    return NSURL()
+                }
+                
+            }
+            
+        }
+        }
+    }
+    //查看附件
+    func numberOfPreviewItemsInPreviewController(controller: QLPreviewController) -> Int {
+        return 1
+    }
+    func previewController(controller: QLPreviewController, previewItemAtIndex index: Int) -> QLPreviewItem {
+        
+        return self.filePath
+    }
+    func previewController(controller: QLPreviewController, shouldOpenURL url: NSURL, forPreviewItem item: QLPreviewItem) -> Bool {
+        
+        return true
+    }
+    
+    
+
 }
