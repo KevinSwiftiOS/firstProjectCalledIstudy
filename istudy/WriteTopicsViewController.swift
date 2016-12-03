@@ -99,6 +99,11 @@ class WriteTopicsViewController: UIViewController,UICollectionViewDelegate,UICol
 //    }
     //发出一个帖子后进行刷新列表
     @IBAction func send(sender:UIButton){
+        let subject = self.titleTextField.text
+        if(subject == ""){
+            ProgressHUD.showError("发帖主题不能为空")
+        }else{
+
         let userDefault = NSUserDefaults.standardUserDefaults()
         let authtoken = userDefault.valueForKey("authtoken") as!  String
         //主题
@@ -106,104 +111,62 @@ class WriteTopicsViewController: UIViewController,UICollectionViewDelegate,UICol
         //还有图片形式的组装成base64的字符串
         var tempHtmlString = ""
         tempHtmlString = self.writeTextView.text
-        
-        //循环将图片数组中的值取出 转化成html格式
-        if(self.photos.count > 0){
-       
-                     let string = "http://dodo.hznu.edu.cn/api/upfile?authtoken=" +
+            let string = "http://dodo.hznu.edu.cn/api/upfile?authtoken=" +
                 (userDefault.valueForKey("authtoken") as! String);
-              let headers = ["content-type":"multipart/form-data"]
-            Alamofire.upload(
-                multipartFormData: { multipartFormData in
-                    //666多张图片上传
-                    
+//            let headers = ["content-type":"multipart/form-data"]
+        //循环将图片数组中的值取出 转化成html格式
+          
+        if(self.photos.count > 0){
+            var cnt = 0;  
+            for i in 0 ..< self.photos.count{
+                  let data = UIImageJPEGRepresentation(self.photos[i] as! UIImage, 0.5)
+    Alamofire.upload(.POST, string,multipartFormData: { (formData) in
+             
+formData.appendBodyPart(data: data!, name: "name", fileName: "discuss.jpg", mimeType: "image/jpeg")
                 
-                    
-                    for i in 0..< self.photos.count {
-                        
-                        multipartFormData.append(data[i], withName: "appPhoto", fileName: name[i], mimeType: "image/png")
-                    }
-                },
-                to: string,
-                headers: headers,
-                encodingCompletion: { encodingResult in
-                    switch encodingResult {
-                    case .success(let upload, _, _):
-                        upload.responseJSON { response in
-                            if let value = response.result.value as? [String: AnyObject]{
-                                success(value)
-                                let json = JSON(value)
-                                print(json)
+        }) { (encodingResult) in
+                switch encodingResult {
+                case .Success(let upload, _, _):
+                    //print((upload.request?.allHTTPHeaderFields))
+                    upload.responseJSON(completionHandler: { (response) in
+                        switch response.result{
+                        case .Success(let Value):
+                            let json = JSON(Value)
+                            if(json["retcode"].number != 0){
+                                ProgressHUD.showError("发送失败")
+                            }else{
+                                
+                                if(json["info"]["succ"].bool == false){
+                                    ProgressHUD.showError("发送失败")
+                                }else{
+                                   
+                                        let imageUrl = "<img src = " + "\""  +   json["info"]["uploadedurl"].string! +  "\"" + "/>"
+                                    tempHtmlString += imageUrl
+                                        print(tempHtmlString)
+                                    
+                                          cnt += 1
+                                    if(cnt == self.photos.count){
+                                  self.sendTopic(tempHtmlString, authtoken: authtoken)
+                                    }
+                                  
+                                }
                             }
+                        case .Failure(_):
+                   //         print(2)
+                            ProgressHUD.showError("发送失败")
                         }
-                    case .failure(let encodingError):
-                        print(encodingError)
-                        
-                    }
+                    })
+                case .Failure(_):
+                    ProgressHUD.showError("发送失败")
+                //    print(3)
                 }
-            )
- 
-            
-           
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-//    Alamofire.upload(.POST, string, headers: headers,multipartFormData: { (formData) in
-//             
-//                for  i in 0 ..< self.photos.count{
-//                    let data = UIImageJPEGRepresentation(self.photos[i] as! UIImage, 0.5)
-//                    formData.appendBodyPart(data: data!, name: "name", fileName: "\(i)" + ".jpg", mimeType: "image/jpeg")
-//                
-//                }
-//                
-//                
-//            }) { (encodingResult) in
-//                switch encodingResult {
-//                case .Success(let upload, _, _):
-//                    //print((upload.request?.allHTTPHeaderFields))
-//                    upload.responseJSON(completionHandler: { (response) in
-//                        switch response.result{
-//                        case .Success(let Value):
-//                            let json = JSON(Value)
-//                            if(json["retcode"].number != 0){
-//                                ProgressHUD.showError("发送失败")
-//                            }else{
-//                                
-//                                if(json["info"]["succ"].bool == false){
-//                                    ProgressHUD.showError("发送失败")
-//                                }else{
-//                                   
-//                                        let imageUrl = "<img src = " + "\""  +   json["info"]["uploadedurl"].string! +  "\"" + "/>"
-//                                    tempHtmlString += imageUrl
-//                                        print(tempHtmlString)
-//                                    
-//                                            
-////                                          self.sendTopic(tempHtmlString, authtoken: authtoken)
-//                                    
-//                                  
-//                                }
-//                            }
-//                        case .Failure(_):
-//                   //         print(2)
-//                            ProgressHUD.showError("发送失败")
-//                        }
-//                    })
-//                case .Failure(_):
-//                    ProgressHUD.showError("发送失败")
-//                //    print(3)
-//                }
-//            }
+            }
+        }
         }
         
     else{
             self.sendTopic(tempHtmlString, authtoken: authtoken)
+        }
         }
     }
     //发帖的函数

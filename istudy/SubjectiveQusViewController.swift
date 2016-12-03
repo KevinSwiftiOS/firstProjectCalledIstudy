@@ -207,6 +207,7 @@ override func didReceiveMemoryWarning() {
         
     //循环将图片数组中的值取出 转化成html格式 没有图片的话也要上传 这里以前有Bug
         if(self.answerPhotos.count > 0){
+            var cnt = 0
         for i in 0 ..< self.answerPhotos.count{
            
             //Alamofire进行上传
@@ -254,13 +255,14 @@ override func didReceiveMemoryWarning() {
                                     
                                     ProgressHUD.showError("保存失败")
                                 }else{
-                                  dispatch_async(dispatch_get_main_queue(), {
+                                  
                                  
                                         allAnswer += "<img src = " + "\""  +   json["info"]["uploadedurl"].string! +  "\"" + "/>"
-                                    if(i == self.answerPhotos.count - 1){
+                                    cnt += 1
+                                    if(cnt == self.answerPhotos.count){
                                        
                                         //转化成html的格式
-                                        self.selfAnswers.replaceObjectAtIndex(self.index, withObject: allAnswer)
+                                      dispatch_async(dispatch_get_main_queue(), {  self.selfAnswers.replaceObjectAtIndex(self.index, withObject: allAnswer)
                                         self.answerWebView.loadHTMLString(imageDecString + (self.selfAnswers[self.index] as! String) , baseURL: nil)
                                         
                                         //数组清空
@@ -273,9 +275,9 @@ override func didReceiveMemoryWarning() {
                                         self.answerWebView.userInteractionEnabled = true
                                         self.answerWebView.addGestureRecognizer(tap)
                                           self.postAnswer()
-
+                       })
                                     }
-                                  })
+                                
                                     }
                             }
                         case .Failure(_):

@@ -157,6 +157,20 @@ self.view.setNeedsLayout()
     }
     //发送的信箱
     @IBAction func sendEmail(sender:UIButton){
+        var receives = ""
+        //直接全部添加联系人
+        if(self.receiveIds.count > 0){
+            //添加联系人
+            for i in 0 ..< self.receiveIds.count - 1{
+                receives += "\(self.receiveIds[i] as! NSInteger)" + ","
+            }
+            receives += "\(self.receiveIds[self.receiveIds.count - 1] as! NSInteger)"
+            
+        }
+        if(receives == ""){
+            ProgressHUD.showError("未添加联系人")
+        }else{
+
         //遍历循环看有没有replyToOneId
         
         let userDefault = NSUserDefaults.standardUserDefaults()
@@ -168,6 +182,7 @@ self.view.setNeedsLayout()
         content = self.writeTextView.text
         //转换成base64字符串
         if(self.photos.count > 0) {
+            var cnt = 0
         for i in 0 ..< self.photos.count{
             let data = UIImageJPEGRepresentation(self.photos[i] as! UIImage, 0.5)
             let string = "http://dodo.hznu.edu.cn/api/upfile?authtoken=" +
@@ -192,7 +207,8 @@ self.view.setNeedsLayout()
                                     dispatch_async(dispatch_get_main_queue(), {
                                         let imageUrl = "<div><img src = " + "\""  +   json["info"]["uploadedurl"].string! +  "\"" + "/></div>"
                                         content += imageUrl
-                                        if(i == self.photos.count - 1){
+                                        cnt += 1
+                                        if(cnt == self.photos.count){
                                         
                                           self.sendWithPerson(content, subject: subject!, authtoken: authtoken)
                                         }
@@ -215,6 +231,7 @@ self.view.setNeedsLayout()
             
             
             self.sendWithPerson(content, subject: subject!, authtoken: authtoken)
+        }
         }
     }
         //添加联系人

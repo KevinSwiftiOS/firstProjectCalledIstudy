@@ -143,7 +143,9 @@ class ReplyTopicViewController: UIViewController,UITableViewDelegate,UITableView
         //内容
         
         var content:String = self.writeTextView!.text
+      
         if(self.photos.count > 0){
+              var cnt = 0
         for i in 0 ..< self.photos.count{
             let data = UIImageJPEGRepresentation(self.photos[i] as! UIImage, 0.5)
             let string = "http://dodo.hznu.edu.cn/api/upfile?authtoken=" +
@@ -165,14 +167,15 @@ class ReplyTopicViewController: UIViewController,UITableViewDelegate,UITableView
                                 if(json["info"]["succ"].bool == false){
                                     ProgressHUD.showError("发送失败")
                                 }else{
-                                    dispatch_async(dispatch_get_main_queue(), {
+                                   
                                         let imageUrl = "<div><img src = " + "\""  +   json["info"]["uploadedurl"].string! +  "\"" + "/></div>"
                                          content += imageUrl
-                                        if(i == self.photos.count - 1){
+                                        cnt += 1
+                                        if(cnt == self.photos.count){
                                             
                                             self.finalRepley(content, authtoken: authtoken)
                                         }
-                                    })
+                                    
                                 }
                             }
                         case .Failure(_):
