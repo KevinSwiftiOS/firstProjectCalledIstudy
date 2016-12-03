@@ -290,7 +290,7 @@ sender.setTitleColor(UIColor.whiteColor(), forState: .Normal)
                         }else{
                          
                             userDefault.setValue(json["authtoken"].string, forKey: "authtoken")
-                      print(json["authtoken"].string)
+           //           print(json["authtoken"].string)
                             //设置名字 名字和账号是不一样的
                             userDefault.setValue(json["info"]["name"].string, forKey: "name")
                             userDefault.setValue(json["info"]["gender"].string, forKey: "gender")
@@ -321,7 +321,7 @@ sender.setTitleColor(UIColor.whiteColor(), forState: .Normal)
                                         self.courseDesTableView?.reloadData()
                                         //})
                                     }else{
-                                        print(json["retcode"].number)
+                //                        print(json["retcode"].number)
                                         ProgressHUD.showError(json["message"].string)
                                         self.items = NSArray()
                                         dispatch_async(dispatch_get_main_queue(), {
@@ -366,7 +366,7 @@ sender.setTitleColor(UIColor.whiteColor(), forState: .Normal)
         }
        //界面消失的时候 要带着把搜索条拿走 否则会出现内存报错
           deinit{
-            print("CourseDesDeinit")
+          //  print("CourseDesDeinit")
             self.sc.view.removeFromSuperview()
         }
         //响应链事件 当搜索条出现时 点击背景搜索条会消失

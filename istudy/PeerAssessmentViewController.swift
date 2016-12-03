@@ -131,7 +131,7 @@ class PeerAssessmentViewController: UIViewController ,UITableViewDataSource,UITa
                 let json = JSON(Value)
              
                 if(json["retcode"].number != 0){
-                    print(json["retcode"].number)
+              //      print(json["retcode"].number)
                     ProgressHUD.showError(json["message"].string)
                     dispatch_async(dispatch_get_main_queue(), {
                         self.items = NSArray()

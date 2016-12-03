@@ -169,6 +169,7 @@ class SubjectiveQusViewController: UIViewController,AJPhotoPickerProtocol,UINavi
         for view in (self.contentScrollView?.subviews)!{
             view.removeFromSuperview()
         }
+//        //测试
         //加载题目的内容
         let contenString = cssDesString + (self.items[index].valueForKey("content") as! String)
         self.qusDes.loadHTMLString(contenString, baseURL: nil)
@@ -634,23 +635,23 @@ menu.dismissViewControllerAnimated(true, completion: nil)
     //要查看本题目是否有附件
         if(self.items[index].valueForKey("files") as? NSArray != nil &&
             (self.items[index].valueForKey("files") as! NSArray).count > 0){
-            
+        
             self.fileItems = NSMutableArray(array:  self.items[index].valueForKey("files") as! NSArray)
             print(self.fileItems)
             let FileLabel = UILabel(frame:  CGRectMake(5, self.totalHeight + 2, SCREEN_WIDTH - 10, 30))
             FileLabel.text = "附件区"
             self.totalHeight += 32
      //增加附件区
-            let filesTableView = UITableView(frame: CGRectMake(5, self.totalHeight + 2, SCREEN_WIDTH - 10, 100))
+            let filesTableView = UITableView(frame: CGRectMake(5, self.totalHeight + 2, SCREEN_WIDTH - 10, 40))
             filesTableView.tag = 1
             filesTableView.delegate = self
             filesTableView.dataSource = self
             filesTableView.tableFooterView = UIView()
-            self.totalHeight += 110
+            self.totalHeight += 40
          self.contentScrollView?.addSubview(FileLabel)
             self.contentScrollView?.addSubview(filesTableView)
         }
-        
+    
         
         
         
@@ -792,13 +793,13 @@ menu.dismissViewControllerAnimated(true, completion: nil)
             answerFilesLabel.text = "学生答案附件区"
             self.totalHeight += 32
             //增加附件区
-            let answerFilesTableView = UITableView(frame: CGRectMake(5, self.totalHeight + 2, SCREEN_WIDTH - 10, 100))
+            let answerFilesTableView = UITableView(frame: CGRectMake(5, self.totalHeight + 2, SCREEN_WIDTH - 10, 40))
             answerFilesTableView.tag = 2
             answerFilesTableView.delegate = self
             answerFilesTableView.dataSource = self
             self.contentScrollView?.addSubview(answerFilesLabel)
             self.contentScrollView?.addSubview(answerFilesTableView)
-            self.totalHeight += 110
+            self.totalHeight += 40
         
            answerFilesTableView.tableFooterView = UIView()
         

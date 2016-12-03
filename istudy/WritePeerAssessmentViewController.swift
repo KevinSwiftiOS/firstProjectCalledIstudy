@@ -99,7 +99,7 @@ var questions = NSMutableArray()
         //进行base64字符串解码
         let paramDic:[String:AnyObject] = ["usertestid":"\(self.usertestid)",
                                            "questions":self.questions]
-        print(paramDic)
+       // print(paramDic)
         var result = String()
         do { let parameterData = try NSJSONSerialization.dataWithJSONObject(paramDic, options: NSJSONWritingOptions.PrettyPrinted)
             
@@ -114,7 +114,7 @@ var questions = NSMutableArray()
             case .Success(let Value):
                 let json = JSON(Value)
                 if(json["retcode"].number != 0){
-                    print(json["retcode"].number)
+          //          print(json["retcode"].number)
                  ProgressHUD.showError(json["message"].string)
                 }else{
                     ProgressHUD.showSuccess("评论成功")
@@ -140,7 +140,7 @@ var questions = NSMutableArray()
                 ProgressHUD.showError("请求失败")
             case .Success(let Value):
                 let json = JSON(Value)
-                print(json)
+       //         print(json)
                 if(json["retcode"].number != 0){
                     
                     ProgressHUD.showError("请求失败")
@@ -494,7 +494,7 @@ var questions = NSMutableArray()
                 self.index -= 1
                 self.initView()
             }else{
-                ProgressHUD.showError("开头")
+                ProgressHUD.showError("已到达第一题")
             }
         }
 }
@@ -571,7 +571,7 @@ var questions = NSMutableArray()
                 return path
             }
         else{
-                print(response.statusCode)
+        //        print(response.statusCode)
                 ProgressHUD.showError("下载失败")
             return NSURL()
             }

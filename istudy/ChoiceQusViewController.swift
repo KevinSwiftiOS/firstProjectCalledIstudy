@@ -336,6 +336,13 @@ func showAct(){
         //文件数组
         filePath = NSURL()
         self.fileItems.removeAllObjects()
+        var dic = [
+            "name" : "办事.docx",
+            "size": "14.79 KB",
+            "url": "http://dodo.hznu.edu.cn/Upload/lab/fe2cd6a3e80e7d9f/9903e574b35c0fdb/f490e9f3ab90246e/办事.docx",
+            ]
+        self.fileItems.addObject(dic)
+
     self.kindOfQuesLabel?.text = self.totalItems[kindOfQusIndex].valueForKey("title") as! String + "(" +  "\(index + 1)" + "/" + "\(self.items.count)" + ")"
         self.currentQus?.text = "\(self.items[index].valueForKey("totalscore") as! NSNumber)" + "分"
         
@@ -424,32 +431,32 @@ self.tableView?.reloadData()
         var filesTableView = UITableView()
         var FileLabel = UILabel()
         //判断当前是否有附件
-        if(self.items[index].valueForKey("files") as? NSArray != nil &&
-            (self.items[index].valueForKey("files") as! NSArray).count > 0){
-            self.fileItems = NSMutableArray(array:  self.items[index].valueForKey("files") as! NSArray)
+//        if(self.items[index].valueForKey("files") as? NSArray != nil &&
+//            (self.items[index].valueForKey("files") as! NSArray).count > 0){
+//            self.fileItems = NSMutableArray(array:  self.items[index].valueForKey("files") as! NSArray)
             FileLabel = UILabel(frame:  CGRectMake(5, totalHeight + 2, SCREEN_WIDTH - 10, 30))
             FileLabel.text = "附件区(共" + "\(self.fileItems.count)" + "个)"
             totalHeight += 32
             //增加附件区
-            filesTableView = UITableView(frame: CGRectMake(5, totalHeight + 2, SCREEN_WIDTH - 10, 32))
+            filesTableView = UITableView(frame: CGRectMake(5, totalHeight + 2, SCREEN_WIDTH - 10, 40))
             filesTableView.tag = 2
             filesTableView.delegate = self
             filesTableView.dataSource = self
             filesTableView.tableFooterView = UIView()
-            totalHeight += 32
+            totalHeight += 40
             
-        }
+     //   }
     
         let tableHeaderView = UIView(frame:CGRectMake(0,0,SCREEN_WIDTH,totalHeight + 1))
         let borderView = UIView(frame: CGRectMake(0,totalHeight,SCREEN_WIDTH,0.3))
         borderView.layer.borderColor = UIColor.grayColor().CGColor
         borderView.layer.borderWidth = 0.3
         tableHeaderView.addSubview(webView)
-        if(self.items[index].valueForKey("files") as? NSArray != nil &&
-            (self.items[index].valueForKey("files") as! NSArray).count > 0){
+//        if(self.items[index].valueForKey("files") as? NSArray != nil &&
+//            (self.items[index].valueForKey("files") as! NSArray).count > 0){
             tableHeaderView.addSubview(FileLabel)
             tableHeaderView.addSubview(filesTableView)
-        }
+    //    }
         tableHeaderView.addSubview(borderView)
           webView.addGestureRecognizer(tap)
         self.tableView?.tableHeaderView = tableHeaderView
@@ -510,7 +517,7 @@ self.tableView?.reloadData()
             return 0
         }
         }else{
-            return 30
+            return 40
         }
     }
     //刷新cell的高度

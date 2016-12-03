@@ -176,13 +176,13 @@ class ReplyTopicViewController: UIViewController,UITableViewDelegate,UITableView
                                 }
                             }
                         case .Failure(_):
-                            print(2)
+                 //           print(2)
                             ProgressHUD.showError("发送失败")
                         }
                     })
                 case .Failure(_):
                     ProgressHUD.showError("发送失败")
-                    print(3)
+              //      print(3)
                 }
             }
          
@@ -213,7 +213,7 @@ class ReplyTopicViewController: UIViewController,UITableViewDelegate,UITableView
             result = paramData.base64EncodedStringWithOptions(NSDataBase64EncodingOptions.Encoding64CharacterLineLength)
             
         }catch{
-            print(2)
+           // print(2)
         }
         let paramDic:[String:AnyObject] = ["authtoken":authtoken,
                                            "postype":"2",
@@ -226,13 +226,13 @@ class ReplyTopicViewController: UIViewController,UITableViewDelegate,UITableView
             switch response.result{
             case .Failure(_):
                 ProgressHUD.showError("发送失败")
-                print(2)
+           //     print(2)
             case .Success(let Value):
                 let json = JSON(Value)
                 if(json["retcode"].number != 0){
                     ProgressHUD.showError(json["message"].string)
                     
-                    print(json["retcode"].number)
+                  //  print(json["retcode"].number)
                 }else{
                     ProgressHUD.showSuccess("发送成功")
                     dispatch_async(dispatch_get_main_queue(), {
@@ -465,6 +465,6 @@ class ReplyTopicViewController: UIViewController,UITableViewDelegate,UITableView
     }
     
     deinit {
-        print("replyTableDeinit")
+   //     print("replyTableDeinit")
     }
 }

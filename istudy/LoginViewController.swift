@@ -65,7 +65,7 @@ Alamofire.request(.POST, "http://dodo.hznu.edu.cn/api/login", parameters: self.d
                 let json = JSON(data)
                 if(json["retcode"].int != 0){
                    ProgressHUD.showError(json["message"].string)
-                    print(json["retcode"].number)
+         //           print(json["retcode"].number)
                 }else{
                  
 let userDefaults = NSUserDefaults.standardUserDefaults()

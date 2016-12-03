@@ -129,7 +129,7 @@ if(self.items[indexPath.row].valueForKey("hupingtime") as? String != nil &&
                                   })
             case .Success(let Value):
                 let json = JSON(Value)
-                print(json)
+            //    print(json)
                 if(json["retcode"].number != 0){
                     
                    ProgressHUD.showError(json["message"].string)

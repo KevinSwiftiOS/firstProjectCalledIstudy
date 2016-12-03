@@ -250,7 +250,7 @@ QLPreviewControllerDelegate,QLPreviewControllerDataSource{
                         //阅卷的界面不可点击
                         self.resultTextView.editable = false
                         self.displayMarkingArray.replaceObjectAtIndex(self.index, withObject: 1)
-                       self.tableView?.userInteractionEnabled = false
+                     
                         self.tableView?.reloadData()
                     }
                 case .Failure(_):
@@ -337,6 +337,13 @@ QLPreviewControllerDelegate,QLPreviewControllerDataSource{
             "url": "http://dodo.hznu.edu.cn/Upload/lab/fe2cd6a3e80e7d9f/9903e574b35c0fdb/f490e9f3ab90246e/办事.docx",
             ]
         self.fileItems.addObject(dic)
+
+        dic = [
+            "name" : "办事.docx",
+            "size": "14.79 KB",
+            "url": "http://dodo.hznu.edu.cn/Upload/lab/fe2cd6a3e80e7d9f/9903e574b35c0fdb/f490e9f3ab90246e/办事.docx",
+            ]
+        self.fileItems.addObject(dic)
         self.kindOfQuesLabel?.text = self.totalItems[kindOfQusIndex].valueForKey("title") as! String + "(" +
             "\(index + 1)" + "/" + "\(self.items.count)" + ")"
         self.currentQus?.text = "\(self.items[index].valueForKey("totalscore") as! NSNumber)" + "分"
@@ -354,10 +361,15 @@ QLPreviewControllerDelegate,QLPreviewControllerDataSource{
     }
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         if(tableView.tag == 1){
-       tableView.deselectRowAtIndexPath(indexPath, animated: true)
-        self.answers.replaceObjectAtIndex(index, withObject: self.tempArray[indexPath.row].uppercaseString)
+            tableView.deselectRowAtIndexPath(indexPath, animated: true)
+
+            if(  self.displayMarkingArray[index] as! NSInteger == 0){
+                
+            self.answers.replaceObjectAtIndex(index, withObject: self.tempArray[indexPath.row].uppercaseString)
         tableView.reloadData()
+            
         self.postAnswer()
+            }
         }else{
             tableView.deselectRowAtIndexPath(indexPath, animated: true)
             let fileDic = self.fileItems[indexPath.row] as! NSDictionary
@@ -566,7 +578,7 @@ QLPreviewControllerDelegate,QLPreviewControllerDataSource{
             cell.optionLabel.textColor = RGB(0, g: 153, b: 255)
 
             }
-
+          
   
   
         }

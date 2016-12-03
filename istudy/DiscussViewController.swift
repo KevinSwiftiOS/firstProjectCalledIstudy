@@ -309,7 +309,7 @@ class DiscussViewController: UIViewController,UITableViewDelegate,UITableViewDat
         return attriString
     }
     deinit{
-        print("discussVCDeinit")
+      //  print("discussVCDeinit")
     }
     //将底部的选择视图消失
     func bottomChooseViewResign(){

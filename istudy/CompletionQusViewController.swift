@@ -591,7 +591,7 @@ class CompletionQusViewController: UIViewController,UITextFieldDelegate,UIWebVie
         return 1
     }
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        if(tableView.tag == 1){
+         if(tableView.tag == 1){
         let cell = CompletionTableViewCell(style: .Default, reuseIdentifier: "CompletionTableViewCell")
         if(indexPath.row < self.cellHeights.count){
             //加载有没有提醒 就是blank

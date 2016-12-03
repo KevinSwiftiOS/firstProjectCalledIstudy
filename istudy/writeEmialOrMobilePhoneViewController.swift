@@ -95,7 +95,7 @@ class writeEmialOrMobilePhoneViewController: UIViewController {
             }
             
         }catch{
-            print("error")
+      //      print("error")
         }
 
           }

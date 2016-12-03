@@ -109,50 +109,100 @@ class WriteTopicsViewController: UIViewController,UICollectionViewDelegate,UICol
         
         //循环将图片数组中的值取出 转化成html格式
         if(self.photos.count > 0){
-        for i in 0 ..< self.photos.count{
-            let data = UIImageJPEGRepresentation(self.photos[i] as! UIImage, 0.5)
-            let string = "http://dodo.hznu.edu.cn/api/upfile?authtoken=" +
+       
+                     let string = "http://dodo.hznu.edu.cn/api/upfile?authtoken=" +
                 (userDefault.valueForKey("authtoken") as! String);
-            Alamofire.upload(.POST, string, multipartFormData: { (formData) in
-                formData.appendBodyPart(data: data!, name: "name", fileName: "StationImage.jpg", mimeType: "image/jpeg")
-            }) { (encodingResult) in
-                switch encodingResult {
-                case .Success(let upload, _, _):
-                    //print((upload.request?.allHTTPHeaderFields))
-                    upload.responseJSON(completionHandler: { (response) in
-                        switch response.result{
-                        case .Success(let Value):
-                            let json = JSON(Value)
-                            if(json["retcode"].number != 0){
-                                ProgressHUD.showError("发送失败")
-                            }else{
-                                
-                                if(json["info"]["succ"].bool == false){
-                                    ProgressHUD.showError("发送失败")
-                                }else{
-                                    dispatch_async(dispatch_get_main_queue(), {
-                                        let imageUrl = "<div><img src = " + "\""  +   json["info"]["uploadedurl"].string! +  "\"" + "/></div>"
-                                        print(tempHtmlString)
-                                        tempHtmlString += imageUrl
-                                        if(i == self.photos.count - 1){
-                                            
-                                          self.sendTopic(tempHtmlString, authtoken: authtoken)
-                                        }
-                                    })
-                                }
+              let headers = ["content-type":"multipart/form-data"]
+            Alamofire.upload(
+                multipartFormData: { multipartFormData in
+                    //666多张图片上传
+                    
+                
+                    
+                    for i in 0..< self.photos.count {
+                        
+                        multipartFormData.append(data[i], withName: "appPhoto", fileName: name[i], mimeType: "image/png")
+                    }
+                },
+                to: string,
+                headers: headers,
+                encodingCompletion: { encodingResult in
+                    switch encodingResult {
+                    case .success(let upload, _, _):
+                        upload.responseJSON { response in
+                            if let value = response.result.value as? [String: AnyObject]{
+                                success(value)
+                                let json = JSON(value)
+                                print(json)
                             }
-                        case .Failure(_):
-                            print(2)
-                            ProgressHUD.showError("发送失败")
                         }
-                    })
-                case .Failure(_):
-                    ProgressHUD.showError("发送失败")
-                    print(3)
+                    case .failure(let encodingError):
+                        print(encodingError)
+                        
+                    }
                 }
-            }
+            )
+ 
+            
+           
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+//    Alamofire.upload(.POST, string, headers: headers,multipartFormData: { (formData) in
+//             
+//                for  i in 0 ..< self.photos.count{
+//                    let data = UIImageJPEGRepresentation(self.photos[i] as! UIImage, 0.5)
+//                    formData.appendBodyPart(data: data!, name: "name", fileName: "\(i)" + ".jpg", mimeType: "image/jpeg")
+//                
+//                }
+//                
+//                
+//            }) { (encodingResult) in
+//                switch encodingResult {
+//                case .Success(let upload, _, _):
+//                    //print((upload.request?.allHTTPHeaderFields))
+//                    upload.responseJSON(completionHandler: { (response) in
+//                        switch response.result{
+//                        case .Success(let Value):
+//                            let json = JSON(Value)
+//                            if(json["retcode"].number != 0){
+//                                ProgressHUD.showError("发送失败")
+//                            }else{
+//                                
+//                                if(json["info"]["succ"].bool == false){
+//                                    ProgressHUD.showError("发送失败")
+//                                }else{
+//                                   
+//                                        let imageUrl = "<img src = " + "\""  +   json["info"]["uploadedurl"].string! +  "\"" + "/>"
+//                                    tempHtmlString += imageUrl
+//                                        print(tempHtmlString)
+//                                    
+//                                            
+////                                          self.sendTopic(tempHtmlString, authtoken: authtoken)
+//                                    
+//                                  
+//                                }
+//                            }
+//                        case .Failure(_):
+//                   //         print(2)
+//                            ProgressHUD.showError("发送失败")
+//                        }
+//                    })
+//                case .Failure(_):
+//                    ProgressHUD.showError("发送失败")
+//                //    print(3)
+//                }
+//            }
         }
-        }else{
+        
+    else{
             self.sendTopic(tempHtmlString, authtoken: authtoken)
         }
     }
@@ -175,7 +225,7 @@ class WriteTopicsViewController: UIViewController,UICollectionViewDelegate,UICol
             result = paramData.base64EncodedStringWithOptions(NSDataBase64EncodingOptions.Encoding64CharacterLineLength)
             
         }catch{
-            print(2)
+          //  print(2)
         }
         let paramDic:[String:AnyObject] = ["authtoken":authtoken,
                                            "postype":"1",
@@ -184,12 +234,12 @@ class WriteTopicsViewController: UIViewController,UICollectionViewDelegate,UICol
             switch response.result{
             case .Failure(_):
                 ProgressHUD.showError("发送失败")
-                print(2)
+              //  print(2)
             case .Success(let Value):
                 let json = JSON(Value)
                 if(json["retcode"].number != 0){
                     ProgressHUD.showError(json["message"].string)
-                    print(json["retcode"].number)
+               //     print(json["retcode"].number)
                 }else{
                     ProgressHUD.showSuccess("发送成功")
                     self.navigationController?.popViewControllerAnimated(true)
@@ -281,6 +331,6 @@ class WriteTopicsViewController: UIViewController,UICollectionViewDelegate,UICol
         ProgressHUD.dismiss()
     }
     deinit {
-        print("writeTopicDeinit")
+   //     print("writeTopicDeinit")
     }
 }
