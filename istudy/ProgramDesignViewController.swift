@@ -220,12 +220,7 @@ class ProgramDesignViewController: UIViewController,UIWebViewDelegate,UIGestureR
       //移除元素
         self.fileItems.removeAllObjects()
         self.filePath = NSURL()
-        var dic = [
-            "name" : "办事.docx",
-            "size": "14.79 KB",
-            "url": "http://dodo.hznu.edu.cn/Upload/lab/fe2cd6a3e80e7d9f/9903e574b35c0fdb/f490e9f3ab90246e/办事.docx",
-            ]
-        self.fileItems.addObject(dic)
+ 
 
         for view in (self.contentScrollView?.subviews)!{
             view.removeFromSuperview()
@@ -434,8 +429,8 @@ class ProgramDesignViewController: UIViewController,UIWebViewDelegate,UIGestureR
         var filesTableView = UITableView()
         var FileLabel = UILabel()
         //判断当前是否有附件
-//        if(self.items[index].valueForKey("files") as? NSArray != nil &&
-//            (self.items[index].valueForKey("files") as! NSArray).count > 0){
+        if(self.items[index].valueForKey("files") as? NSArray != nil &&
+            (self.items[index].valueForKey("files") as! NSArray).count > 0){
             self.fileItems = NSMutableArray(array:  self.items[index].valueForKey("files") as! NSArray)
             FileLabel = UILabel(frame:  CGRectMake(5, self.webViewHeight + 2, SCREEN_WIDTH - 10, 30))
             FileLabel.text = "附件区(共" + "\(self.fileItems.count)" + "个)"
@@ -448,15 +443,15 @@ class ProgramDesignViewController: UIViewController,UIWebViewDelegate,UIGestureR
             filesTableView.tableFooterView = UIView()
             self.webViewHeight += 40
             
-  //  }
+    }
 
-//        if(self.items[index].valueForKey("files") as? NSArray != nil &&
-//            (self.items[index].valueForKey("files") as! NSArray).count > 0){
+        if(self.items[index].valueForKey("files") as? NSArray != nil &&
+            (self.items[index].valueForKey("files") as! NSArray).count > 0){
             self.contentScrollView!.addSubview(FileLabel)
             self.contentScrollView!.addSubview(filesTableView)
-        self.contentScrollView?.keyboardDismissMode = .OnDrag
-//        }
-
+      
+        }
+  self.contentScrollView?.keyboardDismissMode = .OnDrag
         
         
         

@@ -204,7 +204,7 @@ override func didReceiveMemoryWarning() {
         allAnswer = self.selfAnswers[index] as! String
       
      allAnswer  += self.answerTextView.text
-        
+      ProgressHUD.show("正在保存中,请稍候")
     //循环将图片数组中的值取出 转化成html格式 没有图片的话也要上传 这里以前有Bug
         if(self.answerPhotos.count > 0){
             var cnt = 0

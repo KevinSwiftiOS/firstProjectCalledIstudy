@@ -434,7 +434,7 @@ class CompletionQusViewController: UIViewController,UITextFieldDelegate,UIWebVie
     func initView(){
         filePath = NSURL()
         self.fileItems.removeAllObjects()
-      
+   
         self.tableHeaderWebViewHeight = 0
         self.currentQus?.text = "\(self.items[index].valueForKey("totalscore") as! NSNumber)" + "分"
         self.qusScore?.text = self.totalitems[kindOfQusIndex].valueForKey("title") as! String + "(" +  "\(self.index + 1)" + "/" + "\(self.items.count)" + ")"
@@ -535,14 +535,14 @@ class CompletionQusViewController: UIViewController,UITextFieldDelegate,UIWebVie
             FileLabel.text = "附件区(共" + "\(self.fileItems.count)" + "个)"
             totalHeight += 32
             //增加附件区
-            filesTableView = UITableView(frame: CGRectMake(5, totalHeight + 2, SCREEN_WIDTH - 10, 32))
+            filesTableView = UITableView(frame: CGRectMake(5, totalHeight + 2, SCREEN_WIDTH - 10, 40))
             filesTableView.tag = 2
             filesTableView.delegate = self
             filesTableView.dataSource = self
             filesTableView.tableFooterView = UIView()
-            totalHeight += 32
+            totalHeight += 40
             
-        }
+      }
         
         let tableHeaderView = UIView(frame:CGRectMake(0,0,SCREEN_WIDTH,totalHeight + 1))
         let borderView = UIView(frame: CGRectMake(0,totalHeight,SCREEN_WIDTH,0.3))
@@ -692,7 +692,7 @@ class CompletionQusViewController: UIViewController,UITextFieldDelegate,UIWebVie
             return 0
         }
         }else{
-            return 30
+            return 40
         }
     }
     //组装答案

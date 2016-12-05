@@ -143,7 +143,12 @@ class ReplyTopicViewController: UIViewController,UITableViewDelegate,UITableView
         //内容
         
         var content:String = self.writeTextView!.text
-      
+      //回帖内容不能为空
+        if(content == "" && self.photos.count == 0){
+            ProgressHUD.showError("回复不能为空")
+        }else{
+            ProgressHUD.show("正在回复中,请稍候")
+        
         if(self.photos.count > 0){
               var cnt = 0
         for i in 0 ..< self.photos.count{
@@ -193,6 +198,7 @@ class ReplyTopicViewController: UIViewController,UITableViewDelegate,UITableView
         }else{
              self.finalRepley(content, authtoken: authtoken)
         }
+        }
     }
     
         
@@ -228,7 +234,7 @@ class ReplyTopicViewController: UIViewController,UITableViewDelegate,UITableView
         Alamofire.request(.POST, "http://dodo.hznu.edu.cn/api/forumpost", parameters: paramDic, encoding: ParameterEncoding.URL, headers: nil).responseJSON { (response) in
             switch response.result{
             case .Failure(_):
-                ProgressHUD.showError("发送失败")
+                ProgressHUD.showError("回帖失败")
            //     print(2)
             case .Success(let Value):
                 let json = JSON(Value)
@@ -237,7 +243,7 @@ class ReplyTopicViewController: UIViewController,UITableViewDelegate,UITableView
                     
                   //  print(json["retcode"].number)
                 }else{
-                    ProgressHUD.showSuccess("发送成功")
+                    ProgressHUD.showSuccess("回帖成功")
                     dispatch_async(dispatch_get_main_queue(), {
                         self.photos = NSMutableArray()
                         self.writeTextView?.text = ""
@@ -344,11 +350,11 @@ class ReplyTopicViewController: UIViewController,UITableViewDelegate,UITableView
         self.presentViewController(photoPicker, animated: true, completion: nil)
     }
     //每张图片转化成base64的字符串
-    func imageToBae64(image:UIImage) -> String{
-        let data = UIImageJPEGRepresentation(image, 0.5)
-        let encodeString = data?.base64EncodedStringWithOptions(NSDataBase64EncodingOptions.Encoding64CharacterLineLength)
-        return encodeString!
-    }
+//    func imageToBae64(image:UIImage) -> String{
+//        let data = UIImageJPEGRepresentation(image, 0.5)
+//        let encodeString = data?.base64EncodedStringWithOptions(NSDataBase64EncodingOptions.Encoding64CharacterLineLength)
+//        return encodeString!
+//    }
     func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
         return 1
     }

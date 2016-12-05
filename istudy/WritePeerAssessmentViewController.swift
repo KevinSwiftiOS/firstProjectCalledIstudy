@@ -204,8 +204,8 @@ var questions = NSMutableArray()
         if(self.items[index].valueForKey("answerfiles") as? NSArray != nil){
             fileItems = (self.items[index].valueForKey("answerfiles") as? NSArray)!
 
-          answerFilesTableView = UITableView(frame:CGRect(x: 5, y: totalHeight + 5, width: SCREEN_WIDTH - 10, height: 100))
-            totalHeight += 110
+          answerFilesTableView = UITableView(frame:CGRect(x: 5, y: totalHeight + 5, width: SCREEN_WIDTH - 10, height: 40))
+            totalHeight += 42
           
            answerFilesTableView.dataSource = self
             answerFilesTableView.delegate = self

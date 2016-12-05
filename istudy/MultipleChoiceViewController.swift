@@ -402,12 +402,6 @@ class MultipleChoiceViewController: UIViewController,UIWebViewDelegate,UITableVi
         //文件数组
         filePath = NSURL()
          self.fileItems.removeAllObjects()
-        var dic = [
-            "name" : "办事.docx",
-            "size": "14.79 KB",
-            "url": "http://dodo.hznu.edu.cn/Upload/lab/fe2cd6a3e80e7d9f/9903e574b35c0fdb/f490e9f3ab90246e/办事.docx",
-            ]
-        self.fileItems.addObject(dic)
 
    
       
@@ -482,8 +476,8 @@ class MultipleChoiceViewController: UIViewController,UIWebViewDelegate,UITableVi
        var filesTableView = UITableView()
         var FileLabel = UILabel()
       //判断当前是否有附件
-//        if(self.items[index].valueForKey("files") as? NSArray != nil &&
-//            (self.items[index].valueForKey("files") as! NSArray).count > 0){
+        if(self.items[index].valueForKey("files") as? NSArray != nil &&
+            (self.items[index].valueForKey("files") as! NSArray).count > 0){
             self.fileItems = NSMutableArray(array:  self.items[index].valueForKey("files") as! NSArray)
             FileLabel = UILabel(frame:  CGRectMake(5, totalHeight + 2, SCREEN_WIDTH - 10, 30))
             FileLabel.text = "附件区(共" + "\(self.fileItems.count)" + "个)"
@@ -496,18 +490,18 @@ class MultipleChoiceViewController: UIViewController,UIWebViewDelegate,UITableVi
             filesTableView.tableFooterView = UIView()
             totalHeight += 40
            
-    //    }
+       }
         
         let tableHeaderView = UIView(frame:CGRectMake(0,0,SCREEN_WIDTH,totalHeight + 1))
         let borderView = UIView(frame: CGRectMake(0,totalHeight,SCREEN_WIDTH,0.3))
         borderView.layer.borderColor = UIColor.grayColor().CGColor
         borderView.layer.borderWidth = 0.3
         tableHeaderView.addSubview(webView)
-//        if(self.items[index].valueForKey("files") as? NSArray != nil &&
-//            (self.items[index].valueForKey("files") as! NSArray).count > 0){
+        if(self.items[index].valueForKey("files") as? NSArray != nil &&
+            (self.items[index].valueForKey("files") as! NSArray).count > 0){
             tableHeaderView.addSubview(FileLabel)
             tableHeaderView.addSubview(filesTableView)
- //      }
+       }
         tableHeaderView.addSubview(borderView)
         webView.addGestureRecognizer(tap)
        

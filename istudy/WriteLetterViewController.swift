@@ -170,7 +170,7 @@ self.view.setNeedsLayout()
         if(receives == ""){
             ProgressHUD.showError("未添加联系人")
         }else{
-
+             ProgressHUD.show("正在发送中,请稍候")
         //遍历循环看有没有replyToOneId
         
         let userDefault = NSUserDefaults.standardUserDefaults()

@@ -235,15 +235,11 @@ class ComplexQusViewController: UIViewController,UITableViewDelegate,UITableView
         filePath = NSURL()
         self.fileItems.removeAllObjects()
                
-        var dic = [
-            "name" : "办事.docx",
-            "size": "14.79 KB",
-            "url": "http://dodo.hznu.edu.cn/Upload/lab/fe2cd6a3e80e7d9f/9903e574b35c0fdb/f490e9f3ab90246e/办事.docx",
-            ]
-        self.fileItems.addObject(dic)
-//        if(self.items[index].valueForKey("files") as? NSArray != nil &&
-//            (self.items[index].valueForKey("files") as! NSArray).count > 0){
-//            self.fileItems = NSMutableArray(array:  self.items[index].valueForKey("files") as! NSArray)
+    
+        if(self.items[index].valueForKey("files") as? NSArray != nil &&
+            (self.items[index].valueForKey("files") as! NSArray).count > 0){
+            self.fileItems = NSMutableArray(array:  self.items[index].valueForKey("files") as! NSArray)
+        
     self.filesTableView.hidden = false
         self.filesTableView.tag = 2
             self.filesTableView.delegate = self
@@ -252,7 +248,7 @@ class ComplexQusViewController: UIViewController,UITableViewDelegate,UITableView
         
         
         
-     //   }
+    }
         //初始化界面
         let contentString = cssDesString + (self.items[index].valueForKey("content") as! String)
         self.qusDesWebView?.loadHTMLString(contentString, baseURL: nil)

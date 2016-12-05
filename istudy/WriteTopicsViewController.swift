@@ -103,7 +103,7 @@ class WriteTopicsViewController: UIViewController,UICollectionViewDelegate,UICol
         if(subject == ""){
             ProgressHUD.showError("发帖主题不能为空")
         }else{
-
+        ProgressHUD.show("正在发帖中,请稍候")
         let userDefault = NSUserDefaults.standardUserDefaults()
         let authtoken = userDefault.valueForKey("authtoken") as!  String
         //主题
@@ -117,6 +117,7 @@ class WriteTopicsViewController: UIViewController,UICollectionViewDelegate,UICol
         //循环将图片数组中的值取出 转化成html格式
           
         if(self.photos.count > 0){
+           
             var cnt = 0;  
             for i in 0 ..< self.photos.count{
                   let data = UIImageJPEGRepresentation(self.photos[i] as! UIImage, 0.5)
@@ -140,9 +141,9 @@ formData.appendBodyPart(data: data!, name: "name", fileName: "discuss.jpg", mime
                                     ProgressHUD.showError("发送失败")
                                 }else{
                                    
-                                        let imageUrl = "<img src = " + "\""  +   json["info"]["uploadedurl"].string! +  "\"" + "/>"
+                                        let imageUrl = "<div><img src = " + "\""  +   json["info"]["uploadedurl"].string! +  "\"" + "/></div>"
                                     tempHtmlString += imageUrl
-                                        print(tempHtmlString)
+                                       
                                     
                                           cnt += 1
                                     if(cnt == self.photos.count){
