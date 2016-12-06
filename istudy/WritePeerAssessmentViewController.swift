@@ -38,7 +38,7 @@ var questions = NSMutableArray()
     var usertestid = NSInteger()
     var index = 0
     var filePath = NSURL()
-
+var resignTAP = UITapGestureRecognizer()
     //判断是不是文件
     var answerIsFile = false
    
@@ -50,7 +50,7 @@ var questions = NSMutableArray()
     
   //注册tableViewCell
      
-        
+        resignTAP = UITapGestureRecognizer(target: self, action: "resign")
         
         let diveseView = UIView(frame: CGRectMake(0,SCREEN_HEIGHT * 0.8 - 30,SCREEN_WIDTH,1))
         diveseView.layer.borderWidth = 1.0
@@ -225,7 +225,7 @@ var questions = NSMutableArray()
                 self.view.addGestureRecognizer(rightSwipe)
                 self.scrollView.addGestureRecognizer(self.leftSwipe)
                 self.scrollView.addGestureRecognizer(rightSwipe)
-             self.scrollView.keyboardDismissMode = .OnDrag
+        
         
         tap.delegate = self
         tap.addTarget(self, action: #selector(WritePeerAssessmentViewController.showBig(_:)))
@@ -268,6 +268,7 @@ var questions = NSMutableArray()
 //                let number = NSNumber(integer: NSUnderlineStyle.StyleSingle.rawValue)
 //     underLineString.addAttribute(NSForegroundColorAttributeName, value: UIColor.redColor(), range: underLineRange)
 //                  underLineString.addAttribute(NSUnderlineStyleAttributeName, value: number, range: underLineRange)
+              
         let scoreString = NSMutableAttributedString(string: " \(scores[i].valueForKey("score") as! NSNumber)")
                 let scoreStringRange = NSMakeRange(0, scoreString.length)
                 scoreString.addAttribute(NSForegroundColorAttributeName, value: UIColor.redColor(), range: scoreStringRange)
@@ -324,6 +325,7 @@ var questions = NSMutableArray()
         }
         commentTextView.delegate = self
         commentTextView.keyboardDismissMode = .OnDrag
+    self.scrollView.keyboardDismissMode = .OnDrag
         self.totalHeight += 100
         self.scrollView.addSubview(commentTextView)
    
@@ -444,7 +446,8 @@ var questions = NSMutableArray()
     }
     //键盘出现时的代理
     func keyboardWillHideNotification(notifacition:NSNotification) {
-                    self.scrollView.addGestureRecognizer(self.leftSwipe)
+        self.view.removeGestureRecognizer(resignTAP)
+        self.scrollView.addGestureRecognizer(self.leftSwipe)
         self.scrollView.addGestureRecognizer(self.rightSwipe)
         UIView.animateWithDuration(0.3) { () -> Void in
             self.scrollView.contentOffset = CGPointMake(0, 0)
@@ -453,7 +456,7 @@ var questions = NSMutableArray()
     func keyboardWillShowNotification(notifacition:NSNotification) {
         //做一个动画
         pickerView.hidden = true
-
+       self.view.addGestureRecognizer(resignTAP)
         self.scrollView.removeGestureRecognizer(self.leftSwipe)
         self.scrollView.removeGestureRecognizer(self.rightSwipe)
         UIView.animateWithDuration(0.3) { () -> Void in

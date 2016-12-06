@@ -639,7 +639,7 @@ menu.dismissViewControllerAnimated(true, completion: nil)
             (self.items[index].valueForKey("files") as! NSArray).count > 0){
         
             self.fileItems = NSMutableArray(array:  self.items[index].valueForKey("files") as! NSArray)
-            print(self.fileItems)
+         //   print(self.fileItems)
             let FileLabel = UILabel(frame:  CGRectMake(5, self.totalHeight + 2, SCREEN_WIDTH - 10, 30))
             FileLabel.text = "附件区"
             self.totalHeight += 32
