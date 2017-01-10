@@ -36,7 +36,7 @@ class ResetPasswordViewController: UIViewController {
         //确认新的密码和确认的密码有没有相同 随后在服务器上进行修改 即可 如果不一样 弹出一个警告框即可
         let dic:[String:AnyObject] = ["token":token,
                                       "newpassword":(self.configPassWord?.text)!]
-        Alamofire.request(.POST, "http://dodo.hznu.edu.cn/api/resetpassowrd", parameters: dic, encoding: ParameterEncoding.URL, headers: nil).responseJSON(completionHandler: { (response) in
+        Alamofire.request(.POST, hostip + "api/resetpassowrd", parameters: dic, encoding: ParameterEncoding.URL, headers: nil).responseJSON(completionHandler: { (response) in
             switch response.result{
             case .Success(let Value):
                 let json = JSON(Value)

@@ -9,6 +9,8 @@
 import Foundation
 let SCREEN_HEIGHT = UIScreen.mainScreen().bounds.size.height
 let SCREEN_WIDTH = UIScreen.mainScreen().bounds.size.width
+//定义地址
+var hostip = "http://dodo.hznu.edu.cn/"
 let MY_FONT  = "Bauhaus ITC"
 //css修饰html格式的文件
 let cssDesString =  "<head><style>p{text-indent: 2em; font-size: 17px;font-family: " + "\"" + "宋体" + "\"" +  "}" + "img{max-width: 100%}" +  "</style></head>" +  "" +  "<p>"
@@ -24,7 +26,7 @@ let imageDecString = "<head><style>p{font-size: 17px;font-family: " + "\"" + "�
 func diviseUrl(urlString:String) -> (String){
     var tempUrlString = urlString
     //先统计总共有几个/
-    tempUrlString = tempUrlString.stringByReplacingOccurrencesOfString("http://dodo.hznu.edu.cn/", withString: "")
+    tempUrlString = tempUrlString.stringByReplacingOccurrencesOfString(hostip, withString: "")
     var totalSlash = 0
     for i in 0 ..< tempUrlString.characters.count{
         let index = tempUrlString.startIndex.advancedBy(i)

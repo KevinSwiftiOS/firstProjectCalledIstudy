@@ -128,7 +128,7 @@ class ReadEmailViewController: UIViewController,UIGestureRecognizerDelegate{
      let userDefault = NSUserDefaults.standardUserDefaults()
         let authtoken = userDefault.valueForKey("authtoken") as! String
         let paramDic:[String:AnyObject]? = ["authtoken":authtoken,"msgid":id]
-        Alamofire.request(.POST, "http://dodo.hznu.edu.cn/api/messagereaded", parameters: paramDic, encoding: ParameterEncoding.URL, headers: nil).responseJSON { (response) in
+        Alamofire.request(.POST,hostip + "api/messagereaded", parameters: paramDic, encoding: ParameterEncoding.URL, headers: nil).responseJSON { (response) in
             switch response.result{
             case .Success(_): break
                
@@ -144,7 +144,7 @@ class ReadEmailViewController: UIViewController,UIGestureRecognizerDelegate{
         let userDefault = NSUserDefaults.standardUserDefaults()
         let authtoken = userDefault.valueForKey("authtoken") as! String
         let dic:[String:AnyObject] = ["authtoken":authtoken,"msgid":id]
-        Alamofire.request(.POST, "http://dodo.hznu.edu.cn/api/messagedelete", parameters: dic, encoding: ParameterEncoding.URL, headers: nil).responseJSON { (response) in
+        Alamofire.request(.POST,hostip + "api/messagedelete", parameters: dic, encoding: ParameterEncoding.URL, headers: nil).responseJSON { (response) in
             switch response.result{
             case .Success(let Value):
                 let json = JSON(Value)

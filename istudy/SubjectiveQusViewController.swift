@@ -228,7 +228,7 @@ override func didReceiveMemoryWarning() {
           
             jsonString = jsonString?.stringByReplacingOccurrencesOfString("\n", withString: "")
             let paramDic:[String:AnyObject] = ["data":jsonString!]
-            let request = NSMutableURLRequest(URL: NSURL(string:  "http://dodo.hznu.edu.cn/api/upfile?authtoken=" + authtoken + "&type=2")!)
+            let request = NSMutableURLRequest(URL: NSURL(string:  hostip + "api/upfile?authtoken=" + authtoken + "&type=2")!)
             request.HTTPMethod = "POST"
              let data = UIImageJPEGRepresentation(self.answerPhotos[i] as! UIImage, 0.5)
         
@@ -346,7 +346,7 @@ override func didReceiveMemoryWarning() {
         
         let parameter:[String:AnyObject] = ["authtoken":authtoken,"data":result]
         
-        Alamofire.request(.POST, "http://dodo.hznu.edu.cn/api/submitquestion", parameters: parameter, encoding: ParameterEncoding.URL, headers: nil).responseJSON { (response) in
+        Alamofire.request(.POST, hostip + "api/submitquestion", parameters: parameter, encoding: ParameterEncoding.URL, headers: nil).responseJSON { (response) in
             switch response.result{
             case .Failure(_):
              

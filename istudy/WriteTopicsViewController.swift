@@ -111,7 +111,7 @@ class WriteTopicsViewController: UIViewController,UICollectionViewDelegate,UICol
         //还有图片形式的组装成base64的字符串
         var tempHtmlString = ""
         tempHtmlString = self.writeTextView.text
-            let string = "http://dodo.hznu.edu.cn/api/upfile?authtoken=" +
+            let string = hostip + "api/upfile?authtoken=" +
                 (userDefault.valueForKey("authtoken") as! String);
 //            let headers = ["content-type":"multipart/form-data"]
         //循环将图片数组中的值取出 转化成html格式
@@ -194,7 +194,7 @@ formData.appendBodyPart(data: data!, name: "name", fileName: "discuss.jpg", mime
         let paramDic:[String:AnyObject] = ["authtoken":authtoken,
                                            "postype":"1",
                                            "data":result]
-        Alamofire.request(.POST, "http://dodo.hznu.edu.cn/api/forumpost", parameters: paramDic, encoding: ParameterEncoding.URL, headers: nil).responseJSON { (response) in
+        Alamofire.request(.POST, hostip + "api/forumpost", parameters: paramDic, encoding: ParameterEncoding.URL, headers: nil).responseJSON { (response) in
             switch response.result{
             case .Failure(_):
                 ProgressHUD.showError("发送失败")

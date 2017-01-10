@@ -172,7 +172,7 @@ var  diviseView:UIView?
             let userDefault = NSUserDefaults.standardUserDefaults()
             let authtoken = userDefault.valueForKey("authtoken") as! String
             let paramDic:[String:AnyObject]! = ["authtoken":authtoken,"msgid":self.items[indexPath.row].valueForKey("id") as! NSInteger]
-            Alamofire.request(.POST, "http://dodo.hznu.edu.cn/api/messagedelete", parameters: paramDic, encoding: ParameterEncoding.URL, headers: nil).responseJSON { (response) in
+            Alamofire.request(.POST,   hostip + "api/messagedelete", parameters: paramDic, encoding: ParameterEncoding.URL, headers: nil).responseJSON { (response) in
                 switch response.result{
                 case .Success(_):
                     dispatch_async(dispatch_get_main_queue(), {
@@ -267,11 +267,11 @@ var  diviseView:UIView?
         var paramDic = [String:AnyObject]()
         if(isIn){
             paramDic = self.inDic
-            url = "http://dodo.hznu.edu.cn/api/messagereceivequery"
+            url = hostip + "api/messagereceivequery"
         }
         if(isOut){
             paramDic = self.outDic
-            url = "http://dodo.hznu.edu.cn/api/messagesendquery"
+            url = hostip + "api/messagesendquery"
         }
         Alamofire.request(.POST, url, parameters: paramDic, encoding: ParameterEncoding.URL, headers: nil).responseJSON { (response) in
              self.navigationItem.leftBarButtonItem?.enabled = true

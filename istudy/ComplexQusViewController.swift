@@ -279,6 +279,7 @@ class ComplexQusViewController: UIViewController,UITableViewDelegate,UITableView
             self.disPlayMarkTextArray.addObject("")
         }
         var oneBigSelfAnswer = self.totalBigSelfAnswers[index] as! String
+        print(oneBigSelfAnswer)
         //分割字符串
         oneBigSelfAnswer = oneBigSelfAnswer.stringByReplacingOccurrencesOfString("~~~", withString: "☺︎")
         //分割大题目的字符串 逆序的反转 真不知道他们是怎么组装的
@@ -790,7 +791,7 @@ class ComplexQusViewController: UIViewController,UITableViewDelegate,UITableView
         
         let parameter:[String:AnyObject] = ["authtoken":authtoken,"data":result]
         
-        Alamofire.request(.POST, "http://dodo.hznu.edu.cn/api/submitquestion", parameters: parameter, encoding: ParameterEncoding.URL, headers: nil).responseJSON { (response) in
+        Alamofire.request(.POST, hostip + "api/submitquestion", parameters: parameter, encoding: ParameterEncoding.URL, headers: nil).responseJSON { (response) in
             switch response.result{
             case .Failure(_):
             //    print(1)
@@ -1015,7 +1016,7 @@ self.tableView.beginUpdates()
                             "testid":"\(self.testid)",
                             "questionid":"\(self.items[index].valueForKey("id") as! NSNumber)"
             ]
-            Alamofire.request(.POST, "http://dodo.hznu.edu.cn/api/judgequestion", parameters: paramDic, encoding: ParameterEncoding.URL, headers: nil).responseJSON(completionHandler: { (response) in
+            Alamofire.request(.POST, hostip + "api/judgequestion", parameters: paramDic, encoding: ParameterEncoding.URL, headers: nil).responseJSON(completionHandler: { (response) in
                 switch response.result{
                 case .Success(let Value):
                     let json = JSON(Value)
@@ -1096,7 +1097,7 @@ self.tableView.beginUpdates()
                             "testid":"\(self.testid)",
                             "questionid":"\(self.items[index].valueForKey("id") as! NSNumber)"
             ]
-            Alamofire.request(.POST, "http://dodo.hznu.edu.cn/api/judgequestion", parameters: paramDic, encoding: ParameterEncoding.URL, headers: nil).responseJSON(completionHandler: { (response) in
+            Alamofire.request(.POST, hostip + "api/judgequestion", parameters: paramDic, encoding: ParameterEncoding.URL, headers: nil).responseJSON(completionHandler: { (response) in
                 switch response.result{
                 case .Success(let Value):
                     let json = JSON(Value)

@@ -153,7 +153,7 @@ class ReplyTopicViewController: UIViewController,UITableViewDelegate,UITableView
               var cnt = 0
         for i in 0 ..< self.photos.count{
             let data = UIImageJPEGRepresentation(self.photos[i] as! UIImage, 0.5)
-            let string = "http://dodo.hznu.edu.cn/api/upfile?authtoken=" +
+            let string = hostip + "api/upfile?authtoken=" +
                 (userDefault.valueForKey("authtoken") as! String);
             Alamofire.upload(.POST, string, multipartFormData: { (formData) in
                 formData.appendBodyPart(data: data!, name: "name", fileName: "StationImage.jpg", mimeType: "image/jpeg")
@@ -231,7 +231,7 @@ class ReplyTopicViewController: UIViewController,UITableViewDelegate,UITableView
             
             
             
-        Alamofire.request(.POST, "http://dodo.hznu.edu.cn/api/forumpost", parameters: paramDic, encoding: ParameterEncoding.URL, headers: nil).responseJSON { (response) in
+        Alamofire.request(.POST,hostip + "api/forumpost", parameters: paramDic, encoding: ParameterEncoding.URL, headers: nil).responseJSON { (response) in
             switch response.result{
             case .Failure(_):
                 ProgressHUD.showError("回帖失败")
@@ -276,7 +276,7 @@ class ReplyTopicViewController: UIViewController,UITableViewDelegate,UITableView
                                       "count":"100",
                                       "page":"1",
                                       "tag":"\(self.id)"]
-        Alamofire.request(.POST, "http://dodo.hznu.edu.cn/api/forumcommentquery", parameters: dic, encoding: ParameterEncoding.URL, headers: nil).responseJSON { (response) in
+        Alamofire.request(.POST, hostip + "api/forumcommentquery", parameters: dic, encoding: ParameterEncoding.URL, headers: nil).responseJSON { (response) in
             switch response.result{
             case .Success(let Value):
                 let json = JSON(Value)

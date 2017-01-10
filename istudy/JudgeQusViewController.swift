@@ -199,7 +199,7 @@ QLPreviewControllerDelegate,QLPreviewControllerDataSource{
                             "testid":"\(self.testid)",
                             "questionid":"\(self.items[index].valueForKey("id") as! NSNumber)"
             ]
-            Alamofire.request(.POST, "http://dodo.hznu.edu.cn/api/judgequestion", parameters: paramDic, encoding: ParameterEncoding.URL, headers: nil).responseJSON(completionHandler: { (response) in
+            Alamofire.request(.POST, hostip + "api/judgequestion", parameters: paramDic, encoding: ParameterEncoding.URL, headers: nil).responseJSON(completionHandler: { (response) in
                 switch response.result{
                 case .Success(let Value):
                     let json = JSON(Value)
@@ -429,7 +429,7 @@ QLPreviewControllerDelegate,QLPreviewControllerDataSource{
         }
         let parameter:[String:AnyObject] = ["authtoken":authtoken,"data":result]
         
-        Alamofire.request(.POST, "http://dodo.hznu.edu.cn/api/submitquestion", parameters: parameter, encoding: ParameterEncoding.URL, headers: nil).responseJSON { (response) in
+        Alamofire.request(.POST, hostip + "api/submitquestion", parameters: parameter, encoding: ParameterEncoding.URL, headers: nil).responseJSON { (response) in
             switch response.result{
             case .Failure(_):
               //  print(1)

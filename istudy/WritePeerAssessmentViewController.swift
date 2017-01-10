@@ -109,7 +109,7 @@ var resignTAP = UITapGestureRecognizer()
         }
         let parameter:[String:AnyObject] = ["authtoken":userDefault.valueForKey("authtoken") as! String,"data":result]
        
-        Alamofire.request(.POST, "http://dodo.hznu.edu.cn/api/submithuping", parameters: parameter, encoding: ParameterEncoding.URL, headers: nil).responseJSON { (response) in
+        Alamofire.request(.POST, hostip + "api/submithuping", parameters: parameter, encoding: ParameterEncoding.URL, headers: nil).responseJSON { (response) in
             switch response.result{
             case .Success(let Value):
                 let json = JSON(Value)
@@ -134,7 +134,7 @@ var resignTAP = UITapGestureRecognizer()
         let dic:[String:AnyObject] = ["usertestid":"\(self.usertestid)",
                                       "authtoken":authtoken]
   
-    Alamofire.request(.POST, "http://dodo.hznu.edu.cn/api/hupingusertest", parameters: dic, encoding: ParameterEncoding.URL, headers: nil).responseJSON { (response) in
+    Alamofire.request(.POST, hostip + "api/hupingusertest", parameters: dic, encoding: ParameterEncoding.URL, headers: nil).responseJSON { (response) in
         switch response.result{
             case .Failure(_):
                 ProgressHUD.showError("请求失败")

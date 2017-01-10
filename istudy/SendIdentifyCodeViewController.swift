@@ -61,7 +61,7 @@ class SendIdentifyCodeViewController: UIViewController {
         let dic:[String:AnyObject] = ["email":email,
                    "validcode":(identifyCodeText)!]
         
-      Alamofire.request(.POST, "http://dodo.hznu.edu.cn/api/validcode", parameters: dic, encoding: ParameterEncoding.URL, headers: nil).responseJSON { (response) in
+      Alamofire.request(.POST, hostip + "api/validcode", parameters: dic, encoding: ParameterEncoding.URL, headers: nil).responseJSON { (response) in
         switch response.result{
         case .Success(let Value):
             let json = JSON(Value)
@@ -118,7 +118,7 @@ class SendIdentifyCodeViewController: UIViewController {
         sendAgainCnt += 1
         if(sendAgainCnt != 4){
             
-              let urlString = "http://dodo.hznu.edu.cn/api/sendvalidcode" + "?email=" + (email)
+              let urlString = hostip + "api/sendvalidcode" + "?email=" + (email)
         
         Alamofire.request(.POST, urlString).responseJSON(completionHandler: { (response) in
             switch response.result{

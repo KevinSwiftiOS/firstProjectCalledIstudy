@@ -43,7 +43,7 @@ class DiscussViewController: UIViewController,UITableViewDelegate,UITableViewDat
                          "page":"1",
                          "projectid":"\(self.id)",
                          "mode":"2"]
-        self.url =  "http://dodo.hznu.edu.cn/api/forumquery"
+        self.url =  hostip + "api/forumquery"
         
         self.automaticallyAdjustsScrollViewInsets = false
         //顶部topView赋值
@@ -185,19 +185,19 @@ class DiscussViewController: UIViewController,UITableViewDelegate,UITableViewDat
                                      "page":"1",
                                      "courseId":"\(self.id)",
                                      "type":"2"]
-                    self.url = "http://dodo.hznu.edu.cn/api/forumreplythread"
+                    self.url =  hostip + "api/forumreplythread"
                 case 1:
                     self.paramDic = ["authtoken":self.authtoken,"count":"100",
                                      "page":"1",
                                      "courseId":"\(self.id)",
                                      "type":"1"]
-                    self.url = "http://dodo.hznu.edu.cn/api/forumreplythread"
+                    self.url = hostip + "api/forumreplythread"
                 case 2:
                     self.paramDic = ["authtoken":self.authtoken,"count":"100",
                                      "page":"1",
                                      "projectid":"\(self.id)",
                                      "mode":"1"]
-                    self.url = "http://dodo.hznu.edu.cn/api/forumquery"
+                    self.url = hostip + "api/forumquery"
                 default:
                     break
                 }

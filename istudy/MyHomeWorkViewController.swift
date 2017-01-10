@@ -27,11 +27,11 @@ class MyHomeWorkViewController: UIViewController,UITableViewDataSource,UITableVi
     override func viewDidLoad() {
         self.automaticallyAdjustsScrollViewInsets = false
         if(isHomeWork) {
-            self.postString = "http://dodo.hznu.edu.cn/api/homeworkquery"
+            self.postString = hostip + "api/homeworkquery"
         }else if(isExercise){
-            self.postString = "http://dodo.hznu.edu.cn/api/exercisequery"
+            self.postString = hostip + "api/exercisequery"
         }else{
-            self.postString = "http://dodo.hznu.edu.cn/api/exprementquery"
+            self.postString = hostip + "api/exprementquery"
         }
         super.viewDidLoad()
         //支持手势的侧滑返回

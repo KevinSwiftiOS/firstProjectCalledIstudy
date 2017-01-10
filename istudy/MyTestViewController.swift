@@ -137,7 +137,7 @@ self.testTableView?.emptyDataSetDelegate = self
     func headRefresh() {
         let userDefault = NSUserDefaults.standardUserDefaults()
         let dic:[String:AnyObject] = ["authtoken":userDefault.valueForKey("authtoken") as! String]
-        Alamofire.request(.POST, "http://dodo.hznu.edu.cn/api/testquery", parameters: dic, encoding: ParameterEncoding.URL, headers: nil).responseJSON { (response) in
+        Alamofire.request(.POST, hostip + "api/testquery", parameters: dic, encoding: ParameterEncoding.URL, headers: nil).responseJSON { (response) in
             switch response.result{
             case .Failure(_):
                 dispatch_async(dispatch_get_main_queue(), {

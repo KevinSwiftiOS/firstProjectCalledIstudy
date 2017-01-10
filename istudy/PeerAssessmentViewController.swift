@@ -125,7 +125,7 @@ class PeerAssessmentViewController: UIViewController ,UITableViewDataSource,UITa
         let userDefault = NSUserDefaults.standardUserDefaults()
         let dic:[String:AnyObject] = ["authtoken":userDefault.valueForKey("authtoken") as! String,
                                       "courseid":"\(self.id)"]
-        Alamofire.request(.POST, "http://dodo.hznu.edu.cn/api/hupingquery", parameters: dic, encoding: ParameterEncoding.URL, headers: nil).responseJSON { (response) in
+        Alamofire.request(.POST, hostip + "api/hupingquery", parameters: dic, encoding: ParameterEncoding.URL, headers: nil).responseJSON { (response) in
             switch response.result{
             case .Success(let Value):
                 let json = JSON(Value)

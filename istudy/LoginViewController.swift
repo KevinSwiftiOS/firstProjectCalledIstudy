@@ -59,7 +59,7 @@ class LoginViewController: UIViewController {
         "devicetoken":"",
         "os":"",
         "clienttype":"1"]
-Alamofire.request(.POST, "http://dodo.hznu.edu.cn/api/login", parameters: self.dic, encoding: ParameterEncoding.URL, headers: nil).responseJSON { (response ) -> Void in
+Alamofire.request(.POST, hostip + "api/login", parameters: self.dic, encoding: ParameterEncoding.URL, headers: nil).responseJSON { (response ) -> Void in
             switch response.result{
             case .Success(let data):
                 let json = JSON(data)

@@ -272,7 +272,7 @@ sender.setTitleColor(UIColor.whiteColor(), forState: .Normal)
                     "os":"",
                     "clienttype":"1"
                 ]
-    Alamofire.request(.POST, "http://dodo.hznu.edu.cn/api/login", parameters: dic, encoding: ParameterEncoding.URL, headers: nil).responseJSON(completionHandler: { (response) -> Void in
+            Alamofire.request(.POST, hostip + "api/login", parameters: dic, encoding: ParameterEncoding.URL, headers: nil).responseJSON(completionHandler: { (response) -> Void in
                     switch response.result{
                     case .Success(let data):
                         let json = JSON(data)
@@ -305,7 +305,7 @@ sender.setTitleColor(UIColor.whiteColor(), forState: .Normal)
                             //设置头像
                             userDefault.setValue(json["info"]["avtarurl"].string, forKey: "avtarurl")
                            //进行头像的保存
-                                            Alamofire.request(.POST, "http://dodo.hznu.edu.cn/api/coursequery", parameters: authDic, encoding: ParameterEncoding.URL, headers: nil).responseJSON { (response) in
+                                            Alamofire.request(.POST, hostip + "api/coursequery", parameters: authDic, encoding: ParameterEncoding.URL, headers: nil).responseJSON { (response) in
                                 switch response.result{
                                 case .Success(let value):
                                     let json = JSON(value)

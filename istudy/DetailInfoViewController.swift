@@ -26,7 +26,7 @@ class DetailInfoViewController: UIViewController,UIWebViewDelegate{
         
         ProgressHUD.show("请稍候")
         let dic:[String:AnyObject] = ["id":"\(self.id)"]
-        Alamofire.request(.POST, "http://dodo.hznu.edu.cn/api/notifyinfo", parameters: dic, encoding: ParameterEncoding.URL, headers: nil).responseJSON { (response) in
+        Alamofire.request(.POST,hostip +  "api/notifyinfo", parameters: dic, encoding: ParameterEncoding.URL, headers: nil).responseJSON { (response) in
             switch response.result{
             case .Success(let Value):
                 let json = JSON(Value)

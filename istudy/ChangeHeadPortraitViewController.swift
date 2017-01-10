@@ -106,7 +106,7 @@ class ChangeHeadPortraitViewController: UIViewController,UITableViewDelegate,UIT
     func saveProfile() {
         let userDefault = NSUserDefaults.standardUserDefaults()
         //为头像上传
-        let string = "http://dodo.hznu.edu.cn/api/upfile?authtoken=" + (userDefault.valueForKey("authtoken") as! String) + "&type=1"
+        let string = hostip + "api/upfile?authtoken=" + (userDefault.valueForKey("authtoken") as! String) + "&type=1"
         Alamofire.upload(.POST, string, multipartFormData: { (formData) in
             formData.appendBodyPart(data: self.selectedImageData, name: "name", fileName: "head.jpg", mimeType: "image/jpeg")
         }) { (encodingResult) in
@@ -199,7 +199,7 @@ class ChangeHeadPortraitViewController: UIViewController,UITableViewDelegate,UIT
             ProgressHUD.showError("保存失败")
         }
         let parameter:[String:AnyObject] = ["authtoken":userDefault.valueForKey("authtoken") as! String,"data":result]
-        Alamofire.request(.POST, "http://dodo.hznu.edu.cn/api/saveprofile", parameters: parameter, encoding: ParameterEncoding.URL, headers: nil).responseJSON { (response) in
+        Alamofire.request(.POST, hostip +  "api/saveprofile", parameters: parameter, encoding: ParameterEncoding.URL, headers: nil).responseJSON { (response) in
             switch response.result{
             case .Success(let Value):
                 let json = JSON(Value)

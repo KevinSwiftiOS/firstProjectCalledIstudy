@@ -237,7 +237,7 @@ self.courseDataCollectionView!.emptyDataSetDelegate = self
         let userDefault = NSUserDefaults.standardUserDefaults()
         let dic:[String:AnyObject] = ["authtoken":userDefault.valueForKey("authtoken") as! String,"courseid": "\(self.id)"]
         if(isCourseInfo) {
-        Alamofire.request(.POST, "http://dodo.hznu.edu.cn/api/courseinfo", parameters: dic, encoding: ParameterEncoding.URL, headers: nil).responseJSON { (response) in
+        Alamofire.request(.POST, hostip + "api/courseinfo", parameters: dic, encoding: ParameterEncoding.URL, headers: nil).responseJSON { (response) in
             switch response.result{
             case .Success(let value):
                 let json = JSON(value)
@@ -276,7 +276,7 @@ self.courseDataCollectionView!.emptyDataSetDelegate = self
         let systemInfoDic:[String:AnyObject] = ["authtoken":userDefault.valueForKey("authtoken") as! String,
                              "count": "\(10)",
                              "page":"\(1)"]
-        Alamofire.request(.POST, "http://dodo.hznu.edu.cn/api/notifyquery", parameters: systemInfoDic, encoding: ParameterEncoding.URL, headers: nil).responseJSON(options: NSJSONReadingOptions.AllowFragments) { (response) in
+        Alamofire.request(.POST, hostip + "api/notifyquery", parameters: systemInfoDic, encoding: ParameterEncoding.URL, headers: nil).responseJSON(options: NSJSONReadingOptions.AllowFragments) { (response) in
             switch response.result{
             case .Success(let value):
                 let json = JSON(value)

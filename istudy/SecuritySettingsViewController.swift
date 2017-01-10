@@ -51,7 +51,7 @@ class SecuritySettingsViewController: UIViewController {
                                                "newpassword":(self.newPassWord?.text)!,
                                                "authtoken":userDefault.valueForKey("authtoken") as! String]
             
-            Alamofire.request(.POST, "http://dodo.hznu.edu.cn/api/changepassword", parameters: ParamDic, encoding: ParameterEncoding.URL, headers: nil).responseJSON(completionHandler: { (response) in
+            Alamofire.request(.POST, hostip + "api/changepassword", parameters: ParamDic, encoding: ParameterEncoding.URL, headers: nil).responseJSON(completionHandler: { (response) in
                 switch response.result{
                 case .Success(let Value):
                     let json = JSON(Value)

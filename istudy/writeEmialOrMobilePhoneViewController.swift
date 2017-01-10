@@ -67,7 +67,7 @@ class writeEmialOrMobilePhoneViewController: UIViewController {
             if (matcher.match(emailText!)) == true{
               //发送验证码
                 
-                let urlString = "http://dodo.hznu.edu.cn/api/sendvalidcode" + "?email=" + (emailText)!
+                let urlString = hostip + "api/sendvalidcode" + "?email=" + (emailText)!
                 
                 Alamofire.request(.POST, urlString).responseJSON(completionHandler: { (response) in
                     switch response.result{

@@ -185,7 +185,7 @@ self.view.setNeedsLayout()
             var cnt = 0
         for i in 0 ..< self.photos.count{
             let data = UIImageJPEGRepresentation(self.photos[i] as! UIImage, 0.5)
-            let string = "http://dodo.hznu.edu.cn/api/upfile?authtoken=" +
+            let string = hostip + "api/upfile?authtoken=" +
                 (userDefault.valueForKey("authtoken") as! String) + "&type=3";
             Alamofire.upload(.POST, string, multipartFormData: { (formData) in
                 formData.appendBodyPart(data: data!, name: "name", fileName: "StationImage.jpg", mimeType: "image/jpeg")
@@ -281,7 +281,7 @@ self.view.setNeedsLayout()
         let paramDic:[String:AnyObject] = ["authtoken":authtoken,
                                            "data":result]
         
-Alamofire.request(.POST, "http://dodo.hznu.edu.cn/api/messagesend", parameters: paramDic, encoding: ParameterEncoding.URL, headers: nil).responseJSON(completionHandler: { (response) in
+Alamofire.request(.POST, hostip + "api/messagesend", parameters: paramDic, encoding: ParameterEncoding.URL, headers: nil).responseJSON(completionHandler: { (response) in
            
             switch response.result{
                 

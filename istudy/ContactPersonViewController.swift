@@ -280,7 +280,7 @@ class ContactPersonViewController: UIViewController,UITableViewDelegate,UITableV
         let userDefault = NSUserDefaults.standardUserDefaults()
         let authtoken = userDefault.valueForKey("authtoken") as! String
         let dic:[String:AnyObject] = ["authtoken":authtoken]
-        Alamofire.request(.POST, "http://dodo.hznu.edu.cn/api/messagecontact", parameters: dic, encoding: ParameterEncoding.URL, headers: nil).responseJSON { (response) in
+        Alamofire.request(.POST, hostip + "api/messagecontact", parameters: dic, encoding: ParameterEncoding.URL, headers: nil).responseJSON { (response) in
             switch response.result{
             case .Failure(_):
                 ProgressHUD.showError("请求失败")

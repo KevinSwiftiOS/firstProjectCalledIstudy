@@ -196,7 +196,7 @@ UISearchControllerDelegate,UISearchResultsUpdating,DZNEmptyDataSetSource,DZNEmpt
     func headerRefresh() {
         let userDefault = NSUserDefaults.standardUserDefaults()
         let authtoken = userDefault.valueForKey("authtoken") as! String
-        let url = "http://dodo.hznu.edu.cn/api/courseresoure?courseid=" + "\(self.courseId)" + "&authtoken=" + authtoken
+        let url = hostip + "api/courseresoure?courseid=" + "\(self.courseId)" + "&authtoken=" + authtoken
         
         let request = NSMutableURLRequest(URL: NSURL(string: url)!)
         request.timeoutInterval = 10
