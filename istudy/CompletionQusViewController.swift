@@ -701,6 +701,8 @@ class CompletionQusViewController: UIViewController,UITextFieldDelegate,UIWebVie
         let cell = sender.object as! CompletionTableViewCell
         
         self.oneSubFillBlankSelfAnswerArray.replaceObjectAtIndex(cell.Custag, withObject: (cell.textField?.text)!)
+      print(12345)
+
        
     }
     //图片的放大

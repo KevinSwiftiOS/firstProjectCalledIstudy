@@ -83,6 +83,7 @@ class CompletionTableViewCell: UITableViewCell,UITextFieldDelegate,UIWebViewDele
     func textFieldDidEndEditing(textField: UITextField) {
         //发送通知 通知到complex那个VC后进行进行组装
         //发送通知
+        print(222)
         NSNotificationCenter.defaultCenter().postNotificationName("CompletionAnswer", object: self, userInfo: nil)
     }
     

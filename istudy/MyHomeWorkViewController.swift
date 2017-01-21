@@ -25,6 +25,7 @@ class MyHomeWorkViewController: UIViewController,UITableViewDataSource,UITableVi
     //获取到每份题目随后要进行日期的判断
     @IBOutlet weak var tableView:mainTableView?
     override func viewDidLoad() {
+        super.viewDidLoad()
         self.automaticallyAdjustsScrollViewInsets = false
         if(isHomeWork) {
             self.postString = hostip + "api/homeworkquery"
@@ -33,7 +34,7 @@ class MyHomeWorkViewController: UIViewController,UITableViewDataSource,UITableVi
         }else{
             self.postString = hostip + "api/exprementquery"
         }
-        super.viewDidLoad()
+      
         //支持手势的侧滑返回
            self.navigationController?.interactivePopGestureRecognizer?.enabled = true
                self.tableView?.delegate = self
@@ -188,10 +189,14 @@ class MyHomeWorkViewController: UIViewController,UITableViewDataSource,UITableVi
         let result:NSComparisonResult = currentDate.compare(jsonDate!)
         if result == .OrderedAscending{
                cell.answerQusBtn?.setTitle("答题", forState: .Normal)
-           
+           //如果是练习的话要考虑是随机选题 继续上次等
             
         }else{
+            if(isExercise){
+                cell.answerQusBtn?.setTitle("已截止", forState: .Normal)
+            }else{
               cell.answerQusBtn?.setTitle("查看", forState: .Normal)
+            }
             if(!self.isExercise){
              cell.Score?.text = "成绩:" + score
             }
@@ -216,6 +221,8 @@ class MyHomeWorkViewController: UIViewController,UITableViewDataSource,UITableVi
     }
     //答题
     func answerQuestion(sender:UIButton){
+       //先判断要排除练习
+        if(sender.titleLabel?.text == "答题") {
         let translateVC = UIStoryboard(name: "Problem", bundle: nil).instantiateViewControllerWithIdentifier("TranslateVC") as! TranslateViewController
         if(sc?.active == true){
             let cell = self.tableView?.cellForRowAtIndexPath(NSIndexPath(forRow: sender.tag, inSection: 0)) as! MyHomeWorkTableViewCell
@@ -243,8 +250,21 @@ class MyHomeWorkViewController: UIViewController,UITableViewDataSource,UITableVi
         
         
             self.navigationController?.pushViewController(translateVC, animated: true)
-        
-    }
+        }else if(sender.titleLabel?.text == "查看"){
+            //先把我的练习情况排除
+                 var usertestid = NSInteger()
+                if(sc.active){
+                    sc.active = false
+                    usertestid = self.filterItems[sender.tag].valueForKey("usertestid") as! NSInteger
+                }else{
+                    usertestid = self.items[sender.tag].valueForKey("usertestid") as! NSInteger
+                }
+                print(usertestid)
+        let url = hostip + "Output/ViewOne/" + "\(usertestid)"
+            UIApplication.sharedApplication().openURL(NSURL(string: url)!)
+        }
+        }
+    
     
   
     func headerRefresh() {
