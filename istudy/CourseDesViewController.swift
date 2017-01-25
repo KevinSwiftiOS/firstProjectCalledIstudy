@@ -182,17 +182,32 @@
                 
             oneCureseVC.id = self.items[sender.tag].valueForKey("id") as! NSInteger
             oneCureseVC.courseNameString = self.items[sender.tag].valueForKey("title") as! String
-            if(self.items[sender.tag].valueForKey("picbg") != nil){
+                
+                
+    guard (self.items[sender.tag].valueForKey("picbg") as? NSArray) != nil else {
+        oneCureseVC.rgbArray = [0,0,0]
+        
+        if(self.items[sender.tag].valueForKey("memo") as? String != nil &&
+            self.items[sender.tag].valueForKey("memo") as! String != ""){
+            oneCureseVC.courseDesString = self.items[sender.tag].valueForKey("memo") as! String
+                }
+        self.navigationController?.pushViewController(oneCureseVC, animated: true)
+
+        return
+                }
+        
+        
             oneCureseVC.rgbArray = self.items[sender.tag].valueForKey("picbg") as! NSArray
              self.navigationController?.pushViewController(oneCureseVC, animated: true)
-                }
+                
                 if(self.items[sender.tag].valueForKey("memo") as? String != nil &&
                     self.items[sender.tag].valueForKey("memo") as! String != ""){
                     oneCureseVC.courseDesString = self.items[sender.tag].valueForKey("memo") as! String
 
-                }
+                
 
                 
+            }
             }else{
                 oneCureseVC.id = self.filterItems[sender.tag].valueForKey("id") as! NSInteger
                 oneCureseVC.courseNameString = self.filterItems[sender.tag].valueForKey("title") as! String

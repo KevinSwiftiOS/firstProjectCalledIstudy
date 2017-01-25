@@ -465,6 +465,37 @@ class CompletionQusViewController: UIViewController,UITextFieldDelegate,UIWebVie
         self.cellHeights.addObject(30)
         self.standAnswers.addObject(tempString)
         self.oneSubFillBlankSelfAnswerArray.addObject("")
+        var oneSubQusSelfAnswer = self.totalAnswerArray[index] as! String
+        //分割字符串
+        
+        //分割自己的答案
+        oneSubQusSelfAnswer = oneSubQusSelfAnswer.stringByReplacingOccurrencesOfString("&&&", withString: "☺︎")
+         tempString = ""
+        var temp = oneSubQusSelfAnswer.characters.count - 1
+        
+        var tempIndex = oneSubFillBlankSelfAnswerArray.count - 1
+        while temp >= 0 {
+            let adv = oneSubQusSelfAnswer.startIndex.advancedBy(temp)
+            if(oneSubQusSelfAnswer[adv] == "☺︎"){
+                //逆序一下字符串
+                var inReverse = ""
+                for letter in tempString.characters{
+                    inReverse = "\(letter)" + inReverse
+                }
+                oneSubFillBlankSelfAnswerArray.replaceObjectAtIndex(tempIndex, withObject: inReverse)
+                tempIndex -= 1
+                tempString = ""
+                temp -= 1
+            }else{
+                temp -= 1
+                tempString.append(oneSubQusSelfAnswer[adv])
+            }
+        }
+        var inReverse = ""
+        for letter in tempString.characters{
+            inReverse = "\(letter)" + inReverse
+        }
+        oneSubFillBlankSelfAnswerArray.replaceObjectAtIndex(tempIndex, withObject: inReverse)
     }
     
  //键盘的两个通知
@@ -605,37 +636,7 @@ class CompletionQusViewController: UIViewController,UITextFieldDelegate,UIWebVie
             //填空题的分割
             
             cell.Custag = indexPath.row
-            var oneSubQusSelfAnswer = self.totalAnswerArray[index] as! String
-            //分割字符串
-            
-            //分割自己的答案
-            oneSubQusSelfAnswer = oneSubQusSelfAnswer.stringByReplacingOccurrencesOfString("&&&", withString: "☺︎")
-            var tempString = ""
-            var temp = oneSubQusSelfAnswer.characters.count - 1
-            
-            var tempIndex = oneSubFillBlankSelfAnswerArray.count - 1
-            while temp >= 0 {
-                let adv = oneSubQusSelfAnswer.startIndex.advancedBy(temp)
-                if(oneSubQusSelfAnswer[adv] == "☺︎"){
-                    //逆序一下字符串
-                    var inReverse = ""
-                    for letter in tempString.characters{
-                        inReverse = "\(letter)" + inReverse
-                    }
-                    oneSubFillBlankSelfAnswerArray.replaceObjectAtIndex(tempIndex, withObject: inReverse)
-                    tempIndex -= 1
-                    tempString = ""
-                    temp -= 1
-                }else{
-                    temp -= 1
-                    tempString.append(oneSubQusSelfAnswer[adv])
-                }
-            }
-            var inReverse = ""
-            for letter in tempString.characters{
-                inReverse = "\(letter)" + inReverse
-            }
-            oneSubFillBlankSelfAnswerArray.replaceObjectAtIndex(tempIndex, withObject: inReverse)
+
             
             cell.selfAnswer = (oneSubFillBlankSelfAnswerArray[indexPath.row] as? String)!
             //是否可以编辑
@@ -701,8 +702,8 @@ class CompletionQusViewController: UIViewController,UITextFieldDelegate,UIWebVie
         let cell = sender.object as! CompletionTableViewCell
         
         self.oneSubFillBlankSelfAnswerArray.replaceObjectAtIndex(cell.Custag, withObject: (cell.textField?.text)!)
-      print(12345)
-
+     //进行组装
+        self.Save()
        
     }
     //图片的放大

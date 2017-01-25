@@ -261,6 +261,7 @@ class MyHomeWorkViewController: UIViewController,UITableViewDataSource,UITableVi
                 }
                 print(usertestid)
         let url = hostip + "Output/ViewOne/" + "\(usertestid)"
+            print(url)
             UIApplication.sharedApplication().openURL(NSURL(string: url)!)
         }
         }
@@ -271,6 +272,7 @@ class MyHomeWorkViewController: UIViewController,UITableViewDataSource,UITableVi
         let userDefault = NSUserDefaults.standardUserDefaults()
         let dic:[String:AnyObject] = ["authtoken":userDefault.valueForKey("authtoken") as! String,
                                       "courseid": "\(self.id)"]
+        print(dic)
         Alamofire.request(.POST, self.postString, parameters: dic, encoding: ParameterEncoding.URL, headers: nil).responseJSON { (response) in
             switch response.result{
             case .Success(let Value):
@@ -287,7 +289,7 @@ class MyHomeWorkViewController: UIViewController,UITableViewDataSource,UITableVi
                 }else{
                     dispatch_async(dispatch_get_main_queue(), {
                         self.items = json["items"].arrayObject! as NSArray
-                        var string = String()
+                                               var string = String()
                         if(self.items.count > 0){
                         if(self.isHomeWork){
                             string = "我的作业" + "(共" + "\(self.items.count)" + "个)"
