@@ -279,7 +279,7 @@ class ComplexQusViewController: UIViewController,UITableViewDelegate,UITableView
             self.disPlayMarkTextArray.addObject("")
         }
         var oneBigSelfAnswer = self.totalBigSelfAnswers[index] as! String
-        print(oneBigSelfAnswer)
+     
         //分割字符串
         oneBigSelfAnswer = oneBigSelfAnswer.stringByReplacingOccurrencesOfString("~~~", withString: "☺︎")
         //分割大题目的字符串 逆序的反转 真不知道他们是怎么组装的
@@ -381,6 +381,38 @@ class ComplexQusViewController: UIViewController,UITableViewDelegate,UITableView
             
          self.everySubQusRange.addObject(self.cellHeights.count)
             }
+            var oneSubQusSelfAnswer = self.oneQusSubSelfAnswers[subIndex] as! String
+            //分割字符串
+            
+            //分割自己的答案
+            oneSubQusSelfAnswer = oneSubQusSelfAnswer.stringByReplacingOccurrencesOfString("&&&", withString: "☺︎")
+            var tempString = ""
+            var temp = oneSubQusSelfAnswer.characters.count - 1
+            
+            var tempIndex = oneSubFillBlankSelfAnswerArray.count - 1
+            while temp >= 0 {
+                let adv = oneSubQusSelfAnswer.startIndex.advancedBy(temp)
+                if(oneSubQusSelfAnswer[adv] == "☺︎"){
+                    //逆序一下字符串
+                    var inReverse = ""
+                    for letter in tempString.characters{
+                        inReverse = "\(letter)" + inReverse
+                    }
+                    oneSubFillBlankSelfAnswerArray.replaceObjectAtIndex(tempIndex, withObject: inReverse)
+                    tempIndex -= 1
+                    tempString = ""
+                    temp -= 1
+                }else{
+                    temp -= 1
+                    tempString.append(oneSubQusSelfAnswer[adv])
+                }
+            }
+            var inReverse = ""
+            for letter in tempString.characters{
+                inReverse = "\(letter)" + inReverse
+            }
+            oneSubFillBlankSelfAnswerArray.replaceObjectAtIndex(tempIndex, withObject: inReverse)
+
         }
          beforeEditing = self.oneQusSubSelfAnswers[subIndex] as! String
         //选择题重置这里出现bug
@@ -550,9 +582,7 @@ class ComplexQusViewController: UIViewController,UITableViewDelegate,UITableView
         webView.frame = frame
         webView.addGestureRecognizer(tap)
         self.tableView.tableHeaderView = webView
-                let currentDate = NSDate()
-                let result:NSComparisonResult = currentDate.compare(endDate)
-                if result == .OrderedAscending{
+        
                      isOver = false
                     if(self.disPlayMarkTextArray[subIndex] as! NSObject != ""){
                         self.Over()
@@ -560,15 +590,6 @@ class ComplexQusViewController: UIViewController,UITableViewDelegate,UITableView
                         self.goOVerBtn?.enabled = false
                       
                     }
-                }else{
-                    self.disPlayMarkTextArray[subIndex] = "1"
-                    isOver = true
-                    self.resetBtn?.enabled = false
-                    self.goOVerBtn?.enabled = false
-                    self.saveBtn?.enabled = false
-                    //每道题目进行阅卷
-                    self.Over()
-                }
         
         self.tableView.reloadData()
        
@@ -648,38 +669,7 @@ class ComplexQusViewController: UIViewController,UITableViewDelegate,UITableView
                 //填空题的分割
                 
                 cell.Custag = indexPath.row
-                var oneSubQusSelfAnswer = self.oneQusSubSelfAnswers[subIndex] as! String
-                //分割字符串
-                
-                //分割自己的答案
-                oneSubQusSelfAnswer = oneSubQusSelfAnswer.stringByReplacingOccurrencesOfString("&&&", withString: "☺︎")
-                var tempString = ""
-                var temp = oneSubQusSelfAnswer.characters.count - 1
-                
-                var tempIndex = oneSubFillBlankSelfAnswerArray.count - 1
-                while temp >= 0 {
-                    let adv = oneSubQusSelfAnswer.startIndex.advancedBy(temp)
-                    if(oneSubQusSelfAnswer[adv] == "☺︎"){
-                        //逆序一下字符串
-                        var inReverse = ""
-                        for letter in tempString.characters{
-                            inReverse = "\(letter)" + inReverse
-                        }
-                        oneSubFillBlankSelfAnswerArray.replaceObjectAtIndex(tempIndex, withObject: inReverse)
-                        tempIndex -= 1
-                        tempString = ""
-                        temp -= 1
-                    }else{
-                        temp -= 1
-                        tempString.append(oneSubQusSelfAnswer[adv])
-                    }
-                }
-                var inReverse = ""
-                for letter in tempString.characters{
-                    inReverse = "\(letter)" + inReverse
-                }
-                oneSubFillBlankSelfAnswerArray.replaceObjectAtIndex(tempIndex, withObject: inReverse)
-                cell.canEdit = true
+                                cell.canEdit = true
                 cell.selfAnswer = (oneSubFillBlankSelfAnswerArray[indexPath.row] as? String)!
                 if(self.disPlayMarkTextArray[subIndex] as! String != ""){
                     cell.canEdit = false

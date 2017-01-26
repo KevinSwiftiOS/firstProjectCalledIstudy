@@ -469,29 +469,17 @@ self.tableView?.reloadData()
         
         //比较日期 若是已经过了期限 就把阅卷的结果拿出来
         //进行比较
-        let currentDate = NSDate()
-        self.tableView?.tableFooterView = UIView()
+              self.tableView?.tableFooterView = UIView()
         self.tableView?.userInteractionEnabled = true
         self.gooverBtn?.enabled = true
         self.resetBtn?.enabled = true
-        let result:NSComparisonResult = currentDate.compare(endDate)
-        if result == .OrderedAscending{
-            self.isOver = false
-            if(self.displayMarkingArray[index] as! NSObject != 0){
+    if(self.displayMarkingArray[index] as! NSObject != 0){
                 self.Over()
                 self.gooverBtn?.enabled = false
             }else{
                 self.tableView?.tableFooterView = UIView()
             }
-        }else{
-            self.isOver = true
-            //每道题目进行阅卷
-            self.Over()
-            self.gooverBtn?.enabled = false
-            self.resetBtn?.enabled = false
-            self.displayMarkingArray[index] = 1
-        }
-        self.tableView?.reloadData()
+             self.tableView?.reloadData()
         }
     //tableView的一些代理
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {

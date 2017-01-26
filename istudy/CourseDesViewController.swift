@@ -24,7 +24,7 @@
          //要注意搜索框的使用
         override func viewDidLoad() {
             super.viewDidLoad()
-                             self.navigationController?.navigationBar.barTintColor = RGB(0, g: 153, b: 255)
+    self.navigationController?.navigationBar.barTintColor = RGB(0, g: 153, b: 255)
             self.navigationController?.navigationBar.tintColor = UIColor.blackColor()
             
             self.courseDesTableView?.dataSource = self
@@ -178,48 +178,34 @@
             //都是推入到相同的立即学习的界面
             let oneCureseVC = UIStoryboard(name: "MyCourse", bundle: nil).instantiateViewControllerWithIdentifier("oneCourse") as! OneCourseDesViewController
             oneCureseVC.title = "立即学习"
+            //被选中的item
+            var item = NSDictionary()
             if(sc.active == false) {
-                
-            oneCureseVC.id = self.items[sender.tag].valueForKey("id") as! NSInteger
-            oneCureseVC.courseNameString = self.items[sender.tag].valueForKey("title") as! String
-                
-                
-    guard (self.items[sender.tag].valueForKey("picbg") as? NSArray) != nil else {
-        oneCureseVC.rgbArray = [0,0,0]
-        
-        if(self.items[sender.tag].valueForKey("memo") as? String != nil &&
-            self.items[sender.tag].valueForKey("memo") as! String != ""){
-            oneCureseVC.courseDesString = self.items[sender.tag].valueForKey("memo") as! String
-                }
-        self.navigationController?.pushViewController(oneCureseVC, animated: true)
-
-        return
-                }
-        
-        
-            oneCureseVC.rgbArray = self.items[sender.tag].valueForKey("picbg") as! NSArray
-             self.navigationController?.pushViewController(oneCureseVC, animated: true)
-                
-                if(self.items[sender.tag].valueForKey("memo") as? String != nil &&
-                    self.items[sender.tag].valueForKey("memo") as! String != ""){
-                    oneCureseVC.courseDesString = self.items[sender.tag].valueForKey("memo") as! String
-
-                
-
-                
-            }
+                item = self.items[sender.tag] as! NSDictionary
             }else{
-                oneCureseVC.id = self.filterItems[sender.tag].valueForKey("id") as! NSInteger
-                oneCureseVC.courseNameString = self.filterItems[sender.tag].valueForKey("title") as! String
-                if(self.filterItems[sender.tag].valueForKey("picbg") != nil){
-                    oneCureseVC.rgbArray = self.filterItems[sender.tag].valueForKey("picbg") as! NSArray
-                }
-                oneCureseVC.courseDesString = self.filterItems[sender.tag].valueForKey("memo") as! String
+                item = self.filterItems[sender.tag] as! NSDictionary
                 sc.active = false
-                self.navigationController?.pushViewController(oneCureseVC, animated: true)
+            }
+            
+            oneCureseVC.id = item.valueForKey("id") as! NSInteger
+            oneCureseVC.courseNameString = item.valueForKey("title") as! String
                 
-          }
-        
+                
+          
+          if(item.valueForKey("memo") as? String != nil &&
+           item.valueForKey("memo") as! String != ""){
+            oneCureseVC.courseDesString = item.valueForKey("memo") as! String
+          }else{
+            oneCureseVC.courseDesString = ""
+            }
+            //看是否有pic
+            if(item.valueForKey("pic") as? String != nil && item.valueForKey("pic") as! String != "") {
+                oneCureseVC.pic = item.valueForKey("pic") as! String
+            }else{
+                oneCureseVC.picbg = item.valueForKey("picbg") as! NSArray
+                oneCureseVC.pictit = item.valueForKey("pictit") as! String
+            }
+          self.navigationController?.pushViewController(oneCureseVC, animated: true)
         }
         //点击图片的时候
         func click(sender:UIButton) {

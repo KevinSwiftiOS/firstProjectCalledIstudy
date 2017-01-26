@@ -197,6 +197,7 @@ class AchViewController: UIViewController,UICollectionViewDelegate,UICollectionV
                 vc.viewOneWithAnswerKey = self.viewOneWithAnswerKey
                 self.navigationController?.pushViewController(vc, animated: true)
             default:
+                ProgressHUD.showError("请转至电脑上回答本题")
                 break
                 
         }

@@ -17,7 +17,11 @@ class OneCourseDesViewController:UIViewController,UICollectionViewDelegateFlowLa
     var segmentController:AKSegmentedControl?
     var isCourseInfo = true
     //课程的背景RGB颜色
-    var rgbArray = NSArray()
+    var picbg = NSArray()
+    //课程封面的名字
+    var pictit = ""
+    //课程背景的图片
+    var pic = ""
     //课程的名字
     var courseNameString = String()
     //每个课程的id
@@ -202,7 +206,9 @@ self.courseDataCollectionView!.emptyDataSetDelegate = self
         case 5:let VC = oneCourseSB.instantiateViewControllerWithIdentifier("DiscussVC") as! DiscussViewController
         self.navigationController?.pushViewController(VC, animated: true)
         VC.title = "讨论区"
-            VC.rgbArray = self.rgbArray
+            VC.picbg = self.picbg
+            VC.pic = self.pic
+            VC.pictit = self.pictit
             VC.courseNameString = self.courseNameString
             VC.id = self.id
         default:break

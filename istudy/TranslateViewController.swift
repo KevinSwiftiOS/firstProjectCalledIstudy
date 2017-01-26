@@ -25,6 +25,8 @@ class TranslateViewController: UIViewController{
     var  enableClientJudge = Bool()
     var keyVisible = Bool()
     var viewOneWithAnswerKey = Bool()
+    var redraw = false
+    var drawsetting = ""
     //是不是第一次加载
     var isFirstTime = Bool()
     //记录是第几个试卷
@@ -75,7 +77,6 @@ class TranslateViewController: UIViewController{
     var canMove = false
     func goToNewKindQus(sender:UISwipeGestureRecognizer){
         //先判断手势
-        
         if(sender.direction == .Right){
             if(self.kindOfQusIndex == 0){
                 
@@ -182,6 +183,7 @@ class TranslateViewController: UIViewController{
                     vc.viewOneWithAnswerKey = self.viewOneWithAnswerKey
                     self.navigationController?.pushViewController(vc, animated: false)
                 default:
+                    ProgressHUD.showError("请转至电脑上回答本题")
                     break
                     
                 }
@@ -286,6 +288,7 @@ class TranslateViewController: UIViewController{
                 vc.viewOneWithAnswerKey = self.viewOneWithAnswerKey
                 self.navigationController?.pushViewController(vc, animated: false)
             default:
+                   ProgressHUD.showError("请转至电脑上回答本题")
                 break
                 //设计题
                 
@@ -301,7 +304,9 @@ class TranslateViewController: UIViewController{
         let userDefault = NSUserDefaults.standardUserDefaults()
         let authtoken = userDefault.valueForKey("authtoken") as! String
         let dic:[String:AnyObject] = ["authtoken":authtoken,
-                                      "testid":"\(self.testid)"]
+                                      "testid":"\(self.testid)",
+                                      "redraw":redraw,
+                                      "drawsetting":drawsetting]
         Alamofire.request(.POST, hostip + "api/testinfo", parameters: dic, encoding: ParameterEncoding.URL, headers: nil).responseJSON(completionHandler: { (response) in
             switch response.result{
             case .Success(let Value):
@@ -498,6 +503,7 @@ class TranslateViewController: UIViewController{
                     vc.viewOneWithAnswerKey = self.viewOneWithAnswerKey
                     self.navigationController?.pushViewController(vc, animated: false)
                 default:
+                       ProgressHUD.showError("请转至电脑上回答本题")
                     break
                     
                 }
@@ -623,6 +629,7 @@ class TranslateViewController: UIViewController{
                 vc.viewOneWithAnswerKey = self.viewOneWithAnswerKey
                 self.navigationController?.pushViewController(vc, animated: false)
             default:
+                   ProgressHUD.showError("请转至电脑上回答本题")
                 break
                 //设计题
                 

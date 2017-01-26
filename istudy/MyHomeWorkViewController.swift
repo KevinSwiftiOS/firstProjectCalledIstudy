@@ -259,10 +259,8 @@ class MyHomeWorkViewController: UIViewController,UITableViewDataSource,UITableVi
                 }else{
                     usertestid = self.items[sender.tag].valueForKey("usertestid") as! NSInteger
                 }
-                print(usertestid)
-        let url = hostip + "Output/ViewOne/" + "\(usertestid)"
-            print(url)
-            UIApplication.sharedApplication().openURL(NSURL(string: url)!)
+                      let url = hostip + "Output/ViewOne/" + "\(usertestid)"
+                      UIApplication.sharedApplication().openURL(NSURL(string: url)!)
         }
         }
     
@@ -272,8 +270,7 @@ class MyHomeWorkViewController: UIViewController,UITableViewDataSource,UITableVi
         let userDefault = NSUserDefaults.standardUserDefaults()
         let dic:[String:AnyObject] = ["authtoken":userDefault.valueForKey("authtoken") as! String,
                                       "courseid": "\(self.id)"]
-        print(dic)
-        Alamofire.request(.POST, self.postString, parameters: dic, encoding: ParameterEncoding.URL, headers: nil).responseJSON { (response) in
+               Alamofire.request(.POST, self.postString, parameters: dic, encoding: ParameterEncoding.URL, headers: nil).responseJSON { (response) in
             switch response.result{
             case .Success(let Value):
              let json = JSON(Value)

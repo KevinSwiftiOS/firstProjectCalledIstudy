@@ -479,8 +479,7 @@ class ProgramDesignViewController: UIViewController,UIWebViewDelegate,UIGestureR
         self.contentScrollView?.contentSize = CGSizeMake(SCREEN_WIDTH, webViewHeight + 150)
         let currentDate = NSDate()
         let result:NSComparisonResult = currentDate.compare(endDate)
-        if result == .OrderedAscending{
-            isOver = false
+                isOver = false
             if(self.displayMarkingArray[index] as! NSObject != 0){
                 self.Over()
                 self.saveBtn?.enabled = false
@@ -488,16 +487,7 @@ class ProgramDesignViewController: UIViewController,UIWebViewDelegate,UIGestureR
                 
                 self.gooverBtn.enabled = false
             }
-        }else{
-              self.displayMarkingArray[index] = 1
-            self.gooverBtn.enabled = false
-            self.saveBtn?.enabled = false
-            self.answerTextView?.editable = false
-            self.resetBtn?.enabled = false
-            isOver = true
-            self.Over()
-        }
-           ProgressHUD.dismiss()
+                ProgressHUD.dismiss()
     }
     //键盘出现和消失时的动作
     func keyboardWillHideNotification(notification:NSNotification){

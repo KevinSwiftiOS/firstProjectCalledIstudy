@@ -22,10 +22,13 @@ class DiscussViewController: UIViewController,UITableViewDelegate,UITableViewDat
     @IBOutlet weak var refreshBtn:UIButton?
     @IBOutlet weak var typeBtn:UIButton?
     @IBOutlet weak var btmView:UIView?
+    @IBOutlet weak var picImageView:UIImageView!
     var url = ""
     var paramDic = [String:AnyObject]()
     var pop:PopoverView?
-    var rgbArray = NSArray()
+    var picbg = NSArray()
+    var pic = ""
+    var pictit = ""
     var courseNameString = String()
     var unTopitems = NSMutableArray()
     var topitems = NSMutableArray()
@@ -49,15 +52,25 @@ class DiscussViewController: UIViewController,UITableViewDelegate,UITableViewDat
         //顶部topView赋值
         self.courseNameLabel?.text = self.courseNameString
         //如果为空的话 默认加载RGB(0,153,255)的颜色
-        if(self.rgbArray.count > 0){
-            self.classLabel?.backgroundColor = RGB(Float(rgbArray[0] as! NSNumber), g:Float(rgbArray[1] as! NSNumber), b: Float(rgbArray[2] as! NSNumber))
-        }else{
-            self.classLabel?.backgroundColor = RGB(0, g: 153, b: 255)
+        if(self.pic != ""){
+        
+           picImageView.sd_setImageWithURL(NSURL(string: self.pic), placeholderImage: UIImage(named: "默认头像"))
+            picImageView.layer.cornerRadius = 5.0
+          picImageView.layer.masksToBounds = true
+            self.classLabel?.removeFromSuperview()
+         
+        }
+        
+       else{
+     self.classLabel?.backgroundColor = RGB(Float(picbg[0] as! NSNumber), g:Float(picbg[1] as! NSNumber), b: Float(picbg[2] as! NSNumber))
+             self.classLabel?.text = self.pictit
+            self.classLabel?.layer.cornerRadius = 5.0
+            self.classLabel?.layer.masksToBounds = true
+            self.picImageView.removeFromSuperview()
         }
         //顶部的设置
-        self.classLabel?.text = userDefault.valueForKey("cls") as? String
-        self.classLabel?.layer.cornerRadius = 5.0
-        self.classLabel?.layer.masksToBounds = true
+      
+    
         self.discussTableView?.dataSource = self
         self.discussTableView?.delegate = self
         writeBtn?.setFAText(prefixText: "", icon: FAType.FAEdit, postfixText: "", size: 25, forState: .Normal, iconSize: 25)

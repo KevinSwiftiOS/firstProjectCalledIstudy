@@ -589,10 +589,7 @@ class CompletionQusViewController: UIViewController,UITextFieldDelegate,UIWebVie
         self.tableView?.tableHeaderView = tableHeaderView
         //比较日期 若是已经过了期限 就把阅卷的结果拿出来
         //进行比较
-        let currentDate = NSDate()
-        let result:NSComparisonResult = currentDate.compare(endDate)
-        if result == .OrderedAscending{
-            
+                
             if(self.displayMarkingArray[index] as! NSObject != 0){
                 self.isOver = false
                 self.Over()
@@ -602,18 +599,7 @@ class CompletionQusViewController: UIViewController,UITextFieldDelegate,UIWebVie
                 self.tableView?.tableFooterView = UIView()
             }
             
-        }else{
-            
-            self.isOver = true
-            //每道题目进行阅卷
-            self.Over()
-            self.resetBtn?.enabled = false
-            self.goOVerBtn?.enabled = false
-            self.saveBtn?.enabled = false
-            self.displayMarkingArray[index] = 1
-            
-        }
-        webView.addGestureRecognizer(tap)
+                webView.addGestureRecognizer(tap)
       self.tableView?.reloadData()
     
     }
@@ -702,8 +688,7 @@ class CompletionQusViewController: UIViewController,UITextFieldDelegate,UIWebVie
         let cell = sender.object as! CompletionTableViewCell
         
         self.oneSubFillBlankSelfAnswerArray.replaceObjectAtIndex(cell.Custag, withObject: (cell.textField?.text)!)
-     //进行组装
-        self.Save()
+     
        
     }
     //图片的放大

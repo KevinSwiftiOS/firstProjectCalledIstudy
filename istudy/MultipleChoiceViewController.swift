@@ -523,24 +523,15 @@ class MultipleChoiceViewController: UIViewController,UIWebViewDelegate,UITableVi
         self.goOVerBtn?.enabled = true
         self.saveBtn?.enabled = true
         self.resetBtn?.enabled = true
-        let result:NSComparisonResult = currentDate.compare(endDate)
-        if result == .OrderedAscending{
+       
+      
             self.isOver = false
             if(self.displayMarkingArray[index] as! NSObject != 0){
                 self.Over()
             }else{
                 self.tableView?.tableFooterView = UIView()
             }
-        }else{
-            self.isOver = true
-            //每道题目进行阅卷
-            self.Over()
-            self.goOVerBtn?.enabled = false
-            self.resetBtn?.enabled = false
-            self.saveBtn?.enabled = false
-              self.displayMarkingArray[index] = 1
-        }
-        self.tableView?.reloadData()
+            self.tableView?.reloadData()
     }
 //tableView的一些代理
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {

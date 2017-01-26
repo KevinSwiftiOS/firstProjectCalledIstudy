@@ -359,6 +359,7 @@ var resignTAP = UITapGestureRecognizer()
         for view in self.scrollView.subviews{
             view.removeFromSuperview()
         }
+        if(self.items.count > 0) {
         var totalString = self.items[index].valueForKey("content") as! String + "<br>学生答案:" + "<br>"
         if(self.items[index].valueForKey("answer") as? String != nil && self.items[index].valueForKey("answer") as! String != ""){
             totalString += "<pre>" + (self.items[index].valueForKey("answer") as! String)
@@ -386,6 +387,7 @@ var resignTAP = UITapGestureRecognizer()
         self.contentWebView.delegate = self
         self.contentWebView.userInteractionEnabled = true
         self.totalHeight = 0
+        }
           }
     //评论的按钮 tag要注意
     func gotoPeer(sender:UIButton){
