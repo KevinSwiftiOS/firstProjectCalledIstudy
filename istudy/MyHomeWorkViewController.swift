@@ -160,17 +160,15 @@ class MyHomeWorkViewController: UIViewController,UITableViewDataSource,UITableVi
         //练习是没有成绩的
         if(!self.isExercise){
         if(sc.active){
-            if(self.filterItems[indexPath.row].valueForKey("myscore") as? NSNumber != nil &&
-                self.filterItems[indexPath.row].valueForKey("myscore") as! NSNumber != 0){
-            score = "\(NSInteger(self.filterItems[indexPath.row].valueForKey("myscore") as! NSNumber))"
+            if(self.filterItems[indexPath.row].valueForKey("myscore") as? String != nil){
+            score = self.filterItems[indexPath.row].valueForKey("myscore")  as! String
             }else{
                 score = "\(0)"
             }
            
         }else{
-            if(self.items[indexPath.row].valueForKey("myscore") as? NSNumber != nil &&
-                self.items[indexPath.row].valueForKey("myscore") as! NSNumber != 0){
-             score = "\(NSInteger(self.items[indexPath.row].valueForKey("myscore") as! NSNumber))"
+            if(self.items[indexPath.row].valueForKey("myscore") as? String != nil){
+             score = self.items[indexPath.row].valueForKey("myscore") as! String
             }else{
                  score = "\(0)"
             }
@@ -259,8 +257,12 @@ class MyHomeWorkViewController: UIViewController,UITableViewDataSource,UITableVi
                 }else{
                     usertestid = self.items[sender.tag].valueForKey("usertestid") as! NSInteger
                 }
+            if(usertestid != 0) {
                       let url = hostip + "Output/ViewOne/" + "\(usertestid)"
                       UIApplication.sharedApplication().openURL(NSURL(string: url)!)
+            }else{
+                ProgressHUD.showError("未答题")
+            }
         }
         }
     
